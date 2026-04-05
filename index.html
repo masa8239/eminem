@@ -602,11 +602,11 @@ input[type=range]::-webkit-slider-thumb {
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">
-      <div class="bcart-header"><div><div class="bcart-title">構成リスト</div><div class="bcart-count" id="bcart-count">0 / 7 パーツ選択済み</div></div><button class="bclear-btn" onclick="bclearAll()">クリア</button></div>
+      <div class="bcart-header"><div><div class="bcart-title">構成リスト</div><div class="bcart-count" id="bcart-count">0 / 8 パーツ選択済み</div></div><button class="bclear-btn" onclick="bclearAll()">クリア</button></div>
       <div class="bcart-list" id="bcart-list"><div class="bcart-empty">← パーツを選んでください</div></div>
       <div class="bcart-total">
         <div class="btotal-row"><span class="btotal-label">パーツ合計</span><span class="btotal-val" id="bparts-total">¥0</span></div>
-        <div class="btotal-row"><span class="btotal-label">OS (Win11 Home)</span><span class="btotal-val">¥15,000</span></div>
+        <div class="btotal-row"><span class="btotal-label"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:inherit"><input type="checkbox" id="b-os-check" checked onchange="bupdateCart()" style="width:13px;height:13px;accent-color:var(--accent2)">OS (Win11 Home)</label></span><span class="btotal-val" id="bos-val">¥15,000</span></div>
         <div style="height:1px;background:var(--border);margin:6px 0"></div>
         <div class="bgrand-row"><span class="bgrand-label">総合計</span><span class="bgrand-val" id="bgrand-total">¥15,000</span></div>
       </div>
@@ -1300,7 +1300,8 @@ const PRESET_BUILDS = [
     budget:'¥160,000〜', tag:'badge-blue',
     desc:'Valorant・CS2・Apex Legends などの競技FPSで高フレームレート(240fps+)を狙うビルド。シングルコア性能重視。',
     parts:[
-      {cat:'CPU', name:'Ryzen 5 7600',       price:18800},
+      {cat:'CPU', name:'Ryzen 5 7600',       price:18800,cpucooler:'bco2',
+      {cat:'Cooler', name:'DeepCool AK620', price:5800},
       {cat:'GPU', name:'RTX 4070 SUPER',     price:98000},
       {cat:'MB',  name:'MSI MAG X670E Tomahawk', price:38800},
       {cat:'RAM', name:'DDR5-6000 32GB',     price:18800},
@@ -1315,7 +1316,8 @@ const PRESET_BUILDS = [
     budget:'¥400,000〜', tag:'badge-purple',
     desc:'Cyberpunk 2077・Alan Wake 2 などの最新タイトルを4K Ultra・レイトレ全開でプレイするハイエンドビルド。',
     parts:[
-      {cat:'CPU', name:'Ryzen 9 9950X3D',    price:99800},
+      {cat:'CPU', name:'Ryzen 9 9950X3D',    price:99800,cpucooler:'bco7',
+      {cat:'Cooler', name:'LIAN LI Galahad II 360 RGB', price:14800},
       {cat:'GPU', name:'RTX 5090',            price:595000},
       {cat:'MB',  name:'ASUS ROG Strix X670E-E', price:59800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
@@ -1330,7 +1332,8 @@ const PRESET_BUILDS = [
     budget:'¥230,000〜', tag:'badge-purple',
     desc:'4K動画編集・OBS配信・After Effects など。コア数とRAMが重要。GPUはNVENC/AMFエンコーダーとして活躍。',
     parts:[
-      {cat:'CPU', name:'Core i9-14900K',      price:58800},
+      {cat:'CPU', name:'Core i9-14900K',      price:58800,cpucooler:'bco6',
+      {cat:'Cooler', name:'CORSAIR iCUE H150i Elite XT', price:24800},
       {cat:'GPU', name:'RTX 4070 Ti SUPER',   price:130000},
       {cat:'MB',  name:'ASUS ROG Maximus Z790',price:89800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
@@ -1345,7 +1348,8 @@ const PRESET_BUILDS = [
     budget:'¥130,000〜', tag:'badge-green',
     desc:'1080p〜1440pで快適にゲームできるコスパ重視ビルド。初めてのゲーミングPCや予算重視の方に最適。',
     parts:[
-      {cat:'CPU', name:'Ryzen 5 7600',        price:18800},
+      {cat:'CPU', name:'Ryzen 5 7600',        price:18800,cpucooler:'bco5',
+      {cat:'Cooler', name:'DeepCool AK400', price:2800},
       {cat:'GPU', name:'RTX 4070',            price:82000},
       {cat:'MB',  name:'ASRock B650E Steel Legend',price:24800},
       {cat:'RAM', name:'DDR5-5200 16GB',      price:8800},
@@ -1360,7 +1364,8 @@ const PRESET_BUILDS = [
     budget:'¥250,000〜', tag:'badge-orange',
     desc:'ゲームしながら配信・録画・Discord・Chromeを同時に動かせる構成。コア数多めのCPUが活きる。',
     parts:[
-      {cat:'CPU', name:'Ryzen 7 7800X3D',     price:49800},
+      {cat:'CPU', name:'Ryzen 7 7800X3D',     price:49800,cpucooler:'bco8',
+      {cat:'Cooler', name:'be quiet! Pure Loop 2 FX 240', price:12800},
       {cat:'GPU', name:'RTX 4080 SUPER',      price:165000},
       {cat:'MB',  name:'MSI MAG X670E Tomahawk',price:38800},
       {cat:'RAM', name:'DDR5-6000 32GB',      price:18800},
@@ -1375,7 +1380,8 @@ const PRESET_BUILDS = [
     budget:'¥80,000〜', tag:'badge-blue',
     desc:'Minecraft・フォートナイト・LoLなど軽いゲームをサクサク動かす入門構成。将来のアップグレードも見据えたAM5プラットフォーム採用。',
     parts:[
-      {cat:'CPU', name:'Ryzen 5 7600',        price:18800},
+      {cat:'CPU', name:'Ryzen 5 7600',        price:18800,cpucooler:'bco5',
+      {cat:'Cooler', name:'DeepCool AK400', price:2800},
       {cat:'GPU', name:'RX 7600',             price:32000},
       {cat:'MB',  name:'ASRock B650E Steel Legend',price:24800},
       {cat:'RAM', name:'DDR5-5200 16GB',      price:8800},
@@ -1463,6 +1469,17 @@ const BPARTS = {
     {id:'bc7',name:'Ryzen 5 9600X',    spec:'6C · 5.4GHz · AM5',      price:32800, score:29369,socket:'AM5',    tdp:65},
     {id:'bc8',name:'Core i5-14400F',   spec:'10C · 4.7GHz · LGA1700', price:14800, score:16800,socket:'LGA1700',tdp:65},
     {id:'bc9',name:'Ryzen 5 7600',     spec:'6C · 5.1GHz · AM5',      price:18800, score:18200,socket:'AM5',    tdp:65},
+  ]},
+  cpucooler:{ label:'CPUクーラー', icon:'❄️', color:'#58a6ff', items:[
+    {id:'bco1',name:'Noctua NH-D15 Gen2',          spec:'デュアルタワー空冷',  price:16800, maxTdp:250},
+    {id:'bco2',name:'DeepCool AK620',               spec:'デュアルタワー空冷',  price:5800,  maxTdp:260},
+    {id:'bco3',name:'Thermalright Peerless Assassin 120 SE', spec:'デュアルタワー空冷', price:4500, maxTdp:220},
+    {id:'bco4',name:'be quiet! Dark Rock 4',        spec:'シングルタワー空冷', price:8800,  maxTdp:200},
+    {id:'bco5',name:'DeepCool AK400',               spec:'シングルタワー空冷', price:2800,  maxTdp:180},
+    {id:'bco6',name:'CORSAIR iCUE H150i Elite XT',  spec:'360mm AIO水冷',     price:24800, maxTdp:350},
+    {id:'bco7',name:'LIAN LI Galahad II 360 RGB',   spec:'360mm AIO水冷',     price:14800, maxTdp:350},
+    {id:'bco8',name:'be quiet! Pure Loop 2 FX 240', spec:'240mm AIO水冷',     price:12800, maxTdp:300},
+    {id:'bco9',name:'Thermalright Frozen Prism 240', spec:'240mm AIO水冷',    price:6800,  maxTdp:280},
   ]},
   gpu:{ label:'GPU', icon:'🎮', color:'#f78166', items:[
     {id:'bg1',name:'RTX 5090',          spec:'32GB · 575W',  price:595000,score:47487,vram:32},
@@ -1572,8 +1589,10 @@ function bupdateCart(){
   const items=Object.entries(bSelected);
   const partsTotal=items.reduce((s,[,v])=>s+v.price,0);
   document.getElementById('bparts-total').textContent='¥'+partsTotal.toLocaleString();
-  document.getElementById('bgrand-total').textContent='¥'+(partsTotal+B_OS).toLocaleString();
-  document.getElementById('bcart-count').textContent=`${items.length} / 7 パーツ選択済み`;
+  const osAmt=document.getElementById('b-os-check')?.checked?B_OS:0;
+  document.getElementById('bos-val').textContent=osAmt?'¥'+B_OS.toLocaleString():'¥0';
+  document.getElementById('bgrand-total').textContent='¥'+(partsTotal+osAmt).toLocaleString();
+  document.getElementById('bcart-count').textContent=`${items.length} / 8 パーツ選択済み`;
   const listEl=document.getElementById('bcart-list');
   listEl.innerHTML=items.length?items.map(([cat,item])=>`<div class="bcart-item"><div class="bcart-item-cat">${BPARTS[cat].icon}</div><div class="bcart-item-name">${item.name}</div><div class="bcart-item-price">¥${item.price.toLocaleString()}</div><div class="bcart-item-del" onclick="bremove('${cat}','${item.id}')">✕</div></div>`).join(''):'<div class="bcart-empty">← パーツを選んでください</div>';
   if(bSelected.cpu&&bSelected.gpu)banalyze();
@@ -1591,6 +1610,7 @@ function banalyze(){
   let warns='';
   if(ratio<0.6)warns+=`<div class="bwarn bwarn-yellow">⚠ CPUがGPUに対して弱め。ボトルネックになる可能性があります。</div>`;
   else if(ratio>1.6)warns+=`<div class="bwarn bwarn-yellow">⚠ GPUがCPUに対して弱め。CPUを活かしきれない場面があります。</div>`;
+  if(bSelected.cpucooler&&cpu.tdp&&bSelected.cpucooler.maxTdp<cpu.tdp)warns+=`<div class="bwarn bwarn-red">✗ クーラー(冷却能力${bSelected.cpucooler.maxTdp}W)がCPU TDP(${cpu.tdp}W)に対して不足しています！</div>`;
   if(bSelected.mb?.socket&&cpu.socket&&bSelected.mb.socket!==cpu.socket)warns+=`<div class="bwarn bwarn-red">✕ マザボ(${bSelected.mb.socket})とCPU(${cpu.socket})のソケットが非対応です！</div>`;
   if(bSelected.psu){const need=(cpu.tdp||150)+(gs>25000?420:gs>15000?290:200)+100;if(bSelected.psu.watts<need*0.9)warns+=`<div class="bwarn bwarn-yellow">⚠ 電源容量が不足の可能性。推奨: ${Math.ceil(need/50)*50}W以上。</div>`;}
   const tiers=['low','mid','high','ultra'];
