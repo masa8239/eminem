@@ -653,8 +653,8 @@ const FALLBACK_CPU = [
   { name:'Ryzen 7 5800X3D',      maker:'AMD',   score:22000, single:1660, price:26800,  tdp:105, cores:8,  threads:16, socket:'AM4',     clockMin:3.4, clockMax:4.5, cache:100, badge:'旧ゲーム最強',  badgeClass:'badge-orange' },
   { name:'Ryzen 7 5800X',        maker:'AMD',   score:21000, single:1670, price:15800,  tdp:105, cores:8,  threads:16, socket:'AM4',     clockMin:3.8, clockMax:4.7, cache:36,  badge:'',             badgeClass:''             },
   { name:'Ryzen 7 5700X',        maker:'AMD',   score:19200, single:1620, price:12800,  tdp:65,  cores:8,  threads:16, socket:'AM4',     clockMin:3.4, clockMax:4.6, cache:36,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Ryzen 5 5600X',        maker:'AMD',   score:14100, single:1650, price:10800,  tdp:65,  cores:6,  threads:12, socket:'AM4',     clockMin:3.7, clockMax:4.6, cache:35,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Ryzen 5 5600',         maker:'AMD',   score:13800, single:1620, price:9800,   tdp:65,  cores:6,  threads:12, socket:'AM4',     clockMin:3.5, clockMax:4.4, cache:35,  badge:'コスパ最強',   badgeClass:'badge-green'  },
+  { name:'Ryzen 5 5600X',        maker:'AMD',   score:14100, single:1650, price:10800,  tdp:65,  cores:6,  threads:12, socket:'AM4',     clockMin:3.7, clockMax:4.6, cache:35,  badge:'',             badgeClass:''              },
+  { name:'Ryzen 5 5600',         maker:'AMD',   score:13800, single:1620, price:9800,   tdp:65,  cores:6,  threads:12, socket:'AM4',     clockMin:3.5, clockMax:4.4, cache:35,  badge:'',             badgeClass:''              },
   // ── Intel Arrow Lake (LGA1851) ──
   { name:'Core Ultra 9 285K',    maker:'Intel', score:67893, single:2180, price:86800,  tdp:125, cores:24, threads:24, socket:'LGA1851', clockMin:3.7, clockMax:5.7, cache:36,  badge:'ハイエンド',   badgeClass:'badge-blue'   },
   { name:'Core Ultra 7 265K',    maker:'Intel', score:60100, single:2070, price:48800,  tdp:125, cores:20, threads:20, socket:'LGA1851', clockMin:3.9, clockMax:5.5, cache:30,  badge:'',             badgeClass:''             },
@@ -679,7 +679,7 @@ const FALLBACK_CPU = [
   { name:'Core i9-13900K',       maker:'Intel', score:61000, single:2160, price:48800,  tdp:253, cores:24, threads:32, socket:'LGA1700', clockMin:3.0, clockMax:5.8, cache:36,  badge:'',             badgeClass:''             },
   { name:'Core i7-13700K',       maker:'Intel', score:32000, single:1940, price:34800,  tdp:253, cores:16, threads:24, socket:'LGA1700', clockMin:3.4, clockMax:5.4, cache:30,  badge:'',             badgeClass:''             },
   { name:'Core i5-13600K',       maker:'Intel', score:22000, single:1920, price:22800,  tdp:181, cores:14, threads:20, socket:'LGA1700', clockMin:3.5, clockMax:5.1, cache:24,  badge:'',             badgeClass:''             },
-  { name:'Core i5-13400F',       maker:'Intel', score:15200, single:1820, price:12800,  tdp:65,  cores:10, threads:16, socket:'LGA1700', clockMin:2.5, clockMax:4.6, cache:20,  badge:'コスパ最強',   badgeClass:'badge-green'  },
+  { name:'Core i5-13400F',       maker:'Intel', score:15200, single:1820, price:12800,  tdp:65,  cores:10, threads:16, socket:'LGA1700', clockMin:2.5, clockMax:4.6, cache:20,  badge:'',             badgeClass:''              },
 ];
 
 // GPU: name, maker, score(3DMark TS), price(円), vram, tdp(W), bw(GB/s文字列), rt, dlss, badge, badgeClass
@@ -712,8 +712,8 @@ const FALLBACK_GPU = [
   { name:'GeForce RTX 3080 12GB',     maker:'NVIDIA', score:18000, price:62000,   vram:'12GB', tdp:350, bw:'912 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'',            badgeClass:''             },
   { name:'GeForce RTX 3080',          maker:'NVIDIA', score:17200, price:58000,   vram:'10GB', tdp:320, bw:'760 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'',            badgeClass:''             },
   { name:'GeForce RTX 3070 Ti',       maker:'NVIDIA', score:14500, price:50000,   vram:'8GB',  tdp:290, bw:'608 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'',            badgeClass:''             },
-  { name:'GeForce RTX 3070',          maker:'NVIDIA', score:13500, price:44000,   vram:'8GB',  tdp:220, bw:'448 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'コスパ',      badgeClass:'badge-green'  },
-  { name:'GeForce RTX 3060 Ti',       maker:'NVIDIA', score:11800, price:38000,   vram:'8GB',  tdp:200, bw:'448 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'コスパ',      badgeClass:'badge-green'  },
+  { name:'GeForce RTX 3070',          maker:'NVIDIA', score:13500, price:44000,   vram:'8GB',  tdp:220, bw:'448 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'',            badgeClass:''              },
+  { name:'GeForce RTX 3060 Ti',       maker:'NVIDIA', score:11800, price:38000,   vram:'8GB',  tdp:200, bw:'448 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'',            badgeClass:''              },
   { name:'GeForce RTX 3060',          maker:'NVIDIA', score:8900,  price:32000,   vram:'12GB', tdp:170, bw:'360 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'',            badgeClass:''             },
   // ── AMD Radeon RX 9000 ──
   { name:'Radeon RX 9070 XT',         maker:'AMD',    score:30070, price:110000,  vram:'16GB', tdp:304, bw:'640 GB/s',  rt:'○', dlss:'FSR 4',  badge:'コスパ◎',    badgeClass:'badge-green'  },
@@ -729,13 +729,13 @@ const FALLBACK_GPU = [
   // ── AMD Radeon RX 6000 ── （中古）
   { name:'Radeon RX 6950 XT',         maker:'AMD',    score:18600, price:58000,   vram:'16GB', tdp:335, bw:'576 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''             },
   { name:'Radeon RX 6900 XT',         maker:'AMD',    score:17800, price:52000,   vram:'16GB', tdp:300, bw:'512 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''             },
-  { name:'Radeon RX 6800 XT',         maker:'AMD',    score:16400, price:46000,   vram:'16GB', tdp:300, bw:'512 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ',      badgeClass:'badge-green'  },
+  { name:'Radeon RX 6800 XT',         maker:'AMD',    score:16400, price:46000,   vram:'16GB', tdp:300, bw:'512 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''              },
   { name:'Radeon RX 6800',            maker:'AMD',    score:14800, price:40000,   vram:'16GB', tdp:250, bw:'512 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''             },
   { name:'Radeon RX 6750 XT',         maker:'AMD',    score:12800, price:32000,   vram:'12GB', tdp:250, bw:'432 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''             },
-  { name:'Radeon RX 6700 XT',         maker:'AMD',    score:12000, price:28000,   vram:'12GB', tdp:230, bw:'384 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ',      badgeClass:'badge-green'  },
-  { name:'Radeon RX 6700',            maker:'AMD',    score:10800, price:24000,   vram:'10GB', tdp:220, bw:'320 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ',      badgeClass:'badge-green'  },
-  { name:'Radeon RX 6650 XT',         maker:'AMD',    score:9200,  price:22000,   vram:'8GB',  tdp:180, bw:'280 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ最強',  badgeClass:'badge-green'  },
-  { name:'Radeon RX 6600 XT',         maker:'AMD',    score:8800,  price:18000,   vram:'8GB',  tdp:160, bw:'256 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ最強',  badgeClass:'badge-green'  },
+  { name:'Radeon RX 6700 XT',         maker:'AMD',    score:12000, price:28000,   vram:'12GB', tdp:230, bw:'384 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''              },
+  { name:'Radeon RX 6700',            maker:'AMD',    score:10800, price:24000,   vram:'10GB', tdp:220, bw:'320 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''              },
+  { name:'Radeon RX 6650 XT',         maker:'AMD',    score:9200,  price:22000,   vram:'8GB',  tdp:180, bw:'280 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''              },
+  { name:'Radeon RX 6600 XT',         maker:'AMD',    score:8800,  price:18000,   vram:'8GB',  tdp:160, bw:'256 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''              },
 ];
 
 // ===== STATE（フォールバックで即時初期化） =====
@@ -1069,7 +1069,7 @@ function parseGpuRow(row) {
   const dlss  = row['アップスケーリング']||(maker==='NVIDIA'?'DLSS 3':maker==='AMD'?'FSR 3':'-');
   const rt    = row['レイトレ']||(maker==='NVIDIA'?'◎':maker==='AMD'?'○':'△');
   let badge='',badgeClass='';
-  if(cospa>=0.3){badge='コスパ最強';badgeClass='badge-green';}else if(score>=40000){badge='最強';badgeClass='badge-purple';}else if(score>=25000){badge='ハイエンド';badgeClass='badge-blue';}
+  if(cospa>=0.3&&score>=11000){badge='コスパ最強';badgeClass='badge-green';}else if(score>=40000){badge='最強';badgeClass='badge-purple';}else if(score>=25000){badge='ハイエンド';badgeClass='badge-blue';}
   return {name,maker,score,price,vram,bw,tdp,rt,dlss,cospa,badge,badgeClass};
 }
 
