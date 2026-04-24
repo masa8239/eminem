@@ -367,6 +367,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="nav-link active" onclick="showPage('home',this)">トップ</div>
     <div class="nav-link" onclick="showPage('cpu-rank',this)">CPU ランキング</div>
     <div class="nav-link" onclick="showPage('gpu-rank',this)">GPU ランキング</div>
+    <div class="nav-link" onclick="showPage('ram-rank',this)">RAM ランキング</div>
     <div class="nav-link" onclick="showPage('cpu-compare',this)">CPU 比較</div>
     <div class="nav-link" onclick="showPage('gpu-compare',this)">GPU 比較</div>
     <div class="nav-link" onclick="showPage('bottleneck',this)">⚡ ボトルネック</div>
@@ -409,7 +410,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="cards">
       <div class="card card-accent" onclick="showPage('cpu-rank',document.querySelectorAll('.nav-link')[1])"><div class="card-label">CPU</div><div class="card-title">CPU 性能ランキング</div><div class="card-desc">PassMark スコアによる最新CPUランキング。コア数・クロック・TDP・価格も一覧表示。</div><div class="card-arrow">↗</div></div>
       <div class="card card-accent-orange" onclick="showPage('gpu-rank',document.querySelectorAll('.nav-link')[2])"><div class="card-label">GPU</div><div class="card-title">GPU 性能ランキング</div><div class="card-desc">3DMark Time Spy による総合グラフィック性能ランキング。VRAM・帯域幅・消費電力も確認できます。</div><div class="card-arrow">↗</div></div>
-      <div class="card card-accent-green" onclick="showPage('builder',document.querySelectorAll('.nav-link')[5])"><div class="card-label">ビルダー</div><div class="card-title">PC構成ビルダー</div><div class="card-desc">パーツを選んで合計金額と遊べるゲームを自動診断。ソケット互換チェック付き。</div><div class="card-arrow">↗</div></div>
+      <div class="card card-accent-green" onclick="showPage('builder',document.querySelectorAll('.nav-link')[8])"><div class="card-label">ビルダー</div><div class="card-title">PC構成ビルダー</div><div class="card-desc">パーツを選んで合計金額と遊べるゲームを自動診断。ソケット互換チェック付き。</div><div class="card-arrow">↗</div></div>
     </div>
   </div>
   <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">データはGoogleスプレッドシートで管理 · 定期更新 · アフィリエイト収益で運営</div></div>
@@ -421,7 +422,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="section-header">
       <div class="section-title">CPU 性能ランキング</div>
       <div class="section-sub" id="cpu-rank-updated">// データ読み込み中...</div>
-      <button class="share-btn" onclick="shareUrl('cpu')">🔗 シェア</button>
+      <button class="share-btn" onclick="shareUrl('cpu-rank')">🔗 シェア</button>
     </div>
     <div class="filters">
       <button class="filter-btn active" onclick="filterCpu('all',this)">全て</button>
@@ -488,7 +489,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="section-header">
       <div class="section-title">GPU 性能ランキング</div>
       <div class="section-sub" id="gpu-rank-updated">// データ読み込み中...</div>
-      <button class="share-btn" onclick="shareUrl('gpu')">🔗 シェア</button>
+      <button class="share-btn" onclick="shareUrl('gpu-rank')">🔗 シェア</button>
     </div>
     <div class="filters">
       <button class="filter-btn active" onclick="filterGpu('all',this)">全て</button>
@@ -526,6 +527,50 @@ input[type=range]::-webkit-slider-thumb {
     </div>
   </div>
   <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格はAmazon/価格.com参照 · スコアは3DMark実測値</div></div>
+</div>
+
+<!-- RAM RANKING -->
+<div id="ram-rank" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">RAM 性能ランキング</div>
+      <div class="section-sub" id="ram-rank-updated">// データ読み込み中...</div>
+      <button class="share-btn" onclick="shareUrl('ram-rank')">🔗 シェア</button>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterRam('all',this)">全て</button>
+      <button class="filter-btn" onclick="filterRam('DDR5',this)">DDR5</button>
+      <button class="filter-btn" onclick="filterRam('DDR4',this)">DDR4</button>
+      <button class="filter-btn" onclick="filterRam('16',this)">16GB</button>
+      <button class="filter-btn" onclick="filterRam('32',this)">32GB</button>
+      <button class="filter-btn" onclick="filterRam('64',this)">64GB</button>
+    </div>
+    <div class="search-budget-row">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="ram-search" placeholder="製品名で検索... (例: DDR5-6000, Corsair)" oninput="renderRamTable()">
+      </div>
+      <div class="budget-box">
+        <div class="budget-label">予算上限 <span id="ram-budget-val">制限なし</span></div>
+        <input type="range" id="ram-budget" min="0" max="80000" step="2000" value="80000" oninput="updateRamBudgetLabel();renderRamTable()">
+      </div>
+      <div class="result-count" id="ram-result-count"></div>
+    </div>
+    <div class="sort-row">
+      <span class="sort-label">並び替え：</span>
+      <button class="sort-btn active-score" id="ram-sort-speed" onclick="sortRam('speed',this)">⚡ 速度 <span class="sort-arrow" id="ram-arrow-speed">↓</span></button>
+      <button class="sort-btn" id="ram-sort-price" onclick="sortRam('price',this)">💴 値段 <span class="sort-arrow" id="ram-arrow-price">↓</span></button>
+      <button class="sort-btn" id="ram-sort-cospa" onclick="sortRam('cospa',this)">⭐ コスパ/GB <span class="sort-arrow" id="ram-arrow-cospa">↓</span></button>
+    </div>
+    <div class="table-wrap">
+      <div class="notice">帯域幅 = 速度 × 8バイト / 1000（理論値・シングルチャネル）。デュアルチャネル構成では実効帯域幅は2倍になります。</div>
+      <table class="rank-table">
+        <thead><tr><th>順位</th><th>製品名</th><th>タイプ</th><th>速度</th><th>CL</th><th>容量 / 構成</th><th>帯域幅(理論)</th><th>価格</th><th>コスパ/GB</th><th>評価</th><th>購入</th></tr></thead>
+        <tbody id="ram-table-body"><tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent2);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格はAmazon/価格.com参照 · 帯域幅はメーカー公式スペックより算出</div></div>
 </div>
 
 <!-- CPU COMPARE -->
@@ -602,11 +647,11 @@ input[type=range]::-webkit-slider-thumb {
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">
-      <div class="bcart-header"><div><div class="bcart-title">構成リスト</div><div class="bcart-count" id="bcart-count">0 / 7 パーツ選択済み</div></div><button class="bclear-btn" onclick="bclearAll()">クリア</button></div>
+      <div class="bcart-header"><div><div class="bcart-title">構成リスト</div><div class="bcart-count" id="bcart-count">0 / 8 パーツ選択済み</div></div><button class="bclear-btn" onclick="bclearAll()">クリア</button></div>
       <div class="bcart-list" id="bcart-list"><div class="bcart-empty">← パーツを選んでください</div></div>
       <div class="bcart-total">
         <div class="btotal-row"><span class="btotal-label">パーツ合計</span><span class="btotal-val" id="bparts-total">¥0</span></div>
-        <div class="btotal-row"><span class="btotal-label">OS (Win11 Home)</span><span class="btotal-val">¥15,000</span></div>
+        <div class="btotal-row"><span class="btotal-label"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:inherit"><input type="checkbox" id="b-os-check" checked onchange="bupdateCart()" style="width:13px;height:13px;accent-color:var(--accent2)">OS (Win11 Home)</label></span><span class="btotal-val" id="bos-val">¥15,000</span></div>
         <div style="height:1px;background:var(--border);margin:6px 0"></div>
         <div class="bgrand-row"><span class="bgrand-label">総合計</span><span class="bgrand-val" id="bgrand-total">¥15,000</span></div>
       </div>
@@ -620,6 +665,7 @@ input[type=range]::-webkit-slider-thumb {
 // ===== Google Apps Script URLs =====
 const CPU_GAS_URL = 'https://script.google.com/macros/s/AKfycbxWHs4CEGCGVa-Z_QfMA0vMQUq_sQ8dL47POcPvJYynJIhwxgJYWdJ0XOtOLIaLNfJM/exec';
 const GPU_GAS_URL = 'https://script.google.com/macros/s/AKfycbxyrOzS96rGJPUzFdqDguRqN08dTEElLAcjiZgM5Mq0zzHkiAZbjr8-fsN5Q83HcXcj/exec';
+const RAM_GAS_URL = 'https://script.google.com/macros/s/AKfycbyzkxOQolZotFhcI4Q-MX1v7ESz9ytI0Bk0YG6oHwp6rnMlNyv06ARyrY7fnsTN6O4C/exec';
 
 // ===== FALLBACK DATA =====
 // CPU: name, maker, score(PassMark multi), single, price(円), tdp(W), cores, threads, socket, clockMin, clockMax(GHz), cache(MB), badge, badgeClass
@@ -738,13 +784,43 @@ const FALLBACK_GPU = [
   { name:'Radeon RX 6600 XT',         maker:'AMD',    score:8800,  price:18000,   vram:'8GB',  tdp:160, bw:'256 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ最強',  badgeClass:'badge-green'  },
 ];
 
+const FALLBACK_RAM = [
+  // DDR5
+  { name:'G.Skill Trident Z5 DDR5-7200',           type:'DDR5', speed:7200, cl:34, capacity:32, kit:'2x16GB', price:28800, badge:'ハイエンド',  badgeClass:'badge-purple' },
+  { name:'Corsair Dominator Titanium DDR5-7200',    type:'DDR5', speed:7200, cl:34, capacity:32, kit:'2x16GB', price:32800, badge:'ハイエンド',  badgeClass:'badge-purple' },
+  { name:'G.Skill Trident Z5 DDR5-6400',            type:'DDR5', speed:6400, cl:32, capacity:32, kit:'2x16GB', price:24800, badge:'',            badgeClass:''             },
+  { name:'Corsair Vengeance DDR5-6000 32GB',        type:'DDR5', speed:6000, cl:36, capacity:32, kit:'2x16GB', price:18800, badge:'コスパ◎',     badgeClass:'badge-green'  },
+  { name:'G.Skill Ripjaws S5 DDR5-6000 32GB',       type:'DDR5', speed:6000, cl:36, capacity:32, kit:'2x16GB', price:16800, badge:'コスパ最強',  badgeClass:'badge-green'  },
+  { name:'Kingston FURY Beast DDR5-6000 32GB',      type:'DDR5', speed:6000, cl:36, capacity:32, kit:'2x16GB', price:15800, badge:'コスパ最強',  badgeClass:'badge-green'  },
+  { name:'Corsair Vengeance DDR5-6000 64GB',        type:'DDR5', speed:6000, cl:36, capacity:64, kit:'2x32GB', price:34800, badge:'大容量',       badgeClass:'badge-blue'   },
+  { name:'Crucial Pro DDR5-5600 32GB',              type:'DDR5', speed:5600, cl:46, capacity:32, kit:'2x16GB', price:13800, badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Kingston FURY Beast DDR5-5600 32GB',      type:'DDR5', speed:5600, cl:40, capacity:32, kit:'2x16GB', price:12800, badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Crucial Pro DDR5-5600 64GB',              type:'DDR5', speed:5600, cl:46, capacity:64, kit:'2x32GB', price:28800, badge:'大容量',       badgeClass:'badge-blue'   },
+  { name:'Samsung DDR5-4800 32GB',                  type:'DDR5', speed:4800, cl:40, capacity:32, kit:'2x16GB', price:10800, badge:'',             badgeClass:''             },
+  { name:'Crucial DDR5-4800 16GB',                  type:'DDR5', speed:4800, cl:40, capacity:16, kit:'2x8GB',  price:6800,  badge:'',             badgeClass:''             },
+  // DDR4
+  { name:'G.Skill Trident Z RGB DDR4-4000 32GB',    type:'DDR4', speed:4000, cl:18, capacity:32, kit:'2x16GB', price:18800, badge:'ハイエンド',  badgeClass:'badge-purple' },
+  { name:'Corsair Dominator Platinum DDR4-3600 32GB',type:'DDR4', speed:3600, cl:18, capacity:32, kit:'2x16GB', price:16800, badge:'',            badgeClass:''             },
+  { name:'G.Skill Trident Z RGB DDR4-3600 32GB',    type:'DDR4', speed:3600, cl:18, capacity:32, kit:'2x16GB', price:13800, badge:'',             badgeClass:''             },
+  { name:'Kingston FURY Renegade DDR4-3600 16GB',   type:'DDR4', speed:3600, cl:16, capacity:16, kit:'2x8GB',  price:8800,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Corsair Vengeance LPX DDR4-3200 32GB',    type:'DDR4', speed:3200, cl:16, capacity:32, kit:'2x16GB', price:9800,  badge:'コスパ◎',     badgeClass:'badge-green'  },
+  { name:'G.Skill Ripjaws V DDR4-3200 32GB',        type:'DDR4', speed:3200, cl:16, capacity:32, kit:'2x16GB', price:8800,  badge:'コスパ◎',     badgeClass:'badge-green'  },
+  { name:'Kingston FURY Beast DDR4-3200 16GB',      type:'DDR4', speed:3200, cl:16, capacity:16, kit:'2x8GB',  price:4800,  badge:'コスパ最強',  badgeClass:'badge-green'  },
+  { name:'Crucial Ballistix DDR4-3200 16GB',        type:'DDR4', speed:3200, cl:16, capacity:16, kit:'2x8GB',  price:4500,  badge:'コスパ最強',  badgeClass:'badge-green'  },
+  { name:'Crucial DDR4-3200 16GB',                  type:'DDR4', speed:3200, cl:22, capacity:16, kit:'1x16GB', price:3800,  badge:'エントリー',  badgeClass:'badge-blue'   },
+  { name:'Corsair Vengeance LPX DDR4-3200 64GB',    type:'DDR4', speed:3200, cl:16, capacity:64, kit:'2x32GB', price:18800, badge:'大容量',       badgeClass:'badge-blue'   },
+];
+
 // ===== STATE（フォールバックで即時初期化） =====
-let cpuData = [...FALLBACK_CPU].sort((a,b) => b.score - a.score);
-let gpuData = [...FALLBACK_GPU].sort((a,b) => b.score - a.score);
+let cpuData = normalizeBadges([...FALLBACK_CPU].sort((a,b) => b.score - a.score), 'cpu');
+let gpuData = normalizeBadges([...FALLBACK_GPU].sort((a,b) => b.score - a.score), 'gpu');
+let ramData = [...FALLBACK_RAM].sort((a,b) => b.speed - a.speed);
 let cpuFilter = 'all';
 let gpuFilter = 'all';
+let ramFilter = 'all';
 let maxCpuScore = Math.max(...cpuData.map(d => d.score));
 let maxGpuScore = Math.max(...gpuData.map(d => d.score));
+let maxRamSpeed = Math.max(...ramData.map(d => d.speed));
 
 // ===== HELPERS =====
 function fmtPrice(p) { return p > 0 ? `¥${p.toLocaleString()}` : '—'; }
@@ -752,6 +828,18 @@ function rankColor(i) { return i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''; 
 function fmtClock(min, max) {
   if (!min && !max) return '—';
   return `${min||'?'} → <span style="color:var(--accent2);font-weight:700">${max||'?'}GHz</span>`;
+}
+
+// ===== BADGE NORMALIZATION =====
+// コスパバッジはCPU score>=16000 / GPU score>=11000 以上のみ表示
+function normalizeBadges(data, type) {
+  const minScore = type === 'cpu' ? 16000 : 11000;
+  return data.map(item => {
+    if (item.badge && item.badge.includes('コスパ') && item.score < minScore) {
+      return Object.assign({}, item, {badge:'', badgeClass:''});
+    }
+    return item;
+  });
 }
 function toNum(v) { return typeof v==='number'?v:parseInt(String(v||'').replace(/[^0-9.]/g,''))||0; }
 
@@ -872,15 +960,53 @@ function renderGpuTable() {
     </tr>`;}).join('');
 }
 
+function renderRamTable() {
+  const searchVal = (document.getElementById('ram-search')?.value||'').toLowerCase();
+  const budgetMax = parseInt(document.getElementById('ram-budget')?.value||80000);
+  let base = ramFilter==='all' ? ramData : ramData.filter(r=>{
+    if(ramFilter==='DDR5'||ramFilter==='DDR4') return r.type===ramFilter;
+    return r.capacity===parseInt(ramFilter);
+  });
+  base = base.filter(r => {
+    if(searchVal && !r.name.toLowerCase().includes(searchVal)) return false;
+    if(budgetMax<80000 && r.price>budgetMax) return false;
+    return true;
+  });
+  const filtered = applyRamSort(base);
+  const rc = document.getElementById('ram-result-count');
+  if(rc) rc.textContent = `${filtered.length} 件`;
+  const tbody = document.getElementById('ram-table-body');
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3)">条件に一致するメモリがありません</td></tr>`;return;}
+  tbody.innerHTML = filtered.map((r,i) => {
+    const bw = (r.speed*8/1000).toFixed(1)+' GB/s';
+    const cospaVal = r.price>0&&r.capacity>0?Math.round(r.price/r.capacity):'—';
+    return `<tr>
+      <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
+      <td><div class="chip-name">${r.name}${r.badge?` <span class="badge ${r.badgeClass}">${r.badge}</span>`:''}</div></td>
+      <td><span class="badge ${r.type==='DDR5'?'badge-purple':'badge-blue'}">${r.type}</span></td>
+      <td style="font-weight:700;color:var(--accent2)">${r.speed.toLocaleString()} MHz</td>
+      <td>CL${r.cl||'—'}</td>
+      <td>${r.capacity}GB <span style="color:var(--text3);font-size:11px">${r.kit}</span></td>
+      <td style="color:var(--text2)">${bw}</td>
+      <td class="price-cell" style="${ramSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(r.price)}</td>
+      <td class="price-cell" style="${ramSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">¥${cospaVal}/GB</td>
+      <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
+      <td><button class="affiliate-btn">🛒 Amazon</button></td>
+    </tr>`;}).join('');
+}
+
 // ===== FILTERS =====
 function filterCpu(maker,el) { cpuFilter=maker; document.querySelectorAll('#cpu-rank .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderCpuTable(); }
 function filterGpu(maker,el) { gpuFilter=maker; document.querySelectorAll('#gpu-rank .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderGpuTable(); }
+function filterRam(val,el) { ramFilter=val; document.querySelectorAll('#ram-rank .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderRamTable(); }
 
 // ===== SORT STATE =====
 let cpuSortKey = 'score';   // 'score' | 'price' | 'cospa'
 let cpuSortDir = -1;         // -1=降順 1=昇順
 let gpuSortKey = 'score';
 let gpuSortDir = -1;
+let ramSortKey = 'speed';
+let ramSortDir = -1;
 
 function sortCpu(key, el) {
   if (cpuSortKey === key) { cpuSortDir *= -1; }
@@ -922,6 +1048,25 @@ function applyGpuSort(arr) {
     else if (gpuSortKey === 'price') { va=a.price||9999999; vb=b.price||9999999; }
     else { va=a.price>0?a.score/a.price:0; vb=b.price>0?b.score/b.price:0; }
     return gpuSortDir * (vb - va);
+  });
+}
+
+function sortRam(key, el) {
+  if(ramSortKey===key){ramSortDir*=-1;}else{ramSortKey=key;ramSortDir=(key==='price'||key==='cospa')?1:-1;}
+  ['speed','price','cospa'].forEach(k=>{
+    const btn=document.getElementById('ram-sort-'+k);
+    const arr=document.getElementById('ram-arrow-'+k);
+    if(btn)btn.className='sort-btn'+(ramSortKey===k?' active-'+(k==='speed'?'score':k):'');
+    if(arr)arr.textContent=ramSortKey===k?(ramSortDir===-1?'↓':'↑'):'↓';
+  });
+  renderRamTable();
+}
+function applyRamSort(arr) {
+  return [...arr].sort((a,b) => {
+    let va,vb;
+    if(ramSortKey==='speed'){return ramSortDir*(b.speed-a.speed);}
+    else if(ramSortKey==='price'){va=a.price||9999999;vb=b.price||9999999;return ramSortDir*(va-vb);}
+    else{va=a.price>0&&a.capacity>0?a.price/a.capacity:9999999;vb=b.price>0&&b.capacity>0?b.price/b.capacity:9999999;return ramSortDir*(va-vb);}
   });
 }
 
@@ -1051,7 +1196,7 @@ function parseCpuRow(row) {
   if(!clockMin&&!clockMax&&clockStr){const m=clockStr.match(/([\d.]+)[^\d.]+([\d.]+)/);if(m){clockMin=parseFloat(m[1]);clockMax=parseFloat(m[2]);}else{const m2=clockStr.match(/([\d.]+)/);if(m2)clockMax=parseFloat(m2[1]);}}
   const cospa = score>0&&price>0?score/price:0;
   const maker = name.toLowerCase().includes('ryzen')||name.toLowerCase().includes('amd')?'AMD':name.toLowerCase().includes('core')||name.toLowerCase().includes('intel')?'Intel':'Other';
-  const socket = maker==='AMD'?'AM5':maker==='Intel'?'LGA1700':'';
+  const socket = row['ソケット']||row['socket']||(maker==='AMD'?'AM5':maker==='Intel'?'LGA1700':'');
   let badge='',badgeClass='';
   if(cospa>=0.5){badge='コスパ最強';badgeClass='badge-green';}else if(score>=60000){badge='ハイエンド';badgeClass='badge-blue';}else if(score>=40000){badge='ハイ';badgeClass='badge-purple';}
   return {name,maker,score,single,price,tdp,cores,threads,socket,clockMin,clockMax,cache,cospa,badge,badgeClass};
@@ -1072,6 +1217,23 @@ function parseGpuRow(row) {
   if(cospa>=0.3){badge='コスパ最強';badgeClass='badge-green';}else if(score>=40000){badge='最強';badgeClass='badge-purple';}else if(score>=25000){badge='ハイエンド';badgeClass='badge-blue';}
   return {name,maker,score,price,vram,bw,tdp,rt,dlss,cospa,badge,badgeClass};
 }
+function parseRamRow(row) {
+  const keys = Object.keys(row);
+  const name = row['製品名']||row['RAM名']||row['name']||row[keys[0]]||''; if(!name) return null;
+  const typeRaw = row['タイプ']||row['type']||row['DDR']||'';
+  const type = typeRaw||( name.toUpperCase().includes('DDR5')?'DDR5':name.toUpperCase().includes('DDR4')?'DDR4':'DDR4');
+  const speed = toNum(row['速度']||row['speed']||row['MHz']||row[keys[1]])||0; if(!speed) return null;
+  const cl = toNum(row['CL']||row['レイテンシ']||row['latency']||0);
+  const capacity = toNum(row['容量']||row['GB']||row['capacity']||0);
+  const kit = String(row['構成']||row['kit']||row['キット']||`${capacity}GB`);
+  const price = toNum(row['価格(円)']||row['価格']||row['price']||0);
+  let badge='',badgeClass='';
+  const cpgb = capacity>0&&price>0?price/capacity:9999;
+  if(cpgb<500){badge='コスパ最強';badgeClass='badge-green';}
+  else if(cpgb<700){badge='コスパ';badgeClass='badge-green';}
+  else if(type==='DDR5'&&speed>=6000){badge='高速';badgeClass='badge-purple';}
+  return {name,type,speed,cl,capacity,kit,price,badge,badgeClass};
+}
 
 async function loadSheetData() {
   try {
@@ -1080,7 +1242,7 @@ async function loadSheetData() {
     const rows = await res.json();
     const parsed = rows.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
-      cpuData = parsed.sort((a,b)=>b.score-a.score);
+      cpuData = normalizeBadges(parsed.sort((a,b)=>b.score-a.score),'cpu');
       maxCpuScore = Math.max(...cpuData.map(d=>d.score));
       document.getElementById('cpu-rank-updated').textContent = '// Googleスプレッドシートから読み込み済み';
     }
@@ -1093,14 +1255,27 @@ async function loadSheetData() {
     const rows = await res.json();
     const parsed = rows.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
-      gpuData = parsed.sort((a,b)=>b.score-a.score);
+      gpuData = normalizeBadges(parsed.sort((a,b)=>b.score-a.score),'gpu');
       maxGpuScore = Math.max(...gpuData.map(d=>d.score));
       document.getElementById('gpu-rank-updated').textContent = '// Googleスプレッドシートから読み込み済み';
     }
   } catch(e) {
     document.getElementById('gpu-rank-updated').textContent = '// 内蔵データ使用中 (2025)';
   }
-  renderCpuTable(); renderGpuTable();
+  try {
+    const res = await fetch(RAM_GAS_URL, {signal:AbortSignal.timeout(8000)});
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const rows = await res.json();
+    const parsed = rows.map(parseRamRow).filter(r=>r&&r.name&&r.speed>0);
+    if (parsed.length > 0) {
+      ramData = parsed.sort((a,b)=>b.speed-a.speed);
+      maxRamSpeed = Math.max(...ramData.map(d=>d.speed));
+      document.getElementById('ram-rank-updated').textContent = '// Googleスプレッドシートから読み込み済み';
+    }
+  } catch(e) {
+    document.getElementById('ram-rank-updated').textContent = '// 内蔵データ使用中 (2025)';
+  }
+  renderCpuTable(); renderGpuTable(); renderRamTable();
   populateCpuSelects(); populateGpuSelects();
   updateHomeRanking();
 }
@@ -1143,18 +1318,22 @@ function updateGpuBudgetLabel() {
   const v = parseInt(document.getElementById('gpu-budget').value);
   document.getElementById('gpu-budget-val').textContent = v>=650000 ? '制限なし' : `¥${v.toLocaleString()}`;
 }
+function updateRamBudgetLabel() {
+  const v = parseInt(document.getElementById('ram-budget').value);
+  document.getElementById('ram-budget-val').textContent = v>=80000 ? '制限なし' : `¥${v.toLocaleString()}`;
+}
 
 // ===== SHARE URL =====
 function shareUrl(page) {
   const params = new URLSearchParams();
   params.set('page', page);
-  if (page==='cpu') {
+  if (page==='cpu-rank') {
     params.set('filter', cpuFilter);
     params.set('sort', cpuSortKey);
     params.set('dir', cpuSortDir);
     const q = document.getElementById('cpu-search')?.value;
     if (q) params.set('q', q);
-  } else if (page==='gpu') {
+  } else if (page==='gpu-rank') {
     params.set('filter', gpuFilter);
     params.set('sort', gpuSortKey);
     params.set('dir', gpuSortDir);
@@ -1182,9 +1361,9 @@ function restoreFromUrl() {
   const page = p.get('page');
   if (!page) return;
   const navLinks = document.querySelectorAll('.nav-link');
-  const pageMap = {home:0,'cpu-rank':1,'gpu-rank':2,'cpu-compare':3,'gpu-compare':4,bottleneck:5,presets:6,builder:7};
+  const pageMap = {home:0,'cpu-rank':1,'gpu-rank':2,'ram-rank':3,'cpu-compare':4,'gpu-compare':5,bottleneck:6,presets:7,builder:8};
   if (pageMap[page]!==undefined) showPage(page, navLinks[pageMap[page]]);
-  if (page==='cpu') {
+  if (page==='cpu-rank') {
     const f=p.get('filter'); if(f){cpuFilter=f; document.querySelectorAll('#cpu-rank .filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.includes(f==='all'?'全て':f)));}
     const s=p.get('sort'); if(s){cpuSortKey=s; cpuSortDir=parseInt(p.get('dir')||'-1');}
     const q=p.get('q'); if(q&&document.getElementById('cpu-search'))document.getElementById('cpu-search').value=q;
@@ -1288,8 +1467,9 @@ const PRESET_BUILDS = [
     budget:'¥160,000〜', tag:'badge-blue',
     desc:'Valorant・CS2・Apex Legends などの競技FPSで高フレームレート(240fps+)を狙うビルド。シングルコア性能重視。',
     parts:[
-      {cat:'CPU', name:'Ryzen 5 7600',       price:24800},
-      {cat:'GPU', name:'RTX 4070 SUPER',     price:69800},
+      {cat:'CPU', name:'Ryzen 5 7600',       price:18800,cpucooler:'bco2',
+      {cat:'Cooler', name:'DeepCool AK620', price:5800},
+      {cat:'GPU', name:'RTX 4070 SUPER',     price:98000},
       {cat:'MB',  name:'MSI MAG X670E Tomahawk', price:38800},
       {cat:'RAM', name:'DDR5-6000 32GB',     price:18800},
       {cat:'SSD', name:'Samsung 990 Pro 1TB',price:13800},
@@ -1303,8 +1483,9 @@ const PRESET_BUILDS = [
     budget:'¥400,000〜', tag:'badge-purple',
     desc:'Cyberpunk 2077・Alan Wake 2 などの最新タイトルを4K Ultra・レイトレ全開でプレイするハイエンドビルド。',
     parts:[
-      {cat:'CPU', name:'Ryzen 9 9950X3D',    price:114980},
-      {cat:'GPU', name:'RTX 5090',            price:549800},
+      {cat:'CPU', name:'Ryzen 9 9950X3D',    price:99800,cpucooler:'bco7',
+      {cat:'Cooler', name:'LIAN LI Galahad II 360 RGB', price:14800},
+      {cat:'GPU', name:'RTX 5090',            price:595000},
       {cat:'MB',  name:'ASUS ROG Strix X670E-E', price:59800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
       {cat:'SSD', name:'Samsung 990 Pro 2TB', price:22800},
@@ -1318,60 +1499,64 @@ const PRESET_BUILDS = [
     budget:'¥230,000〜', tag:'badge-purple',
     desc:'4K動画編集・OBS配信・After Effects など。コア数とRAMが重要。GPUはNVENC/AMFエンコーダーとして活躍。',
     parts:[
-      {cat:'CPU', name:'Core i9-14900K',      price:69800},
-      {cat:'GPU', name:'RTX 4070 Ti SUPER',   price:79800},
+      {cat:'CPU', name:'Core i9-14900K',      price:58800,cpucooler:'bco6',
+      {cat:'Cooler', name:'CORSAIR iCUE H150i Elite XT', price:24800},
+      {cat:'GPU', name:'RTX 4070 Ti SUPER',   price:130000},
       {cat:'MB',  name:'ASUS ROG Maximus Z790',price:89800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
       {cat:'SSD', name:'WD Black SN850X 2TB', price:21800},
       {cat:'PSU', name:'Corsair RM1000x',     price:24800},
       {cat:'Case',name:'Lian Li PC-O11 Dynamic',price:18800},
     ],
-    builderIds:{cpu:'bc3',gpu:'bg3',mb:'bm3',ram:'br1',storage:'bs2',psu:'bp2',case:'bk2'}
+    builderIds:{cpu:'bc3',gpu:'bg5',mb:'bm4',ram:'br1',storage:'bs2',psu:'bp2',case:'bk2'}
   },
   {
     id:'cospa', icon:'💡', color:'var(--accent3)', title:'コスパ最強バランス',
     budget:'¥130,000〜', tag:'badge-green',
     desc:'1080p〜1440pで快適にゲームできるコスパ重視ビルド。初めてのゲーミングPCや予算重視の方に最適。',
     parts:[
-      {cat:'CPU', name:'Ryzen 5 7600',        price:24800},
-      {cat:'GPU', name:'RTX 4070',            price:58800},
+      {cat:'CPU', name:'Ryzen 5 7600',        price:18800,cpucooler:'bco5',
+      {cat:'Cooler', name:'DeepCool AK400', price:2800},
+      {cat:'GPU', name:'RTX 4070',            price:82000},
       {cat:'MB',  name:'ASRock B650E Steel Legend',price:24800},
       {cat:'RAM', name:'DDR5-5200 16GB',      price:8800},
       {cat:'SSD', name:'Samsung 990 Pro 1TB', price:13800},
       {cat:'PSU', name:'Seasonic Focus GX-750',price:14800},
       {cat:'Case',name:'Cooler Master HAF 500',price:12800},
     ],
-    builderIds:{cpu:'bc9',gpu:'bg8',mb:'bm5',ram:'br4',storage:'bs3',psu:'bp4',case:'bk4'}
+    builderIds:{cpu:'bc9',gpu:'bg8',mb:'bm3',ram:'br4',storage:'bs3',psu:'bp4',case:'bk4'}
   },
   {
     id:'streaming', icon:'📡', color:'var(--accent)', title:'ゲーム配信・マルチタスク',
     budget:'¥250,000〜', tag:'badge-orange',
     desc:'ゲームしながら配信・録画・Discord・Chromeを同時に動かせる構成。コア数多めのCPUが活きる。',
     parts:[
-      {cat:'CPU', name:'Ryzen 7 7800X3D',     price:56800},
-      {cat:'GPU', name:'RTX 4080 SUPER',      price:89000},
+      {cat:'CPU', name:'Ryzen 7 7800X3D',     price:49800,cpucooler:'bco8',
+      {cat:'Cooler', name:'be quiet! Pure Loop 2 FX 240', price:12800},
+      {cat:'GPU', name:'RTX 4080 SUPER',      price:165000},
       {cat:'MB',  name:'MSI MAG X670E Tomahawk',price:38800},
       {cat:'RAM', name:'DDR5-6000 32GB',      price:18800},
       {cat:'SSD', name:'WD Black SN850X 2TB', price:21800},
       {cat:'PSU', name:'be quiet! Dark Power 850W',price:22800},
       {cat:'Case',name:'Fractal Design Torrent',price:24800},
     ],
-    builderIds:{cpu:'bc4',gpu:'bg2',mb:'bm2',ram:'br2',storage:'bs2',psu:'bp3',case:'bk1'}
+    builderIds:{cpu:'bc4',gpu:'bg4',mb:'bm2',ram:'br2',storage:'bs2',psu:'bp3',case:'bk1'}
   },
   {
     id:'entry', icon:'🌱', color:'var(--text2)', title:'エントリー・ライトゲーム',
     budget:'¥80,000〜', tag:'badge-blue',
     desc:'Minecraft・フォートナイト・LoLなど軽いゲームをサクサク動かす入門構成。将来のアップグレードも見据えたAM5プラットフォーム採用。',
     parts:[
-      {cat:'CPU', name:'Ryzen 5 7500F',       price:21800},
-      {cat:'GPU', name:'RX 7600',             price:29800},
+      {cat:'CPU', name:'Ryzen 5 7600',        price:18800,cpucooler:'bco5',
+      {cat:'Cooler', name:'DeepCool AK400', price:2800},
+      {cat:'GPU', name:'RX 7600',             price:32000},
       {cat:'MB',  name:'ASRock B650E Steel Legend',price:24800},
       {cat:'RAM', name:'DDR5-5200 16GB',      price:8800},
       {cat:'SSD', name:'Crucial T500 1TB',    price:9800},
       {cat:'PSU', name:'Corsair CX650M',      price:8800},
       {cat:'Case',name:'Cooler Master HAF 500',price:12800},
     ],
-    builderIds:{cpu:'bc9',gpu:'bgc',mb:'bm5',ram:'br4',storage:'bs4',psu:'bp5',case:'bk4'}
+    builderIds:{cpu:'bc9',gpu:'bgc',mb:'bm3',ram:'br4',storage:'bs4',psu:'bp5',case:'bk4'}
   },
 ];
 
@@ -1420,7 +1605,7 @@ function loadPresetToBuilder(presetId) {
     }
   });
   bupdateCart();
-  showPage('builder', document.querySelectorAll('.nav-link')[7]);
+  showPage('builder', document.querySelectorAll('.nav-link')[8]);
   showToast(`「${preset.title}」をビルダーに読み込みました`);
 }
 
@@ -1442,29 +1627,40 @@ function switchTab(el,targetId) {
 // ===== BUILDER =====
 const BPARTS = {
   cpu:{ label:'CPU', icon:'🔲', color:'#58a6ff', items:[
-    {id:'bc1',name:'Ryzen 9 9950X3D',  spec:'16C · 5.7GHz · AM5',     price:114980,score:70594,socket:'AM5',    tdp:170},
-    {id:'bc2',name:'Ryzen 7 9800X3D',  spec:'8C · 5.6GHz · AM5',      price:89800, score:41712,socket:'AM5',    tdp:120},
-    {id:'bc3',name:'Core i9-14900K',   spec:'24C · 6.0GHz · LGA1700', price:69800, score:62300,socket:'LGA1700',tdp:253},
-    {id:'bc4',name:'Ryzen 7 7800X3D',  spec:'8C · 5.0GHz · AM5',      price:56800, score:35000,socket:'AM5',    tdp:120},
-    {id:'bc5',name:'Core i7-14700K',   spec:'20C · 5.6GHz · LGA1700', price:54800, score:34000,socket:'LGA1700',tdp:253},
-    {id:'bc6',name:'Core i5-14600KF',  spec:'14C · 5.3GHz · LGA1700', price:32800, score:23800,socket:'LGA1700',tdp:181},
-    {id:'bc7',name:'Ryzen 5 9600X',    spec:'6C · 5.4GHz · AM5',      price:36820, score:29369,socket:'AM5',    tdp:65},
-    {id:'bc8',name:'Core i5-14400F',   spec:'10C · 4.7GHz · LGA1700', price:18800, score:16800,socket:'LGA1700',tdp:65},
-    {id:'bc9',name:'Ryzen 5 7600',     spec:'6C · 5.1GHz · AM5',      price:24800, score:18200,socket:'AM5',    tdp:65},
+    {id:'bc1',name:'Ryzen 9 9950X3D',  spec:'16C · 5.7GHz · AM5',     price:99800, score:70594,socket:'AM5',    tdp:170},
+    {id:'bc2',name:'Ryzen 7 9800X3D',  spec:'8C · 5.6GHz · AM5',      price:74800, score:41712,socket:'AM5',    tdp:120},
+    {id:'bc3',name:'Core i9-14900K',   spec:'24C · 6.0GHz · LGA1700', price:58800, score:62300,socket:'LGA1700',tdp:253},
+    {id:'bc4',name:'Ryzen 7 7800X3D',  spec:'8C · 5.0GHz · AM5',      price:49800, score:35000,socket:'AM5',    tdp:120},
+    {id:'bc5',name:'Core i7-14700K',   spec:'20C · 5.6GHz · LGA1700', price:46800, score:34000,socket:'LGA1700',tdp:253},
+    {id:'bc6',name:'Core i5-14600KF',  spec:'14C · 5.3GHz · LGA1700', price:24800, score:23800,socket:'LGA1700',tdp:181},
+    {id:'bc7',name:'Ryzen 5 9600X',    spec:'6C · 5.4GHz · AM5',      price:32800, score:29369,socket:'AM5',    tdp:65},
+    {id:'bc8',name:'Core i5-14400F',   spec:'10C · 4.7GHz · LGA1700', price:14800, score:16800,socket:'LGA1700',tdp:65},
+    {id:'bc9',name:'Ryzen 5 7600',     spec:'6C · 5.1GHz · AM5',      price:18800, score:18200,socket:'AM5',    tdp:65},
+  ]},
+  cpucooler:{ label:'CPUクーラー', icon:'❄️', color:'#58a6ff', items:[
+    {id:'bco1',name:'Noctua NH-D15 Gen2',          spec:'デュアルタワー空冷',  price:16800, maxTdp:250},
+    {id:'bco2',name:'DeepCool AK620',               spec:'デュアルタワー空冷',  price:5800,  maxTdp:260},
+    {id:'bco3',name:'Thermalright Peerless Assassin 120 SE', spec:'デュアルタワー空冷', price:4500, maxTdp:220},
+    {id:'bco4',name:'be quiet! Dark Rock 4',        spec:'シングルタワー空冷', price:8800,  maxTdp:200},
+    {id:'bco5',name:'DeepCool AK400',               spec:'シングルタワー空冷', price:2800,  maxTdp:180},
+    {id:'bco6',name:'CORSAIR iCUE H150i Elite XT',  spec:'360mm AIO水冷',     price:24800, maxTdp:350},
+    {id:'bco7',name:'LIAN LI Galahad II 360 RGB',   spec:'360mm AIO水冷',     price:14800, maxTdp:350},
+    {id:'bco8',name:'be quiet! Pure Loop 2 FX 240', spec:'240mm AIO水冷',     price:12800, maxTdp:300},
+    {id:'bco9',name:'Thermalright Frozen Prism 240', spec:'240mm AIO水冷',    price:6800,  maxTdp:280},
   ]},
   gpu:{ label:'GPU', icon:'🎮', color:'#f78166', items:[
-    {id:'bg1',name:'RTX 5090',          spec:'32GB · 575W',  price:549800,score:47487,vram:32},
-    {id:'bg2',name:'RTX 4090',          spec:'24GB · 450W',  price:189800,score:36340,vram:24},
-    {id:'bg3',name:'RX 7900 XTX',       spec:'24GB · 355W',  price:79800, score:32000,vram:24},
-    {id:'bg4',name:'RTX 4080 SUPER',    spec:'16GB · 320W',  price:89000, score:28531,vram:16},
-    {id:'bg5',name:'RTX 4070 Ti SUPER', spec:'16GB · 285W',  price:79800, score:26974,vram:16},
-    {id:'bg6',name:'RX 9070 XT',        spec:'16GB · 304W',  price:98000, score:30070,vram:16},
-    {id:'bg7',name:'RTX 4070 SUPER',    spec:'12GB · 220W',  price:69800, score:21130,vram:12},
-    {id:'bg8',name:'RTX 4070',          spec:'12GB · 200W',  price:58800, score:18500,vram:12},
-    {id:'bg9',name:'RX 7800 XT',        spec:'16GB · 263W',  price:44800, score:17800,vram:16},
-    {id:'bga',name:'RTX 4060 Ti',       spec:'8GB · 160W',   price:49800, score:16200,vram:8},
-    {id:'bgb',name:'RTX 4060',          spec:'8GB · 115W',   price:38800, score:13200,vram:8},
-    {id:'bgc',name:'RX 7600',           spec:'8GB · 165W',   price:29800, score:11000,vram:8},
+    {id:'bg1',name:'RTX 5090',          spec:'32GB · 575W',  price:595000,score:47487,vram:32},
+    {id:'bg2',name:'RTX 4090',          spec:'24GB · 450W',  price:400000,score:36340,vram:24},
+    {id:'bg3',name:'RX 7900 XTX',       spec:'24GB · 355W',  price:88000, score:32000,vram:24},
+    {id:'bg4',name:'RTX 4080 SUPER',    spec:'16GB · 320W',  price:165000,score:28531,vram:16},
+    {id:'bg5',name:'RTX 4070 Ti SUPER', spec:'16GB · 285W',  price:130000,score:26974,vram:16},
+    {id:'bg6',name:'RX 9070 XT',        spec:'16GB · 304W',  price:110000,score:30070,vram:16},
+    {id:'bg7',name:'RTX 4070 SUPER',    spec:'12GB · 220W',  price:98000, score:21130,vram:12},
+    {id:'bg8',name:'RTX 4070',          spec:'12GB · 200W',  price:82000, score:18500,vram:12},
+    {id:'bg9',name:'RX 7800 XT',        spec:'16GB · 263W',  price:54000, score:17800,vram:16},
+    {id:'bga',name:'RTX 4060 Ti',       spec:'8GB · 160W',   price:58000, score:16200,vram:8},
+    {id:'bgb',name:'RTX 4060',          spec:'8GB · 115W',   price:44000, score:13200,vram:8},
+    {id:'bgc',name:'RX 7600',           spec:'8GB · 165W',   price:32000, score:11000,vram:8},
   ]},
   mb:{ label:'マザーボード', icon:'🔧', color:'#3fb950', items:[
     {id:'bm1',name:'ASUS ROG Strix X670E-E',   spec:'AM5 · DDR5 · ATX',     price:59800,socket:'AM5'},
@@ -1519,7 +1715,6 @@ const BGAMES=[
   {name:'Minecraft (RTX)',       tag:'1080p 60fps',        tier:'mid',  gpuMin:9000, cpuMin:10000},
   {name:'GTA V',                 tag:'1080p Ultra',        tier:'mid',  gpuMin:8000, cpuMin:10000},
   {name:'Fortnite',              tag:'1080p 144fps Epic',  tier:'mid',  gpuMin:9000, cpuMin:10000},
-  {name:'Valorant',              tag:'1080p 60fps',        tier:'low',  gpuMin:0,    cpuMin:0},
   {name:'League of Legends',     tag:'1080p 60fps',        tier:'low',  gpuMin:0,    cpuMin:0},
   {name:'Minecraft',             tag:'1080p 60fps',        tier:'low',  gpuMin:0,    cpuMin:0},
   {name:'CS2',                   tag:'1080p 60fps',        tier:'low',  gpuMin:0,    cpuMin:0},
@@ -1561,8 +1756,10 @@ function bupdateCart(){
   const items=Object.entries(bSelected);
   const partsTotal=items.reduce((s,[,v])=>s+v.price,0);
   document.getElementById('bparts-total').textContent='¥'+partsTotal.toLocaleString();
-  document.getElementById('bgrand-total').textContent='¥'+(partsTotal+B_OS).toLocaleString();
-  document.getElementById('bcart-count').textContent=`${items.length} / 7 パーツ選択済み`;
+  const osAmt=document.getElementById('b-os-check')?.checked?B_OS:0;
+  document.getElementById('bos-val').textContent=osAmt?'¥'+B_OS.toLocaleString():'¥0';
+  document.getElementById('bgrand-total').textContent='¥'+(partsTotal+osAmt).toLocaleString();
+  document.getElementById('bcart-count').textContent=`${items.length} / 8 パーツ選択済み`;
   const listEl=document.getElementById('bcart-list');
   listEl.innerHTML=items.length?items.map(([cat,item])=>`<div class="bcart-item"><div class="bcart-item-cat">${BPARTS[cat].icon}</div><div class="bcart-item-name">${item.name}</div><div class="bcart-item-price">¥${item.price.toLocaleString()}</div><div class="bcart-item-del" onclick="bremove('${cat}','${item.id}')">✕</div></div>`).join(''):'<div class="bcart-empty">← パーツを選んでください</div>';
   if(bSelected.cpu&&bSelected.gpu)banalyze();
@@ -1580,6 +1777,7 @@ function banalyze(){
   let warns='';
   if(ratio<0.6)warns+=`<div class="bwarn bwarn-yellow">⚠ CPUがGPUに対して弱め。ボトルネックになる可能性があります。</div>`;
   else if(ratio>1.6)warns+=`<div class="bwarn bwarn-yellow">⚠ GPUがCPUに対して弱め。CPUを活かしきれない場面があります。</div>`;
+  if(bSelected.cpucooler&&cpu.tdp&&bSelected.cpucooler.maxTdp<cpu.tdp)warns+=`<div class="bwarn bwarn-red">✗ クーラー(冷却能力${bSelected.cpucooler.maxTdp}W)がCPU TDP(${cpu.tdp}W)に対して不足しています！</div>`;
   if(bSelected.mb?.socket&&cpu.socket&&bSelected.mb.socket!==cpu.socket)warns+=`<div class="bwarn bwarn-red">✕ マザボ(${bSelected.mb.socket})とCPU(${cpu.socket})のソケットが非対応です！</div>`;
   if(bSelected.psu){const need=(cpu.tdp||150)+(gs>25000?420:gs>15000?290:200)+100;if(bSelected.psu.watts<need*0.9)warns+=`<div class="bwarn bwarn-yellow">⚠ 電源容量が不足の可能性。推奨: ${Math.ceil(need/50)*50}W以上。</div>`;}
   const tiers=['low','mid','high','ultra'];
