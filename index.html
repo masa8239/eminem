@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BENCHCORE — PCパーツ性能比較</title>
+<meta name="description" content="CPU・GPU・メモリのベンチマークスコア、コスパ、消費電力を一覧比較。ボトルネック診断・用途別おすすめ構成・PC構成ビルダー付きのPCパーツ性能データベース。">
+<meta property="og:title" content="BENCHCORE — PCパーツ性能比較">
+<meta property="og:description" content="CPU・GPU・メモリのベンチマークを数値で比較。ボトルネック診断・PC構成ビルダー付き。">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#080b10">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -649,7 +655,7 @@ input[type=range]::-webkit-slider-thumb {
 <div id="builder" class="page">
   <div class="builder-layout">
     <div class="builder-left">
-      <div class="builder-hero"><h2>PC構成<span>ビルダー</span></h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます</p></div>
+      <div class="builder-hero"><h2>PC構成<span>ビルダー</span></h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">🔗 この構成をシェア</button></div>
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">
@@ -1245,46 +1251,51 @@ function parseRamRow(row) {
   return {name,type,speed,cl,capacity,kit,price,badge,badgeClass};
 }
 
-async function loadSheetData() {
+// スプレッドシート取得（10分間 sessionStorage キャッシュ · 8秒タイムアウト）
+async function fetchSheet(url, cacheKey) {
   try {
-    const res = await fetch(CPU_GAS_URL, {signal:AbortSignal.timeout(8000)});
-    if (!res.ok) throw new Error('HTTP '+res.status);
-    const rows = await res.json();
-    const parsed = rows.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0);
+    const c = JSON.parse(sessionStorage.getItem(cacheKey)||'null');
+    if (c && Date.now()-c.t < 600000 && Array.isArray(c.rows)) return c.rows;
+  } catch(e) {}
+  const res = await fetch(url, {signal:AbortSignal.timeout(8000)});
+  if (!res.ok) throw new Error('HTTP '+res.status);
+  const rows = await res.json();
+  if (!Array.isArray(rows)) throw new Error('bad payload');
+  try { sessionStorage.setItem(cacheKey, JSON.stringify({t:Date.now(), rows})); } catch(e) {}
+  return rows;
+}
+async function loadSheetData() {
+  // 3シート並列取得（直列だと最悪24秒 → 並列で最大8秒）
+  const [cpuR, gpuR, ramR] = await Promise.allSettled([
+    fetchSheet(CPU_GAS_URL, 'bc_cpu_v1'),
+    fetchSheet(GPU_GAS_URL, 'bc_gpu_v1'),
+    fetchSheet(RAM_GAS_URL, 'bc_ram_v1'),
+  ]);
+  const LOADED='// Googleスプレッドシートから読み込み済み', BUILTIN='// 内蔵データ使用中 (2025)';
+  if (cpuR.status==='fulfilled') {
+    const parsed = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
       cpuData = normalizeBadges(parsed.sort((a,b)=>b.score-a.score),'cpu');
       maxCpuScore = Math.max(...cpuData.map(d=>d.score));
-      document.getElementById('cpu-rank-updated').textContent = '// Googleスプレッドシートから読み込み済み';
-    }
-  } catch(e) {
-    document.getElementById('cpu-rank-updated').textContent = '// 内蔵データ使用中 (2025)';
-  }
-  try {
-    const res = await fetch(GPU_GAS_URL, {signal:AbortSignal.timeout(8000)});
-    if (!res.ok) throw new Error('HTTP '+res.status);
-    const rows = await res.json();
-    const parsed = rows.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0);
+      document.getElementById('cpu-rank-updated').textContent = LOADED;
+    } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
+  } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
+  if (gpuR.status==='fulfilled') {
+    const parsed = gpuR.value.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
       gpuData = normalizeBadges(parsed.sort((a,b)=>b.score-a.score),'gpu');
       maxGpuScore = Math.max(...gpuData.map(d=>d.score));
-      document.getElementById('gpu-rank-updated').textContent = '// Googleスプレッドシートから読み込み済み';
-    }
-  } catch(e) {
-    document.getElementById('gpu-rank-updated').textContent = '// 内蔵データ使用中 (2025)';
-  }
-  try {
-    const res = await fetch(RAM_GAS_URL, {signal:AbortSignal.timeout(8000)});
-    if (!res.ok) throw new Error('HTTP '+res.status);
-    const rows = await res.json();
-    const parsed = rows.map(parseRamRow).filter(r=>r&&r.name&&r.speed>0);
+      document.getElementById('gpu-rank-updated').textContent = LOADED;
+    } else document.getElementById('gpu-rank-updated').textContent = BUILTIN;
+  } else document.getElementById('gpu-rank-updated').textContent = BUILTIN;
+  if (ramR.status==='fulfilled') {
+    const parsed = ramR.value.map(parseRamRow).filter(r=>r&&r.name&&r.speed>0);
     if (parsed.length > 0) {
       ramData = parsed.sort((a,b)=>b.speed-a.speed);
       maxRamSpeed = Math.max(...ramData.map(d=>d.speed));
-      document.getElementById('ram-rank-updated').textContent = '// Googleスプレッドシートから読み込み済み';
-    }
-  } catch(e) {
-    document.getElementById('ram-rank-updated').textContent = '// 内蔵データ使用中 (2025)';
-  }
+      document.getElementById('ram-rank-updated').textContent = LOADED;
+    } else document.getElementById('ram-rank-updated').textContent = BUILTIN;
+  } else document.getElementById('ram-rank-updated').textContent = BUILTIN;
   renderCpuTable(); renderGpuTable(); renderRamTable();
   populateCpuSelects(); populateGpuSelects();
   updateHomeRanking();
@@ -1363,6 +1374,10 @@ function shareUrl(page) {
     const gi = document.getElementById('bn-gpu-sel')?.value;
     if (ci) params.set('cpu', ci);
     if (gi) params.set('gpu', gi);
+  } else if (page==='builder') {
+    const ids = Object.values(bSelected).map(v=>v.id);
+    if (ids.length) params.set('b', ids.join('-'));
+    params.set('os', document.getElementById('b-os-check')?.checked ? '1' : '0');
   }
   const url = location.href.split('?')[0] + '?' + params.toString();
   navigator.clipboard?.writeText(url).catch(()=>{});
@@ -1379,7 +1394,7 @@ function restoreFromUrl() {
   const p = new URLSearchParams(location.search);
   const page = p.get('page');
   if (!page) return;
-  if (PAGE_MAP[page]!==undefined) goPage(page);
+  if (PAGE_MAP[page]!==undefined) goPage(page, true);
   if (page==='cpu-rank') {
     const f=p.get('filter'); if(f){cpuFilter=f; document.querySelectorAll('#cpu-rank .filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.includes(f==='all'?'全て':f)));}
     const s=p.get('sort'); if(s){cpuSortKey=s; cpuSortDir=parseInt(p.get('dir')||'-1');}
@@ -1402,6 +1417,12 @@ function restoreFromUrl() {
       if(gi){const s=document.getElementById('bn-gpu-sel');if(s){s.value=gi;}}
       calcBottleneck();
     }, 300);
+  } else if (page==='builder') {
+    const b=p.get('b');
+    const os=p.get('os');
+    if(os!==null){const c=document.getElementById('b-os-check');if(c)c.checked=os==='1';}
+    if(b) bapplyIds(b.split('-'));
+    else bupdateCart();
   }
 }
 
@@ -1610,37 +1631,65 @@ function renderPresets() {
   }).join('');
 }
 
-function loadPresetToBuilder(presetId) {
-  const preset = PRESET_BUILDS.find(p=>p.id===presetId);
-  if (!preset) return;
+// 指定itemを選択状態にする（状態+DOM更新）
+function bmark(cat, item) {
+  bSelected[cat] = item;
+  document.getElementById('bitem-'+item.id)?.classList.add('bselected');
+  document.getElementById('bsec-'+cat)?.classList.add('has-selection');
+  const si = document.getElementById('bsel-info-'+cat);
+  if (si) { si.style.display='block'; document.getElementById('bsel-name-'+cat).textContent=item.name; document.getElementById('bsel-price-'+cat).textContent='¥'+item.price.toLocaleString(); }
+}
+// パーツID配列から構成を復元（プリセット・シェアURL・自動保存の共通処理）
+function bapplyIds(ids) {
   bclearAll();
-  // bpartのIDをそれぞれマップ
-  Object.entries(preset.builderIds).forEach(([cat,itemId])=>{
-    const bcat = cat==='ram'?'ram':cat==='storage'?'storage':cat==='case'?'case':cat;
-    const found = BPARTS[bcat]?.items.find(i=>i.id===itemId);
-    if (found) {
-      bSelected[bcat] = found;
-      document.getElementById('bitem-'+itemId)?.classList.add('bselected');
-      document.getElementById('bsec-'+bcat)?.classList.add('has-selection');
-      const si = document.getElementById('bsel-info-'+bcat);
-      if (si) { si.style.display='block'; document.getElementById('bsel-name-'+bcat).textContent=found.name; document.getElementById('bsel-price-'+bcat).textContent='¥'+found.price.toLocaleString(); }
+  ids.forEach(id => {
+    for (const [cat, data] of Object.entries(BPARTS)) {
+      const item = data.items.find(i=>i.id===id);
+      if (item) { bmark(cat, item); break; }
     }
   });
   bupdateCart();
+}
+function loadPresetToBuilder(presetId) {
+  const preset = PRESET_BUILDS.find(p=>p.id===presetId);
+  if (!preset) return;
+  bapplyIds(Object.values(preset.builderIds));
   goPage('builder');
   showToast(`「${preset.title}」をビルダーに読み込みました`);
 }
 
 // ===== NAV =====
 const PAGE_MAP = {home:0,'cpu-rank':1,'gpu-rank':2,'ram-rank':3,'cpu-compare':4,'gpu-compare':5,bottleneck:6,presets:7,builder:8};
-function goPage(page) { showPage(page, document.querySelectorAll('.nav-link')[PAGE_MAP[page]]); }
-function showPage(id,clickedEl) {
+const PAGE_TITLES = {home:'BENCHCORE — PCパーツ性能比較','cpu-rank':'CPUランキング — BENCHCORE','gpu-rank':'GPUランキング — BENCHCORE','ram-rank':'RAMランキング — BENCHCORE','cpu-compare':'CPU比較 — BENCHCORE','gpu-compare':'GPU比較 — BENCHCORE',bottleneck:'ボトルネック計算機 — BENCHCORE',presets:'おすすめ構成 — BENCHCORE',builder:'PC構成ビルダー — BENCHCORE'};
+function goPage(page, skipHistory) { showPage(page, document.querySelectorAll('.nav-link')[PAGE_MAP[page]], skipHistory); }
+function showPage(id,clickedEl,skipHistory) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
   if(clickedEl) clickedEl.classList.add('active');
+  document.title = PAGE_TITLES[id] || 'BENCHCORE';
+  // ブラウザの戻る/進むに対応
+  if(!skipHistory && history.state?.page !== id) {
+    try { history.pushState({page:id}, '', id==='home' ? location.pathname : '?page='+id); } catch(e) {}
+  }
   window.scrollTo(0,0);
 }
+window.addEventListener('popstate', e => {
+  const pg = (e.state && e.state.page) || new URLSearchParams(location.search).get('page') || 'home';
+  if (PAGE_MAP[pg] !== undefined) goPage(pg, true);
+});
+
+// ===== AMAZON検索（全テーブルの購入ボタンをイベント委譲で処理） =====
+function amz(q) { window.open('https://www.amazon.co.jp/s?k='+encodeURIComponent(q), '_blank', 'noopener'); }
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.affiliate-btn');
+  if (!btn) return;
+  const row = btn.closest('tr');
+  const nameEl = row?.querySelector('.chip-name');
+  if (!nameEl) return;
+  const name = (nameEl.childNodes[0]?.textContent || nameEl.textContent || '').trim();
+  if (name) amz(name);
+});
 function switchTab(el,targetId) {
   el.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
@@ -1783,7 +1832,9 @@ function bupdateCart(){
   const osAmt=document.getElementById('b-os-check')?.checked?B_OS:0;
   document.getElementById('bos-val').textContent=osAmt?'¥'+B_OS.toLocaleString():'¥0';
   document.getElementById('bgrand-total').textContent='¥'+(partsTotal+osAmt).toLocaleString();
-  document.getElementById('bcart-count').textContent=`${items.length} / 8 パーツ選択済み`;
+  document.getElementById('bcart-count').textContent=`${items.length} / ${Object.keys(BPARTS).length} パーツ選択済み`;
+  // 構成を自動保存（リロードしても消えない）
+  try { localStorage.setItem('benchcore_build', JSON.stringify({ids:items.map(([,v])=>v.id), os:!!document.getElementById('b-os-check')?.checked})); } catch(e) {}
   const listEl=document.getElementById('bcart-list');
   listEl.innerHTML=items.length?items.map(([cat,item])=>`<div class="bcart-item"><div class="bcart-item-cat">${BPARTS[cat].icon}</div><div class="bcart-item-name">${item.name}</div><div class="bcart-item-price">¥${item.price.toLocaleString()}</div><div class="bcart-item-del" onclick="bremove('${cat}','${item.id}')">✕</div></div>`).join(''):'<div class="bcart-empty">← パーツを選んでください</div>';
   if(bSelected.cpu&&bSelected.gpu)banalyze();
@@ -1832,6 +1883,15 @@ renderPresets();
 renderFavBar('cpu');
 renderFavBar('gpu');
 renderFavBar('ram');
+// 保存済み構成を復元（シェアURLで構成指定がある場合はそちらを優先）
+try {
+  const saved = JSON.parse(localStorage.getItem('benchcore_build')||'null');
+  if (saved && Array.isArray(saved.ids) && saved.ids.length && !new URLSearchParams(location.search).get('b')) {
+    const c = document.getElementById('b-os-check');
+    if (c && typeof saved.os === 'boolean') c.checked = saved.os;
+    bapplyIds(saved.ids);
+  }
+} catch(e) {}
 loadSheetData().then(()=>{
   populateBnSelects();
   restoreFromUrl();
