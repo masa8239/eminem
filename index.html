@@ -381,15 +381,15 @@ input[type=range]::-webkit-slider-thumb {
   <div class="hero">
     <div class="hero-eyebrow">// BENCHMARK DATABASE 2025</div>
     <h1>PCパーツの<em>性能</em>を<br>数値で比べる</h1>
-    <p>CPU・GPUのベンチマークスコア、コスパ、消費電力を一覧で比較。<br>最新データで最適なパーツ選びをサポートします。</p>
+    <p>CPU・GPU・メモリのベンチマークスコア、コスパ、消費電力を一覧で比較。<br>最新データで最適なパーツ選びをサポートします。</p>
     <div class="hero-stats">
       <div><div class="hero-stat-val"><span id="stat-cpu-count">50</span></div><div class="hero-stat-label">CPU登録数</div></div>
       <div><div class="hero-stat-val"><span id="stat-gpu-count">45</span></div><div class="hero-stat-label">GPU登録数</div></div>
-      <div><div class="hero-stat-val"><span>12K</span></div><div class="hero-stat-label">月間閲覧数</div></div>
+      <div><div class="hero-stat-val"><span id="stat-ram-count">23</span></div><div class="hero-stat-label">RAM登録数</div></div>
     </div>
     <div class="hero-cta">
-      <button class="btn btn-primary" onclick="showPage('cpu-rank',document.querySelectorAll('.nav-link')[1])">CPU ランキングを見る</button>
-      <button class="btn btn-secondary" onclick="showPage('gpu-rank',document.querySelectorAll('.nav-link')[2])">GPU ランキングを見る</button>
+      <button class="btn btn-primary" onclick="goPage('cpu-rank')">CPU ランキングを見る</button>
+      <button class="btn btn-secondary" onclick="goPage('gpu-rank')">GPU ランキングを見る</button>
     </div>
   </div>
   <div class="section">
@@ -408,9 +408,10 @@ input[type=range]::-webkit-slider-thumb {
   <div class="section">
     <div class="section-header"><div class="section-title">ページ一覧</div></div>
     <div class="cards">
-      <div class="card card-accent" onclick="showPage('cpu-rank',document.querySelectorAll('.nav-link')[1])"><div class="card-label">CPU</div><div class="card-title">CPU 性能ランキング</div><div class="card-desc">PassMark スコアによる最新CPUランキング。コア数・クロック・TDP・価格も一覧表示。</div><div class="card-arrow">↗</div></div>
-      <div class="card card-accent-orange" onclick="showPage('gpu-rank',document.querySelectorAll('.nav-link')[2])"><div class="card-label">GPU</div><div class="card-title">GPU 性能ランキング</div><div class="card-desc">3DMark Time Spy による総合グラフィック性能ランキング。VRAM・帯域幅・消費電力も確認できます。</div><div class="card-arrow">↗</div></div>
-      <div class="card card-accent-green" onclick="showPage('builder',document.querySelectorAll('.nav-link')[8])"><div class="card-label">ビルダー</div><div class="card-title">PC構成ビルダー</div><div class="card-desc">パーツを選んで合計金額と遊べるゲームを自動診断。ソケット互換チェック付き。</div><div class="card-arrow">↗</div></div>
+      <div class="card card-accent" onclick="goPage('cpu-rank')"><div class="card-label">CPU</div><div class="card-title">CPU 性能ランキング</div><div class="card-desc">PassMark スコアによる最新CPUランキング。コア数・クロック・TDP・価格も一覧表示。</div><div class="card-arrow">↗</div></div>
+      <div class="card card-accent-orange" onclick="goPage('gpu-rank')"><div class="card-label">GPU</div><div class="card-title">GPU 性能ランキング</div><div class="card-desc">3DMark Time Spy による総合グラフィック性能ランキング。VRAM・帯域幅・消費電力も確認できます。</div><div class="card-arrow">↗</div></div>
+      <div class="card card-accent" onclick="goPage('ram-rank')" style="border-left-color:var(--accent4)"><div class="card-label">RAM</div><div class="card-title">RAM 性能ランキング</div><div class="card-desc">DDR4・DDR5メモリの速度・レイテンシ・容量あたり価格を比較。用途に合ったメモリ選びに。</div><div class="card-arrow">↗</div></div>
+      <div class="card card-accent-green" onclick="goPage('builder')"><div class="card-label">ビルダー</div><div class="card-title">PC構成ビルダー</div><div class="card-desc">パーツを選んで合計金額と遊べるゲームを自動診断。ソケット互換チェック付き。</div><div class="card-arrow">↗</div></div>
     </div>
   </div>
   <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">データはGoogleスプレッドシートで管理 · 定期更新 · アフィリエイト収益で運営</div></div>
@@ -460,14 +461,14 @@ input[type=range]::-webkit-slider-thumb {
       <div id="cpu-multi" class="tab-content active">
         <div class="notice">PassMark マルチスレッドスコア。数値が高いほど高性能です。</div>
         <table class="rank-table">
-          <thead><tr><th>順位</th><th>CPU名</th><th>スコア (Multi)</th><th>価格</th><th>コア / スレッド</th><th>クロック Base→Max</th><th>L3キャッシュ</th><th>TDP</th><th>コスパ</th><th>評価</th><th>購入</th></tr></thead>
+          <thead><tr><th>順位</th><th>CPU名</th><th>スコア (Multi)</th><th>価格</th><th>コア / スレッド</th><th>クロック Base→Max</th><th>L3キャッシュ</th><th>TDP</th><th>コスパ</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
           <tbody id="cpu-table-body"><tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent2);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
         </table>
       </div>
       <div id="cpu-single" class="tab-content">
         <div class="notice">PassMark シングルスレッドスコア。ゲーム性能に直結する指標です。</div>
         <table class="rank-table">
-          <thead><tr><th>順位</th><th>CPU名</th><th>スコア (Single)</th><th>価格</th><th>コア / スレッド</th><th>Maxクロック</th><th>TDP</th><th>評価</th><th>購入</th></tr></thead>
+          <thead><tr><th>順位</th><th>CPU名</th><th>スコア (Single)</th><th>価格</th><th>コア / スレッド</th><th>Maxクロック</th><th>TDP</th><th>コスパ</th><th>評価</th><th>購入</th></tr></thead>
           <tbody id="cpu-single-body"><tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
         </table>
       </div>
@@ -521,7 +522,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="table-wrap">
       <div class="notice">3DMark Time Spy スコア。数値が高いほどゲーム性能が高いです。</div>
       <table class="rank-table">
-        <thead><tr><th>順位</th><th>GPU名</th><th>スコア (Time Spy)</th><th>価格</th><th>VRAM</th><th>メモリ帯域幅</th><th>TDP</th><th>レイトレ</th><th>アップスケーリング</th><th>コスパ</th><th>評価</th><th>購入</th></tr></thead>
+        <thead><tr><th>順位</th><th>GPU名</th><th>スコア (Time Spy)</th><th>価格</th><th>VRAM</th><th>メモリ帯域幅</th><th>TDP</th><th>レイトレ</th><th>アップスケーリング</th><th>コスパ</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
         <tbody id="gpu-table-body"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
       </table>
     </div>
@@ -562,11 +563,16 @@ input[type=range]::-webkit-slider-thumb {
       <button class="sort-btn" id="ram-sort-price" onclick="sortRam('price',this)">💴 値段 <span class="sort-arrow" id="ram-arrow-price">↓</span></button>
       <button class="sort-btn" id="ram-sort-cospa" onclick="sortRam('cospa',this)">⭐ コスパ/GB <span class="sort-arrow" id="ram-arrow-cospa">↓</span></button>
     </div>
+    <div class="fav-bar" id="ram-fav-bar" style="display:none">
+      <span class="fav-bar-label">お気に入り：</span>
+      <div id="ram-fav-chips" style="display:flex;gap:6px;flex-wrap:wrap;flex:1"></div>
+      <button class="fav-clear" onclick="clearFavs('ram')">クリア</button>
+    </div>
     <div class="table-wrap">
       <div class="notice">帯域幅 = 速度 × 8バイト / 1000（理論値・シングルチャネル）。デュアルチャネル構成では実効帯域幅は2倍になります。</div>
       <table class="rank-table">
-        <thead><tr><th>順位</th><th>製品名</th><th>タイプ</th><th>速度</th><th>CL</th><th>容量 / 構成</th><th>帯域幅(理論)</th><th>価格</th><th>コスパ/GB</th><th>評価</th><th>購入</th></tr></thead>
-        <tbody id="ram-table-body"><tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent2);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
+        <thead><tr><th>順位</th><th>製品名</th><th>タイプ</th><th>速度</th><th>CL</th><th>容量 / 構成</th><th>帯域幅(理論)</th><th>価格</th><th>コスパ/GB</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
+        <tbody id="ram-table-body"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent2);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
       </table>
     </div>
   </div>
@@ -925,7 +931,7 @@ function renderCpuTable() {
 // ===== RENDER GPU TABLE =====
 function renderGpuTable() {
   const searchVal = (document.getElementById('gpu-search')?.value||'').toLowerCase();
-  const budgetMax = parseInt(document.getElementById('gpu-budget')?.value||560000);
+  const budgetMax = parseInt(document.getElementById('gpu-budget')?.value||650000);
   const base0 = gpuFilter==='all' ? gpuData : gpuData.filter(g=>g.maker===gpuFilter);
   const base = base0.filter(g => {
     if (searchVal && !g.name.toLowerCase().includes(searchVal)) return false;
@@ -976,10 +982,11 @@ function renderRamTable() {
   const rc = document.getElementById('ram-result-count');
   if(rc) rc.textContent = `${filtered.length} 件`;
   const tbody = document.getElementById('ram-table-body');
-  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3)">条件に一致するメモリがありません</td></tr>`;return;}
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)">条件に一致するメモリがありません</td></tr>`;return;}
   tbody.innerHTML = filtered.map((r,i) => {
     const bw = (r.speed*8/1000).toFixed(1)+' GB/s';
     const cospaVal = r.price>0&&r.capacity>0?Math.round(r.price/r.capacity):'—';
+    const isFav = ramFavs.has(r.name);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
       <td><div class="chip-name">${r.name}${r.badge?` <span class="badge ${r.badgeClass}">${r.badge}</span>`:''}</div></td>
@@ -991,6 +998,7 @@ function renderRamTable() {
       <td class="price-cell" style="${ramSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(r.price)}</td>
       <td class="price-cell" style="${ramSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">¥${cospaVal}/GB</td>
       <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('ram','${r.name.replace(/'/g,"\\'")}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
       <td><button class="affiliate-btn">🛒 Amazon</button></td>
     </tr>`;}).join('');
 }
@@ -1038,7 +1046,7 @@ function applyCpuSort(arr) {
     if (cpuSortKey === 'score') { va=a.score; vb=b.score; }
     else if (cpuSortKey === 'price') { va=a.price||9999999; vb=b.price||9999999; }
     else { va=a.price>0?a.score/a.price:0; vb=b.price>0?b.score/b.price:0; }
-    return cpuSortDir * (vb - va);
+    return cpuSortDir * (va - vb);
   });
 }
 function applyGpuSort(arr) {
@@ -1047,7 +1055,7 @@ function applyGpuSort(arr) {
     if (gpuSortKey === 'score') { va=a.score; vb=b.score; }
     else if (gpuSortKey === 'price') { va=a.price||9999999; vb=b.price||9999999; }
     else { va=a.price>0?a.score/a.price:0; vb=b.price>0?b.score/b.price:0; }
-    return gpuSortDir * (vb - va);
+    return gpuSortDir * (va - vb);
   });
 }
 
@@ -1064,7 +1072,7 @@ function sortRam(key, el) {
 function applyRamSort(arr) {
   return [...arr].sort((a,b) => {
     let va,vb;
-    if(ramSortKey==='speed'){return ramSortDir*(b.speed-a.speed);}
+    if(ramSortKey==='speed'){return ramSortDir*(a.speed-b.speed);}
     else if(ramSortKey==='price'){va=a.price||9999999;vb=b.price||9999999;return ramSortDir*(va-vb);}
     else{va=a.price>0&&a.capacity>0?a.price/a.capacity:9999999;vb=b.price>0&&b.capacity>0?b.price/b.capacity:9999999;return ramSortDir*(va-vb);}
   });
@@ -1157,7 +1165,7 @@ function updateHomeRanking() {
   const cpuList = document.getElementById('home-cpu-ranking');
   if (cpuList && cpuData.length) {
     cpuList.innerHTML = cpuData.slice(0,5).map((c,i)=>`
-      <div class="mini-rank-item" onclick="showPage('cpu-rank',document.querySelectorAll('.nav-link')[1])">
+      <div class="mini-rank-item" onclick="goPage('cpu-rank')">
         <div class="mini-rank-pos ${i===0?'pos-1':i===1?'pos-2':i===2?'pos-3':''}">${i+1}</div>
         <div class="mini-rank-name">${c.name}</div>
         <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(c.score/maxCpuScore*100)}%;background:linear-gradient(90deg,#58a6ff,#d2a8ff)"></div></div>
@@ -1167,7 +1175,7 @@ function updateHomeRanking() {
   const gpuList = document.getElementById('home-gpu-ranking');
   if (gpuList && gpuData.length) {
     gpuList.innerHTML = gpuData.slice(0,5).map((g,i)=>`
-      <div class="mini-rank-item" onclick="showPage('gpu-rank',document.querySelectorAll('.nav-link')[2])">
+      <div class="mini-rank-item" onclick="goPage('gpu-rank')">
         <div class="mini-rank-pos ${i===0?'pos-1':i===1?'pos-2':i===2?'pos-3':''}">${i+1}</div>
         <div class="mini-rank-name">${g.name}</div>
         <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(g.score/maxGpuScore*100)}%;background:linear-gradient(90deg,#f78166,#ffd700)"></div></div>
@@ -1176,8 +1184,10 @@ function updateHomeRanking() {
   }
   const ce = document.getElementById('stat-cpu-count');
   const ge = document.getElementById('stat-gpu-count');
+  const re = document.getElementById('stat-ram-count');
   if (ce) ce.textContent = cpuData.length;
   if (ge) ge.textContent = gpuData.length;
+  if (re) re.textContent = ramData.length;
 }
 
 // ===== LOAD FROM GOOGLE APPS SCRIPT =====
@@ -1283,16 +1293,18 @@ async function loadSheetData() {
 // ===== FAVORITES =====
 let cpuFavs = new Set(JSON.parse(localStorage.getItem('benchcore_cpu_favs')||'[]'));
 let gpuFavs = new Set(JSON.parse(localStorage.getItem('benchcore_gpu_favs')||'[]'));
+let ramFavs = new Set(JSON.parse(localStorage.getItem('benchcore_ram_favs')||'[]'));
+function favSet(type) { return type==='cpu'?cpuFavs:type==='gpu'?gpuFavs:ramFavs; }
+function favRerender(type) { (type==='cpu'?renderCpuTable:type==='gpu'?renderGpuTable:renderRamTable)(); renderFavBar(type); }
 
 function toggleFav(type, name) {
-  const favs = type==='cpu' ? cpuFavs : gpuFavs;
+  const favs = favSet(type);
   if (favs.has(name)) favs.delete(name); else favs.add(name);
   localStorage.setItem(`benchcore_${type}_favs`, JSON.stringify([...favs]));
-  if (type==='cpu') { renderCpuTable(); renderFavBar('cpu'); }
-  else { renderGpuTable(); renderFavBar('gpu'); }
+  favRerender(type);
 }
 function renderFavBar(type) {
-  const favs = type==='cpu' ? cpuFavs : gpuFavs;
+  const favs = favSet(type);
   const bar = document.getElementById(type+'-fav-bar');
   const chips = document.getElementById(type+'-fav-chips');
   if (!bar||!chips) return;
@@ -1305,8 +1317,9 @@ function renderFavBar(type) {
     </span>`).join('');
 }
 function clearFavs(type) {
-  if (type==='cpu') { cpuFavs.clear(); localStorage.removeItem('benchcore_cpu_favs'); renderCpuTable(); renderFavBar('cpu'); }
-  else { gpuFavs.clear(); localStorage.removeItem('benchcore_gpu_favs'); renderGpuTable(); renderFavBar('gpu'); }
+  favSet(type).clear();
+  localStorage.removeItem(`benchcore_${type}_favs`);
+  favRerender(type);
 }
 
 // ===== BUDGET LABELS =====
@@ -1339,6 +1352,12 @@ function shareUrl(page) {
     params.set('dir', gpuSortDir);
     const q = document.getElementById('gpu-search')?.value;
     if (q) params.set('q', q);
+  } else if (page==='ram-rank') {
+    params.set('filter', ramFilter);
+    params.set('sort', ramSortKey);
+    params.set('dir', ramSortDir);
+    const q = document.getElementById('ram-search')?.value;
+    if (q) params.set('q', q);
   } else if (page==='bottleneck') {
     const ci = document.getElementById('bn-cpu-sel')?.value;
     const gi = document.getElementById('bn-gpu-sel')?.value;
@@ -1360,19 +1379,22 @@ function restoreFromUrl() {
   const p = new URLSearchParams(location.search);
   const page = p.get('page');
   if (!page) return;
-  const navLinks = document.querySelectorAll('.nav-link');
-  const pageMap = {home:0,'cpu-rank':1,'gpu-rank':2,'ram-rank':3,'cpu-compare':4,'gpu-compare':5,bottleneck:6,presets:7,builder:8};
-  if (pageMap[page]!==undefined) showPage(page, navLinks[pageMap[page]]);
+  if (PAGE_MAP[page]!==undefined) goPage(page);
   if (page==='cpu-rank') {
     const f=p.get('filter'); if(f){cpuFilter=f; document.querySelectorAll('#cpu-rank .filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.includes(f==='all'?'全て':f)));}
     const s=p.get('sort'); if(s){cpuSortKey=s; cpuSortDir=parseInt(p.get('dir')||'-1');}
     const q=p.get('q'); if(q&&document.getElementById('cpu-search'))document.getElementById('cpu-search').value=q;
     renderCpuTable();
-  } else if (page==='gpu') {
-    const f=p.get('filter'); if(f)gpuFilter=f;
+  } else if (page==='gpu-rank') {
+    const f=p.get('filter'); if(f){gpuFilter=f; document.querySelectorAll('#gpu-rank .filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.includes(f==='all'?'全て':f)));}
     const s=p.get('sort'); if(s){gpuSortKey=s; gpuSortDir=parseInt(p.get('dir')||'-1');}
     const q=p.get('q'); if(q&&document.getElementById('gpu-search'))document.getElementById('gpu-search').value=q;
     renderGpuTable();
+  } else if (page==='ram-rank') {
+    const f=p.get('filter'); if(f){ramFilter=f; document.querySelectorAll('#ram-rank .filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.includes(f==='all'?'全て':f)));}
+    const s=p.get('sort'); if(s){ramSortKey=s; ramSortDir=parseInt(p.get('dir')||'-1');}
+    const q=p.get('q'); if(q&&document.getElementById('ram-search'))document.getElementById('ram-search').value=q;
+    renderRamTable();
   } else if (page==='bottleneck') {
     setTimeout(()=>{
       const ci=p.get('cpu'); const gi=p.get('gpu');
@@ -1391,9 +1413,9 @@ function populateBnSelects() {
   const gs = document.getElementById('bn-gpu-sel');
   if(cs) cs.innerHTML = cpuOpts;
   if(gs) gs.innerHTML = gpuOpts;
-  // デフォルトをよく使うものに
-  if(cs) cs.value = cpuData.findIndex(c=>c.name.includes('7800X3D')||c.name.includes('i7-14700'));
-  if(gs) gs.value = gpuData.findIndex(g=>g.name.includes('4070 S')||g.name.includes('4070 T'));
+  // デフォルトをよく使うものに（見つからなければ先頭）
+  if(cs) cs.value = Math.max(0, cpuData.findIndex(c=>c.name.includes('7800X3D')||c.name.includes('i7-14700')));
+  if(gs) gs.value = Math.max(0, gpuData.findIndex(g=>g.name.includes('4070 S')||g.name.includes('4070 T')));
   calcBottleneck();
 }
 function calcBottleneck() {
@@ -1476,7 +1498,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Seasonic Focus GX-750',price:14800},
       {cat:'Case',name:'NZXT H7 Flow',       price:16800},
     ],
-    builderIds:{cpu:'bc9',gpu:'bg7',mb:'bm2',ram:'br2',storage:'bs3',psu:'bp4',case:'bk3'}
+    builderIds:{cpu:'bc9',cpucooler:'bco2',gpu:'bg7',mb:'bm2',ram:'br2',storage:'bs3',psu:'bp4',case:'bk3'}
   },
   {
     id:'aaa4k', icon:'🔥', color:'var(--gold)', title:'4K AAA最高画質',
@@ -1492,7 +1514,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Seasonic Prime TX-1000W',price:39800},
       {cat:'Case',name:'Fractal Design Torrent',price:24800},
     ],
-    builderIds:{cpu:'bc1',gpu:'bg1',mb:'bm1',ram:'br1',storage:'bs1',psu:'bp1',case:'bk1'}
+    builderIds:{cpu:'bc1',cpucooler:'bco7',gpu:'bg1',mb:'bm1',ram:'br1',storage:'bs1',psu:'bp1',case:'bk1'}
   },
   {
     id:'video', icon:'🎬', color:'var(--accent4)', title:'動画編集・配信',
@@ -1508,7 +1530,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Corsair RM1000x',     price:24800},
       {cat:'Case',name:'Lian Li PC-O11 Dynamic',price:18800},
     ],
-    builderIds:{cpu:'bc3',gpu:'bg5',mb:'bm4',ram:'br1',storage:'bs2',psu:'bp2',case:'bk2'}
+    builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bg5',mb:'bm4',ram:'br1',storage:'bs2',psu:'bp2',case:'bk2'}
   },
   {
     id:'cospa', icon:'💡', color:'var(--accent3)', title:'コスパ最強バランス',
@@ -1524,7 +1546,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Seasonic Focus GX-750',price:14800},
       {cat:'Case',name:'Cooler Master HAF 500',price:12800},
     ],
-    builderIds:{cpu:'bc9',gpu:'bg8',mb:'bm3',ram:'br4',storage:'bs3',psu:'bp4',case:'bk4'}
+    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bg8',mb:'bm3',ram:'br4',storage:'bs3',psu:'bp4',case:'bk4'}
   },
   {
     id:'streaming', icon:'📡', color:'var(--accent)', title:'ゲーム配信・マルチタスク',
@@ -1540,7 +1562,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'be quiet! Dark Power 850W',price:22800},
       {cat:'Case',name:'Fractal Design Torrent',price:24800},
     ],
-    builderIds:{cpu:'bc4',gpu:'bg4',mb:'bm2',ram:'br2',storage:'bs2',psu:'bp3',case:'bk1'}
+    builderIds:{cpu:'bc4',cpucooler:'bco8',gpu:'bg4',mb:'bm2',ram:'br2',storage:'bs2',psu:'bp3',case:'bk1'}
   },
   {
     id:'entry', icon:'🌱', color:'var(--text2)', title:'エントリー・ライトゲーム',
@@ -1556,7 +1578,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Corsair CX650M',      price:8800},
       {cat:'Case',name:'Cooler Master HAF 500',price:12800},
     ],
-    builderIds:{cpu:'bc9',gpu:'bgc',mb:'bm3',ram:'br4',storage:'bs4',psu:'bp5',case:'bk4'}
+    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bgc',mb:'bm3',ram:'br4',storage:'bs4',psu:'bp5',case:'bk4'}
   },
 ];
 
@@ -1605,11 +1627,13 @@ function loadPresetToBuilder(presetId) {
     }
   });
   bupdateCart();
-  showPage('builder', document.querySelectorAll('.nav-link')[8]);
+  goPage('builder');
   showToast(`「${preset.title}」をビルダーに読み込みました`);
 }
 
 // ===== NAV =====
+const PAGE_MAP = {home:0,'cpu-rank':1,'gpu-rank':2,'ram-rank':3,'cpu-compare':4,'gpu-compare':5,bottleneck:6,presets:7,builder:8};
+function goPage(page) { showPage(page, document.querySelectorAll('.nav-link')[PAGE_MAP[page]]); }
 function showPage(id,clickedEl) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1799,6 +1823,7 @@ function banalyze(){
 // ===== INIT =====
 renderCpuTable();
 renderGpuTable();
+renderRamTable();
 populateCpuSelects();
 populateGpuSelects();
 updateHomeRanking();
@@ -1806,6 +1831,7 @@ brenderParts();
 renderPresets();
 renderFavBar('cpu');
 renderFavBar('gpu');
+renderFavBar('ram');
 loadSheetData().then(()=>{
   populateBnSelects();
   restoreFromUrl();
