@@ -94,6 +94,10 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .score-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg,var(--accent2),var(--accent4)); }
 .score-bar.gpu { background: linear-gradient(90deg,var(--accent),#ff6b6b); }
 .price-cell { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text); white-space: nowrap; }
+.price-meta { margin-top: 4px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; font-size: 9px; line-height: 1.45; white-space: normal; }
+.price-meta a { color: var(--accent2); text-decoration: none; }
+.price-meta a:hover { text-decoration: underline; }
+.price-error { color: var(--accent); }
 .badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
 .badge-green { background: rgba(63,185,80,0.15); color: var(--accent3); border: 1px solid rgba(63,185,80,0.3); }
 .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent2); border: 1px solid rgba(88,166,255,0.3); }
@@ -836,6 +840,35 @@ let maxRamSpeed = Math.max(...ramData.map(d => d.speed));
 
 // ===== HELPERS =====
 function fmtPrice(p) { return p > 0 ? `¥${p.toLocaleString()}` : '—'; }
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+function safeRakutenUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' ? url.href : '';
+  } catch (error) { return ''; }
+}
+function renderPrice(item) {
+  const price = `<div>${fmtPrice(item.price)}</div>`;
+  if (item.rakuten?.status === 'ok') {
+    const date = new Date(item.rakuten.fetchedAt);
+    const fetched = Number.isNaN(date.getTime()) ? '取得日時不明' : date.toLocaleString('ja-JP');
+    const url = safeRakutenUrl(item.rakuten.url);
+    const link = url ? `<br><a href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">楽天の商品を見る ↗</a>` : '';
+    return `${price}<div class="price-meta">取得元: 楽天市場<br>取得日時: ${escapeHtml(fetched)}${link}</div>`;
+  }
+  if (item.rakuten?.status === 'error') {
+    return `${price}<div class="price-meta price-error">楽天価格の更新失敗<br>表示額は参考価格（最新扱いではありません）</div>`;
+  }
+  return `${price}<div class="price-meta">参考価格（楽天商品未登録）</div>`;
+}
+function purchaseButton(item) {
+  const url = item.rakuten?.status === 'ok' && safeRakutenUrl(item.rakuten.url);
+  return url
+    ? `<a class="affiliate-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">🛒 楽天市場</a>`
+    : '<button class="affiliate-btn">🛒 Amazon</button>';
+}
 function rankColor(i) { return i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''; }
 function fmtClock(min, max) {
   if (!min && !max) return '—';
@@ -887,7 +920,7 @@ function renderCpuTable() {
         <div class="score-val" style="${cpuSortKey==='score'?'':'opacity:0.6'}">${c.score.toLocaleString()}</div>
         <div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(c.score/maxScore*100)}%;${cpuSortKey!=='score'?'opacity:0.4':''}"></div></div>
       </div></td>
-      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(c.price)}</td>
+      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(c)}</td>
       <td class="price-cell">${c.cores||'—'}C / ${c.threads||'—'}T</td>
       <td class="price-cell">${fmtClock(c.clockMin,c.clockMax)}</td>
       <td class="price-cell">${c.cache?c.cache+'MB':'—'}</td>
@@ -895,7 +928,7 @@ function renderCpuTable() {
       <td class="price-cell" style="${cpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
       <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
       <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('cpu','${c.name.replace(/'/g,"\\'")}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
-      <td><button class="affiliate-btn">🛒 Amazon</button></td>
+      <td>${purchaseButton(c)}</td>
     </tr>`;}).join('');
 
   // Single tab — ソートキーを適用した上でシングルスコアも表示
@@ -907,13 +940,13 @@ function renderCpuTable() {
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
       <td><div class="chip-name">${c.name}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${c.socket||'—'}</div></td>
       <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent4)">${c.single?c.single.toLocaleString():'—'}</div><div class="score-bar-bg"><div class="score-bar" style="width:${c.single?Math.round(c.single/maxSingle*100):0}%;background:linear-gradient(90deg,var(--accent4),var(--accent2))"></div></div></div></td>
-      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(c.price)}</td>
+      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(c)}</td>
       <td class="price-cell">${c.cores||'—'}C / ${c.threads||'—'}T</td>
       <td class="price-cell">${c.clockMax?c.clockMax+'GHz':'—'}</td>
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
       <td class="price-cell" style="${cpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
       <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
-      <td><button class="affiliate-btn">🛒 Amazon</button></td>
+      <td>${purchaseButton(c)}</td>
     </tr>`;}).join('');
 
   // Cospa tab — ソートキーを適用した並び順でコスパ値を表示
@@ -925,12 +958,12 @@ function renderCpuTable() {
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
       <td><div class="chip-name">${c.name}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${c.socket||'—'}</div></td>
       <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent3)">${cp}</div><div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(parseFloat(cp)/maxCospa*100)}%;background:linear-gradient(90deg,var(--accent3),#58a6ff)"></div></div></div></td>
-      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(c.price)}</td>
+      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(c)}</td>
       <td class="price-cell">${c.score.toLocaleString()}</td>
       <td class="price-cell">${c.cores||'—'}C / ${c.threads||'—'}T</td>
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
       <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
-      <td><button class="affiliate-btn">🛒 Amazon</button></td>
+      <td>${purchaseButton(c)}</td>
     </tr>`;}).join('');
 }
 
@@ -959,7 +992,7 @@ function renderGpuTable() {
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
       <td><div class="chip-name">${g.name}${g.badge?` <span class="badge ${g.badgeClass}">${g.badge}</span>`:''}</div><div class="chip-sub">${g.maker}</div></td>
       <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent);${gpuSortKey!=='score'?'opacity:0.6':''}">${g.score.toLocaleString()}</div><div class="score-bar-bg"><div class="score-bar gpu" style="width:${Math.round(g.score/maxScore*100)}%;${gpuSortKey!=='score'?'opacity:0.4':''}"></div></div></div></td>
-      <td class="price-cell" style="${gpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(g.price)}</td>
+      <td class="price-cell" style="${gpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(g)}</td>
       <td class="price-cell">${g.vram||'—'}</td>
       <td class="price-cell">${g.bw||'—'}</td>
       <td class="price-cell">${g.tdp?g.tdp+'W':'—'}</td>
@@ -968,7 +1001,7 @@ function renderGpuTable() {
       <td class="price-cell" style="${gpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
       <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
       <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('gpu','${g.name.replace(/'/g,"\\'")}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
-      <td><button class="affiliate-btn">🛒 Amazon</button></td>
+      <td>${purchaseButton(g)}</td>
     </tr>`;}).join('');
 }
 
@@ -1001,11 +1034,11 @@ function renderRamTable() {
       <td>CL${r.cl||'—'}</td>
       <td>${r.capacity}GB <span style="color:var(--text3);font-size:11px">${r.kit}</span></td>
       <td style="color:var(--text2)">${bw}</td>
-      <td class="price-cell" style="${ramSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(r.price)}</td>
+      <td class="price-cell" style="${ramSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(r)}</td>
       <td class="price-cell" style="${ramSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">¥${cospaVal}/GB</td>
       <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
       <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('ram','${r.name.replace(/'/g,"\\'")}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
-      <td><button class="affiliate-btn">🛒 Amazon</button></td>
+      <td>${purchaseButton(r)}</td>
     </tr>`;}).join('');
 }
 
@@ -1299,6 +1332,32 @@ async function loadSheetData() {
   renderCpuTable(); renderGpuTable(); renderRamTable();
   populateCpuSelects(); populateGpuSelects();
   updateHomeRanking();
+}
+
+// 確認済みの商品コードだけをFunction側で照会する。失敗した行は参考価格を残して明示する。
+async function loadRakutenPrices() {
+  try {
+    const response = await fetch('/api/rakuten-prices', {headers:{Accept:'application/json'}, signal:AbortSignal.timeout(10000)});
+    const payload = await response.json();
+    if (!Array.isArray(payload.products)) throw new Error(payload.error || `HTTP ${response.status}`);
+    const lists = {cpu:cpuData, gpu:gpuData, ram:ramData};
+    payload.products.forEach(product => {
+      const item = lists[product.category]?.find(candidate => candidate.name === product.modelName);
+      if (!item || !['ok','error'].includes(product.status)) return;
+      if (product.status === 'ok' && Number.isFinite(product.price) && product.price > 0) {
+        item.basePrice = item.price;
+        item.price = product.price;
+      }
+      item.rakuten = {
+        status:product.status,
+        fetchedAt:product.fetchedAt,
+        url:product.url,
+      };
+    });
+  } catch (error) {
+    console.warn('楽天価格を取得できませんでした。参考価格を維持します。', error);
+  }
+  renderCpuTable(); renderGpuTable(); renderRamTable();
 }
 
 // ===== FAVORITES =====
@@ -1892,7 +1951,8 @@ try {
     bapplyIds(saved.ids);
   }
 } catch(e) {}
-loadSheetData().then(()=>{
+loadSheetData().then(async()=>{
+  await loadRakutenPrices();
   populateBnSelects();
   restoreFromUrl();
 });
