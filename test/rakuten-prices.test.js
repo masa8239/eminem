@@ -16,10 +16,12 @@ test('mapping requires API code, exact item name and reviewed new condition',()=
   for(const bad of [null,{...entry,itemCode:'invented'},{...entry,itemCode:':empty'},{...entry,itemName:''},{...entry,condition:'used'},{...entry,condition:undefined}]) assert.throws(()=>validateMapping([bad]),/不正/);
   assert.throws(()=>validateMapping([entry,entry]),/重複/);
 });
-test('JSON v2 uses documented lowercase flat items',()=>{
+test('JSON v2 accepts documented items and observed Items responses',()=>{
   assert.deepEqual(responseItems(payload(item)),[item]);
+  assert.deepEqual(responseItems({Items:[item]}),[item]);
+  assert.deepEqual(responseItems({Items:[{Item:item}]}),[item]);
   assert.deepEqual(responseItems({items:[]}),[]);
-  for(const bad of [null,{}, {Items:[{Item:item}]},{items:{}},{error:'wrong_parameter',items:[item]}]) assert.throws(()=>responseItems(bad),/形式/);
+  for(const bad of [null,{}, {items:{}},{error:'wrong_parameter',items:[item]}]) assert.throws(()=>responseItems(bad),/形式/);
 });
 test('exact API code AND name required, including listing changes',()=>{
   assert.deepEqual(extractItem(payload(item),entry),{price:12345,url:item.itemUrl});
@@ -41,6 +43,7 @@ test('current endpoint, accessKey header, JSON v2 and itemCode are sent',async()
     for(const [key,value] of Object.entries({format:'json',formatVersion:'2',applicationId:credentials.applicationId,affiliateId:credentials.affiliateId,itemCode:entry.itemCode,availability:'1'})) assert.equal(url.searchParams.get(key),value);
     assert.equal(url.searchParams.has('accessKey'),false);
     assert.equal(options.headers.accessKey,credentials.accessKey);
+    assert.equal(options.headers.Origin,'https://eminem-zfet.vercel.app');
     assert.equal(options.headers.Authorization,undefined);
     assert.equal(options.redirect,'error');
     assert.ok(options.signal instanceof AbortSignal);
