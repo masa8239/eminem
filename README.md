@@ -44,7 +44,8 @@ Productionの環境変数はローカルやPreviewには自動で提供されま
 
 - 接続先: `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701`
 - `applicationId` と `affiliateId` はサーバーからクエリで送信。Access Keyは公式の `accessKey` ヘッダーで送信します。`Authorization: Bearer` は使用しません。
-- `format=json&formatVersion=2` を明示し、`items` 配列内の `itemCode`・`itemName`・`itemPrice`・`availability`・`affiliateUrl`／`itemUrl` を処理します（小文字の `items`、ラッパーなし）。旧 `Items[].Item` を前提にしません。
+- `format=json&formatVersion=2` を明示し、`items` 配列内の `itemCode`・`itemName`・`itemPrice`・`availability`・`affiliateUrl`／`itemUrl` を処理します。実接続では大文字の `Items` も観測されたため、どちらの配列にも対応します。
+- この楽天アプリの許可サイトとして登録された `https://eminem-zfet.vercel.app` を `Origin` ヘッダーで送ります。PCで同じ認証値と検索語を使った照会は、Originなしで HTTP 403、付与時に HTTP 200 でした。この確認はProductionでの実行成功を意味しません。登録サイトを変える場合はコード内の `SITE_ORIGIN` も合わせて変更します。
 - 購入可能な商品の正の整数円価格だけ採用し、空結果・別商品・商品名変更・不正価格・HTTPエラー・JSON不正は商品単位の更新失敗にします。上流エラー本文、認証付きURL、例外詳細はレスポンスやログへ出しません。
 
 3つの認証変数が安全に設定されたシェルで、次を実行します（Node自体は `.env.local` を自動読込しません）。
@@ -53,9 +54,9 @@ Productionの環境変数はローカルやPreviewには自動で提供されま
 node scripts/verify-rakuten-products.js
 ```
 
-スクリプトは「Ryzen 9 9950X3D」「GeForce RTX 5090」の候補を読み取り専用で照会し、APIの商品コード・商品名・説明だけを出力します。新品の自動認定や対応表への自動登録は行いません。返された候補を上記の手順で照合してください。認証不足や照会失敗の場合は未確認として終了します。
+スクリプトは「Ryzen 9 9950X3D」（検索語 `9950X3D`）と「GeForce RTX 5090」の候補を読み取り専用で照会し、APIの商品コード・商品名・説明だけを出力します。新品の自動認定や対応表への自動登録は行いません。返された候補を上記の手順で照合してください。認証不足や照会失敗の場合は未確認として終了します。
 
-**今回の登録結果: 2モデルとも未登録。** 作業環境では3つの楽天認証変数が未設定で、Vercel Productionの認証値を使用する接続も利用できなかったため、認証付きAPI応答で商品コード・商品名・新品を確認できませんでした。これは「商品が存在しない」という意味ではありません。`config/rakuten-products.json` は `[]` を維持しています。公式仕様に基づくモックテストは実接続の成功を証明するものではありません。
+**今回の登録結果: 2モデルとも未登録。** PCからの認証付き照会で候補は取得できましたが、商品の価格・在庫・型番と新品の根拠を購入ページで確定していません。候補を最安値というだけで採用せず、`config/rakuten-products.json` は `[]` を維持しています。PCからの成功はVercel Productionでの実接続成功を証明するものではありません。
 
 ## テスト
 
