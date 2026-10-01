@@ -6,6 +6,13 @@ const targets = [
   {category:'cpu',modelName:'Ryzen 9 9950X3D',keyword:'9950X3D'},
   {category:'gpu',modelName:'GeForce RTX 5090',keyword:'GeForce RTX 5090'},
 ];
+function publicItemUrl(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'https:' || url.hostname !== 'item.rakuten.co.jp' || url.username || url.password) return null;
+    return url.origin + url.pathname;
+  } catch { return null; }
+}
 async function main(env = process.env, fetchImpl = fetch, write = console.log) {
   const names = ['RAKUTEN_APPLICATION_ID','RAKUTEN_ACCESS_KEY','RAKUTEN_AFFILIATE_ID'];
   const missing = names.filter(name => !env[name]);
@@ -22,6 +29,9 @@ async function main(env = process.env, fetchImpl = fetch, write = console.log) {
       const items = responseItems(await searchItems({keyword:target.keyword,hits:10},credentials,fetchImpl));
       write(JSON.stringify({category:target.category,modelName:target.modelName,status:'requires_manual_review',candidates:items.map(item=>({
         itemCode:redact(item.itemCode),itemName:redact(item.itemName),itemCaption:redact(item.itemCaption),
+        itemPrice:Number.isSafeInteger(item.itemPrice) && item.itemPrice > 0 ? item.itemPrice : null,
+        availability:item.availability === 1 ? 1 : 0,
+        itemUrl:redact(publicItemUrl(item.itemUrl)),
       }))}));
     } catch {
       failed = true;
