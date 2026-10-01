@@ -3,7 +3,7 @@
 // Read-only candidate search; never writes the mapping.
 const {searchItems, responseItems} = require('../api/rakuten-prices')._test;
 const targets = [
-  {category:'cpu',modelName:'Ryzen 9 9950X3D',keyword:'Ryzen 9 9950X3D'},
+  {category:'cpu',modelName:'Ryzen 9 9950X3D',keyword:'9950X3D'},
   {category:'gpu',modelName:'GeForce RTX 5090',keyword:'GeForce RTX 5090'},
 ];
 async function main(env = process.env, fetchImpl = fetch, write = console.log) {
