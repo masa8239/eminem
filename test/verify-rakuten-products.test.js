@@ -19,11 +19,15 @@ test('candidate searches are read-only, target both models and do not log secret
     assert.equal(url.searchParams.has('accessKey'),false);
     assert.equal(options.headers.accessKey,env.RAKUTEN_ACCESS_KEY);
     assert.equal(options.headers.Origin,'https://eminem-zfet.vercel.app');
-    return {ok:true,json:async()=>({Items:[{itemCode:'test:fixture',itemName:'synthetic item',itemCaption:Object.values(env).join(' ')}]})};
+    return {ok:true,json:async()=>({Items:[{itemCode:'test:fixture',itemName:'synthetic item',itemCaption:Object.values(env).join(' '),itemPrice:12345,availability:1,itemUrl:'https://item.rakuten.co.jp/test/fixture/?accessKey=must-not-print'}]})};
   },line=>lines.push(line));
   assert.equal(code,0);
   assert.deepEqual(keywords,['9950X3D','GeForce RTX 5090']);
   assert.ok(lines.every(line=>JSON.parse(line).status==='requires_manual_review'));
+  assert.equal(JSON.parse(lines[0]).candidates[0].itemUrl,'https://item.rakuten.co.jp/test/fixture/');
+  assert.equal(JSON.parse(lines[0]).candidates[0].itemPrice,12345);
+  assert.equal(JSON.parse(lines[0]).candidates[0].availability,1);
+  assert.equal(lines.join('').includes('must-not-print'),false);
   for(const secret of Object.values(env)) assert.equal(lines.join('').includes(secret),false);
 });
 test('verification failures suppress native error details for both models',async()=>{
