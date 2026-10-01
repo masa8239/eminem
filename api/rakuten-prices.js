@@ -2,51 +2,92 @@
 
 const productMap = require('../config/rakuten-products.json');
 
-const API_URL = 'https://openapi.rakuten.co.jp/ichibams/api/ItemSearch/20220601';
+// https://webservice.rakuten.co.jp/documentation/ichiba-item-search
+const API_URL = 'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701';
+// Rakuten checks the registered web application's Origin for server-side requests.
+const SITE_ORIGIN = 'https://eminem-zfet.vercel.app';
 const CATEGORIES = new Set(['cpu', 'gpu', 'ram']);
+
+class PriceError extends Error {}
 
 function validateMapping(entries) {
   if (!Array.isArray(entries)) throw new Error('商品対応表は配列で指定してください');
   const seen = new Set();
   return entries.map((entry, index) => {
+    if (!entry || typeof entry !== 'object') throw new Error(`商品対応表の ${index + 1} 件目が不正です`);
     const category = String(entry.category || '').toLowerCase();
     const modelName = String(entry.modelName || '').trim();
     const itemCode = String(entry.itemCode || '').trim();
-    if (!CATEGORIES.has(category) || !modelName || !itemCode || !itemCode.includes(':')) {
+    const itemName = typeof entry.itemName === 'string' ? entry.itemName.trim() : '';
+    if (!CATEGORIES.has(category) || !modelName || !/^[^\s:]+:[^\s:]+$/.test(itemCode) || !itemName || entry.condition !== 'new') {
       throw new Error(`商品対応表の ${index + 1} 件目が不正です`);
     }
     const key = `${category}\0${modelName}`;
     if (seen.has(key)) throw new Error(`商品対応表に重複があります: ${category}/${modelName}`);
     seen.add(key);
-    return {category, modelName, itemCode};
+    return {category, modelName, itemCode, itemName, condition: 'new'};
   });
 }
 
-function extractItem(payload, expectedCode) {
-  const wrapped = Array.isArray(payload && payload.Items) ? payload.Items : [];
-  const items = wrapped.map(value => value && (value.Item || value)).filter(Boolean);
-  const item = items.find(value => value.itemCode === expectedCode);
-  if (!item || !Number.isFinite(Number(item.itemPrice)) || Number(item.itemPrice) <= 0) {
-    throw new Error('確認済み商品コードに一致する商品・価格がありません');
+function responseItems(payload) {
+  // The documented v2 example uses `items`; live JSON has also returned `Items`.
+  const items = payload && (payload.items || payload.Items);
+  if (!payload || payload.error || !Array.isArray(items)) {
+    throw new PriceError('楽天APIのレスポンス形式が不正です');
+  }
+  return items.map(item => item && (item.Item || item)).filter(item => item && typeof item === 'object');
+}
+
+function extractItem(payload, entry) {
+  const matches = responseItems(payload).filter(value => value.itemCode === entry.itemCode);
+  const item = matches.length === 1 ? matches[0] : null;
+  if (!item || item.itemName !== entry.itemName) {
+    throw new PriceError('確認済み商品コード・商品名に一致する商品がありません');
+  }
+  if (!Number.isSafeInteger(item.itemPrice) || item.itemPrice <= 0 || item.availability !== 1) {
+    throw new PriceError('購入可能な商品の有効な円価格がありません');
+  }
+  let url;
+  try { url = new URL(item.affiliateUrl || item.itemUrl); }
+  catch { throw new PriceError('楽天の商品リンクが不正です'); }
+  if (url.protocol !== 'https:' || url.username || url.password) {
+    throw new PriceError('楽天の商品リンクが不正です');
   }
   return {
-    price: Number(item.itemPrice),
-    url: String(item.affiliateUrl || item.itemUrl || ''),
+    price: item.itemPrice,
+    url: url.href,
   };
 }
 
-async function fetchProduct(entry, credentials, fetchImpl) {
+async function searchItems(parameters, credentials, fetchImpl = fetch) {
   const url = new URL(API_URL);
   url.searchParams.set('format', 'json');
+  url.searchParams.set('formatVersion', '2');
   url.searchParams.set('applicationId', credentials.applicationId);
-  url.searchParams.set('affiliateId', credentials.affiliateId);
-  url.searchParams.set('itemCode', entry.itemCode);
+  if (credentials.affiliateId) url.searchParams.set('affiliateId', credentials.affiliateId);
+  url.searchParams.set('availability', '1');
+  for (const key of ['itemCode', 'keyword', 'hits']) {
+    if (parameters[key] !== undefined) url.searchParams.set(key, parameters[key]);
+  }
   const response = await fetchImpl(url, {
-    headers: {Authorization: `Bearer ${credentials.accessKey}`},
+    headers: {accessKey: credentials.accessKey, Accept: 'application/json', Origin: SITE_ORIGIN},
     signal: AbortSignal.timeout(7000),
+    redirect: 'error',
   });
-  if (!response.ok) throw new Error(`楽天API HTTP ${response.status}`);
-  return extractItem(await response.json(), entry.itemCode);
+  if (!response.ok) {
+    const status = Number.isInteger(response.status) ? response.status : 'error';
+    throw new PriceError(`楽天API HTTP ${status}`);
+  }
+  // Never expose request URLs, response bodies or native fetch/JSON errors.
+  let payload;
+  try { payload = await response.json(); }
+  catch { throw new PriceError('楽天APIのJSONを読み取れませんでした'); }
+  responseItems(payload);
+  return payload;
+}
+
+async function fetchProduct(entry, credentials, fetchImpl = fetch) {
+  return extractItem(await searchItems({itemCode: entry.itemCode}, credentials, fetchImpl), entry);
 }
 
 async function buildResponse(entries, credentials, fetchImpl = fetch) {
@@ -56,7 +97,7 @@ async function buildResponse(entries, credentials, fetchImpl = fetch) {
       const item = await fetchProduct(entry, credentials, fetchImpl);
       return {...entry, ...item, status: 'ok', fetchedAt: checkedAt, source: '楽天市場'};
     } catch (error) {
-      return {...entry, status: 'error', checkedAt, error: error instanceof Error ? error.message : '取得失敗'};
+      return {...entry, status: 'error', checkedAt, error: error instanceof PriceError ? error.message : '楽天APIへの接続に失敗しました'};
     }
   }));
   return {checkedAt, products: results};
@@ -87,4 +128,4 @@ async function handler(request, response) {
 }
 
 module.exports = handler;
-module.exports._test = {validateMapping, extractItem, fetchProduct, buildResponse};
+module.exports._test = {validateMapping, responseItems, extractItem, searchItems, fetchProduct, buildResponse};
