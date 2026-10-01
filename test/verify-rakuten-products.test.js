@@ -18,10 +18,11 @@ test('candidate searches are read-only, target both models and do not log secret
     assert.equal(url.searchParams.has('affiliateId'),false);
     assert.equal(url.searchParams.has('accessKey'),false);
     assert.equal(options.headers.accessKey,env.RAKUTEN_ACCESS_KEY);
-    return {ok:true,json:async()=>({items:[{itemCode:'test:fixture',itemName:'synthetic item',itemCaption:Object.values(env).join(' ')}]})};
+    assert.equal(options.headers.Origin,'https://eminem-zfet.vercel.app');
+    return {ok:true,json:async()=>({Items:[{itemCode:'test:fixture',itemName:'synthetic item',itemCaption:Object.values(env).join(' ')}]})};
   },line=>lines.push(line));
   assert.equal(code,0);
-  assert.deepEqual(keywords,['Ryzen 9 9950X3D','GeForce RTX 5090']);
+  assert.deepEqual(keywords,['9950X3D','GeForce RTX 5090']);
   assert.ok(lines.every(line=>JSON.parse(line).status==='requires_manual_review'));
   for(const secret of Object.values(env)) assert.equal(lines.join('').includes(secret),false);
 });
