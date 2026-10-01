@@ -4,6 +4,8 @@ const productMap = require('../config/rakuten-products.json');
 
 // https://webservice.rakuten.co.jp/documentation/ichiba-item-search
 const API_URL = 'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701';
+// Rakuten checks the registered web application's Origin for server-side requests.
+const SITE_ORIGIN = 'https://eminem-zfet.vercel.app';
 const CATEGORIES = new Set(['cpu', 'gpu', 'ram']);
 
 class PriceError extends Error {}
@@ -28,11 +30,12 @@ function validateMapping(entries) {
 }
 
 function responseItems(payload) {
-  // Current documented formatVersion=2: {items: [{itemCode, itemName, ...}]}.
-  if (!payload || payload.error || !Array.isArray(payload.items)) {
+  // The documented v2 example uses `items`; live JSON has also returned `Items`.
+  const items = payload && (payload.items || payload.Items);
+  if (!payload || payload.error || !Array.isArray(items)) {
     throw new PriceError('楽天APIのレスポンス形式が不正です');
   }
-  return payload.items.filter(item => item && typeof item === 'object');
+  return items.map(item => item && (item.Item || item)).filter(item => item && typeof item === 'object');
 }
 
 function extractItem(payload, entry) {
@@ -67,7 +70,7 @@ async function searchItems(parameters, credentials, fetchImpl = fetch) {
     if (parameters[key] !== undefined) url.searchParams.set(key, parameters[key]);
   }
   const response = await fetchImpl(url, {
-    headers: {accessKey: credentials.accessKey, Accept: 'application/json'},
+    headers: {accessKey: credentials.accessKey, Accept: 'application/json', Origin: SITE_ORIGIN},
     signal: AbortSignal.timeout(7000),
     redirect: 'error',
   });
