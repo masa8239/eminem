@@ -173,3 +173,35 @@ test('update run also writes the sheet audit next to the price file', async () =
   const audit = JSON.parse(fs.readFileSync(path.join(dir, 'sheet-audit.json'), 'utf8'));
   assert.deepEqual(audit.issues.map(i => [i.modelName, i.type]), [['GeForce RTX 6700 XT', 'name'], ['GeForce RTX 6700 XT', 'price']]);
 });
+
+test('site-side name correction agrees with the audit and leaves valid names alone', () => {
+  const vm = require('node:vm');
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  const document = {addEventListener() {}, getElementById() { return {value: '', innerHTML: '', textContent: '', style: {}}; }};
+  const context = vm.createContext({document, window: {addEventListener() {}}, localStorage: {getItem() { return null; }}, URL, URLSearchParams, console});
+  vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].split('// ===== INIT =====')[0], context);
+  const fix = (category, name) => vm.runInContext(`correctModelName(${JSON.stringify(category)},${JSON.stringify(name)})`, context);
+  const {nameIssue} = require('../scripts/lib/audit');
+  // 内蔵データの名前は一切変わらない
+  for (const [category, list] of [['cpu', 'FALLBACK_CPU'], ['gpu', 'FALLBACK_GPU']]) {
+    for (const name of JSON.parse(vm.runInContext(`JSON.stringify(${list}.map(x=>x.name))`, context))) assert.equal(fix(category, name), name);
+  }
+  for (const [from, to] of [['Core i9-14600KF', 'Core i5-14600KF'], ['Core i5-12700', 'Core i7-12700'], ['Core i9-14100F', 'Core i3-14100F'], ['Core i7-10900KF', 'Core i9-10900KF'],
+    ['Ryzen 5 1800X', 'Ryzen 7 1800X'], ['Ryzen 3 3600', 'Ryzen 5 3600'], ['Ryzen 5 5700X3D', 'Ryzen 7 5700X3D'], ['Core Ultra 9 235', 'Core Ultra 5 235']]) {
+    assert.equal(fix('cpu', from), to);
+    assert.ok(nameIssue('cpu', from).includes(to), from);
+    assert.equal(nameIssue('cpu', to), null, to);
+  }
+  for (const name of ['Core i9-10850K', 'Ryzen 7 PRO 4750G', 'Core i9-6790 XT', 'Core i7 5900X', 'Apple M2 Max', 'Core i7-1700']) assert.equal(fix('cpu', name), name);
+  for (const [from, to] of [['GeForce RTX 6700 XT', 'Radeon RX 6700 XT'], ['GeForce RTX 7900 GRE', 'Radeon RX 7900 GRE'], ['GeForce RTX 1080 Ti', 'GeForce GTX 1080 Ti'],
+    ['GeForce GTX 2060 12GB', 'GeForce RTX 2060 12GB'], ['GeForce RX Vega 64', 'Radeon RX Vega 64'], ['Radeon RX 5600 XT(145gpu)', 'Radeon RX 5600 XT']]) {
+    assert.equal(fix('gpu', from), to);
+    assert.ok(nameIssue('gpu', from), from);
+    assert.equal(nameIssue('gpu', to), null, to);
+  }
+  for (const name of ['GeForce RTX 5090', 'GeForce RTX 3060 SUPER', 'Radeon RX 9000 XT 16GB', 'Arc 8970']) assert.equal(fix('gpu', name), name);
+  // 補正後は系列に合ったメーカー・機能になり、重複は1件にまとまる
+  const parsed = JSON.parse(vm.runInContext(`JSON.stringify(dedupeByName([{'GPU名':'GeForce RTX 6700 XT','スコア':12000},{'GPU名':'Radeon RX 6700 XT','スコア':11000}].map(parseGpuRow)))`, context));
+  assert.equal(parsed.length, 1);
+  assert.deepEqual([parsed[0].name, parsed[0].sheetName, parsed[0].maker, parsed[0].dlss], ['Radeon RX 6700 XT', 'GeForce RTX 6700 XT', 'AMD', 'FSR 2']);
+});

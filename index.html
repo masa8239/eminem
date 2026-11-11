@@ -894,7 +894,7 @@ function safeRakutenUrl(value) {
 }
 function renderPrice(item) {
   const price = `<div>${fmtPrice(item.price)}</div>`;
-  if (!validPrice(item.price)) return `${price}<div class="price-meta price-error">価格・単位を要確認（コスパ対象外）</div>`;
+  if (!validPrice(item.price)) return '<span style="color:var(--text3)">価格不明</span>';
   if (item.rakuten?.status === 'ok') {
     const date = new Date(item.rakuten.fetchedAt);
     const fetched = Number.isNaN(date.getTime()) ? '取得日時不明' : date.toLocaleString('ja-JP', {month:'numeric', day:'numeric', hour:'numeric', minute:'2-digit'}) + ' 取得';
@@ -1282,10 +1282,55 @@ function updateHomeRanking() {
   if (re) re.textContent = ramData.length;
 }
 
+// スプレッドシートのモデル名のうち、型番の規則から機械的に直せる誤り（等級違い・系列違い）だけを補正する。
+// 直せないもの（存在しない型番など）はそのまま返す。元の名前は sheetName に残す。
+function correctModelName(category, rawName) {
+  const name = String(rawName).trim().replace(/\s+/g, ' ');
+  if (category === 'cpu') {
+    let m = name.match(/^Core i(\d)[- ](\d{4,5})(KF|KS|K|F|T)?$/i);
+    if (m) {
+      const num = m[2], gen = Number(num.length === 5 ? num.slice(0,2) : num[0]), h = Number(num.slice(-3));
+      if (gen < 2 || gen > 14 || Number(num.slice(-2)) % 50 !== 0 || h < 100) return name;
+      const tier = num === '10850' ? 9 : h >= 900 ? 9 : h >= 700 ? 7 : h >= 400 ? 5 : 3;
+      return `Core i${tier}-${num}${(m[3]||'').toUpperCase()}`;
+    }
+    m = name.match(/^Ryzen (\d) (\d{4})(X3D|XT|X|F|GT|GE|G)?$/i);
+    if (m) {
+      const num = m[2], h = Number(num.slice(1));
+      if (num[0] === '6' || h % 50 !== 0 || h < 100) return name;
+      const tier = h >= 900 ? 9 : h >= 700 ? 7 : h >= 400 ? 5 : 3;
+      return `Ryzen ${tier} ${num}${(m[3]||'').toUpperCase()}`;
+    }
+    m = name.match(/^Core Ultra (\d) (\d{3})(KF|K|F|T)?$/i);
+    if (m) {
+      const tier = {8:9, 6:7, 4:5, 3:5, 2:5}[m[2][1]];
+      return tier ? `Core Ultra ${tier} ${m[2]}${(m[3]||'').toUpperCase()}` : name;
+    }
+    return name;
+  }
+  if (category === 'gpu') {
+    const gpu = name.replace(/\s*\(\d*gpu\)$/i, '');
+    let m = gpu.match(/^GeForce RTX (\d{2})(\d{2})\b(.*)$/i);
+    if (m && ['10','16'].includes(m[1])) return `GeForce GTX ${m[1]}${m[2]}${m[3]}`;
+    if (m && ['55','56','57','64','65','66','67','68','69','76','77','78','79','90'].includes(m[1])) return `Radeon RX ${m[1]}${m[2]}${m[3]}`;
+    m = gpu.match(/^GeForce GTX (20|30|40|50)(\d{2})\b(.*)$/i);
+    if (m) return `GeForce RTX ${m[1]}${m[2]}${m[3]}`;
+    m = gpu.match(/^GeForce RX (.+)$/i);
+    if (m) return `Radeon RX ${m[1]}`;
+    return gpu;
+  }
+  return name;
+}
+// 同じモデル名の行は最初の1件（スコア順に並べた後なら最高スコア）だけ残す
+function dedupeByName(items) {
+  const seen = new Set();
+  return items.filter(item => !seen.has(item.name) && seen.add(item.name));
+}
 // ===== LOAD FROM GOOGLE APPS SCRIPT =====
 function parseCpuRow(row) {
   const keys = Object.keys(row);
-  const name = row['CPU名']||row['cpu名']||row[keys[0]]||''; if(!name) return null;
+  const sheetName = row['CPU名']||row['cpu名']||row[keys[0]]||''; if(!sheetName) return null;
+  const name = correctModelName('cpu', sheetName);
   const score   = toNum(row['PassMarkスコア']||row['スコア']||row[keys[1]]);
   const single  = toNum(row['シングル']||row['SingleScore']||0);
   const cores   = toNum(row['コア数']);
@@ -1301,11 +1346,12 @@ function parseCpuRow(row) {
   const socket = row['ソケット']||row['socket']||(maker==='AMD'?(/\b5\d{3}/.test(name)?'AM4':'AM5'):maker==='Intel'?(/ultra/i.test(name)?'LGA1851':'LGA1700'):'');
   let badge='',badgeClass='';
   if(cospa>=0.5){badge='コスパ最強';badgeClass='badge-green';}else if(score>=60000){badge='ハイエンド';badgeClass='badge-blue';}else if(score>=40000){badge='ハイ';badgeClass='badge-purple';}
-  return {name,maker,score,single,price,tdp,cores,threads,socket,clockMin,clockMax,cache,cospa,badge,badgeClass};
+  return {name,sheetName:String(sheetName),maker,score,single,price,tdp,cores,threads,socket,clockMin,clockMax,cache,cospa,badge,badgeClass};
 }
 function parseGpuRow(row) {
   const keys = Object.keys(row);
-  const name = row['GPU名']||row['gpu名']||row[keys[0]]||''; if(!name) return null;
+  const sheetName = row['GPU名']||row['gpu名']||row[keys[0]]||''; if(!sheetName) return null;
+  const name = correctModelName('gpu', sheetName);
   const score = toNum(row['3DMark Time Spy']||row['スコア']||row[keys[1]]);
   const tdp   = toNum(row['TDP']);
   const price = sheetPrice(row);
@@ -1317,7 +1363,7 @@ function parseGpuRow(row) {
   const rt    = row['レイトレ']||(maker==='NVIDIA'?'◎':maker==='AMD'?'○':'△');
   let badge='',badgeClass='';
   if(cospa>=0.3){badge='コスパ最強';badgeClass='badge-green';}else if(score>=40000){badge='最強';badgeClass='badge-purple';}else if(score>=25000){badge='ハイエンド';badgeClass='badge-blue';}
-  return {name,maker,score,price,vram,bw,tdp,rt,dlss,cospa,badge,badgeClass};
+  return {name,sheetName:String(sheetName),maker,score,price,vram,bw,tdp,rt,dlss,cospa,badge,badgeClass};
 }
 function parseRamRow(row) {
   const keys = Object.keys(row);
@@ -1367,7 +1413,7 @@ async function loadSheetData() {
   if (cpuR.status==='fulfilled') {
     const parsed = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
-      cpuData = assignSheetBadges(fillBuiltinPrices(parsed, FALLBACK_CPU).sort((a,b)=>b.score-a.score),'cpu'); cpuFromSheet = true;
+      cpuData = assignSheetBadges(fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.score-a.score)), FALLBACK_CPU),'cpu'); cpuFromSheet = true;
       maxCpuScore = Math.max(...cpuData.map(d=>d.score));
       document.getElementById('cpu-rank-updated').textContent = LOADED;
     } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
@@ -1375,7 +1421,7 @@ async function loadSheetData() {
   if (gpuR.status==='fulfilled') {
     const parsed = gpuR.value.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
-      gpuData = assignSheetBadges(fillBuiltinPrices(parsed, FALLBACK_GPU).sort((a,b)=>b.score-a.score),'gpu'); gpuFromSheet = true;
+      gpuData = assignSheetBadges(fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.score-a.score)), FALLBACK_GPU),'gpu'); gpuFromSheet = true;
       maxGpuScore = Math.max(...gpuData.map(d=>d.score));
       document.getElementById('gpu-rank-updated').textContent = LOADED;
     } else document.getElementById('gpu-rank-updated').textContent = BUILTIN;
@@ -1383,7 +1429,7 @@ async function loadSheetData() {
   if (ramR.status==='fulfilled') {
     const parsed = ramR.value.map(parseRamRow).filter(r=>r&&r.name&&r.speed>0);
     if (parsed.length > 0) {
-      ramData = fillBuiltinPrices(parsed, FALLBACK_RAM).sort((a,b)=>b.speed-a.speed);
+      ramData = fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.speed-a.speed)), FALLBACK_RAM);
       maxRamSpeed = Math.max(...ramData.map(d=>d.speed));
       document.getElementById('ram-rank-updated').textContent = LOADED;
     } else document.getElementById('ram-rank-updated').textContent = BUILTIN;

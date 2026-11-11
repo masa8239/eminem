@@ -29,15 +29,21 @@ jobs:
           RAKUTEN_APPLICATION_ID: ${{ secrets.RAKUTEN_APPLICATION_ID }}
           RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
           RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
-        run: node scripts/update-rakuten-prices.js
+        run: |
+          if [ -z "$RAKUTEN_APPLICATION_ID" ] || [ -z "$RAKUTEN_ACCESS_KEY" ] || [ -z "$RAKUTEN_AFFILIATE_ID" ]; then
+            echo "楽天のキーが未登録のため、スプレッドシートの要確認リストだけ更新します"
+            node scripts/update-rakuten-prices.js --audit-only
+          else
+            node scripts/update-rakuten-prices.js
+          fi
       - name: 変更があればコミット
         run: |
-          if git diff --quiet -- data/rakuten-prices.json; then
-            echo "価格に変更なし"
+          if git diff --quiet -- data; then
+            echo "変更なし"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/rakuten-prices.json
-          git commit -m "chore: 楽天価格を自動更新"
+          git add data
+          git commit -m "chore: 価格データと要確認リストを自動更新"
           git push

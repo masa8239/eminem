@@ -33,6 +33,7 @@ function siteContext() {
 async function loadModels(fetchImpl) {
   const {context, run} = siteContext();
   const models = new Map();
+  const sheetRows = [];
   const add = (category, item) => {
     if (!item || typeof item.name !== 'string' || !item.name.trim()) return;
     const key = `${category}\0${item.name}`;
@@ -53,6 +54,8 @@ async function loadModels(fetchImpl) {
       JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&r.score>0))`)).forEach(item => {
         const key = `${category}\0${item.name}`;
         const price = Number.isSafeInteger(item.price) && item.price > 0 ? item.price : null;
+        sheetRows.push({category, sheetName: item.sheetName || item.name, modelName: item.name, priceValid: price !== null});
+        if (models.get(key)?.fromSheet) return; // 同名の行は最初（シート上で上）の1件を使う
         const builtin = models.get(key)?.referencePrice ?? null;
         models.set(key, {category, modelName: item.name, referencePrice: price ?? builtin, fromSheet: true, sheetPriceValid: price !== null});
       });
@@ -60,7 +63,9 @@ async function loadModels(fetchImpl) {
       console.log(`${category}: スプレッドシートを取得できなかったため内蔵データのモデル名を使います`);
     }
   }
-  return [...models.values()];
+  const list = [...models.values()];
+  list.sheetRows = sheetRows;
+  return list;
 }
 
 function safeUrl(item) {
@@ -84,7 +89,9 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const now = options.now || new Date();
   const names = ['RAKUTEN_APPLICATION_ID', 'RAKUTEN_ACCESS_KEY', 'RAKUTEN_AFFILIATE_ID'];
   const missing = names.filter(name => !env[name]);
-  if (missing.length) { log(`認証情報が未設定です: ${missing.join(', ')}`); return 1; }
+  // auditOnly: 楽天には問い合わせず、スプレッドシートの要確認リストだけ更新する（キー不要）
+  const auditOnly = Boolean(options.auditOnly);
+  if (missing.length && !auditOnly) { log(`認証情報が未設定です: ${missing.join(', ')}`); return 1; }
 
   const credentials = {applicationId: env[names[0]], accessKey: env[names[1]], affiliateId: env[names[2]], origin: env.RAKUTEN_SITE_ORIGIN || SITE_ORIGIN};
   const models = options.models || await loadModels(fetchImpl);
@@ -96,7 +103,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const products = [], unmatched = [];
   const searchCache = new Map();
   let apiErrors = 0, attempted = 0, first = true;
-  for (const model of models) {
+  for (const model of auditOnly ? [] : models) {
     const spec = modelSpec(model.category, model.modelName, byCategory(model.category));
     if (!spec) { unmatched.push({category: model.category, modelName: model.modelName, reason: '型番を判定できないモデル名'}); continue; }
     let items = searchCache.get(spec.keyword) || null;
@@ -145,32 +152,43 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     });
   }
 
-  log(`対象 ${models.length} モデル / 取得 ${products.length} / 未取得 ${unmatched.length} / API失敗 ${apiErrors}`);
+  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length} / 未取得 ${unmatched.length} / API失敗 ${apiErrors}`);
   // APIの障害時は前回のファイルを壊さない
   if (attempted && apiErrors > Math.max(3, attempted * 0.3)) {
     log('楽天APIの失敗が多いため、今回は価格ファイルを更新しません');
     return 1;
   }
   fs.mkdirSync(path.dirname(output), {recursive: true});
-  fs.writeFileSync(output, JSON.stringify({checkedAt: fetchedAt, source: '楽天市場', products, unmatched}, null, 1) + '\n');
+  if (!auditOnly) fs.writeFileSync(output, JSON.stringify({checkedAt: fetchedAt, source: '楽天市場', products, unmatched}, null, 1) + '\n');
 
   // スプレッドシートの要確認リスト（モデル名の誤り・価格の未入力）。シートは書き換えない
-  const priced = new Set(products.map(product => `${product.category}\0${product.modelName}`));
+  const pricedProducts = auditOnly ? [...previous.values()].filter(product => product.status === 'ok') : products;
+  const priced = new Set(pricedProducts.map(product => `${product.category}\0${product.modelName}`));
   const issues = [];
-  for (const model of models.filter(model => model.fromSheet)) {
-    const name = nameIssue(model.category, model.modelName);
-    if (name) issues.push({category: model.category, modelName: model.modelName, type: 'name', issue: name});
-    if (!model.sheetPriceValid && !priced.has(`${model.category}\0${model.modelName}`)) {
-      issues.push({category: model.category, modelName: model.modelName, type: 'price', issue: '価格が未入力または不正で、楽天からも取得できていません'});
+  const rows = models.sheetRows || models.filter(model => model.fromSheet)
+    .map(model => ({category: model.category, sheetName: model.modelName, modelName: model.modelName, priceValid: model.sheetPriceValid}));
+  const seenNames = new Set();
+  for (const row of rows) {
+    // modelName はサイト表示用に補正済みの名前、sheetName はシートに書かれている名前
+    const name = nameIssue(row.category, row.sheetName);
+    if (name) issues.push({category: row.category, modelName: row.sheetName, type: 'name', issue: name});
+    const key = `${row.category}\0${row.modelName}`;
+    if (seenNames.has(key)) issues.push({category: row.category, modelName: row.sheetName, type: 'duplicate', issue: `「${row.modelName}」と重複しています（サイトでは1件だけ表示）`});
+    seenNames.add(key);
+    if (!row.priceValid && !priced.has(key)) {
+      issues.push({category: row.category, modelName: row.sheetName, type: 'price', issue: '価格が未入力または不正で、楽天からも取得できていません'});
     }
   }
-  fs.writeFileSync(options.auditOutput || (options.output ? output.replace(/[^/\\]+$/, 'sheet-audit.json') : AUDIT_OUTPUT),
-    JSON.stringify({checkedAt: fetchedAt, issues}, null, 1) + '\n');
-  log(`スプレッドシートの要確認: モデル名 ${issues.filter(i => i.type === 'name').length} 件 / 価格 ${issues.filter(i => i.type === 'price').length} 件`);
+  const auditFile = options.auditOutput || (options.output ? output.replace(/[^/\\]+$/, 'sheet-audit.json') : AUDIT_OUTPUT);
+  // 内容が変わったときだけ書き換える（毎日の無意味な更新を避ける）
+  let unchanged = false;
+  try { unchanged = JSON.stringify(JSON.parse(fs.readFileSync(auditFile, 'utf8')).issues) === JSON.stringify(issues); } catch { /* 初回 */ }
+  if (!unchanged) fs.writeFileSync(auditFile, JSON.stringify({checkedAt: fetchedAt, issues}, null, 1) + '\n');
+  log(`スプレッドシートの要確認: モデル名 ${issues.filter(i => i.type === 'name').length} 件 / 重複 ${issues.filter(i => i.type === 'duplicate').length} 件 / 価格 ${issues.filter(i => i.type === 'price').length} 件`);
   return 0;
 }
 
-if (require.main === module) main().then(code => { process.exitCode = code; }).catch(() => {
+if (require.main === module) main(process.env, fetch, {auditOnly: process.argv.includes('--audit-only')}).then(code => { process.exitCode = code; }).catch(() => {
   console.error('価格更新に失敗しました'); process.exitCode = 1;
 });
 module.exports = {main, loadModels};

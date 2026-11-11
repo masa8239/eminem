@@ -1,4 +1,2141 @@
 {
- "checkedAt": null,
- "issues": []
+ "checkedAt": "2026-11-11T15:45:56.433Z",
+ "issues": [
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900KS",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 7900X3D",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14900",
+   "type": "duplicate",
+   "issue": "「Core i9-14900」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900KS",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900DT",
+   "type": "name",
+   "issue": "末尾「DT」の型番は存在しません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900DT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-6790 XT",
+   "type": "name",
+   "issue": "型番の形式を判定できません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M1 Ultra",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 9 235",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core Ultra 5 235）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 3000XT",
+   "type": "name",
+   "issue": "存在しない型番の可能性があります"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13600K",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-13600K）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13600K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7 5900X",
+   "type": "name",
+   "issue": "末尾「X」の型番は存在しません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7 5900X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14600KF",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-14600KF）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14600K",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-14600K）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14600K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13600K",
+   "type": "duplicate",
+   "issue": "「Core i5-13600K」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13600K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M3 Max (4コア)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-7700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 8600X3D",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 5 8600X3D）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 3900XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 3900X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 6 225",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core Ultra 5 225）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13500",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 9 225F",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core Ultra 5 225F）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14500",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-14500）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12700",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i7-12700）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12700",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i7-12700）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12700",
+   "type": "duplicate",
+   "issue": "「Core i7-12700」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 9600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 5500X",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 5 5500X）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12600K",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-12600K）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 8600X3D",
+   "type": "duplicate",
+   "issue": "「Ryzen 5 8600X3D」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 8600X3D",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5800X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600K",
+   "type": "duplicate",
+   "issue": "「Core i5-12600K」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M3 Pro (12コア)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5700X3D",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 7 5700X3D）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5700X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M2 Max",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7600",
+   "type": "duplicate",
+   "issue": "「Ryzen 5 7600」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13600KF",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-13600KF）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13600KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900K",
+   "type": "duplicate",
+   "issue": "「Core i9-11900K」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 5750G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13400F",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-13400F）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13400F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13400",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-13400）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13400",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7500G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7700",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 7 7700）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7700",
+   "type": "duplicate",
+   "issue": "「Ryzen 7 7700」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 3800XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10900K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900",
+   "type": "duplicate",
+   "issue": "「Core i9-13900」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M3 Pro (11コア)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10900KF",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i9-10900KF）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10900KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3800",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 7 3800）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3800",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10850K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 3700X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5500UT",
+   "type": "name",
+   "issue": "末尾「UT」の型番は存在しません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600X3D",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M1 Pro",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M2 Pro (12コア)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 5550G",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 5 5550G）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 5550G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 4750G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 9600ST",
+   "type": "name",
+   "issue": "末尾「ST」の型番は存在しません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 9600ST",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 4700G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12500",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900",
+   "type": "duplicate",
+   "issue": "「Core i9-12900」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11600K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11600KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12000",
+   "type": "name",
+   "issue": "存在しない型番の可能性があります"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12000",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12400F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900KS",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 4750GE",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9500KF",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i5-9500KF）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9500KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 4600G",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 5 4600G）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 4600G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 3600",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 5 3600）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 3600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "AMD 4700G",
+   "type": "name",
+   "issue": "型番の形式を判定できません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "AMD 4700G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 2100X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11500",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M1 (2コア)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11400F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11400",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 1800X",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 7 1800X）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 1800X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 PRO 4650G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4500",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4600G",
+   "type": "duplicate",
+   "issue": "「Ryzen 5 4600G」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4600G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 1700X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 PRO 4650GE",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14100F",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i3-14100F）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M2",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14100",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i3-14100）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13100",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i3-13100）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13100",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700F",
+   "type": "duplicate",
+   "issue": "「Core i7-11700F」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-1700",
+   "type": "name",
+   "issue": "存在しない世代の型番です"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-1700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M1",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9080K",
+   "type": "name",
+   "issue": "存在しない型番の可能性があります"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9080K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12100F",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i3-12100F）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 2600X",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 5 2600X）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 2600X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12100",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i3-12100）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-3 PRO 5350G",
+   "type": "name",
+   "issue": "型番の形式を判定できません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-3 PRO 5350G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-8700K",
+   "type": "name",
+   "issue": "等級が違います（正しくは Core i7-8700K）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-8700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10550",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 2600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600 AF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3300X",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 3 3300X）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3300X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5 1600",
+   "type": "name",
+   "issue": "存在しない世代の型番です"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5 1600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10400",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10400",
+   "type": "duplicate",
+   "issue": "「Core i5-10400」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10400",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 4300G",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 3 4300G）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 4300G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3100",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 3 3100）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3100",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4100",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 3 4100）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4100",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4090",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5080",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7900 XTX",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9070 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4080 SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4080",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5070 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9070",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 Ti SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5070",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 7900 GRE",
+   "type": "name",
+   "issue": "RTX 7900 は存在しません（Radeon RX や GTX の型番の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 7900 GRE",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3090 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 SUPER",
+   "type": "duplicate",
+   "issue": "「GeForce RTX 4070 SUPER」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4060 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7800 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3090",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 12GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 10GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9000 XT 16GB",
+   "type": "name",
+   "issue": "RX 9000 は存在しません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9000 XT 16GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9000 XT 8GB",
+   "type": "name",
+   "issue": "RX 9000 は存在しません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9000 XT 8GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6900 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6800 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5060 Ti 16GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5060 Ti 8GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2080 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070",
+   "type": "duplicate",
+   "issue": "「GeForce RTX 3070」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6750 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A770 8GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A750 4GB Ti",
+   "type": "name",
+   "issue": "Arc の型番として存在しません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A750 4GB Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4060 Ti 16GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN V",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 6700 XT",
+   "type": "name",
+   "issue": "RTX 6700 は存在しません（Radeon RX や GTX の型番の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 6700 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc 8970",
+   "type": "name",
+   "issue": "Arc の型番として存在しません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc 8970",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A750",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 Ti",
+   "type": "duplicate",
+   "issue": "「GeForce RTX 3060 Ti」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2080 SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 7600 XT",
+   "type": "name",
+   "issue": "RTX 7600 は存在しません（Radeon RX や GTX の型番の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 7600 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4060",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN Xp",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A580",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3050",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 1080 Ti",
+   "type": "name",
+   "issue": "RTX 1080 は存在しません（Radeon RX や GTX の型番の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 1080 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080 Ti",
+   "type": "duplicate",
+   "issue": "「GeForce GTX 1080 Ti」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6600 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5700 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2070",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 12GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 SUPER",
+   "type": "name",
+   "issue": "RTX 3060 SUPER は存在しません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6660",
+   "type": "name",
+   "issue": "RX 6660 は存在しません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6660",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 2060 12GB",
+   "type": "name",
+   "issue": "GTX 2060 は存在しません（RTX の型番の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 2060 12GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 2060 6GB",
+   "type": "name",
+   "issue": "GTX 2060 は存在しません（RTX の型番の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 2060 6GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080",
+   "type": "duplicate",
+   "issue": "「GeForce GTX 1080」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600 XT(145gpu)",
+   "type": "name",
+   "issue": "モデル名に不要な文字が入っています"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600 XT(145gpu)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 6GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RX Vega 64",
+   "type": "name",
+   "issue": "Vega は Radeon の製品です（GeForce ではありません）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RX Vega 64",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600 XT(2Gpu)",
+   "type": "name",
+   "issue": "モデル名に不要な文字が入っています"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600 XT(2Gpu)",
+   "type": "duplicate",
+   "issue": "「Radeon RX 5600 XT」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600 XT(2Gpu)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1070 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RX Vega 56",
+   "type": "name",
+   "issue": "Vega は Radeon の製品です（GeForce ではありません）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RX Vega 56",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3050 8GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660 SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1070",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 980 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Fury X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6500 XT 4GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Fury",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3050 6GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5500 XT 8GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5500 XT 4GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 590",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Nano",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN Z",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A380",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 980",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 390X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1060 6GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 480",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1060 3GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 570 6GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 GDDR6",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 470",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 970",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6400",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 GDDR5",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 780 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon 780M",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A310",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 380X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 780",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon 760M",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 270",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 7070",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 960",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 770",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 960",
+   "type": "duplicate",
+   "issue": "「GeForce GTX 960」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 960",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 680",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 950",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1050",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 560",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 460",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon 740M",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 460",
+   "type": "duplicate",
+   "issue": "「Radeon RX 460」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 460",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 760",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 760",
+   "type": "duplicate",
+   "issue": "「GeForce GTX 760」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 760",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 8(Ryzen 5000)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 370",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 7(Ryzen 5000)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 8(Ryzen 4000)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RT 360",
+   "type": "name",
+   "issue": "「RT」という系列は存在しません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RT 360",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 660",
+   "type": "name",
+   "issue": "RX 660 は存在しません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 660",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 7(Ryzen 4000)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 750 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 550",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 11(Ryzen 2000)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 6(Ryzen 2000)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GT 1030",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Intel Graphics Core Ultra 200 i シリーズ",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 8(Ryzen 2000)",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 650 Ti",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Intel UHD Graphics 770",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon Graphics RDNA2 2CU",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  }
+ ]
 }
