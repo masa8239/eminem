@@ -8,154 +8,154 @@
 <meta property="og:title" content="BENCHCORE — PCパーツ性能比較">
 <meta property="og:description" content="CPU・GPU・メモリのベンチマークを数値で比較。ボトルネック診断・PC構成ビルダー付き。">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#10151c">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%231d5fa8'/><text x='50' y='70' font-size='62' font-weight='700' font-family='sans-serif' text-anchor='middle' fill='white'>B</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #10151c;
-  --surface: #161c25;
-  --surface2: #1c232e;
-  --surface3: #26303d;
-  --border: #29323e;
-  --border2: #38434f;
-  --accent: #c47f62;
-  --accent2: #4f8fcf;
-  --accent3: #4f9d72;
-  --accent4: #8d9dbd;
-  --text: #e4e8ed;
-  --text2: #9ba6b2;
-  --text3: #6f7a87;
-  --gold: #cfa955;
-  --silver: #c0c0c0;
-  --bronze: #cd7f32;
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface2: #f5f7f9;
+  --surface3: #e4e8ed;
+  --border: #dde2e8;
+  --border2: #c5cdd6;
+  --accent: #a4572f;
+  --accent2: #1d5fa8;
+  --accent3: #2b7a52;
+  --accent4: #55698f;
+  --text: #1a232e;
+  --text2: #4f5b68;
+  --text3: #6a7582;
+  --gold: #8c6200;
+  --silver: #6f7a86;
+  --bronze: #a4572f;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(16,21,28,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 32px; height: 56px; }
-.logo { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 22px; color: var(--text); letter-spacing: 3px; text-transform: uppercase; margin-right: 40px; }
+body { font-variant-numeric: tabular-nums; font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 32px; height: 56px; }
+.logo { font-family: 'Noto Sans JP', sans-serif; font-weight: 700; font-size: 22px; color: var(--text); letter-spacing: 3px;  margin-right: 40px; }
 .logo span { color: var(--accent2); }
 .nav-links { display: flex; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .nav-links::-webkit-scrollbar { display: none; }
 .nav-link { padding: 0 20px; height: 56px; display: flex; align-items: center; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.5px; white-space: nowrap; }
-.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.nav-link:hover { color: var(--text); background: rgba(26,35,46,0.035); }
 .nav-link.active { color: var(--accent2); border-bottom-color: var(--accent2); }
-.nav-badge { font-size: 9px; padding: 2px 5px; background: var(--accent2); color: #fff; border-radius: 3px; margin-left: 6px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
+.nav-badge { font-size: 9px; padding: 2px 5px; background: var(--accent2); color: #fff; border-radius: 3px; margin-left: 6px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; letter-spacing: 1px; }
 .page { display: none; padding-top: 56px; min-height: 100vh; position: relative; z-index: 1; }
 .page.active { display: block; }
 .hero { padding: 80px 40px 60px; text-align: center; position: relative; overflow: hidden; }
-.hero-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text2); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.6s 0.1s forwards; }
-.hero h1 { font-family: 'Rajdhani', sans-serif; font-size: clamp(42px,7vw,80px); font-weight: 700; line-height: 1; letter-spacing: -1px; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.6s 0.2s forwards; }
+.hero-eyebrow { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--text2); letter-spacing: 3px;  margin-bottom: 16px; opacity: 0; animation: fadeUp 0.6s 0.1s forwards; }
+.hero h1 { font-family: 'Noto Sans JP', sans-serif; font-size: clamp(30px,4.6vw,52px); font-weight: 700; line-height: 1.3; letter-spacing: 0; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.6s 0.2s forwards; }
 .hero h1 em { color: var(--accent2); font-style: normal; }
 .hero p { font-size: 15px; color: var(--text2); max-width: 640px; text-wrap: balance; margin: 0 auto 40px; line-height: 1.7; opacity: 0; animation: fadeUp 0.6s 0.3s forwards; }
 .hero-stats { display: flex; justify-content: center; gap: 48px; margin-bottom: 48px; opacity: 0; animation: fadeUp 0.6s 0.4s forwards; }
-.hero-stat-val { font-family: 'Rajdhani', sans-serif; font-size: 36px; font-weight: 700; line-height: 1; }
+.hero-stat-val { font-family: 'Noto Sans JP', sans-serif; font-size: 36px; font-weight: 700; line-height: 1; }
 .hero-stat-val span { color: var(--accent2); }
-.hero-stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
+.hero-stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; letter-spacing: 1px;  }
 .hero-cta { display: flex; justify-content: center; gap: 12px; opacity: 0; animation: fadeUp 0.6s 0.5s forwards; }
 .btn { white-space: nowrap; padding: 10px 24px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; font-family: 'Noto Sans JP', sans-serif; }
 .btn-primary { background: var(--accent2); color: #fff; font-weight: 700; }
-.btn-primary:hover { background: #5f9bd6; transform: translateY(-1px); }
+.btn-primary:hover { background: #17508f; transform: translateY(-1px); }
 .btn-secondary { background: transparent; border-color: var(--border2); color: var(--text2); }
-.btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(79,143,207,0.05); }
+.btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(29,95,168,0.05); }
 .section { padding: 40px; max-width: 1400px; margin: 0 auto; }
 .section-header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 24px; }
-.section-title { white-space: nowrap; font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-.section-sub { font-size: 12px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+.section-title { white-space: nowrap; font-family: 'Noto Sans JP', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 0.02em;  }
+.section-sub { font-size: 12px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; }
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; }
-.card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(255,255,255,0.02) 0%,transparent 60%); pointer-events: none; }
-.card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+.card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(26,35,46,0.035) 0%,transparent 60%); pointer-events: none; }
+.card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(26,35,46,0.10); }
 .card-accent { border-left: 3px solid var(--accent2); }
 .card-accent-orange { border-left: 3px solid var(--accent); }
 .card-accent-green { border-left: 3px solid var(--accent3); }
-.card-label { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
-.card-title { font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.card-label { font-size: 10px; font-family: 'Noto Sans JP', sans-serif; color: var(--text3); letter-spacing: 2px;  margin-bottom: 8px; }
+.card-title { font-family: 'Noto Sans JP', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 4px; }
 .card-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
 .card-arrow { position: absolute; top: 20px; right: 20px; color: var(--text3); font-size: 18px; transition: all 0.2s; }
 .card:hover .card-arrow { color: var(--accent2); transform: translate(2px,-2px); }
 .rank-table { width: 100%; border-collapse: collapse; }
-.rank-table th { text-align: left; padding: 10px 12px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text2); border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-weight: 400; white-space: nowrap; }
+.rank-table th { text-align: left; padding: 10px 12px; font-size: 11px; letter-spacing: 1px;  color: var(--text2); border-bottom: 1px solid var(--border); font-family: 'Noto Sans JP', sans-serif; font-weight: 400; white-space: nowrap; }
 .rank-table td { padding: 12px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
 .rank-table tr:last-child td { border-bottom: none; }
 .rank-table tbody tr { transition: background 0.15s; }
 .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .home-grid > div { min-width: 0; }
 .nav-link:focus-visible { outline: 2px solid var(--accent2); outline-offset: -2px; }
-.rank-table tbody tr:hover { background: rgba(255,255,255,0.02); }
-.rank-num { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; color: var(--text3); }
-.rank-1 { color: var(--gold); }
+.rank-table tbody tr:hover { background: rgba(26,35,46,0.035); }
+.rank-num { font-family: 'Noto Sans JP', sans-serif; font-size: 18px; font-weight: 700; color: var(--text3); }
+.rank-1 { color: #9a7400; }
 .rank-2 { color: var(--silver); }
 .rank-3 { color: var(--bronze); }
 .chip-name { font-weight: 500; font-size: 14px; line-height: 1.3; white-space: nowrap; }
-.chip-sub { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+.chip-sub { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: 'Noto Sans JP', sans-serif; }
 .score-bar-wrap { min-width: 120px; }
-.score-val { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+.score-val { font-family: 'Noto Sans JP', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 5px; }
 .score-bar-bg { height: 4px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
 .score-bar { height: 100%; border-radius: 2px; background: var(--accent2); }
 .score-bar.gpu { background: var(--accent); }
-.price-cell { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text); white-space: nowrap; }
+.price-cell { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; color: var(--text); white-space: nowrap; }
 .price-meta { margin-top: 4px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; font-size: 9px; line-height: 1.45; white-space: normal; }
 .price-meta a { color: var(--accent2); text-decoration: none; }
 .price-meta a:hover { text-decoration: underline; }
 .price-error { color: var(--accent); }
-.badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
-.badge-green { background: rgba(79,157,114,0.15); color: var(--accent3); border: 1px solid rgba(79,157,114,0.3); }
-.badge-blue { background: rgba(79,143,207,0.15); color: var(--accent2); border: 1px solid rgba(79,143,207,0.3); }
-.badge-orange { background: rgba(196,127,98,0.15); color: var(--accent); border: 1px solid rgba(196,127,98,0.3); }
-.badge-purple { background: rgba(141,157,189,0.15); color: var(--accent4); border: 1px solid rgba(141,157,189,0.3); }
-.affiliate-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid var(--border2); background: transparent; color: var(--text2); white-space: nowrap; }
+.badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; letter-spacing: 0.02em;  white-space: nowrap; }
+.badge-green { background: rgba(43,122,82,0.15); color: var(--accent3); border: 1px solid rgba(43,122,82,0.3); }
+.badge-blue { background: rgba(29,95,168,0.15); color: var(--accent2); border: 1px solid rgba(29,95,168,0.3); }
+.badge-orange { background: rgba(164,87,47,0.15); color: var(--accent); border: 1px solid rgba(164,87,47,0.3); }
+.badge-purple { background: rgba(85,105,143,0.15); color: var(--accent4); border: 1px solid rgba(85,105,143,0.3); }
+.affiliate-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; letter-spacing: 0.02em;  border: 1px solid var(--border2); background: transparent; color: var(--text2); white-space: nowrap; }
 a.affiliate-btn { text-decoration: none; }
-.affiliate-btn:hover { border-color: var(--accent3); color: var(--accent3); background: rgba(79,157,114,0.05); }
+.affiliate-btn:hover { border-color: var(--accent3); color: var(--accent3); background: rgba(43,122,82,0.05); }
 .filters { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
 .filter-btn { padding: 6px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text2); transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; }
 .filter-btn:hover, .filter-btn.active { background: var(--accent2); border-color: var(--accent2); color: #fff; font-weight: 600; }
 .compare-table { width: 100%; border-collapse: collapse; }
 .compare-table th { padding: 14px 20px; text-align: center; background: var(--surface2); border: 1px solid var(--border); font-size: 13px; font-weight: 600; }
-.compare-table th.label-col { text-align: left; font-size: 10px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; font-weight: 400; width: 160px; }
+.compare-table th.label-col { text-align: left; font-size: 10px; color: var(--text3); letter-spacing: 2px;  font-family: 'Noto Sans JP', sans-serif; font-weight: 400; width: 160px; }
 .compare-table td { padding: 12px 20px; border: 1px solid var(--border); text-align: center; font-size: 13px; vertical-align: middle; }
 .compare-table td.label-col { text-align: left; font-size: 11px; color: var(--text2); background: var(--surface2); }
-.compare-table tr:nth-child(even) td { background: rgba(255,255,255,0.01); }
+.compare-table tr:nth-child(even) td { background: rgba(26,35,46,0.035); }
 .compare-table tr:nth-child(even) td.label-col { background: var(--surface2); }
 .best-val { color: var(--accent3); font-weight: 700; }
 .perf-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
 .perf-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
-.perf-card-title { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 20px; }
+.perf-card-title { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.02em;  color: var(--text3); margin-bottom: 20px; }
 .perf-bars { display: flex; flex-direction: column; gap: 12px; }
 .perf-bar-row { display: flex; align-items: center; gap: 12px; }
 .perf-bar-label { font-size: 12px; color: var(--text2); width: 110px; text-align: right; flex-shrink: 0; }
 .perf-bar-track { flex: 1; height: 8px; background: var(--surface3); border-radius: 4px; overflow: hidden; }
 .perf-bar-fill { height: 100%; border-radius: 4px; }
-.perf-bar-pct { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text2); width: 50px; text-align: right; flex-shrink: 0; }
+.perf-bar-pct { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--text2); width: 50px; text-align: right; flex-shrink: 0; }
 .mini-rank { display: flex; flex-direction: column; gap: 6px; }
 .mini-rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface2); border-radius: 6px; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
 .mini-rank-item:hover { border-color: var(--border2); }
-.mini-rank-pos { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; min-width: 24px; color: var(--text3); }
-.pos-1 { color: var(--gold); }
+.mini-rank-pos { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: 700; min-width: 24px; color: var(--text3); }
+.pos-1 { color: #9a7400; }
 .pos-2 { color: var(--silver); }
 .pos-3 { color: var(--bronze); }
 .mini-rank-name { flex: 1; min-width: 0; font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mini-rank-score { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--accent2); }
+.mini-rank-score { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: 700; color: var(--accent2); }
 .mini-rank-bar { width: 60px; height: 3px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
 .mini-rank-bar-fill { height: 100%; border-radius: 2px; }
 .divider { height: 1px; background: var(--border); margin: 0 40px; }
 .footer-band { background: var(--surface); border-top: 1px solid var(--border); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; margin-top: 60px; }
-.footer-logo { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; }
+.footer-logo { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; }
 .footer-logo span { color: var(--accent2); }
 .footer-note { font-size: 11px; color: var(--text3); }
-.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.table-wrap { box-shadow: 0 1px 2px rgba(26,35,46,0.04); background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
 .tabs { overflow-x: auto; scrollbar-width: none; display: flex; border-bottom: 1px solid var(--border); padding: 0 24px; background: var(--surface2); }
 .tab { white-space: nowrap; padding: 12px 20px; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
 .tab:hover { color: var(--text); }
 .tab.active { color: var(--accent2); border-bottom-color: var(--accent2); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
-.notice { padding: 12px 24px; background: rgba(79,143,207,0.07); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
+.notice { padding: 12px 24px; background: rgba(29,95,168,0.07); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
 .notice::before { content: 'ℹ'; color: var(--accent2); font-size: 14px; }
 .compare-select-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
 .select-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
-.select-box label { font-size: 11px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 8px; }
+.select-box label { font-size: 11px; color: var(--text3); letter-spacing: 1px;  display: block; margin-bottom: 8px; }
 .select-box select { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); padding: 10px 14px; font-size: 14px; font-family: 'Noto Sans JP', sans-serif; outline: none; cursor: pointer; transition: border-color 0.2s; }
 .select-box select:focus { border-color: var(--accent2); }
 #builder { background: var(--bg); }
@@ -166,30 +166,30 @@ a.affiliate-btn { text-decoration: none; }
 .bpart-section.has-selection { border-color: var(--border2); }
 .bpart-header { display: flex; align-items: center; gap: 12px; padding: 11px 16px; cursor: pointer; background: var(--surface2); user-select: none; }
 .bpart-header:hover { background: var(--surface3); }
-.bpart-icon { width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-.bpart-cat-label { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; letter-spacing: 2px; text-transform: uppercase; display: block; }
-.bpart-cat-name { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; line-height: 1.1; }
+.bpart-icon { width: 40px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.bpart-cat-label { font-size: 10px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; letter-spacing: 2px;  display: block; }
+.bpart-cat-name { font-family: 'Noto Sans JP', sans-serif; font-size: 15px; font-weight: 700; line-height: 1.1; }
 .bpart-sel-info { margin-left: auto; text-align: right; }
 .bpart-sel-name { font-size: 12px; color: var(--accent2); max-width: 150px; line-height: 1.3; }
-.bpart-sel-price { font-size: 11px; color: var(--gold); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
+.bpart-sel-price { font-size: 11px; color: var(--gold); font-family: 'Noto Sans JP', sans-serif; margin-top: 1px; }
 .bpart-chevron { color: var(--text3); font-size: 11px; margin-left: 8px; transition: transform 0.25s; }
 .bpart-section.bopen .bpart-chevron { transform: rotate(180deg); }
 .bpart-list { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1); }
 .bpart-section.bopen .bpart-list { max-height: 700px; }
 .bpart-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-top: 1px solid var(--border); cursor: pointer; transition: background 0.15s; position: relative; }
-.bpart-item:hover { background: rgba(255,255,255,0.02); }
-.bpart-item.bselected { background: rgba(79,143,207,0.05); }
+.bpart-item:hover { background: rgba(26,35,46,0.035); }
+.bpart-item.bselected { background: rgba(29,95,168,0.05); }
 .bpart-item.bselected::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent2); }
 .bpart-check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; transition: all 0.2s; color: transparent; }
 .bpart-item.bselected .bpart-check { background: var(--accent2); border-color: var(--accent2); color: #fff; }
 .bpart-item-name { flex: 1; }
 .bpart-item-name strong { font-size: 13px; font-weight: 500; display: block; }
-.bpart-item-name small { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+.bpart-item-name small { font-size: 11px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; }
 .bpart-item-right { text-align: right; flex-shrink: 0; }
-.bpart-item-price { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--gold); }
+.bpart-item-price { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; color: var(--gold); }
 .bpart-item-score { font-size: 11px; color: var(--text2); margin-top: 2px; }
 .bcart-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-.bcart-title { font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.bcart-title { font-family: 'Noto Sans JP', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.02em;  }
 .bcart-count { font-size: 11px; color: var(--text2); margin-top: 2px; }
 .bclear-btn { background: transparent; border: 1px solid var(--border2); color: var(--text2); border-radius: 5px; padding: 4px 10px; font-size: 11px; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; }
 .bclear-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -199,27 +199,27 @@ a.affiliate-btn { text-decoration: none; }
 .bcart-empty { text-align: center; padding: 20px; color: var(--text3); font-size: 12px; }
 .bcart-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); margin-bottom: 5px; animation: bslideIn 0.2s ease; }
 @keyframes bslideIn { from { opacity:0; transform:translateX(8px); } to { opacity:1; transform:translateX(0); } }
-.bcart-item-cat { font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; width: 28px; flex-shrink: 0; }
+.bcart-item-cat { font-size: 9px; font-weight: 700; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; width: 30px; flex-shrink: 0; }
 .bcart-item-name { flex: 1; font-size: 11px; font-weight: 500; line-height: 1.3; }
-.bcart-item-price { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gold); flex-shrink: 0; }
+.bcart-item-price { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; color: var(--gold); flex-shrink: 0; }
 .bcart-item-del { width: 16px; height: 16px; border-radius: 3px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text3); font-size: 10px; transition: all 0.15s; flex-shrink: 0; }
-.bcart-item-del:hover { color: #cf6f6f; background: rgba(207,111,111,0.1); }
+.bcart-item-del:hover { color: #b3403c; background: rgba(179,64,60,0.1); }
 .bcart-total { padding: 12px 18px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .btotal-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .btotal-label { font-size: 12px; color: var(--text2); }
-.btotal-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.btotal-val { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; }
 .bgrand-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-.bgrand-label { font-family: 'Rajdhani', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-.bgrand-val { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; color: var(--gold); }
-.bcheck-btn { margin: 12px 18px 0; width: calc(100% - 36px); padding: 12px; border-radius: 7px; background: var(--accent2); color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border: none; transition: all 0.2s; flex-shrink: 0; }
-.bcheck-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(196,127,98,0.3); }
+.bgrand-label { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.02em;  }
+.bgrand-val { font-family: 'Noto Sans JP', sans-serif; font-size: 24px; font-weight: 700; color: var(--gold); }
+.bcheck-btn { margin: 12px 18px 0; width: calc(100% - 36px); padding: 12px; border-radius: 7px; background: var(--accent2); color: #fff; font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.02em;  cursor: pointer; border: none; transition: all 0.2s; flex-shrink: 0; }
+.bcheck-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(164,87,47,0.3); }
 .bgame-result { flex: 1; overflow-y: auto; padding: 14px 18px; }
 .bgame-result::-webkit-scrollbar { width: 3px; }
 .bgame-result::-webkit-scrollbar-thumb { background: var(--border2); }
-.bresult-title { font-family: 'Rajdhani', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.bresult-title { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.02em;  color: var(--text3); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
 .bresult-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .bresult-summary { padding: 10px 12px; background: var(--surface2); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 10px; }
-.bresult-tier { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+.bresult-tier { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 3px; }
 .bresult-desc { font-size: 11px; color: var(--text2); line-height: 1.6; }
 .btier-bar { display: flex; gap: 3px; margin-bottom: 3px; }
 .btier-seg { flex: 1; height: 5px; border-radius: 2px; background: var(--surface3); }
@@ -228,21 +228,21 @@ a.affiliate-btn { text-decoration: none; }
 .btier-seg.ahigh { background: var(--accent4); }
 .btier-seg.aultra { background: var(--gold); }
 .btier-labels { display: flex; justify-content: space-between; margin-bottom: 10px; }
-.btier-label-sm { font-size: 9px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+.btier-label-sm { font-size: 9px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; }
 .bwarn { display: flex; align-items: flex-start; gap: 6px; padding: 7px 10px; border-radius: 6px; font-size: 11px; margin-bottom: 7px; line-height: 1.5; }
-.bwarn-yellow { background: rgba(207,169,85,0.08); border: 1px solid rgba(207,169,85,0.2); color: var(--gold); }
-.bwarn-red { background: rgba(207,111,111,0.08); border: 1px solid rgba(207,111,111,0.2); color: #cf6f6f; }
+.bwarn-yellow { background: rgba(140,98,0,0.08); border: 1px solid rgba(140,98,0,0.2); color: var(--gold); }
+.bwarn-red { background: rgba(179,64,60,0.08); border: 1px solid rgba(179,64,60,0.2); color: #b3403c; }
 .btier-group { margin-bottom: 10px; }
-.btier-group-label { font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; display: inline-block; margin-bottom: 6px; font-weight: 700; }
-.blabel-ultra { background: rgba(207,169,85,0.1); color: var(--gold); border: 1px solid rgba(207,169,85,0.2); }
-.blabel-high  { background: rgba(79,143,207,0.1); color: var(--accent2); border: 1px solid rgba(79,143,207,0.2); }
-.blabel-mid   { background: rgba(79,157,114,0.1); color: var(--accent3); border: 1px solid rgba(79,157,114,0.2); }
+.btier-group-label { font-size: 10px; font-family: 'Noto Sans JP', sans-serif; letter-spacing: 1px;  padding: 2px 7px; border-radius: 3px; display: inline-block; margin-bottom: 6px; font-weight: 700; }
+.blabel-ultra { background: rgba(140,98,0,0.1); color: var(--gold); border: 1px solid rgba(140,98,0,0.2); }
+.blabel-high  { background: rgba(29,95,168,0.1); color: var(--accent2); border: 1px solid rgba(29,95,168,0.2); }
+.blabel-mid   { background: rgba(43,122,82,0.1); color: var(--accent3); border: 1px solid rgba(43,122,82,0.2); }
 .blabel-low   { background: rgba(139,148,158,0.1); color: var(--text2); border: 1px solid var(--border2); }
 .bgame-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 .bgame-chip { padding: 4px 9px; border-radius: 20px; font-size: 11px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); line-height: 1.3; }
-.bgame-chip small { display: block; font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+.bgame-chip small { display: block; font-size: 10px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; }
 .builder-hero { padding: 28px 0 18px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-.builder-hero h2 { font-family: 'Rajdhani', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.builder-hero h2 { font-family: 'Noto Sans JP', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: 0.02em;  margin-bottom: 4px; }
 .builder-hero h2 span { color: var(--accent2); }
 .builder-hero p { font-size: 13px; color: var(--text2); }
 @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
@@ -251,12 +251,12 @@ a.affiliate-btn { text-decoration: none; }
 
 /* ── SORT BUTTONS ── */
 .sort-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.sort-label { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; letter-spacing: 1px; margin-right: 4px; }
+.sort-label { font-size: 11px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; letter-spacing: 1px; margin-right: 4px; }
 .sort-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: var(--surface2); color: var(--text2); transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; user-select: none; }
 .sort-btn:hover { border-color: var(--accent2); color: var(--accent2); }
-.sort-btn.active-score { border-color: var(--accent2); color: var(--accent2); background: rgba(79,143,207,0.1); }
-.sort-btn.active-price { border-color: var(--gold); color: var(--gold); background: rgba(207,169,85,0.08); }
-.sort-btn.active-cospa { border-color: var(--accent3); color: var(--accent3); background: rgba(79,157,114,0.1); }
+.sort-btn.active-score { border-color: var(--accent2); color: var(--accent2); background: rgba(29,95,168,0.1); }
+.sort-btn.active-price { border-color: var(--gold); color: var(--gold); background: rgba(140,98,0,0.08); }
+.sort-btn.active-cospa { border-color: var(--accent3); color: var(--accent3); background: rgba(43,122,82,0.1); }
 .sort-arrow { font-size: 10px; opacity: 0.7; }
 
 /* ── SEARCH & BUDGET ── */
@@ -272,7 +272,7 @@ a.affiliate-btn { text-decoration: none; }
 .search-box input::placeholder { color: var(--text3); }
 .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; pointer-events: none; }
 .budget-box { display: flex; flex-direction: column; gap: 5px; min-width: 200px; }
-.budget-label { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; display: flex; justify-content: space-between; }
+.budget-label { font-size: 11px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; display: flex; justify-content: space-between; }
 .budget-label span { color: var(--gold); font-weight: 700; }
 input[type=range] {
   -webkit-appearance: none; width: 100%; height: 4px;
@@ -281,70 +281,70 @@ input[type=range] {
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none; width: 16px; height: 16px;
   border-radius: 50%; background: var(--accent2); cursor: pointer;
-  box-shadow: 0 0 0 3px rgba(79,143,207,0.2);
+  box-shadow: 0 0 0 3px rgba(29,95,168,0.2);
 }
-.result-count { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; align-self: flex-end; padding-bottom: 9px; white-space: nowrap; }
+.result-count { font-size: 11px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; align-self: flex-end; padding-bottom: 9px; white-space: nowrap; }
 
 /* ── FAVORITES ── */
-.fav-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 2px 6px; border-radius: 4px; transition: all 0.15s; line-height: 1; }
-.fav-btn:hover { background: rgba(207,111,111,0.1); }
-.fav-btn.active { animation: pop 0.3s; }
-.fav-bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(79,143,207,0.06); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text2); }
-.fav-bar-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); letter-spacing: 1px; }
+.fav-btn { color: var(--text3); background: none; border: none; cursor: pointer; font-size: 17px; padding: 2px 6px; border-radius: 4px; transition: all 0.15s; line-height: 1; }
+.fav-btn:hover { background: rgba(179,64,60,0.1); }
+.fav-btn.active { color: #b3403c; animation: pop 0.3s; }
+.fav-bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(29,95,168,0.06); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text2); }
+.fav-bar-label { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; color: var(--text3); letter-spacing: 1px; }
 .fav-chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; font-size: 11px; cursor: pointer; }
 .fav-chip:hover { border-color: var(--accent2); }
 .fav-chip-del { color: var(--text3); font-size: 10px; }
-.fav-chip-del:hover { color: #cf6f6f; }
+.fav-chip-del:hover { color: #b3403c; }
 .fav-clear { margin-left: auto; font-size: 11px; color: var(--text3); cursor: pointer; padding: 2px 8px; border: 1px solid var(--border2); border-radius: 4px; background: none; font-family: 'Noto Sans JP', sans-serif; }
 .fav-clear:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ── SHARE BUTTON ── */
 .share-btn { white-space: nowrap; margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: var(--surface2); color: var(--text2); transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; }
 .share-btn:hover { border-color: var(--accent2); color: var(--accent2); }
-.share-toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent3); color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; z-index: 9999; opacity: 0; transition: all 0.3s; pointer-events: none; }
+.share-toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent3); color: #fff; padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; letter-spacing: 0.02em; z-index: 9999; opacity: 0; transition: all 0.3s; pointer-events: none; }
 .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ── BOTTLENECK PAGE ── */
 .bn-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
 .bn-select-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; }
-.bn-select-card label { font-size: 11px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+.bn-select-card label { font-size: 11px; color: var(--text3); letter-spacing: 2px;  display: block; margin-bottom: 8px; font-family: 'Noto Sans JP', sans-serif; }
 .bn-select-card select { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); padding: 10px 14px; font-size: 13px; font-family: 'Noto Sans JP', sans-serif; outline: none; cursor: pointer; margin-bottom: 10px; }
 .bn-select-card select:focus { border-color: var(--accent2); }
 .bn-result { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px 32px; }
 .bn-meter { margin: 20px 0; }
-.bn-meter-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+.bn-meter-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 6px; font-family: 'Noto Sans JP', sans-serif; }
 .bn-bar-track { height: 20px; background: var(--surface3); border-radius: 4px; overflow: hidden; display: flex; }
 .bn-bar-cpu { height: 100%; background: var(--accent2); border-radius: 4px 0 0 4px; transition: width 0.6s ease; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
 .bn-bar-gpu { height: 100%; background: var(--accent); border-radius: 0 4px 4px 0; transition: width 0.6s ease; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; }
 .bn-verdict { text-align: center; padding: 20px; }
-.bn-verdict-icon { font-size: 40px; margin-bottom: 8px; }
-.bn-verdict-title { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+.bn-verdict-icon { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 12px; border: 1px solid var(--border2); border-radius: 20px; color: var(--text2); margin-bottom: 10px; }
+.bn-verdict-title { font-family: 'Noto Sans JP', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 6px; }
 .bn-verdict-desc { text-wrap: balance; font-size: 13px; color: var(--text2); line-height: 1.7; max-width: 480px; margin: 0 auto; }
 .bn-stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 20px; }
 .bn-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; text-align: center; }
-.bn-stat-val { font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; }
+.bn-stat-val { font-family: 'Noto Sans JP', sans-serif; font-size: 22px; font-weight: 700; }
 .bn-stat-label { font-size: 11px; color: var(--text3); margin-top: 3px; }
 
 /* ── PRESET PAGE ── */
 .preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 16px; margin-bottom: 32px; }
 .preset-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.25s; }
-.preset-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+.preset-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(26,35,46,0.10); }
 .preset-header { padding: 18px 20px 14px; display: flex; align-items: center; gap: 14px; }
-.preset-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-.preset-title { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; }
-.preset-budget { font-size: 12px; color: var(--text3); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+.preset-icon { background: var(--surface2) !important; border: 1px solid var(--border); width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.preset-title { font-family: 'Noto Sans JP', sans-serif; font-size: 18px; font-weight: 700; }
+.preset-budget { font-size: 12px; color: var(--text3); margin-top: 2px; font-family: 'Noto Sans JP', sans-serif; }
 .preset-body { padding: 0 20px 18px; }
 .preset-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
 .preset-parts { display: flex; flex-direction: column; gap: 6px; }
 .preset-part { display: flex; align-items: center; gap: 10px; font-size: 12px; }
-.preset-part-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); width: 46px; flex-shrink: 0; letter-spacing: 1px; }
+.preset-part-cat { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; color: var(--text3); width: 46px; flex-shrink: 0; letter-spacing: 1px; }
 .preset-part-name { flex: 1; color: var(--text); }
-.preset-part-price { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 11px; }
+.preset-part-price { font-family: 'Noto Sans JP', sans-serif; color: var(--gold); font-size: 11px; }
 .preset-total-row { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-.preset-total-label { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
-.preset-total-val { font-family: 'Rajdhani', sans-serif; font-size: 20px; font-weight: 700; color: var(--gold); }
-.preset-load-btn { margin-top: 12px; width: 100%; padding: 9px; border-radius: 6px; background: rgba(79,143,207,0.1); border: 1px solid rgba(79,143,207,0.3); color: var(--accent2); font-size: 12px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-.preset-load-btn:hover { background: rgba(79,143,207,0.2); }
+.preset-total-label { font-size: 11px; color: var(--text3); font-family: 'Noto Sans JP', sans-serif; }
+.preset-total-val { font-family: 'Noto Sans JP', sans-serif; font-size: 20px; font-weight: 700; color: var(--gold); }
+.preset-load-btn { margin-top: 12px; width: 100%; padding: 9px; border-radius: 6px; background: rgba(29,95,168,0.1); border: 1px solid rgba(29,95,168,0.3); color: var(--accent2); font-size: 12px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; letter-spacing: 0.02em;  cursor: pointer; transition: all 0.2s; }
+.preset-load-btn:hover { background: rgba(29,95,168,0.2); }
 
 button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
 .bmobile-bar { display: none; }
@@ -373,10 +373,10 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
   .search-box { flex: none; width: 100%; }
   .builder-left { padding: 20px 16px; }
   .builder-layout { padding-bottom: 64px; }
-  .bmobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: rgba(22,28,37,0.96); backdrop-filter: blur(12px); border-top: 1px solid var(--border2); }
+  .bmobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); border-top: 1px solid var(--border2); }
   .bmobile-bar span { display: block; font-size: 10px; color: var(--text2); letter-spacing: 1px; }
-  .bmobile-bar strong { font-family: 'Rajdhani', sans-serif; font-size: 22px; color: var(--gold); line-height: 1.1; }
-  .bmobile-bar button { padding: 9px 16px; border-radius: 6px; border: 1px solid var(--accent2); background: rgba(79,143,207,0.1); color: var(--accent2); font-size: 12px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; white-space: nowrap; }
+  .bmobile-bar strong { font-family: 'Noto Sans JP', sans-serif; font-size: 22px; color: var(--gold); line-height: 1.1; }
+  .bmobile-bar button { padding: 9px 16px; border-radius: 6px; border: 1px solid var(--accent2); background: rgba(29,95,168,0.1); color: var(--accent2); font-size: 12px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; white-space: nowrap; }
   .search-budget-row { flex-direction: column; }
   .budget-box { min-width: auto; width: 100%; }
   .sort-row { gap: 6px; }
@@ -397,16 +397,16 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
     <div role="link" tabindex="0" class="nav-link" onclick="showPage('ram-rank',this)">RAM ランキング</div>
     <div role="link" tabindex="0" class="nav-link" onclick="showPage('cpu-compare',this)">CPU 比較</div>
     <div role="link" tabindex="0" class="nav-link" onclick="showPage('gpu-compare',this)">GPU 比較</div>
-    <div role="link" tabindex="0" class="nav-link" onclick="showPage('bottleneck',this)">⚡ ボトルネック</div>
-    <div role="link" tabindex="0" class="nav-link" onclick="showPage('presets',this)">🎯 おすすめ構成</div>
-    <div role="link" tabindex="0" class="nav-link" onclick="showPage('builder',this)" style="font-weight:700">🛒 PC構成ビルダー <span class="nav-badge">NEW</span></div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('bottleneck',this)">ボトルネック</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('presets',this)">おすすめ構成</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('builder',this)" style="font-weight:700">PC構成ビルダー <span class="nav-badge">NEW</span></div>
   </div>
 </nav>
 
 <!-- HOME -->
 <div id="home" class="page active">
   <div class="hero">
-    <div class="hero-eyebrow">// BENCHMARK DATABASE</div>
+    <div class="hero-eyebrow">PCパーツ ベンチマークデータベース</div>
     <h1>PCパーツの<em>性能</em>を<br>数値で比べる</h1>
     <p>CPU・GPU・メモリのベンチマークスコア、コスパ、消費電力を一覧で比較。<br>最新データで最適なパーツ選びをサポートします。</p>
     <div class="hero-stats">
@@ -422,17 +422,17 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
   <div class="section">
     <div class="home-grid">
       <div>
-        <div class="section-header"><div class="section-title">CPU TOP 5</div><div class="section-sub">// passmark multi</div></div>
+        <div class="section-header"><div class="section-title">CPU TOP 5</div><div class="section-sub">PassMark マルチスレッド</div></div>
         <div class="mini-rank" id="home-cpu-ranking"><div class="mini-rank-item"><div class="mini-rank-pos pos-1">1</div><div class="mini-rank-name">読み込み中...</div><div class="mini-rank-bar"></div><div class="mini-rank-score">—</div></div></div>
       </div>
       <div>
-        <div class="section-header"><div class="section-title">GPU TOP 5</div><div class="section-sub">// 3dmark time spy</div></div>
+        <div class="section-header"><div class="section-title">GPU TOP 5</div><div class="section-sub">3DMark Time Spy</div></div>
         <div class="mini-rank" id="home-gpu-ranking"><div class="mini-rank-item"><div class="mini-rank-pos pos-1">1</div><div class="mini-rank-name">読み込み中...</div><div class="mini-rank-bar"></div><div class="mini-rank-score" style="color:var(--accent)">—</div></div></div>
       </div>
     </div>
   </div>
   <div class="section" id="home-new-section" style="display:none;padding-top:0">
-    <div class="section-header"><div class="section-title">新着パーツ</div><div class="section-sub">// 販売を確認 · ベンチマークスコア登録待ち</div></div>
+    <div class="section-header"><div class="section-title">新着パーツ</div><div class="section-sub">販売を確認 · ベンチマークスコア登録待ち</div></div>
     <div class="mini-rank" id="home-new-products"></div>
   </div>
   <div class="divider"></div>
@@ -453,8 +453,8 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
   <div class="section">
     <div class="section-header">
       <div class="section-title">CPU 性能ランキング</div>
-      <div class="section-sub" id="cpu-rank-updated">// データ読み込み中...</div>
-      <button class="share-btn" onclick="shareUrl('cpu-rank')">🔗 シェア</button>
+      <div class="section-sub" id="cpu-rank-updated">データ読み込み中...</div>
+      <button class="share-btn" onclick="shareUrl('cpu-rank')">シェア</button>
     </div>
     <div class="filters">
       <button class="filter-btn active" onclick="filterCpu('all',this)">全て</button>
@@ -463,7 +463,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
     </div>
     <div class="search-budget-row">
       <div class="search-box">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg></span>
         <input type="text" id="cpu-search" placeholder="CPU名で検索... (例: Ryzen 7, i9)" oninput="renderCpuTable()">
       </div>
       <div class="budget-box">
@@ -474,9 +474,9 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
     </div>
     <div class="sort-row">
       <span class="sort-label">並び替え：</span>
-      <button class="sort-btn active-score" id="cpu-sort-score" onclick="sortCpu('score',this)">🏆 性能 <span class="sort-arrow" id="cpu-arrow-score">↓</span></button>
-      <button class="sort-btn" id="cpu-sort-price" onclick="sortCpu('price',this)">💴 値段 <span class="sort-arrow" id="cpu-arrow-price">↓</span></button>
-      <button class="sort-btn" id="cpu-sort-cospa" onclick="sortCpu('cospa',this)">⭐ コスパ <span class="sort-arrow" id="cpu-arrow-cospa">↓</span></button>
+      <button class="sort-btn active-score" id="cpu-sort-score" onclick="sortCpu('score',this)">性能 <span class="sort-arrow" id="cpu-arrow-score">↓</span></button>
+      <button class="sort-btn" id="cpu-sort-price" onclick="sortCpu('price',this)">値段 <span class="sort-arrow" id="cpu-arrow-price">↓</span></button>
+      <button class="sort-btn" id="cpu-sort-cospa" onclick="sortCpu('cospa',this)">コスパ <span class="sort-arrow" id="cpu-arrow-cospa">↓</span></button>
     </div>
     <div class="fav-bar" id="cpu-fav-bar" style="display:none">
       <span class="fav-bar-label">お気に入り：</span>
@@ -520,8 +520,8 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
   <div class="section">
     <div class="section-header">
       <div class="section-title">GPU 性能ランキング</div>
-      <div class="section-sub" id="gpu-rank-updated">// データ読み込み中...</div>
-      <button class="share-btn" onclick="shareUrl('gpu-rank')">🔗 シェア</button>
+      <div class="section-sub" id="gpu-rank-updated">データ読み込み中...</div>
+      <button class="share-btn" onclick="shareUrl('gpu-rank')">シェア</button>
     </div>
     <div class="filters">
       <button class="filter-btn active" onclick="filterGpu('all',this)">全て</button>
@@ -530,7 +530,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
     </div>
     <div class="search-budget-row">
       <div class="search-box">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg></span>
         <input type="text" id="gpu-search" placeholder="GPU名で検索... (例: RTX 4070, RX 7800)" oninput="renderGpuTable()">
       </div>
       <div class="budget-box">
@@ -541,9 +541,9 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
     </div>
     <div class="sort-row">
       <span class="sort-label">並び替え：</span>
-      <button class="sort-btn active-score" id="gpu-sort-score" onclick="sortGpu('score',this)">🏆 性能 <span class="sort-arrow" id="gpu-arrow-score">↓</span></button>
-      <button class="sort-btn" id="gpu-sort-price" onclick="sortGpu('price',this)">💴 値段 <span class="sort-arrow" id="gpu-arrow-price">↓</span></button>
-      <button class="sort-btn" id="gpu-sort-cospa" onclick="sortGpu('cospa',this)">⭐ コスパ <span class="sort-arrow" id="gpu-arrow-cospa">↓</span></button>
+      <button class="sort-btn active-score" id="gpu-sort-score" onclick="sortGpu('score',this)">性能 <span class="sort-arrow" id="gpu-arrow-score">↓</span></button>
+      <button class="sort-btn" id="gpu-sort-price" onclick="sortGpu('price',this)">値段 <span class="sort-arrow" id="gpu-arrow-price">↓</span></button>
+      <button class="sort-btn" id="gpu-sort-cospa" onclick="sortGpu('cospa',this)">コスパ <span class="sort-arrow" id="gpu-arrow-cospa">↓</span></button>
     </div>
     <div class="fav-bar" id="gpu-fav-bar" style="display:none">
       <span class="fav-bar-label">お気に入り：</span>
@@ -566,8 +566,8 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
   <div class="section">
     <div class="section-header">
       <div class="section-title">RAM 性能ランキング</div>
-      <div class="section-sub" id="ram-rank-updated">// データ読み込み中...</div>
-      <button class="share-btn" onclick="shareUrl('ram-rank')">🔗 シェア</button>
+      <div class="section-sub" id="ram-rank-updated">データ読み込み中...</div>
+      <button class="share-btn" onclick="shareUrl('ram-rank')">シェア</button>
     </div>
     <div class="filters">
       <button class="filter-btn active" onclick="filterRam('all',this)">全て</button>
@@ -579,7 +579,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
     </div>
     <div class="search-budget-row">
       <div class="search-box">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg></span>
         <input type="text" id="ram-search" placeholder="製品名で検索... (例: DDR5-6000, Corsair)" oninput="renderRamTable()">
       </div>
       <div class="budget-box">
@@ -590,9 +590,9 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
     </div>
     <div class="sort-row">
       <span class="sort-label">並び替え：</span>
-      <button class="sort-btn active-score" id="ram-sort-speed" onclick="sortRam('speed',this)">⚡ 速度 <span class="sort-arrow" id="ram-arrow-speed">↓</span></button>
-      <button class="sort-btn" id="ram-sort-price" onclick="sortRam('price',this)">💴 値段 <span class="sort-arrow" id="ram-arrow-price">↓</span></button>
-      <button class="sort-btn" id="ram-sort-cospa" onclick="sortRam('cospa',this)">⭐ コスパ/GB <span class="sort-arrow" id="ram-arrow-cospa">↓</span></button>
+      <button class="sort-btn active-score" id="ram-sort-speed" onclick="sortRam('speed',this)">速度 <span class="sort-arrow" id="ram-arrow-speed">↓</span></button>
+      <button class="sort-btn" id="ram-sort-price" onclick="sortRam('price',this)">値段 <span class="sort-arrow" id="ram-arrow-price">↓</span></button>
+      <button class="sort-btn" id="ram-sort-cospa" onclick="sortRam('cospa',this)">コスパ/GB <span class="sort-arrow" id="ram-arrow-cospa">↓</span></button>
     </div>
     <div class="fav-bar" id="ram-fav-bar" style="display:none">
       <span class="fav-bar-label">お気に入り：</span>
@@ -613,7 +613,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
 <!-- CPU COMPARE -->
 <div id="cpu-compare" class="page">
   <div class="section">
-    <div class="section-header"><div class="section-title">CPU 詳細比較</div><div class="section-sub">// 2製品を選択して比較</div></div>
+    <div class="section-header"><div class="section-title">CPU 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
     <div class="compare-select-wrap">
       <div class="select-box"><label>CPU A</label><select id="cpu-a-select" onchange="updateCompare()"></select></div>
       <div class="select-box"><label>CPU B</label><select id="cpu-b-select" onchange="updateCompare()"></select></div>
@@ -627,7 +627,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
 <!-- GPU COMPARE -->
 <div id="gpu-compare" class="page">
   <div class="section">
-    <div class="section-header"><div class="section-title">GPU 詳細比較</div><div class="section-sub">// 2製品を選択して比較</div></div>
+    <div class="section-header"><div class="section-title">GPU 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
     <div class="compare-select-wrap">
       <div class="select-box"><label>GPU A</label><select id="gpu-a-select" onchange="updateGpuCompare()"></select></div>
       <div class="select-box"><label>GPU B</label><select id="gpu-b-select" onchange="updateGpuCompare()"></select></div>
@@ -641,20 +641,20 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
 <div id="bottleneck" class="page">
   <div class="section">
     <div class="section-header">
-      <div class="section-title">⚡ ボトルネック計算機</div>
-      <div class="section-sub">// CPU × GPU のバランスを診断</div>
-      <button class="share-btn" onclick="shareUrl('bottleneck')">🔗 シェア</button>
+      <div class="section-title">ボトルネック計算機</div>
+      <div class="section-sub">CPU × GPU のバランスを診断</div>
+      <button class="share-btn" onclick="shareUrl('bottleneck')">シェア</button>
     </div>
     <div class="bn-layout">
       <div class="bn-select-card">
         <label>CPU を選択</label>
         <select id="bn-cpu-sel" onchange="calcBottleneck()"></select>
-        <div id="bn-cpu-info" style="font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace"></div>
+        <div id="bn-cpu-info" style="font-size:12px;color:var(--text2);font-family:'Noto Sans JP',sans-serif"></div>
       </div>
       <div class="bn-select-card">
         <label>GPU を選択</label>
         <select id="bn-gpu-sel" onchange="calcBottleneck()"></select>
-        <div id="bn-gpu-info" style="font-size:12px;color:var(--text2);font-family:'JetBrains Mono',monospace"></div>
+        <div id="bn-gpu-info" style="font-size:12px;color:var(--text2);font-family:'Noto Sans JP',sans-serif"></div>
       </div>
     </div>
     <div class="bn-result" id="bn-result">
@@ -668,8 +668,8 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
 <div id="presets" class="page">
   <div class="section">
     <div class="section-header">
-      <div class="section-title">🎯 用途別おすすめ構成</div>
-      <div class="section-sub">// プリセット構成をビルダーに読み込めます</div>
+      <div class="section-title">用途別おすすめ構成</div>
+      <div class="section-sub">プリセット構成をビルダーに読み込めます</div>
     </div>
     <div class="preset-grid" id="preset-grid"></div>
   </div>
@@ -681,7 +681,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
   <div class="bmobile-bar"><div><span>総合計</span><strong id="bmobile-total">¥15,000</strong></div><button onclick="document.querySelector('.builder-right').scrollIntoView({behavior:'smooth'})">構成と診断を見る ↓</button></div>
   <div class="builder-layout">
     <div class="builder-left">
-      <div class="builder-hero"><h2>PC構成<span>ビルダー</span></h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">🔗 この構成をシェア</button></div>
+      <div class="builder-hero"><h2>PC構成<span>ビルダー</span></h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">
@@ -693,7 +693,7 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
         <div style="height:1px;background:var(--border);margin:6px 0"></div>
         <div class="bgrand-row"><span class="bgrand-label">総合計</span><span class="bgrand-val" id="bgrand-total">¥15,000</span></div>
       </div>
-      <button class="bcheck-btn" onclick="banalyze()">🎮 ゲーム性能をチェック</button>
+      <button class="bcheck-btn" onclick="banalyze()">ゲーム性能をチェック</button>
       <div class="bgame-result" id="bgame-result"><div style="text-align:center;padding:24px;color:var(--text3);font-size:12px;margin-top:12px">CPU と GPU を選ぶと<br>ゲーム性能が自動で表示されます</div></div>
     </div>
   </div>
@@ -930,8 +930,8 @@ function renderPrice(item) {
 function purchaseButton(item) {
   const url = item.rakuten?.status === 'ok' && safeRakutenUrl(item.rakuten.url);
   return url
-    ? `<a class="affiliate-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">🛒 ${escapeHtml(item.rakuten.source)}</a><button class="affiliate-btn" style="margin-top:4px" title="Amazonの価格は自動取得していません。検索結果で確認できます">Amazonで確認</button>`
-    : '<button class="affiliate-btn">🛒 Amazon</button>';
+    ? `<a class="affiliate-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">${escapeHtml(item.rakuten.source)}</a><button class="affiliate-btn" style="margin-top:4px" title="Amazonの価格は自動取得していません。検索結果で確認できます">Amazonで確認</button>`
+    : '<button class="affiliate-btn">Amazon</button>';
 }
 function rankColor(i) { return i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''; }
 function fmtClock(min, max) {
@@ -1019,7 +1019,7 @@ function renderCpuTable() {
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
       <td class="price-cell" style="${cpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
       <td>${stars(c.score/maxCpuScore)}</td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('cpu','${jsq(c.name)}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('cpu','${jsq(c.name)}')" title="お気に入り">${isFav?'♥':'♡'}</button></td>
       <td>${purchaseButton(c)}</td>
     </tr>`;}).join('');
 
@@ -1092,7 +1092,7 @@ function renderGpuTable() {
       <td class="price-cell">${esc(g.dlss||'—')}</td>
       <td class="price-cell" style="${gpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
       <td>${stars(g.score/maxGpuScore)}</td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('gpu','${jsq(g.name)}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('gpu','${jsq(g.name)}')" title="お気に入り">${isFav?'♥':'♡'}</button></td>
       <td>${purchaseButton(g)}</td>
     </tr>`;}).join('');
 }
@@ -1129,7 +1129,7 @@ function renderRamTable() {
       <td class="price-cell" style="${ramSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(r)}</td>
       <td class="price-cell" style="${ramSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
       <td>${stars(r.speed/maxRamSpeed)}</td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('ram','${jsq(r.name)}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('ram','${jsq(r.name)}')" title="お気に入り">${isFav?'♥':'♡'}</button></td>
       <td>${purchaseButton(r)}</td>
     </tr>`;}).join('');
 }
@@ -1219,15 +1219,15 @@ function updateCompare() {
     <div class="perf-card">
       <div class="perf-card-title">マルチスレッドスコア (PassMark)</div>
       <div class="perf-bars">
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#4f8fcf">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.score/maxM*100}%;background:#4f8fcf"></div></div><div class="perf-bar-pct">${a.score.toLocaleString()}</div></div>
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#c47f62">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.score/maxM*100}%;background:#c47f62"></div></div><div class="perf-bar-pct">${b.score.toLocaleString()}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#1d5fa8">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.score/maxM*100}%;background:#1d5fa8"></div></div><div class="perf-bar-pct">${a.score.toLocaleString()}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#a4572f">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.score/maxM*100}%;background:#a4572f"></div></div><div class="perf-bar-pct">${b.score.toLocaleString()}</div></div>
       </div>
     </div>
     <div class="perf-card">
       <div class="perf-card-title">価格比較</div>
       <div class="perf-bars">
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#4f8fcf">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.price/maxP*100}%;background:#4f8fcf"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(a.price)}</div></div>
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#c47f62">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.price/maxP*100}%;background:#c47f62"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(b.price)}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#1d5fa8">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.price/maxP*100}%;background:#1d5fa8"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(a.price)}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#a4572f">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.price/maxP*100}%;background:#a4572f"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(b.price)}</div></div>
       </div>
     </div>`;
   const rows = [
@@ -1264,7 +1264,7 @@ function updateGpuCompare() {
 }
 
 function compareTableHTML(aName, bName, rows) {
-  return `<thead><tr><th class="label-col">項目</th><th style="color:#4f8fcf">${esc(aName)}</th><th style="color:#c47f62">${esc(bName)}</th></tr></thead>
+  return `<thead><tr><th class="label-col">項目</th><th style="color:#1d5fa8">${esc(aName)}</th><th style="color:#a4572f">${esc(bName)}</th></tr></thead>
   <tbody>${rows.map(([label,av,bv,mode])=>{
     let aC='',bC='';
     if(mode){const an=parseFloat(String(av).replace(/[^0-9.]/g,'')),bn=parseFloat(String(bv).replace(/[^0-9.]/g,''));
@@ -1282,7 +1282,7 @@ function updateHomeRanking() {
       <div class="mini-rank-item" onclick="goPage('cpu-rank')">
         <div class="mini-rank-pos ${i===0?'pos-1':i===1?'pos-2':i===2?'pos-3':''}">${i+1}</div>
         <div class="mini-rank-name">${esc(c.name)}</div>
-        <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(c.score/maxCpuScore*100)}%;background:#4f8fcf"></div></div>
+        <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(c.score/maxCpuScore*100)}%;background:#1d5fa8"></div></div>
         <div class="mini-rank-score">${c.score.toLocaleString()}</div>
       </div>`).join('');
   }
@@ -1292,7 +1292,7 @@ function updateHomeRanking() {
       <div class="mini-rank-item" onclick="goPage('gpu-rank')">
         <div class="mini-rank-pos ${i===0?'pos-1':i===1?'pos-2':i===2?'pos-3':''}">${i+1}</div>
         <div class="mini-rank-name">${esc(g.name)}</div>
-        <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(g.score/maxGpuScore*100)}%;background:#c47f62"></div></div>
+        <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(g.score/maxGpuScore*100)}%;background:#a4572f"></div></div>
         <div class="mini-rank-score" style="color:var(--accent)">${g.score.toLocaleString()}</div>
       </div>`).join('');
   }
@@ -1431,7 +1431,7 @@ async function loadSheetData() {
     fetchSheet(GPU_GAS_URL, 'bc_gpu_v1'),
     fetchSheet(RAM_GAS_URL, 'bc_ram_v1'),
   ]);
-  const LOADED='// Googleスプレッドシートから読み込み済み', BUILTIN='// 内蔵データ使用中';
+  const LOADED='スプレッドシートの最新データ', BUILTIN='内蔵データを表示中';
   if (cpuR.status==='fulfilled') {
     const parsed = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
@@ -1684,19 +1684,19 @@ function calcBottleneck() {
 
   let icon, title, titleColor, desc, advice;
   if (ratio < 0.6) {
-    icon='⚠️'; title='CPUボトルネック'; titleColor='var(--accent)';
+    icon='注意'; title='CPUボトルネック'; titleColor='var(--accent)';
     desc=`CPUがGPUのパフォーマンスを約${Math.round(bottleneckPct)}%引き下げている可能性があります。特にAAAゲームやマルチシーンで影響が出やすいです。`;
     advice='CPUのアップグレードを検討するか、ゲームのフレームレートキャップを使うことで改善できます。';
   } else if (ratio > 1.6) {
-    icon='⚠️'; title='GPUボトルネック'; titleColor='var(--accent)';
+    icon='注意'; title='GPUボトルネック'; titleColor='var(--accent)';
     desc=`GPUがCPUのパフォーマンスを約${Math.round(bottleneckPct)}%引き下げている可能性があります。高解像度・高品質設定で顕著になります。`;
     advice='GPUのアップグレード、またはゲーム設定を下げることで改善できます。';
   } else if (bottleneckPct < 15) {
-    icon='✅'; title='完璧なバランス！'; titleColor='var(--accent3)';
+    icon='良好'; title='完璧なバランス！'; titleColor='var(--accent3)';
     desc=`CPU・GPUのバランスが非常に良好です。どちらかが足を引っ張ることなく、最大のパフォーマンスを発揮できます。`;
     advice='このまま使用するのがベストです。将来的には同時アップグレードを検討してください。';
   } else {
-    icon='👍'; title='ほぼバランス良好'; titleColor='var(--accent2)';
+    icon='良好'; title='ほぼバランス良好'; titleColor='var(--accent2)';
     desc=`若干の差はありますが、実際のゲームではほとんど影響ありません。${ratio<1?'CPU':'GPU'}が少し余裕があります。`;
     advice='現状で問題なく使用できます。';
   }
@@ -1732,7 +1732,7 @@ function calcBottleneck() {
 // ===== PRESET BUILDS =====
 const PRESET_BUILDS = [
   {
-    id:'fps', icon:'🎮', color:'var(--accent2)', title:'FPS・競技ゲーム特化',
+    id:'fps', icon:'FPS', color:'var(--accent2)', title:'FPS・競技ゲーム特化',
     budget:'¥160,000〜', tag:'badge-blue',
     desc:'Valorant・CS2・Apex Legends などの競技FPSで高フレームレート(240fps+)を狙うビルド。シングルコア性能重視。',
     parts:[
@@ -1748,7 +1748,7 @@ const PRESET_BUILDS = [
     builderIds:{cpu:'bc9',cpucooler:'bco2',gpu:'bg7',mb:'bm2',ram:'br2',storage:'bs3',psu:'bp4',case:'bk3'}
   },
   {
-    id:'aaa4k', icon:'🔥', color:'var(--gold)', title:'4K AAA最高画質',
+    id:'aaa4k', icon:'4K', color:'var(--gold)', title:'4K AAA最高画質',
     budget:'¥400,000〜', tag:'badge-purple',
     desc:'Cyberpunk 2077・Alan Wake 2 などの最新タイトルを4K Ultra・レイトレ全開でプレイするハイエンドビルド。',
     parts:[
@@ -1764,7 +1764,7 @@ const PRESET_BUILDS = [
     builderIds:{cpu:'bc1',cpucooler:'bco7',gpu:'bg1',mb:'bm1',ram:'br1',storage:'bs1',psu:'bp1',case:'bk1'}
   },
   {
-    id:'video', icon:'🎬', color:'var(--accent4)', title:'動画編集・配信',
+    id:'video', icon:'編集', color:'var(--accent4)', title:'動画編集・配信',
     budget:'¥230,000〜', tag:'badge-purple',
     desc:'4K動画編集・OBS配信・After Effects など。コア数とRAMが重要。GPUはNVENC/AMFエンコーダーとして活躍。',
     parts:[
@@ -1780,7 +1780,7 @@ const PRESET_BUILDS = [
     builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bg5',mb:'bm4',ram:'br1',storage:'bs2',psu:'bp2',case:'bk2'}
   },
   {
-    id:'cospa', icon:'💡', color:'var(--accent3)', title:'コスパ最強バランス',
+    id:'cospa', icon:'定番', color:'var(--accent3)', title:'コスパ最強バランス',
     budget:'¥130,000〜', tag:'badge-green',
     desc:'1080p〜1440pで快適にゲームできるコスパ重視ビルド。初めてのゲーミングPCや予算重視の方に最適。',
     parts:[
@@ -1796,7 +1796,7 @@ const PRESET_BUILDS = [
     builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bg8',mb:'bm3',ram:'br4',storage:'bs3',psu:'bp4',case:'bk4'}
   },
   {
-    id:'streaming', icon:'📡', color:'var(--accent)', title:'ゲーム配信・マルチタスク',
+    id:'streaming', icon:'配信', color:'var(--accent)', title:'ゲーム配信・マルチタスク',
     budget:'¥250,000〜', tag:'badge-orange',
     desc:'ゲームしながら配信・録画・Discord・Chromeを同時に動かせる構成。コア数多めのCPUが活きる。',
     parts:[
@@ -1812,7 +1812,7 @@ const PRESET_BUILDS = [
     builderIds:{cpu:'bc4',cpucooler:'bco8',gpu:'bg4',mb:'bm2',ram:'br2',storage:'bs2',psu:'bp3',case:'bk1'}
   },
   {
-    id:'entry', icon:'🌱', color:'var(--text2)', title:'エントリー・ライトゲーム',
+    id:'entry', icon:'入門', color:'var(--text2)', title:'エントリー・ライトゲーム',
     budget:'¥80,000〜', tag:'badge-blue',
     desc:'Minecraft・フォートナイト・LoLなど軽いゲームをサクサク動かす入門構成。将来のアップグレードも見据えたAM5プラットフォーム採用。',
     parts:[
@@ -1851,7 +1851,7 @@ function renderPresets() {
           <span class="preset-total-label">パーツ合計（OS別）</span>
           <span class="preset-total-val">${fmtPrice(total)}</span>
         </div>
-        <button class="preset-load-btn" onclick="loadPresetToBuilder('${p.id}')">🛒 ビルダーに読み込む</button>
+        <button class="preset-load-btn" onclick="loadPresetToBuilder('${p.id}')">ビルダーに読み込む</button>
       </div>
     </div>`;
   }).join('');
@@ -1928,7 +1928,7 @@ function switchTab(el,targetId) {
 
 // ===== BUILDER =====
 const BPARTS = {
-  cpu:{ label:'CPU', icon:'🔲', color:'#4f8fcf', items:[
+  cpu:{ label:'CPU', icon:'CPU', color:'#1d5fa8', items:[
     {id:'bc1',name:'Ryzen 9 9950X3D',  spec:'16C · 5.7GHz · AM5',     price:99800, score:70594,socket:'AM5',    tdp:170},
     {id:'bc2',name:'Ryzen 7 9800X3D',  spec:'8C · 5.6GHz · AM5',      price:74800, score:41712,socket:'AM5',    tdp:120},
     {id:'bc3',name:'Core i9-14900K',   spec:'24C · 6.0GHz · LGA1700', price:58800, score:62300,socket:'LGA1700',tdp:253},
@@ -1939,7 +1939,7 @@ const BPARTS = {
     {id:'bc8',name:'Core i5-14400F',   spec:'10C · 4.7GHz · LGA1700', price:14800, score:16800,socket:'LGA1700',tdp:65},
     {id:'bc9',name:'Ryzen 5 7600',     spec:'6C · 5.1GHz · AM5',      price:18800, score:18200,socket:'AM5',    tdp:65},
   ]},
-  cpucooler:{ label:'CPUクーラー', icon:'❄️', color:'#4f8fcf', items:[
+  cpucooler:{ label:'CPUクーラー', icon:'FAN', color:'#1d5fa8', items:[
     {id:'bco1',name:'Noctua NH-D15 Gen2',          spec:'デュアルタワー空冷',  price:16800, maxTdp:250},
     {id:'bco2',name:'DeepCool AK620',               spec:'デュアルタワー空冷',  price:5800,  maxTdp:260},
     {id:'bco3',name:'Thermalright Peerless Assassin 120 SE', spec:'デュアルタワー空冷', price:4500, maxTdp:220},
@@ -1950,7 +1950,7 @@ const BPARTS = {
     {id:'bco8',name:'be quiet! Pure Loop 2 FX 240', spec:'240mm AIO水冷',     price:12800, maxTdp:300},
     {id:'bco9',name:'Thermalright Frozen Prism 240', spec:'240mm AIO水冷',    price:6800,  maxTdp:280},
   ]},
-  gpu:{ label:'GPU', icon:'🎮', color:'#c47f62', items:[
+  gpu:{ label:'GPU', icon:'GPU', color:'#a4572f', items:[
     {id:'bg1',name:'RTX 5090',          spec:'32GB · 575W',  price:595000,score:47487,vram:32},
     {id:'bg2',name:'RTX 4090',          spec:'24GB · 450W',  price:400000,score:36340,vram:24},
     {id:'bg3',name:'RX 7900 XTX',       spec:'24GB · 355W',  price:88000, score:32000,vram:24},
@@ -1964,7 +1964,7 @@ const BPARTS = {
     {id:'bgb',name:'RTX 4060',          spec:'8GB · 115W',   price:44000, score:13200,vram:8},
     {id:'bgc',name:'RX 7600',           spec:'8GB · 165W',   price:32000, score:11000,vram:8},
   ]},
-  mb:{ label:'マザーボード', icon:'🔧', color:'#4f9d72', items:[
+  mb:{ label:'マザーボード', icon:'MB', color:'#2b7a52', items:[
     {id:'bm1',name:'ASUS ROG Strix X670E-E',   spec:'AM5 · DDR5 · ATX',     price:59800,socket:'AM5'},
     {id:'bm2',name:'MSI MAG X670E Tomahawk',   spec:'AM5 · DDR5 · ATX',     price:38800,socket:'AM5'},
     {id:'bm3',name:'ASRock B650E Steel Legend', spec:'AM5 · DDR5 · ATX',     price:24800,socket:'AM5'},
@@ -1973,27 +1973,27 @@ const BPARTS = {
     {id:'bm6',name:'ASUS Prime Z790-P',         spec:'LGA1700 · DDR5 · ATX', price:21800,socket:'LGA1700'},
     {id:'bm7',name:'MSI PRO B760M-A',           spec:'LGA1700 · DDR5 · mATX',price:14800,socket:'LGA1700'},
   ]},
-  ram:{ label:'メモリ (RAM)', icon:'💾', color:'#8d9dbd', items:[
+  ram:{ label:'メモリ (RAM)', icon:'RAM', color:'#55698f', items:[
     {id:'br1',name:'DDR5-6000 64GB (32×2)', spec:'G.Skill Trident Z5',  price:34800,gb:64},
     {id:'br2',name:'DDR5-6000 32GB (16×2)', spec:'Kingston Fury Beast', price:18800,gb:32},
     {id:'br3',name:'DDR5-4800 32GB (16×2)', spec:'Crucial Pro',         price:12800,gb:32},
     {id:'br4',name:'DDR5-5200 16GB (8×2)',  spec:'Corsair Vengeance',   price:8800, gb:16},
   ]},
-  storage:{ label:'SSD', icon:'💿', color:'#cfa955', items:[
+  storage:{ label:'SSD', icon:'SSD', color:'#8c6200', items:[
     {id:'bs1',name:'Samsung 990 Pro 2TB',  spec:'NVMe Gen4 · 7450MB/s', price:22800},
     {id:'bs2',name:'WD Black SN850X 2TB',  spec:'NVMe Gen4 · 7300MB/s', price:21800},
     {id:'bs3',name:'Samsung 990 Pro 1TB',  spec:'NVMe Gen4 · 7450MB/s', price:13800},
     {id:'bs4',name:'Crucial T500 1TB',     spec:'NVMe Gen4 · 7400MB/s', price:9800},
     {id:'bs5',name:'WD Blue SN580 1TB',    spec:'NVMe Gen4 · 4150MB/s', price:6800},
   ]},
-  psu:{ label:'電源 (PSU)', icon:'⚡', color:'#cfa955', items:[
+  psu:{ label:'電源 (PSU)', icon:'PSU', color:'#8c6200', items:[
     {id:'bp1',name:'Seasonic Prime TX-1000W',    spec:'1000W · 80+ Titanium', price:39800,watts:1000},
     {id:'bp2',name:'Corsair RM1000x',            spec:'1000W · 80+ Gold',     price:24800,watts:1000},
     {id:'bp3',name:'be quiet! Dark Power 850W',  spec:'850W · 80+ Platinum',  price:22800,watts:850},
     {id:'bp4',name:'Seasonic Focus GX-750',      spec:'750W · 80+ Gold',      price:14800,watts:750},
     {id:'bp5',name:'Corsair CX650M',             spec:'650W · 80+ Bronze',    price:8800, watts:650},
   ]},
-  case:{ label:'ケース', icon:'🖥️', color:'#4f8fcf', items:[
+  case:{ label:'ケース', icon:'CASE', color:'#1d5fa8', items:[
     {id:'bk1',name:'Fractal Design Torrent',  spec:'ATX · 最高エアフロー', price:24800},
     {id:'bk2',name:'Lian Li PC-O11 Dynamic',  spec:'ATX · フルガラス',     price:18800},
     {id:'bk3',name:'NZXT H7 Flow',            spec:'ATX · ミドルタワー',   price:16800},
@@ -2080,22 +2080,22 @@ function banalyze(){
   else{tier='low';tierLabel='LOW / エントリー';tierColor='var(--text2)';tierDesc='軽量ゲーム・2Dゲームを中心に楽しめます。重いAAAは設定を下げて。';}
   const ratio=cs/gs;
   let warns='';
-  if(ratio<0.6)warns+=`<div class="bwarn bwarn-yellow">⚠ CPUがGPUに対して弱め。ボトルネックになる可能性があります。</div>`;
-  else if(ratio>1.6)warns+=`<div class="bwarn bwarn-yellow">⚠ GPUがCPUに対して弱め。CPUを活かしきれない場面があります。</div>`;
+  if(ratio<0.6)warns+=`<div class="bwarn bwarn-yellow">CPUがGPUに対して弱め。ボトルネックになる可能性があります。</div>`;
+  else if(ratio>1.6)warns+=`<div class="bwarn bwarn-yellow">GPUがCPUに対して弱め。CPUを活かしきれない場面があります。</div>`;
   if(bSelected.cpucooler&&cpu.tdp&&bSelected.cpucooler.maxTdp<cpu.tdp)warns+=`<div class="bwarn bwarn-red">✗ クーラー(冷却能力${bSelected.cpucooler.maxTdp}W)がCPU TDP(${cpu.tdp}W)に対して不足しています！</div>`;
   if(bSelected.mb?.socket&&cpu.socket&&bSelected.mb.socket!==cpu.socket)warns+=`<div class="bwarn bwarn-red">✕ マザボ(${bSelected.mb.socket})とCPU(${cpu.socket})のソケットが非対応です！</div>`;
-  if(bSelected.psu){const need=(cpu.tdp||150)+(gs>25000?420:gs>15000?290:200)+100;if(bSelected.psu.watts<need*0.9)warns+=`<div class="bwarn bwarn-yellow">⚠ 電源容量が不足の可能性。推奨: ${Math.ceil(need/50)*50}W以上。</div>`;}
+  if(bSelected.psu){const need=(cpu.tdp||150)+(gs>25000?420:gs>15000?290:200)+100;if(bSelected.psu.watts<need*0.9)warns+=`<div class="bwarn bwarn-yellow">電源容量が不足の可能性。推奨: ${Math.ceil(need/50)*50}W以上。</div>`;}
   const tiers=['low','mid','high','ultra'];
   const ti=tiers.indexOf(tier);
   const playable={ultra:[],high:[],mid:[],low:[]};
   BGAMES.forEach(g=>{if(gs>=g.gpuMin&&cs>=g.cpuMin)playable[g.tier].push(g);});
   document.getElementById('bgame-result').innerHTML=`
-    <div class="bresult-title">🎮 ゲーム性能診断</div>
+    <div class="bresult-title">ゲーム性能診断</div>
     ${warns}
     <div class="bresult-summary"><div class="bresult-tier" style="color:${tierColor}">${tierLabel}</div><div class="bresult-desc">${tierDesc}</div></div>
     <div class="btier-bar">${tiers.map((t,i)=>`<div class="btier-seg ${i<=ti?'a'+t:''}"></div>`).join('')}</div>
     <div class="btier-labels"><span class="btier-label-sm">LOW</span><span class="btier-label-sm">MID</span><span class="btier-label-sm">HIGH</span><span class="btier-label-sm">ULTRA</span></div>
-    ${playable.ultra.length?`<div class="btier-group"><div class="btier-group-label blabel-ultra">⭐ ULTRA 4K最高画質</div><div class="bgame-chips">${playable.ultra.map(g=>`<div class="bgame-chip">${g.name}<small>${g.tag}</small></div>`).join('')}</div></div>`:''}
+    ${playable.ultra.length?`<div class="btier-group"><div class="btier-group-label blabel-ultra">ULTRA 4K最高画質</div><div class="bgame-chips">${playable.ultra.map(g=>`<div class="bgame-chip">${g.name}<small>${g.tag}</small></div>`).join('')}</div></div>`:''}
     ${playable.high.length?`<div class="btier-group"><div class="btier-group-label blabel-high">◎ HIGH 1440p〜4K</div><div class="bgame-chips">${playable.high.map(g=>`<div class="bgame-chip">${g.name}<small>${g.tag}</small></div>`).join('')}</div></div>`:''}
     ${playable.mid.length?`<div class="btier-group"><div class="btier-group-label blabel-mid">○ MID 1080p快適</div><div class="bgame-chips">${playable.mid.map(g=>`<div class="bgame-chip">${g.name}<small>${g.tag}</small></div>`).join('')}</div></div>`:''}
     ${playable.low.length?`<div class="btier-group"><div class="btier-group-label blabel-low">△ LOW 軽量タイトル</div><div class="bgame-chips">${playable.low.slice(0,5).map(g=>`<div class="bgame-chip">${g.name}<small>${g.tag}</small></div>`).join('')}</div></div>`:''}`;
