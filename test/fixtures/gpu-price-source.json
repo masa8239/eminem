@@ -1,0 +1,47 @@
+{
+  "source": "GPU_GAS_URL in index.html",
+  "rows": [
+    {
+      "GPU名": "GeForce RTX 5090",
+      "3DMark Time Spy": 47487,
+      "TDP": "575W",
+      "VRAM": "32GB",
+      "帯域幅": "1549GB/s",
+      "コスパ": 0.086,
+      "価格(円)": 549800,
+      "": ""
+    },
+    {
+      "GPU名": "GeForce RTX 4090",
+      "3DMark Time Spy": 36340,
+      "TDP": "450W",
+      "VRAM": "24GB",
+      "帯域幅": "1008GB/s",
+      "コスパ": 0.1,
+      "価格(円)": "",
+      "": ""
+    },
+    {
+      "GPU名": "GeForce RTX 5080",
+      "3DMark Time Spy": 33615,
+      "TDP": "360W",
+      "VRAM": "16GB",
+      "帯域幅": "2063GB/s",
+      "コスパ": 0.16,
+      "価格(円)": 91,
+      "": ""
+    },
+    {
+      "GPU名": "Radeon RX 9070 XT",
+      "3DMark Time Spy": 30070,
+      "TDP": "304W",
+      "VRAM": "16GB",
+      "帯域幅": "1024GB/s",
+      "コスパ": 0.293,
+      "価格(円)": 98,
+      "": ""
+    }
+  ],
+  "observedAt": "2026-09-29",
+  "note": "Exact response rows, not verified market prices. Original spreadsheet formulas/formatting are not exposed by this endpoint."
+}
