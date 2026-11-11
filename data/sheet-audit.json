@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-11T15:45:56.433Z",
+ "checkedAt": "2026-11-11T15:52:47.081Z",
  "issues": [
   {
    "category": "cpu",
@@ -101,7 +101,8 @@
    "category": "cpu",
    "modelName": "Core Ultra 9 235",
    "type": "name",
-   "issue": "等級が違います（正しくは Core Ultra 5 235）"
+   "issue": "等級が違います（正しくは Core Ultra 5 235）",
+   "fix": "Core Ultra 5 235"
   },
   {
    "category": "cpu",
@@ -113,7 +114,8 @@
    "category": "cpu",
    "modelName": "Core i9-13600K",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-13600K）"
+   "issue": "等級が違います（正しくは Core i5-13600K）",
+   "fix": "Core i5-13600K"
   },
   {
    "category": "cpu",
@@ -137,13 +139,15 @@
    "category": "cpu",
    "modelName": "Core i9-14600KF",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-14600KF）"
+   "issue": "等級が違います（正しくは Core i5-14600KF）",
+   "fix": "Core i5-14600KF"
   },
   {
    "category": "cpu",
    "modelName": "Core i9-14600K",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-14600K）"
+   "issue": "等級が違います（正しくは Core i5-14600K）",
+   "fix": "Core i5-14600K"
   },
   {
    "category": "cpu",
@@ -203,7 +207,8 @@
    "category": "cpu",
    "modelName": "Ryzen 7 8600X3D",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 8600X3D）"
+   "issue": "等級が違います（正しくは Ryzen 5 8600X3D）",
+   "fix": "Ryzen 5 8600X3D"
   },
   {
    "category": "cpu",
@@ -233,7 +238,8 @@
    "category": "cpu",
    "modelName": "Core Ultra 6 225",
    "type": "name",
-   "issue": "等級が違います（正しくは Core Ultra 5 225）"
+   "issue": "等級が違います（正しくは Core Ultra 5 225）",
+   "fix": "Core Ultra 5 225"
   },
   {
    "category": "cpu",
@@ -245,19 +251,22 @@
    "category": "cpu",
    "modelName": "Core Ultra 9 225F",
    "type": "name",
-   "issue": "等級が違います（正しくは Core Ultra 5 225F）"
+   "issue": "等級が違います（正しくは Core Ultra 5 225F）",
+   "fix": "Core Ultra 5 225F"
   },
   {
    "category": "cpu",
    "modelName": "Core i9-14500",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-14500）"
+   "issue": "等級が違います（正しくは Core i5-14500）",
+   "fix": "Core i5-14500"
   },
   {
    "category": "cpu",
    "modelName": "Core i9-12700",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i7-12700）"
+   "issue": "等級が違います（正しくは Core i7-12700）",
+   "fix": "Core i7-12700"
   },
   {
    "category": "cpu",
@@ -269,7 +278,8 @@
    "category": "cpu",
    "modelName": "Core i5-12700",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i7-12700）"
+   "issue": "等級が違います（正しくは Core i7-12700）",
+   "fix": "Core i7-12700"
   },
   {
    "category": "cpu",
@@ -299,7 +309,8 @@
    "category": "cpu",
    "modelName": "Ryzen 9 5500X",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 5500X）"
+   "issue": "等級が違います（正しくは Ryzen 5 5500X）",
+   "fix": "Ryzen 5 5500X"
   },
   {
    "category": "cpu",
@@ -311,7 +322,8 @@
    "category": "cpu",
    "modelName": "Core i9-12600K",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-12600K）"
+   "issue": "等級が違います（正しくは Core i5-12600K）",
+   "fix": "Core i5-12600K"
   },
   {
    "category": "cpu",
@@ -359,7 +371,8 @@
    "category": "cpu",
    "modelName": "Ryzen 5 5700X3D",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 7 5700X3D）"
+   "issue": "等級が違います（正しくは Ryzen 7 5700X3D）",
+   "fix": "Ryzen 7 5700X3D"
   },
   {
    "category": "cpu",
@@ -389,7 +402,8 @@
    "category": "cpu",
    "modelName": "Core i9-13600KF",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-13600KF）"
+   "issue": "等級が違います（正しくは Core i5-13600KF）",
+   "fix": "Core i5-13600KF"
   },
   {
    "category": "cpu",
@@ -419,7 +433,8 @@
    "category": "cpu",
    "modelName": "Core i9-13400F",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-13400F）"
+   "issue": "等級が違います（正しくは Core i5-13400F）",
+   "fix": "Core i5-13400F"
   },
   {
    "category": "cpu",
@@ -437,7 +452,8 @@
    "category": "cpu",
    "modelName": "Core i9-13400",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-13400）"
+   "issue": "等級が違います（正しくは Core i5-13400）",
+   "fix": "Core i5-13400"
   },
   {
    "category": "cpu",
@@ -461,7 +477,8 @@
    "category": "cpu",
    "modelName": "Ryzen 5 7700",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 7 7700）"
+   "issue": "等級が違います（正しくは Ryzen 7 7700）",
+   "fix": "Ryzen 7 7700"
   },
   {
    "category": "cpu",
@@ -503,7 +520,8 @@
    "category": "cpu",
    "modelName": "Core i7-10900KF",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i9-10900KF）"
+   "issue": "等級が違います（正しくは Core i9-10900KF）",
+   "fix": "Core i9-10900KF"
   },
   {
    "category": "cpu",
@@ -521,7 +539,8 @@
    "category": "cpu",
    "modelName": "Ryzen 5 3800",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 7 3800）"
+   "issue": "等級が違います（正しくは Ryzen 7 3800）",
+   "fix": "Ryzen 7 3800"
   },
   {
    "category": "cpu",
@@ -701,7 +720,8 @@
    "category": "cpu",
    "modelName": "Core i9-9500KF",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-9500KF）"
+   "issue": "等級が違います（正しくは Core i5-9500KF）",
+   "fix": "Core i5-9500KF"
   },
   {
    "category": "cpu",
@@ -713,7 +733,8 @@
    "category": "cpu",
    "modelName": "Ryzen 3 4600G",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 4600G）"
+   "issue": "等級が違います（正しくは Ryzen 5 4600G）",
+   "fix": "Ryzen 5 4600G"
   },
   {
    "category": "cpu",
@@ -725,7 +746,8 @@
    "category": "cpu",
    "modelName": "Ryzen 3 3600",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 3600）"
+   "issue": "等級が違います（正しくは Ryzen 5 3600）",
+   "fix": "Ryzen 5 3600"
   },
   {
    "category": "cpu",
@@ -785,7 +807,8 @@
    "category": "cpu",
    "modelName": "Ryzen 5 1800X",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 7 1800X）"
+   "issue": "等級が違います（正しくは Ryzen 7 1800X）",
+   "fix": "Ryzen 7 1800X"
   },
   {
    "category": "cpu",
@@ -845,7 +868,8 @@
    "category": "cpu",
    "modelName": "Core i9-14100F",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i3-14100F）"
+   "issue": "等級が違います（正しくは Core i3-14100F）",
+   "fix": "Core i3-14100F"
   },
   {
    "category": "cpu",
@@ -857,13 +881,15 @@
    "category": "cpu",
    "modelName": "Core i9-14100",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i3-14100）"
+   "issue": "等級が違います（正しくは Core i3-14100）",
+   "fix": "Core i3-14100"
   },
   {
    "category": "cpu",
    "modelName": "Core i9-13100",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i3-13100）"
+   "issue": "等級が違います（正しくは Core i3-13100）",
+   "fix": "Core i3-13100"
   },
   {
    "category": "cpu",
@@ -941,13 +967,15 @@
    "category": "cpu",
    "modelName": "Core i7-12100F",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i3-12100F）"
+   "issue": "等級が違います（正しくは Core i3-12100F）",
+   "fix": "Core i3-12100F"
   },
   {
    "category": "cpu",
    "modelName": "Ryzen 3 2600X",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 2600X）"
+   "issue": "等級が違います（正しくは Ryzen 5 2600X）",
+   "fix": "Ryzen 5 2600X"
   },
   {
    "category": "cpu",
@@ -959,7 +987,8 @@
    "category": "cpu",
    "modelName": "Core i5-12100",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i3-12100）"
+   "issue": "等級が違います（正しくは Core i3-12100）",
+   "fix": "Core i3-12100"
   },
   {
    "category": "cpu",
@@ -983,7 +1012,8 @@
    "category": "cpu",
    "modelName": "Core i9-8700K",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i7-8700K）"
+   "issue": "等級が違います（正しくは Core i7-8700K）",
+   "fix": "Core i7-8700K"
   },
   {
    "category": "cpu",
@@ -1055,7 +1085,8 @@
    "category": "cpu",
    "modelName": "Ryzen 5 3300X",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 3 3300X）"
+   "issue": "等級が違います（正しくは Ryzen 3 3300X）",
+   "fix": "Ryzen 3 3300X"
   },
   {
    "category": "cpu",
@@ -1097,7 +1128,8 @@
    "category": "cpu",
    "modelName": "Ryzen 7 4300G",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 3 4300G）"
+   "issue": "等級が違います（正しくは Ryzen 3 4300G）",
+   "fix": "Ryzen 3 4300G"
   },
   {
    "category": "cpu",
@@ -1109,7 +1141,8 @@
    "category": "cpu",
    "modelName": "Ryzen 5 3100",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 3 3100）"
+   "issue": "等級が違います（正しくは Ryzen 3 3100）",
+   "fix": "Ryzen 3 3100"
   },
   {
    "category": "cpu",
@@ -1121,7 +1154,8 @@
    "category": "cpu",
    "modelName": "Ryzen 5 4100",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 3 4100）"
+   "issue": "等級が違います（正しくは Ryzen 3 4100）",
+   "fix": "Ryzen 3 4100"
   },
   {
    "category": "cpu",
@@ -1205,7 +1239,8 @@
    "category": "gpu",
    "modelName": "GeForce RTX 7900 GRE",
    "type": "name",
-   "issue": "RTX 7900 は存在しません（Radeon RX や GTX の型番の可能性）"
+   "issue": "RTX 7900 は存在しません（Radeon RX や GTX の型番の可能性）",
+   "fix": "Radeon RX 7900 GRE"
   },
   {
    "category": "gpu",
@@ -1403,7 +1438,8 @@
    "category": "gpu",
    "modelName": "GeForce RTX 6700 XT",
    "type": "name",
-   "issue": "RTX 6700 は存在しません（Radeon RX や GTX の型番の可能性）"
+   "issue": "RTX 6700 は存在しません（Radeon RX や GTX の型番の可能性）",
+   "fix": "Radeon RX 6700 XT"
   },
   {
    "category": "gpu",
@@ -1463,7 +1499,8 @@
    "category": "gpu",
    "modelName": "GeForce RTX 7600 XT",
    "type": "name",
-   "issue": "RTX 7600 は存在しません（Radeon RX や GTX の型番の可能性）"
+   "issue": "RTX 7600 は存在しません（Radeon RX や GTX の型番の可能性）",
+   "fix": "Radeon RX 7600 XT"
   },
   {
    "category": "gpu",
@@ -1511,7 +1548,8 @@
    "category": "gpu",
    "modelName": "GeForce RTX 1080 Ti",
    "type": "name",
-   "issue": "RTX 1080 は存在しません（Radeon RX や GTX の型番の可能性）"
+   "issue": "RTX 1080 は存在しません（Radeon RX や GTX の型番の可能性）",
+   "fix": "GeForce GTX 1080 Ti"
   },
   {
    "category": "gpu",
@@ -1595,7 +1633,8 @@
    "category": "gpu",
    "modelName": "GeForce GTX 2060 12GB",
    "type": "name",
-   "issue": "GTX 2060 は存在しません（RTX の型番の可能性）"
+   "issue": "GTX 2060 は存在しません（RTX の型番の可能性）",
+   "fix": "GeForce RTX 2060 12GB"
   },
   {
    "category": "gpu",
@@ -1607,7 +1646,8 @@
    "category": "gpu",
    "modelName": "GeForce GTX 2060 6GB",
    "type": "name",
-   "issue": "GTX 2060 は存在しません（RTX の型番の可能性）"
+   "issue": "GTX 2060 は存在しません（RTX の型番の可能性）",
+   "fix": "GeForce RTX 2060 6GB"
   },
   {
    "category": "gpu",
@@ -1631,7 +1671,8 @@
    "category": "gpu",
    "modelName": "Radeon RX 5600 XT(145gpu)",
    "type": "name",
-   "issue": "モデル名に不要な文字が入っています"
+   "issue": "モデル名に不要な文字が入っています",
+   "fix": "Radeon RX 5600 XT"
   },
   {
    "category": "gpu",
@@ -1649,7 +1690,8 @@
    "category": "gpu",
    "modelName": "GeForce RX Vega 64",
    "type": "name",
-   "issue": "Vega は Radeon の製品です（GeForce ではありません）"
+   "issue": "Vega は Radeon の製品です（GeForce ではありません）",
+   "fix": "Radeon RX Vega 64"
   },
   {
    "category": "gpu",
@@ -1661,7 +1703,8 @@
    "category": "gpu",
    "modelName": "Radeon RX 5600 XT(2Gpu)",
    "type": "name",
-   "issue": "モデル名に不要な文字が入っています"
+   "issue": "モデル名に不要な文字が入っています",
+   "fix": "Radeon RX 5600 XT"
   },
   {
    "category": "gpu",
@@ -1691,7 +1734,8 @@
    "category": "gpu",
    "modelName": "GeForce RX Vega 56",
    "type": "name",
-   "issue": "Vega は Radeon の製品です（GeForce ではありません）"
+   "issue": "Vega は Radeon の製品です（GeForce ではありません）",
+   "fix": "Radeon RX Vega 56"
   },
   {
    "category": "gpu",

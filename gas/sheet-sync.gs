@@ -4,7 +4,8 @@
  * できること
  *  - 楽天市場から自動取得した価格を「価格(円)」列に書き込む
  *  - 価格が空・円でない値のセルを赤く塗る
- *  - 型番や等級が間違っていそうなモデル名のセルを黄色く塗り、理由をメモに書く
+ *  - 等級違い・系列違いなど機械的に直せるモデル名を正しい名前に書き換える（元の名前はメモに残す）
+ *  - 直せないモデル名（存在しない型番など）のセルを黄色く塗り、理由をメモに書く
  *
  * 使い方（最初の1回だけ）
  *  1. スプレッドシートを開き、[拡張機能] → [Apps Script] を開く
@@ -13,8 +14,9 @@
  *  4. 問題なければ「benchcoreSync」を実行（実際に書き込みます）
  *  5. 「benchcoreInstallDailyTrigger」を1回実行すると、毎朝自動で benchcoreSync が動きます
  *
- * 書き換えるのは「価格(円)」列の値と、価格セル・モデル名セルの背景色とメモだけです。
- * モデル名そのもの、スコア、数式の入ったセルは書き換えません。
+ * 書き換えるのは「価格(円)」列の値、機械的に直せるモデル名、価格セル・モデル名セルの背景色とメモだけです。
+ * スコアなど他の列、数式の入ったセルは書き換えません。行の削除もしません。
+ * モデル名の自動修正を止めたい場合は BENCHCORE_FIX_NAMES を false にしてください。
  */
 
 var BENCHCORE_DATA_URL = 'https://raw.githubusercontent.com/masa8239/eminem/main/data/';
@@ -23,6 +25,7 @@ var BENCHCORE_NAME_COLUMNS = {'CPU名': 'cpu', 'GPU名': 'gpu'};
 var BENCHCORE_PRICE_COLUMN = '価格(円)';
 var BENCHCORE_COLOR_PRICE = '#f4cccc';
 var BENCHCORE_COLOR_NAME = '#fff2cc';
+var BENCHCORE_FIX_NAMES = true;
 
 function benchcorePreview() { benchcoreRun_(true); }
 function benchcoreSync() { benchcoreRun_(false); }
@@ -51,9 +54,11 @@ function benchcoreRun_(dryRun) {
     var valid = product.status === 'ok' && typeof product.price === 'number' && product.price >= 1000 && product.price % 1 === 0;
     if (valid && age >= 0 && age < BENCHCORE_MAX_AGE_DAYS * 86400000) prices[product.category + '|' + product.modelName] = product;
   });
-  var nameIssues = {};
+  var nameIssues = {}, nameFixes = {};
   (auditData.issues || []).forEach(function (issue) {
-    if (issue.type === 'name') nameIssues[issue.category + '|' + issue.modelName] = issue.issue;
+    var issueKey = issue.category + '|' + issue.modelName;
+    if (issue.type === 'name') { nameIssues[issueKey] = issue.issue; if (issue.fix) nameFixes[issueKey] = issue.fix; }
+    if (issue.type === 'duplicate' && !nameIssues[issueKey]) nameIssues[issueKey] = issue.issue;
   });
 
   var log = [];
@@ -73,6 +78,9 @@ function benchcoreRun_(dryRun) {
     var priceRange = sheet.getRange(2, priceIndex + 1, rows, 1);
     var names = nameRange.getValues(), nameBackgrounds = nameRange.getBackgrounds();
     var values = priceRange.getValues(), formulas = priceRange.getFormulas(), priceBackgrounds = priceRange.getBackgrounds();
+    var nameFormulas = nameRange.getFormulas();
+    var existing = {};
+    names.forEach(function (row) { var n = String(row[0]).trim(); if (n) existing[n] = (existing[n] || 0) + 1; });
 
     for (var i = 0; i < rows; i++) {
       var name = String(names[i][0]).trim();
@@ -104,6 +112,20 @@ function benchcoreRun_(dryRun) {
       }
 
       var issue = nameIssues[key];
+      var fix = nameFixes[key];
+      // 機械的に直せる名前は書き換える。直した結果が既存の行と重複する場合は書き換えず、要確認にする
+      if (BENCHCORE_FIX_NAMES && fix && !nameFormulas[i][0] && !existing[fix]) {
+        log.push(sheet.getName() + ' / モデル名を修正: ' + name + ' → ' + fix);
+        if (!dryRun) {
+          nameCell.setValue(fix);
+          nameCell.setNote('モデル名を自動修正しました。以前の名前: ' + name);
+          if (nameBackgrounds[i][0] === BENCHCORE_COLOR_NAME) nameCell.setBackground(null);
+        }
+        existing[fix] = 1;
+        existing[name] = (existing[name] || 1) - 1;
+        continue;
+      }
+      if (fix && existing[fix]) issue = '「' + fix + '」の書き間違いの可能性がありますが、同じ名前の行がすでにあります';
       if (issue && nameBackgrounds[i][0] !== BENCHCORE_COLOR_NAME) {
         log.push(sheet.getName() + ' / ' + name + ': モデル名を確認（' + issue + '）');
         if (!dryRun) { nameCell.setBackground(BENCHCORE_COLOR_NAME); nameCell.setNote('モデル名を確認してください: ' + issue); }
