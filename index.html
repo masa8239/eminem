@@ -107,6 +107,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .badge-orange { background: rgba(247,129,102,0.15); color: var(--accent); border: 1px solid rgba(247,129,102,0.3); }
 .badge-purple { background: rgba(210,168,255,0.15); color: var(--accent4); border: 1px solid rgba(210,168,255,0.3); }
 .affiliate-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; border: 1px solid var(--border2); background: transparent; color: var(--text2); white-space: nowrap; }
+a.affiliate-btn { text-decoration: none; }
 .affiliate-btn:hover { border-color: var(--accent3); color: var(--accent3); background: rgba(63,185,80,0.05); }
 .filters { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
 .filter-btn { padding: 6px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text2); transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; }
@@ -131,7 +132,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .mini-rank { display: flex; flex-direction: column; gap: 6px; }
 .mini-rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface2); border-radius: 6px; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
 .mini-rank-item:hover { border-color: var(--border2); }
-.mini-rank-pos { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; width: 24px; color: var(--text3); }
+.mini-rank-pos { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; min-width: 24px; color: var(--text3); }
 .pos-1 { color: var(--gold); }
 .pos-2 { color: var(--silver); }
 .pos-3 { color: var(--bronze); }
@@ -417,6 +418,10 @@ input[type=range]::-webkit-slider-thumb {
         <div class="mini-rank" id="home-gpu-ranking"><div class="mini-rank-item"><div class="mini-rank-pos pos-1">1</div><div class="mini-rank-name">読み込み中...</div><div class="mini-rank-bar"></div><div class="mini-rank-score" style="color:var(--accent)">—</div></div></div>
       </div>
     </div>
+  </div>
+  <div class="section" id="home-new-section" style="display:none;padding-top:0">
+    <div class="section-header"><div class="section-title">新着パーツ</div><div class="section-sub">// 販売を確認 · ベンチマークスコア登録待ち</div></div>
+    <div class="mini-rank" id="home-new-products"></div>
   </div>
   <div class="divider"></div>
   <div class="section">
@@ -898,7 +903,11 @@ function renderPrice(item) {
   if (item.rakuten?.status === 'ok') {
     const date = new Date(item.rakuten.fetchedAt);
     const fetched = Number.isNaN(date.getTime()) ? '取得日時不明' : date.toLocaleString('ja-JP', {month:'numeric', day:'numeric', hour:'numeric', minute:'2-digit'}) + ' 取得';
-    return `${price}<div class="price-meta">取得元: 楽天市場（${escapeHtml(fetched)}）</div>`;
+    const r = item.rakuten;
+    const pts = Number.isSafeInteger(r.points) && r.points > 0 ? `<br>＋${r.points.toLocaleString('ja-JP')}ポイント（実質 ¥${(item.price - r.points).toLocaleString('ja-JP')}）` : '';
+    const others = (Array.isArray(r.offers) ? r.offers : []).filter(o => o && o.store !== r.source && validPrice(o.price) && safeRakutenUrl(o.url))
+      .map(o => `<br><a href="${escapeHtml(safeRakutenUrl(o.url))}" target="_blank" rel="noopener sponsored">${escapeHtml(o.store)} ¥${o.price.toLocaleString('ja-JP')}</a>`).join('');
+    return `${price}<div class="price-meta">取得元: ${escapeHtml(r.source)}（${escapeHtml(fetched)}）${pts}${others}</div>`;
   }
   if (item.rakuten?.status === 'error') {
     return `${price}<div class="price-meta price-error">楽天価格の更新失敗<br>表示額は参考価格（最新扱いではありません）</div>`;
@@ -908,7 +917,7 @@ function renderPrice(item) {
 function purchaseButton(item) {
   const url = item.rakuten?.status === 'ok' && safeRakutenUrl(item.rakuten.url);
   return url
-    ? `<a class="affiliate-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">🛒 楽天市場</a>`
+    ? `<a class="affiliate-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">🛒 ${escapeHtml(item.rakuten.source)}</a><button class="affiliate-btn" style="margin-top:4px" title="Amazonの価格は自動取得していません。検索結果で確認できます">Amazonで確認</button>`
     : '<button class="affiliate-btn">🛒 Amazon</button>';
 }
 function rankColor(i) { return i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''; }
@@ -1464,7 +1473,7 @@ function applyRakutenProducts(products, maxAgeMs) {
       if (item.basePrice === undefined) item.basePrice = item.price;
       item.price = product.price;
     }
-    item.rakuten = {status: ok ? 'ok' : 'error', fetchedAt:product.fetchedAt, url:product.url};
+    item.rakuten = {status: ok ? 'ok' : 'error', fetchedAt:product.fetchedAt, url:product.url, source: typeof product.source==='string'&&product.source ? product.source : '楽天市場', points:product.points, offers:product.offers};
   });
 }
 async function loadRakutenPrices() {
@@ -1482,6 +1491,22 @@ async function loadRakutenPrices() {
   if (gpuFromSheet) gpuData = assignSheetBadges(gpuData, 'gpu');
   renderCpuTable(); renderGpuTable(); renderRamTable();
   populateCpuSelects(); populateGpuSelects();
+}
+
+// 新着候補（自動収集）。スコアがまだないのでランキングには入れず、トップに一覧だけ出す
+async function loadNewProducts() {
+  try {
+    const payload = await (await fetch('data/new-products.json', {signal:AbortSignal.timeout(8000)})).json();
+    const list = (Array.isArray(payload.candidates) ? payload.candidates : []).filter(c => c && typeof c.modelName === 'string').slice(0, 8);
+    if (!list.length) return;
+    document.getElementById('home-new-products').innerHTML = list.map(c => `
+      <div class="mini-rank-item" style="cursor:default">
+        <div class="mini-rank-pos">${c.category==='gpu'?'GPU':'CPU'}</div>
+        <div class="mini-rank-name">${esc(c.modelName)}</div>
+        <div class="mini-rank-score" style="color:var(--gold)">${validPrice(c.medianPrice)?'約'+fmtPrice(c.medianPrice):''}</div>
+      </div>`).join('');
+    document.getElementById('home-new-section').style.display = '';
+  } catch (error) {}
 }
 
 // ===== FAVORITES =====
@@ -2083,6 +2108,7 @@ try {
     bapplyIds(saved.ids);
   }
 } catch(e) {}
+loadNewProducts();
 loadSheetData().then(async()=>{
   await loadRakutenPrices();
   populateBnSelects();

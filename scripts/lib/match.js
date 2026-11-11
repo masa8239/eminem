@@ -123,3 +123,53 @@ function pickItem(spec, items, referencePrice) {
 }
 
 module.exports = {normalize, parseGpu, parseCpu, modelSpec, pickItem, median, EXCLUDE_WORDS};
+
+// ---- 新着候補の発見 ----
+// 検索結果の商品名から型番を読み取り、まだサイトに載っていないモデルを候補として挙げる。
+const SUFFIX_LABEL = {'TI': 'Ti', 'TI SUPER': 'Ti SUPER', 'SUPER': 'SUPER', 'XT': 'XT', 'XTX': 'XTX', 'GRE': 'GRE', '': ''};
+function canonicalGpu(gpu) {
+  const brand = gpu.family === 'RX' ? 'Radeon' : 'GeForce';
+  return `${brand} ${gpu.family} ${gpu.number}${gpu.suffix ? ' ' + SUFFIX_LABEL[gpu.suffix] : ''}`;
+}
+function modelFromItemName(itemName) {
+  const text = normalize(itemName);
+  if (EXCLUDE_WORDS.some(word => text.includes(word)) || /QUADRO|ワークステーション|MOBILE|モバイル/.test(text)) return null;
+  const hasCpu = /RYZEN|CORE\s*I[3579]|CORE\s*ULTRA/.test(text), hasGpu = /(?<![A-Z])(RTX|GTX|RX)\s*\d{4}/.test(text);
+  if (hasCpu && hasGpu) return null; // PC本体
+  if (hasGpu) {
+    const gpu = parseGpu(text);
+    if (!gpu || gpu.family === 'GTX' || !['50', '60', '70', '80', '90'].includes(gpu.number.slice(2))) return null;
+    return {category: 'gpu', modelName: canonicalGpu(gpu)};
+  }
+  if (/DDR[45]|メモリ/.test(text)) return null;
+  let m = text.match(/RYZEN\s*([3579])\s*(\d{4})(X3D|XT|X|F|GT|GE|G)?(?![A-Z0-9])/);
+  if (m) return {category: 'cpu', modelName: `Ryzen ${m[1]} ${m[2]}${m[3] || ''}`};
+  m = text.match(/CORE\s*ULTRA\s*([3579])\s*(?:プロセッサー\s*)?(\d{3})(KF|K|F|T)?(?![A-Z0-9])/);
+  if (m) return {category: 'cpu', modelName: `Core Ultra ${m[1]} ${m[2]}${m[3] || ''}`};
+  m = text.match(/CORE\s*I([3579])[\s-]*(\d{5})(KF|KS|K|F|T)?(?![A-Z0-9])/);
+  if (m) return {category: 'cpu', modelName: `Core i${m[1]}-${m[2]}${m[3] || ''}`};
+  return null;
+}
+// items: 各ストアの商品。known: [{category, modelName}]。3件以上の出品で見つかった未登録モデルだけ返す。
+function discoverNewModels(items, known, minSightings = 3) {
+  const knownKeys = new Set(known.map(model => {
+    const gpu = model.category === 'gpu' && parseGpu(model.modelName);
+    return model.category + '\0' + normalize(gpu ? canonicalGpu(gpu) : model.modelName);
+  }));
+  const found = new Map();
+  for (const item of items) {
+    if (!item || typeof item.itemName !== 'string' || !Number.isSafeInteger(item.itemPrice) || item.itemPrice <= 0 || item.availability !== 1) continue;
+    const model = modelFromItemName(item.itemName);
+    if (!model) continue;
+    const key = model.category + '\0' + normalize(model.modelName);
+    if (knownKeys.has(key)) continue;
+    if (!found.has(key)) found.set(key, {...model, codes: new Set(), prices: [], example: item.itemName});
+    const entry = found.get(key);
+    if (!entry.codes.has(item.itemCode)) { entry.codes.add(item.itemCode); entry.prices.push(item.itemPrice); }
+  }
+  return [...found.values()].filter(entry => entry.codes.size >= minSightings)
+    .map(entry => ({category: entry.category, modelName: entry.modelName, listings: entry.codes.size, medianPrice: Math.round(median(entry.prices)), example: entry.example}))
+    .sort((a, b) => b.listings - a.listings);
+}
+module.exports.modelFromItemName = modelFromItemName;
+module.exports.discoverNewModels = discoverNewModels;

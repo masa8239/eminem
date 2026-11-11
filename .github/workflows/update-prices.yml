@@ -16,7 +16,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,6 +29,7 @@ jobs:
           RAKUTEN_APPLICATION_ID: ${{ secrets.RAKUTEN_APPLICATION_ID }}
           RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
           RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+          YAHOO_CLIENT_ID: ${{ secrets.YAHOO_CLIENT_ID }}
         run: |
           if [ -z "$RAKUTEN_APPLICATION_ID" ] || [ -z "$RAKUTEN_ACCESS_KEY" ] || [ -z "$RAKUTEN_AFFILIATE_ID" ]; then
             echo "楽天のキーが未登録のため、スプレッドシートの要確認リストだけ更新します"

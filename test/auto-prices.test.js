@@ -105,7 +105,7 @@ test('update script writes prices, keeps going on misses and never leaks credent
       : [item('【中古】Radeon RX 7600 8GB', 20000)];
     return {ok: true, json: async () => ({Items})};
   };
-  const code = await main(env, fetchImpl, {models, output, delayMs: 0, log: line => logs.push(line), now: new Date('2026-11-11T00:00:00Z')});
+  const code = await main(env, fetchImpl, {models, output, delayMs: 0, log: line => logs.push(line), now: new Date('2026-11-11T00:00:00Z'), discoveryQueries: []});
   assert.equal(code, 0);
   assert.deepEqual(keywords, ['RTX 5070', 'Ryzen 5600', 'RX 7600']);
   const text = fs.readFileSync(output, 'utf8');
@@ -168,7 +168,7 @@ test('update run also writes the sheet audit next to the price file', async () =
   ];
   let calls = 0;
   const fetchImpl = async url => { calls++; return {ok: true, json: async () => ({Items: url.searchParams.get('keyword') === 'RTX 5070' ? [item('MSI GeForce RTX 5070 12G', 111000)] : []})}; };
-  assert.equal(await main(env, fetchImpl, {models, output, delayMs: 0, log() {}}), 0);
+  assert.equal(await main(env, fetchImpl, {models, output, delayMs: 0, log() {}, discoveryQueries: []}), 0);
   assert.equal(calls, 3);
   const audit = JSON.parse(fs.readFileSync(path.join(dir, 'sheet-audit.json'), 'utf8'));
   assert.deepEqual(audit.issues.map(i => [i.modelName, i.type]), [['GeForce RTX 6700 XT', 'name'], ['GeForce RTX 6700 XT', 'price']]);
@@ -204,4 +204,44 @@ test('site-side name correction agrees with the audit and leaves valid names alo
   const parsed = JSON.parse(vm.runInContext(`JSON.stringify(dedupeByName([{'GPU名':'GeForce RTX 6700 XT','スコア':12000},{'GPU名':'Radeon RX 6700 XT','スコア':11000}].map(parseGpuRow)))`, context));
   assert.equal(parsed.length, 1);
   assert.deepEqual([parsed[0].name, parsed[0].sheetName, parsed[0].maker, parsed[0].dlss], ['Radeon RX 6700 XT', 'GeForce RTX 6700 XT', 'AMD', 'FSR 2']);
+});
+
+test('new models are discovered from listings and known or doubtful ones are ignored', () => {
+  const {discoverNewModels, modelFromItemName} = require('../scripts/lib/match');
+  assert.deepEqual(modelFromItemName('MSI GeForce RTX 6070 Ti 16G GAMING'), {category: 'gpu', modelName: 'GeForce RTX 6070 Ti'});
+  assert.deepEqual(modelFromItemName('AMD Ryzen 7 9850X3D BOX'), {category: 'cpu', modelName: 'Ryzen 7 9850X3D'});
+  assert.deepEqual(modelFromItemName('インテル Core Ultra 7 270K BOX'), {category: 'cpu', modelName: 'Core Ultra 7 270K'});
+  for (const name of ['ゲーミングPC Ryzen 7 9850X3D RTX 6070', '【中古】GeForce RTX 6070', 'NVIDIA Quadro RTX 5000', 'DDR5 メモリ Ryzen 9000対応', 'RTX 6070 用 ケーブル']) assert.equal(modelFromItemName(name), null, name);
+  const mk = (name, price, code) => ({itemCode: code, itemName: name, itemPrice: price, availability: 1});
+  const items = [mk('MSI GeForce RTX 6070 12G', 120000, 'a:1'), mk('ASUS RTX6070 12G', 118000, 'b:1'), mk('GIGABYTE GeForce RTX 6070', 125000, 'c:1'), mk('GIGABYTE GeForce RTX 6070', 125000, 'c:1'),
+    mk('ZOTAC GeForce RTX 5070 12G', 110000, 'd:1'), mk('PNY RTX 5070', 109000, 'e:1'), mk('Palit RTX 5070', 108000, 'f:1'),
+    mk('AMD Ryzen 7 9850X3D BOX', 90000, 'g:1'), mk('AMD Ryzen 7 9850X3D', 91000, 'h:1')];
+  const found = discoverNewModels(items, [{category: 'gpu', modelName: 'GeForce RTX 5070'}]);
+  assert.deepEqual(found.map(c => [c.modelName, c.listings, c.medianPrice]), [['GeForce RTX 6070', 3, 120000]]);
+});
+
+test('a second store adds offers, the cheapest wins, and points are recorded', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const env = {RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c', YAHOO_CLIENT_ID: 'yahoo-secret'};
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000}, {category: 'cpu', modelName: 'Ryzen 5 5600', referencePrice: 9800}];
+  const fetchImpl = async url => {
+    if (url.hostname === 'shopping.yahooapis.jp') {
+      assert.equal(url.searchParams.get('appid'), 'yahoo-secret');
+      return {ok: true, json: async () => ({hits: url.searchParams.get('query') === 'RTX 5070'
+        ? [{code: 'shop_1', name: 'ASUS GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/shop/1.html', point: {amount: 1050}, seller: {name: 'Yショップ'}},
+           {code: 'shop_2', name: 'GeForce RTX 5070 12G 中古', price: 70000, inStock: true, condition: 'used', url: 'https://store.shopping.yahoo.co.jp/shop/2.html'}]
+        : []})};
+    }
+    const keyword = url.searchParams.get('keyword');
+    return {ok: true, json: async () => ({Items: keyword === 'RTX 5070' ? [item('MSI GeForce RTX 5070 12G', 111000, {pointRate: 5})] : keyword === 'Ryzen 5600' ? [item('AMD Ryzen 5 5600 BOX', 9980)] : []})};
+  };
+  assert.equal(await main(env, fetchImpl, {models, output, delayMs: 0, log() {}, discoveryQueries: ['x']}), 0);
+  const text = fs.readFileSync(output, 'utf8');
+  const [gpu, cpu] = JSON.parse(text).products;
+  assert.deepEqual([gpu.source, gpu.price, gpu.points], ['Yahoo!ショッピング', 105000, 1050]);
+  assert.deepEqual(gpu.offers.map(o => [o.store, o.price, o.points]), [['Yahoo!ショッピング', 105000, 1050], ['楽天市場', 111000, 5550]]);
+  assert.deepEqual([cpu.source, cpu.price, cpu.points, cpu.offers.length], ['楽天市場', 9980, 99, 1]);
+  assert.ok(!text.includes('yahoo-secret'));
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(dir, 'new-products.json'), 'utf8')).candidates, []);
 });

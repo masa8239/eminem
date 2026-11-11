@@ -8,12 +8,16 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {searchItems, responseItems, SITE_ORIGIN, PriceError} = require('../api/rakuten-prices')._test;
-const {modelSpec, pickItem} = require('./lib/match');
+const {modelSpec, pickItem, discoverNewModels} = require('./lib/match');
+const {searchYahoo, rakutenPoints} = require('./lib/stores');
 const {nameIssue} = require('./lib/audit');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
 const AUDIT_OUTPUT = path.join(ROOT, 'data', 'sheet-audit.json');
+const NEW_OUTPUT = path.join(ROOT, 'data', 'new-products.json');
+// 新着を探すための追加検索（新しい順）
+const DISCOVERY_QUERIES = ['GeForce RTX グラフィックボード', 'Radeon RX グラフィックボード', 'Ryzen CPU BOX', 'Core Ultra CPU BOX'];
 const FALLBACK_ORIGINS = ['https://eminem-zfet.vercel.app'];
 const KEEP_PREVIOUS_MS = 6 * 24 * 60 * 60 * 1000;
 
@@ -102,6 +106,18 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
 
   const products = [], unmatched = [];
   const searchCache = new Map();
+  // Yahoo!ショッピングは Client ID があるときだけ使う。失敗が続いたらその回は使わない
+  const yahoo = {appid: env.YAHOO_CLIENT_ID || '', cache: new Map(), failures: 0};
+  const yahooItems = async keyword => {
+    if (!yahoo.appid || yahoo.failures >= 3) return null;
+    if (yahoo.cache.has(keyword)) return yahoo.cache.get(keyword);
+    try {
+      if (delayMs) await new Promise(resolve => setTimeout(resolve, delayMs));
+      const found = await searchYahoo(keyword, yahoo.appid, fetchImpl);
+      yahoo.cache.set(keyword, found); yahoo.failures = 0;
+      return found;
+    } catch { yahoo.failures++; return null; }
+  };
   let apiErrors = 0, attempted = 0, first = true;
   for (const model of auditOnly ? [] : models) {
     const spec = modelSpec(model.category, model.modelName, byCategory(model.category));
@@ -138,17 +154,33 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       continue;
     }
     first = false;
+    const offers = [];
     const picked = pickItem(spec, items, model.referencePrice);
     const url = picked.item && safeUrl(picked.item);
-    if (!picked.item || !url) {
+    if (picked.item && url) offers.push({
+      store: '楽天市場', price: picked.item.itemPrice, points: rakutenPoints(picked.item), url,
+      itemCode: picked.item.itemCode, itemName: picked.item.itemName,
+      shopName: typeof picked.item.shopName === 'string' ? picked.item.shopName : '',
+    });
+    const yItems = await yahooItems(spec.keyword);
+    const yPicked = yItems && pickItem(spec, yItems, model.referencePrice);
+    const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
+    if (yUrl) offers.push({
+      store: 'Yahoo!ショッピング', price: yPicked.item.itemPrice, points: yPicked.item.points || 0, url: yUrl,
+      itemCode: yPicked.item.itemCode, itemName: yPicked.item.itemName, shopName: yPicked.item.shopName || '',
+    });
+    if (!offers.length) {
       unmatched.push({category: model.category, modelName: model.modelName, reason: picked.reason || '商品リンクが不正'});
       continue;
     }
+    // 表示価格は一番安いストア。他ストアの価格も offers に残す
+    offers.sort((a, b) => a.price - b.price);
+    const best = offers[0];
     products.push({
-      category: model.category, modelName: model.modelName, status: 'ok', source: '楽天市場',
-      price: picked.item.itemPrice, url, fetchedAt,
-      itemCode: picked.item.itemCode, itemName: picked.item.itemName,
-      shopName: typeof picked.item.shopName === 'string' ? picked.item.shopName : '',
+      category: model.category, modelName: model.modelName, status: 'ok', source: best.store,
+      price: best.price, points: best.points, url: best.url, fetchedAt,
+      itemCode: best.itemCode, itemName: best.itemName, shopName: best.shopName,
+      offers: offers.map(offer => ({store: offer.store, price: offer.price, points: offer.points, url: offer.url})),
     });
   }
 
@@ -160,6 +192,23 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   }
   fs.mkdirSync(path.dirname(output), {recursive: true});
   if (!auditOnly) fs.writeFileSync(output, JSON.stringify({checkedAt: fetchedAt, source: '楽天市場', products, unmatched}, null, 1) + '\n');
+
+  // 新着候補: 価格取得で見た商品と、新しい順の追加検索から、サイトに未登録の型番を拾う
+  if (!auditOnly) {
+    const seen = [...searchCache.values(), ...yahoo.cache.values()].flat();
+    for (const keyword of options.discoveryQueries || DISCOVERY_QUERIES) {
+      try {
+        if (delayMs) await new Promise(resolve => setTimeout(resolve, delayMs));
+        seen.push(...responseItems(await searchItems({keyword, hits: 30, sort: '-updateTimestamp'}, credentials, fetchImpl)));
+      } catch { /* 新着探しの失敗は価格更新に影響させない */ }
+    }
+    const candidates = discoverNewModels(seen, models);
+    const newFile = options.newOutput || (options.output ? output.replace(/[^/\\]+$/, 'new-products.json') : NEW_OUTPUT);
+    let same = false;
+    try { same = JSON.stringify(JSON.parse(fs.readFileSync(newFile, 'utf8')).candidates) === JSON.stringify(candidates); } catch { /* 初回 */ }
+    if (!same) fs.writeFileSync(newFile, JSON.stringify({checkedAt: fetchedAt, candidates}, null, 1) + '\n');
+    log(`新着候補 ${candidates.length} 件${candidates.length ? ': ' + candidates.slice(0, 8).map(c => c.modelName).join(', ') : ''}`);
+  }
 
   // スプレッドシートの要確認リスト（モデル名の誤り・価格の未入力）。シートは書き換えない
   const pricedProducts = auditOnly ? [...previous.values()].filter(product => product.status === 'ok') : products;

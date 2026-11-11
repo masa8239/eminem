@@ -66,7 +66,7 @@ async function searchItems(parameters, credentials, fetchImpl = fetch) {
   url.searchParams.set('applicationId', credentials.applicationId);
   if (credentials.affiliateId) url.searchParams.set('affiliateId', credentials.affiliateId);
   url.searchParams.set('availability', '1');
-  for (const key of ['itemCode', 'keyword', 'hits']) {
+  for (const key of ['itemCode', 'keyword', 'hits', 'sort']) {
     if (parameters[key] !== undefined) url.searchParams.set(key, parameters[key]);
   }
   const response = await fetchImpl(url, {
