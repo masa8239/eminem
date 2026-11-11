@@ -1,0 +1,175 @@
+'use strict';
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const {modelSpec, pickItem, parseGpu, parseCpu} = require('../scripts/lib/match');
+const {main} = require('../scripts/update-rakuten-prices');
+
+const item = (itemName, itemPrice, extra = {}) => ({itemCode: 'shop:' + itemName.length + itemPrice, itemName, itemPrice, availability: 1, itemUrl: 'https://item.rakuten.co.jp/shop/x/', ...extra});
+const GPUS = ['GeForce RTX 5070 Ti', 'GeForce RTX 5070', 'GeForce RTX 5060 Ti 16GB', 'GeForce RTX 5060 Ti', 'GeForce RTX 4070 Ti SUPER', 'GeForce RTX 4070 SUPER', 'Radeon RX 7900 XTX', 'Radeon RX 7900 XT', 'Radeon RX 7600'];
+
+test('model names are parsed into exact grades', () => {
+  assert.deepEqual(parseGpu('GeForce RTX 5060 Ti 16GB'), {family: 'RTX', number: '5060', suffix: 'TI', vram: 16});
+  assert.deepEqual(parseGpu('GeForce RTX 4070 Ti SUPER'), {family: 'RTX', number: '4070', suffix: 'TI SUPER', vram: null});
+  assert.deepEqual(parseGpu('Radeon RX 7900 GRE'), {family: 'RX', number: '7900', suffix: 'GRE', vram: null});
+  assert.deepEqual(parseCpu('Ryzen 9 9950X3D'), {brand: 'RYZEN', token: '9950X3D'});
+  assert.deepEqual(parseCpu('Core i9-14900KS'), {brand: 'CORE', token: '14900KS'});
+  assert.deepEqual(parseCpu('Core Ultra 7 265KF'), {brand: 'ULTRA', token: '265KF'});
+  assert.equal(modelSpec('ram', 'G.Skill Trident Z5 DDR5-7200'), null);
+});
+
+test('GPU matching never accepts a different grade or VRAM size', () => {
+  const s5070 = modelSpec('gpu', 'GeForce RTX 5070', GPUS);
+  assert.equal(s5070.keyword, 'RTX 5070');
+  assert.ok(s5070.matches('MSI GeForce RTX 5070 12G GAMING TRIO OC グラフィックボード'));
+  assert.ok(s5070.matches('ASUS PRIME-RTX5070-O12G RTX5070搭載ビデオカード'));
+  assert.ok(!s5070.matches('MSI GeForce RTX 5070 Ti 16G GAMING TRIO'));
+  assert.ok(!s5070.matches('GIGABYTE RTX5070TI GAMING OC'));
+  assert.ok(!s5070.matches('GeForce RTX 5060 8G'));
+  assert.ok(!s5070.matches('ゲーミング Core i7 14700F RTX 5070 メモリ32GB'));
+
+  const ti = modelSpec('gpu', 'GeForce RTX 5070 Ti', GPUS);
+  assert.ok(ti.matches('玄人志向 GeForce RTX5070Ti 16GB'));
+  assert.ok(!ti.matches('GeForce RTX 5070 12G'));
+
+  const tiSuper = modelSpec('gpu', 'GeForce RTX 4070 Ti SUPER', GPUS);
+  assert.ok(tiSuper.matches('GeForce RTX 4070 Ti SUPER 16G'));
+  assert.ok(!tiSuper.matches('GeForce RTX 4070 SUPER 12G'));
+  assert.ok(!tiSuper.matches('GeForce RTX 4070 Ti 12G'));
+
+  const xt = modelSpec('gpu', 'Radeon RX 7900 XT', GPUS);
+  assert.ok(xt.matches('SAPPHIRE PULSE Radeon RX 7900 XT 20GB'));
+  assert.ok(!xt.matches('SAPPHIRE NITRO+ Radeon RX 7900 XTX 24GB'));
+
+  const ti16 = modelSpec('gpu', 'GeForce RTX 5060 Ti 16GB', GPUS);
+  const ti8 = modelSpec('gpu', 'GeForce RTX 5060 Ti', GPUS);
+  assert.ok(ti16.matches('GeForce RTX 5060 Ti 16G VENTUS'));
+  assert.ok(!ti16.matches('GeForce RTX 5060 Ti 8G VENTUS'));
+  assert.ok(ti8.matches('GeForce RTX 5060 Ti 8G VENTUS'));
+  assert.ok(!ti8.matches('GeForce RTX 5060 Ti 16G VENTUS'));
+});
+
+test('CPU matching requires the exact model number', () => {
+  const k = modelSpec('cpu', 'Core i7-14700K');
+  assert.ok(k.matches('Intel Core i7-14700K BOX 第14世代'));
+  assert.ok(!k.matches('Intel Core i7-14700KF BOX'));
+  assert.ok(!k.matches('Intel Core i7-14700 BOX'));
+  const r = modelSpec('cpu', 'Ryzen 5 5600');
+  assert.equal(r.keyword, 'Ryzen 5600');
+  assert.ok(r.matches('AMD Ryzen 5 5600 BOX Wraith Stealth クーラー付属'));
+  assert.ok(!r.matches('AMD Ryzen 5 5600X BOX'));
+  assert.ok(!r.matches('Crucial DDR5-5600 32GB メモリ Ryzen対応'));
+  assert.ok(!r.matches('ゲーミングPC Ryzen 5 5600 RTX 4060'));
+  const u = modelSpec('cpu', 'Core Ultra 7 265K');
+  assert.ok(u.matches('インテル Core Ultra 7 265K BOX'));
+  assert.ok(!u.matches('インテル Core Ultra 7 265KF BOX'));
+});
+
+test('item selection rejects used goods, bundles and off-market prices', () => {
+  const spec = modelSpec('gpu', 'GeForce RTX 5070', GPUS);
+  const items = [
+    item('【中古】GeForce RTX 5070 12G', 60000),
+    item('GeForce RTX 5070 用 サポートステー', 2000),
+    item('GeForce RTX 5070 12G 本体+延長保証セット', 120000),
+    item('MSI GeForce RTX 5070 12G VENTUS', 112000),
+    item('ASUS GeForce RTX 5070 12G PRIME', 109800),
+    item('GIGABYTE GeForce RTX 5070 12G', 400000),
+    item('GeForce RTX 5070 12G 在庫なし', 90000, {availability: 0}),
+  ];
+  assert.equal(pickItem(spec, items, 110000).item.itemPrice, 109800);
+  // 参考価格から大きく外れたものしかなければ採用しない
+  assert.equal(pickItem(spec, [item('GeForce RTX 5070 12G', 30000)], 110000).item, undefined);
+  // 参考価格がないときは3件以上の相場が必要
+  assert.match(pickItem(spec, items.slice(3, 5), null).reason, /3件未満/);
+  assert.equal(pickItem(spec, [...items.slice(3, 5), item('ZOTAC GeForce RTX 5070 12G', 115000), item('謎 GeForce RTX 5070 12G', 9800)], null).item.itemPrice, 109800);
+});
+
+test('update script writes prices, keeps going on misses and never leaks credentials', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const env = {RAKUTEN_APPLICATION_ID: 'app-secret', RAKUTEN_ACCESS_KEY: 'access-secret', RAKUTEN_AFFILIATE_ID: 'aff-secret'};
+  const models = [
+    {category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000},
+    {category: 'cpu', modelName: 'Ryzen 5 5600', referencePrice: 9800},
+    {category: 'gpu', modelName: 'Radeon RX 7600', referencePrice: 32000},
+  ];
+  const keywords = [], logs = [];
+  const fetchImpl = async (url, options) => {
+    keywords.push(url.searchParams.get('keyword'));
+    assert.equal(options.headers.accessKey, 'access-secret');
+    const keyword = url.searchParams.get('keyword');
+    const Items = keyword === 'RTX 5070' ? [item('MSI GeForce RTX 5070 12G', 111000, {affiliateUrl: 'https://hb.afl.rakuten.co.jp/abc', shopName: 'ショップ'})]
+      : keyword === 'Ryzen 5600' ? [item('AMD Ryzen 5 5600 BOX', 9980)]
+      : [item('【中古】Radeon RX 7600 8GB', 20000)];
+    return {ok: true, json: async () => ({Items})};
+  };
+  const code = await main(env, fetchImpl, {models, output, delayMs: 0, log: line => logs.push(line), now: new Date('2026-11-11T00:00:00Z')});
+  assert.equal(code, 0);
+  assert.deepEqual(keywords, ['RTX 5070', 'Ryzen 5600', 'RX 7600']);
+  const text = fs.readFileSync(output, 'utf8');
+  const data = JSON.parse(text);
+  assert.deepEqual(data.products.map(p => [p.modelName, p.price, p.status]), [['GeForce RTX 5070', 111000, 'ok'], ['Ryzen 5 5600', 9980, 'ok']]);
+  assert.equal(data.products[0].url, 'https://hb.afl.rakuten.co.jp/abc');
+  assert.equal(data.products[0].fetchedAt, '2026-11-11T00:00:00.000Z');
+  assert.deepEqual(data.unmatched.map(u => u.modelName), ['Radeon RX 7600']);
+  assert.ok(!/app-secret|access-secret/.test(text + logs.join('\n')));
+});
+
+test('an API outage keeps the previous price file untouched', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  fs.writeFileSync(output, '{"products":[{"category":"gpu","modelName":"GeForce RTX 5070","status":"ok","price":1,"fetchedAt":"2026-11-10T00:00:00Z"}]}');
+  const env = {RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c'};
+  const models = ['5070', '5070 Ti', '5080', '5090', '4060'].map(n => ({category: 'gpu', modelName: 'GeForce RTX ' + n, referencePrice: 100000}));
+  const code = await main(env, async () => ({ok: false, status: 503}), {models, output, delayMs: 0, log() {}});
+  assert.equal(code, 1);
+  assert.match(fs.readFileSync(output, 'utf8'), /"price":1/);
+  assert.equal(await main({}, async () => assert.fail('no network without credentials'), {models, output, log() {}}), 1);
+});
+
+test('the site model list can be read from index.html without network', async () => {
+  const {loadModels} = require('../scripts/update-rakuten-prices');
+  const models = await loadModels(async () => { throw new Error('offline'); });
+  assert.ok(models.length > 80);
+  const gpu = models.find(m => m.modelName === 'GeForce RTX 5090');
+  assert.equal(gpu.category, 'gpu');
+  assert.ok(gpu.referencePrice > 100000);
+  // すべての内蔵モデルが検索語と判定を持つ
+  for (const model of models) {
+    assert.ok(modelSpec(model.category, model.modelName, models.filter(m => m.category === model.category).map(m => m.modelName)), model.modelName);
+  }
+});
+
+test('sheet audit flags wrong tiers and non-existent models without touching valid ones', () => {
+  const {nameIssue} = require('../scripts/lib/audit');
+  for (const name of ['Ryzen 9 9950X3D', 'Ryzen 5 5600', 'Ryzen 7 5700X3D', 'Ryzen 7 PRO 4750G', 'Ryzen 5 3600 AF', 'Core i9-14900KS', 'Core i9-10850K', 'Core i5-12400F', 'Core i7-8700T', 'Core Ultra 7 265KF', 'Core Ultra 9 285', 'Apple M2 Max']) {
+    assert.equal(nameIssue('cpu', name), null, name);
+  }
+  assert.match(nameIssue('cpu', 'Core i9-14600KF'), /Core i5-14600KF/);
+  assert.match(nameIssue('cpu', 'Ryzen 5 1800X'), /Ryzen 7 1800X/);
+  assert.match(nameIssue('cpu', 'Core Ultra 9 235'), /Core Ultra 5 235/);
+  for (const name of ['Core i9-6790 XT', 'Core i7 5900X', 'Core i7-1700', 'Core i5-12000', 'Ryzen 5 9600ST', 'AMD 4700G']) assert.ok(nameIssue('cpu', name), name);
+  for (const name of ['GeForce RTX 5090', 'GeForce RTX 5060 Ti 16GB', 'GeForce GTX 1660 SUPER', 'GeForce GTX 980 Ti', 'Radeon RX 7900 XTX', 'Radeon RX 6500 XT 4GB', 'Radeon RX Vega 8(Ryzen 5000)', 'Arc A770 8GB', 'NVIDIA TITAN Xp', 'Radeon 780M']) {
+    assert.equal(nameIssue('gpu', name), null, name);
+  }
+  for (const name of ['GeForce RTX 6700 XT', 'GeForce RTX 1080 Ti', 'GeForce GTX 2060 6GB', 'Radeon RX 9000 XT 16GB', 'Radeon RT 360', 'GeForce RX Vega 64', 'Arc 8970', 'GeForce RTX 3060 SUPER']) assert.ok(nameIssue('gpu', name), name);
+});
+
+test('update run also writes the sheet audit next to the price file', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const env = {RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c'};
+  const models = [
+    {category: 'gpu', modelName: 'GeForce RTX 6700 XT', referencePrice: null, fromSheet: true, sheetPriceValid: false},
+    {category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000, fromSheet: true, sheetPriceValid: false},
+    {category: 'cpu', modelName: 'Ryzen 5 5600', referencePrice: 9800, fromSheet: false},
+  ];
+  let calls = 0;
+  const fetchImpl = async url => { calls++; return {ok: true, json: async () => ({Items: url.searchParams.get('keyword') === 'RTX 5070' ? [item('MSI GeForce RTX 5070 12G', 111000)] : []})}; };
+  assert.equal(await main(env, fetchImpl, {models, output, delayMs: 0, log() {}}), 0);
+  assert.equal(calls, 3);
+  const audit = JSON.parse(fs.readFileSync(path.join(dir, 'sheet-audit.json'), 'utf8'));
+  assert.deepEqual(audit.issues.map(i => [i.modelName, i.type]), [['GeForce RTX 6700 XT', 'name'], ['GeForce RTX 6700 XT', 'price']]);
+});

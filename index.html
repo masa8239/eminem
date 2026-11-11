@@ -495,7 +495,7 @@ input[type=range]::-webkit-slider-thumb {
       </div>
     </div>
   </div>
-  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格（楽天市場から取得できた製品は取得元・日時を表示） · スコアはPassMark実測値</div></div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。楽天市場の価格は自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developers.rakuten.com/" target="_blank" rel="noopener" style="color:inherit">Supported by Rakuten Developers</a> · スコアはPassMark実測値</div></div>
 </div>
 
 <!-- GPU RANKING -->
@@ -541,7 +541,7 @@ input[type=range]::-webkit-slider-thumb {
       </table>
     </div>
   </div>
-  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格（楽天市場から取得できた製品は取得元・日時を表示） · スコアは3DMark実測値</div></div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。楽天市場の価格は自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developers.rakuten.com/" target="_blank" rel="noopener" style="color:inherit">Supported by Rakuten Developers</a> · スコアは3DMark実測値</div></div>
 </div>
 
 <!-- RAM RANKING -->
@@ -590,7 +590,7 @@ input[type=range]::-webkit-slider-thumb {
       </table>
     </div>
   </div>
-  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格（楽天市場から取得できた製品は取得元・日時を表示） · 帯域幅はメーカー公式スペックより算出</div></div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。楽天市場の価格は自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developers.rakuten.com/" target="_blank" rel="noopener" style="color:inherit">Supported by Rakuten Developers</a> · 帯域幅はメーカー公式スペックより算出</div></div>
 </div>
 
 <!-- CPU COMPARE -->
@@ -897,10 +897,8 @@ function renderPrice(item) {
   if (!validPrice(item.price)) return `${price}<div class="price-meta price-error">価格・単位を要確認（コスパ対象外）</div>`;
   if (item.rakuten?.status === 'ok') {
     const date = new Date(item.rakuten.fetchedAt);
-    const fetched = Number.isNaN(date.getTime()) ? '取得日時不明' : date.toLocaleString('ja-JP');
-    const url = safeRakutenUrl(item.rakuten.url);
-    const link = url ? `<br><a href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">楽天の商品を見る ↗</a>` : '';
-    return `${price}<div class="price-meta">取得元: 楽天市場<br>取得日時: ${escapeHtml(fetched)}${link}</div>`;
+    const fetched = Number.isNaN(date.getTime()) ? '取得日時不明' : date.toLocaleString('ja-JP', {month:'numeric', day:'numeric', hour:'numeric', minute:'2-digit'}) + ' 取得';
+    return `${price}<div class="price-meta">取得元: 楽天市場（${escapeHtml(fetched)}）</div>`;
   }
   if (item.rakuten?.status === 'error') {
     return `${price}<div class="price-meta price-error">楽天価格の更新失敗<br>表示額は参考価格（最新扱いではありません）</div>`;
@@ -1339,6 +1337,12 @@ function parseRamRow(row) {
   return {name,type,speed,cl,capacity,kit,price,badge,badgeClass};
 }
 
+// シートの価格が空・不正な製品は、同じ型番の内蔵参考価格で補う（別の型番からの推測はしない）
+function fillBuiltinPrices(parsed, builtin) {
+  const byName = new Map(builtin.map(item => [item.name, item.price]));
+  parsed.forEach(item => { if (!validPrice(item.price) && validPrice(byName.get(item.name))) item.price = byName.get(item.name); });
+  return parsed;
+}
 // スプレッドシート取得（10分間 sessionStorage キャッシュ · 8秒タイムアウト）
 async function fetchSheet(url, cacheKey) {
   try {
@@ -1363,7 +1367,7 @@ async function loadSheetData() {
   if (cpuR.status==='fulfilled') {
     const parsed = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
-      cpuData = assignSheetBadges(parsed.sort((a,b)=>b.score-a.score),'cpu');
+      cpuData = assignSheetBadges(fillBuiltinPrices(parsed, FALLBACK_CPU).sort((a,b)=>b.score-a.score),'cpu'); cpuFromSheet = true;
       maxCpuScore = Math.max(...cpuData.map(d=>d.score));
       document.getElementById('cpu-rank-updated').textContent = LOADED;
     } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
@@ -1371,7 +1375,7 @@ async function loadSheetData() {
   if (gpuR.status==='fulfilled') {
     const parsed = gpuR.value.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
-      gpuData = assignSheetBadges(parsed.sort((a,b)=>b.score-a.score),'gpu');
+      gpuData = assignSheetBadges(fillBuiltinPrices(parsed, FALLBACK_GPU).sort((a,b)=>b.score-a.score),'gpu'); gpuFromSheet = true;
       maxGpuScore = Math.max(...gpuData.map(d=>d.score));
       document.getElementById('gpu-rank-updated').textContent = LOADED;
     } else document.getElementById('gpu-rank-updated').textContent = BUILTIN;
@@ -1379,7 +1383,7 @@ async function loadSheetData() {
   if (ramR.status==='fulfilled') {
     const parsed = ramR.value.map(parseRamRow).filter(r=>r&&r.name&&r.speed>0);
     if (parsed.length > 0) {
-      ramData = parsed.sort((a,b)=>b.speed-a.speed);
+      ramData = fillBuiltinPrices(parsed, FALLBACK_RAM).sort((a,b)=>b.speed-a.speed);
       maxRamSpeed = Math.max(...ramData.map(d=>d.speed));
       document.getElementById('ram-rank-updated').textContent = LOADED;
     } else document.getElementById('ram-rank-updated').textContent = BUILTIN;
@@ -1389,31 +1393,49 @@ async function loadSheetData() {
   updateHomeRanking();
 }
 
-// 確認済みの商品コードだけをFunction側で照会する。失敗した行は参考価格を残して明示する。
+// 楽天市場の価格を反映する。取得元は2つ:
+//  1) data/rakuten-prices.json … GitHub Actions が毎日自動更新する価格ファイル
+//  2) /api/rakuten-prices      … 人が確認して登録した商品（config/rakuten-products.json）。こちらを優先
+// 取得できなかった製品は参考価格のまま残す。
+const PRICE_FILE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+const PRICE_FILE_URLS = ['data/rakuten-prices.json', 'https://raw.githubusercontent.com/masa8239/eminem/main/data/rakuten-prices.json'];
+let cpuFromSheet = false, gpuFromSheet = false;
+async function fetchPriceProducts(url) {
+  const response = await fetch(url, {headers:{Accept:'application/json'}, signal:AbortSignal.timeout(10000)});
+  const payload = await response.json();
+  if (!Array.isArray(payload.products)) throw new Error(payload.error || `HTTP ${response.status}`);
+  return payload;
+}
+function applyRakutenProducts(products, maxAgeMs) {
+  const lists = {cpu:cpuData, gpu:gpuData, ram:ramData};
+  products.forEach(product => {
+    const item = lists[product.category]?.find(candidate => candidate.name === product.modelName);
+    if (!item || !['ok','error'].includes(product.status)) return;
+    const ok = product.status === 'ok' && validPrice(product.price);
+    // 自動取得ファイルの古い価格は最新扱いしない
+    if (maxAgeMs && !(ok && Date.now() - new Date(product.fetchedAt).getTime() < maxAgeMs)) return;
+    if (ok) {
+      if (item.basePrice === undefined) item.basePrice = item.price;
+      item.price = product.price;
+    }
+    item.rakuten = {status: ok ? 'ok' : 'error', fetchedAt:product.fetchedAt, url:product.url};
+  });
+}
 async function loadRakutenPrices() {
+  // 自動取得ファイル: サイト同梱版とGitHub上の最新版のうち、新しい方を使う
+  const files = (await Promise.allSettled(PRICE_FILE_URLS.map(fetchPriceProducts))).filter(r=>r.status==='fulfilled').map(r=>r.value);
+  const newest = files.sort((a,b)=>String(b.checkedAt||'').localeCompare(String(a.checkedAt||'')))[0];
+  if (newest) applyRakutenProducts(newest.products, PRICE_FILE_MAX_AGE_MS);
   try {
-    const response = await fetch('/api/rakuten-prices', {headers:{Accept:'application/json'}, signal:AbortSignal.timeout(10000)});
-    const payload = await response.json();
-    if (!Array.isArray(payload.products)) throw new Error(payload.error || `HTTP ${response.status}`);
-    const lists = {cpu:cpuData, gpu:gpuData, ram:ramData};
-    payload.products.forEach(product => {
-      const item = lists[product.category]?.find(candidate => candidate.name === product.modelName);
-      if (!item || !['ok','error'].includes(product.status)) return;
-      if (product.status === 'ok' && validPrice(product.price)) {
-        item.basePrice = item.price;
-        item.price = product.price;
-      }
-      item.rakuten = {
-        status:product.status === 'ok' && !validPrice(product.price) ? 'error' : product.status,
-        fetchedAt:product.fetchedAt,
-        url:product.url,
-      };
-    });
+    applyRakutenProducts((await fetchPriceProducts('/api/rakuten-prices')).products, 0);
   } catch (error) {
-    console.warn('楽天価格を取得できませんでした。参考価格を維持します。', error);
+    console.warn('確認済み商品の楽天価格を取得できませんでした。', error);
   }
+  // 価格が変わったので、コスパバッジを付け直す
+  if (cpuFromSheet) cpuData = assignSheetBadges(cpuData, 'cpu');
+  if (gpuFromSheet) gpuData = assignSheetBadges(gpuData, 'gpu');
   renderCpuTable(); renderGpuTable(); renderRamTable();
-  updateCompare(); updateGpuCompare();
+  populateCpuSelects(); populateGpuSelects();
 }
 
 // ===== FAVORITES =====

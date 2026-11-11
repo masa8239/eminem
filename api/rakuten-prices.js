@@ -5,7 +5,7 @@ const productMap = require('../config/rakuten-products.json');
 // https://webservice.rakuten.co.jp/documentation/ichiba-item-search
 const API_URL = 'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701';
 // Rakuten checks the registered web application's Origin for server-side requests.
-const SITE_ORIGIN = 'https://eminem-steel.vercel.app';
+const SITE_ORIGIN = process.env.RAKUTEN_SITE_ORIGIN || 'https://eminem-steel.vercel.app';
 const CATEGORIES = new Set(['cpu', 'gpu', 'ram']);
 
 class PriceError extends Error {}
@@ -70,7 +70,7 @@ async function searchItems(parameters, credentials, fetchImpl = fetch) {
     if (parameters[key] !== undefined) url.searchParams.set(key, parameters[key]);
   }
   const response = await fetchImpl(url, {
-    headers: {accessKey: credentials.accessKey, Accept: 'application/json', Origin: SITE_ORIGIN},
+    headers: {accessKey: credentials.accessKey, Accept: 'application/json', Origin: credentials.origin || SITE_ORIGIN},
     signal: AbortSignal.timeout(7000),
     redirect: 'error',
   });
@@ -128,4 +128,4 @@ async function handler(request, response) {
 }
 
 module.exports = handler;
-module.exports._test = {validateMapping, responseItems, extractItem, searchItems, fetchProduct, buildResponse};
+module.exports._test = {SITE_ORIGIN, PriceError, validateMapping, responseItems, extractItem, searchItems, fetchProduct, buildResponse};
