@@ -5,7 +5,7 @@ const productMap = require('../config/rakuten-products.json');
 // https://webservice.rakuten.co.jp/documentation/ichiba-item-search
 const API_URL = 'https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701';
 // Rakuten checks the registered web application's Origin for server-side requests.
-const SITE_ORIGIN = 'https://eminem-zfet.vercel.app';
+const SITE_ORIGIN = 'https://eminem-steel.vercel.app';
 const CATEGORIES = new Set(['cpu', 'gpu', 'ram']);
 
 class PriceError extends Error {}

@@ -45,7 +45,7 @@ Productionの環境変数はローカルやPreviewには自動で提供されま
 - 接続先: `https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701`
 - `applicationId` と `affiliateId` はサーバーからクエリで送信。Access Keyは公式の `accessKey` ヘッダーで送信します。`Authorization: Bearer` は使用しません。
 - `format=json&formatVersion=2` を明示し、`items` 配列内の `itemCode`・`itemName`・`itemPrice`・`availability`・`affiliateUrl`／`itemUrl` を処理します。実接続では大文字の `Items` も観測されたため、どちらの配列にも対応します。
-- この楽天アプリの許可サイトとして登録された `https://eminem-zfet.vercel.app` を `Origin` ヘッダーで送ります。PCで同じ認証値と検索語を使った照会は、Originなしで HTTP 403、付与時に HTTP 200 でした。この確認はProductionでの実行成功を意味しません。登録サイトを変える場合はコード内の `SITE_ORIGIN` も合わせて変更します。
+- この楽天アプリの許可サイトとして登録された `https://eminem-steel.vercel.app` を `Origin` ヘッダーで送ります。PCで同じ認証値と検索語を使った照会は、Originなしで HTTP 403、付与時に HTTP 200 でした。この確認はProductionでの実行成功を意味しません。登録サイトを変える場合はコード内の `SITE_ORIGIN` も合わせて変更します。
 - 購入可能な商品の正の整数円価格だけ採用し、空結果・別商品・商品名変更・不正価格・HTTPエラー・JSON不正は商品単位の更新失敗にします。上流エラー本文、認証付きURL、例外詳細はレスポンスやログへ出しません。
 
 3つの認証変数が安全に設定されたシェルで、次を実行します（Node自体は `.env.local` を自動読込しません）。

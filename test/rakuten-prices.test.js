@@ -43,7 +43,7 @@ test('current endpoint, accessKey header, JSON v2 and itemCode are sent',async()
     for(const [key,value] of Object.entries({format:'json',formatVersion:'2',applicationId:credentials.applicationId,affiliateId:credentials.affiliateId,itemCode:entry.itemCode,availability:'1'})) assert.equal(url.searchParams.get(key),value);
     assert.equal(url.searchParams.has('accessKey'),false);
     assert.equal(options.headers.accessKey,credentials.accessKey);
-    assert.equal(options.headers.Origin,'https://eminem-zfet.vercel.app');
+    assert.equal(options.headers.Origin,'https://eminem-steel.vercel.app');
     assert.equal(options.headers.Authorization,undefined);
     assert.equal(options.redirect,'error');
     assert.ok(options.signal instanceof AbortSignal);

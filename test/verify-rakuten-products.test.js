@@ -18,7 +18,7 @@ test('candidate searches are read-only, target both models and do not log secret
     assert.equal(url.searchParams.has('affiliateId'),false);
     assert.equal(url.searchParams.has('accessKey'),false);
     assert.equal(options.headers.accessKey,env.RAKUTEN_ACCESS_KEY);
-    assert.equal(options.headers.Origin,'https://eminem-zfet.vercel.app');
+    assert.equal(options.headers.Origin,'https://eminem-steel.vercel.app');
     return {ok:true,json:async()=>({Items:[{itemCode:'test:fixture',itemName:'synthetic item',itemCaption:Object.values(env).join(' '),itemPrice:12345,availability:1,itemUrl:'https://item.rakuten.co.jp/test/fixture/?accessKey=must-not-print'}]})};
   },line=>lines.push(line));
   assert.equal(code,0);
