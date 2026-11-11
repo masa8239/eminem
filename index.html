@@ -80,7 +80,10 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .rank-table th { text-align: left; padding: 10px 12px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-weight: 400; white-space: nowrap; }
 .rank-table td { padding: 12px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
 .rank-table tr:last-child td { border-bottom: none; }
-.rank-table tbody tr { transition: background 0.15s; cursor: pointer; }
+.rank-table tbody tr { transition: background 0.15s; }
+.home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.home-grid > div { min-width: 0; }
+.nav-link:focus-visible { outline: 2px solid var(--accent2); outline-offset: -2px; }
 .rank-table tbody tr:hover { background: rgba(255,255,255,0.02); }
 .rank-num { font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 700; color: var(--text3); }
 .rank-1 { color: var(--gold); }
@@ -128,7 +131,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .pos-1 { color: var(--gold); }
 .pos-2 { color: var(--silver); }
 .pos-3 { color: var(--bronze); }
-.mini-rank-name { flex: 1; font-size: 13px; font-weight: 500; }
+.mini-rank-name { flex: 1; min-width: 0; font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .mini-rank-score { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: var(--accent2); }
 .mini-rank-bar { width: 60px; height: 3px; background: var(--surface3); border-radius: 2px; overflow: hidden; }
 .mini-rank-bar-fill { height: 100%; border-radius: 2px; }
@@ -362,6 +365,7 @@ input[type=range]::-webkit-slider-thumb {
   .sort-row { gap: 6px; }
   .sort-btn { padding: 5px 10px; font-size: 11px; }
   .preset-grid { grid-template-columns: 1fr; }
+  .home-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -370,28 +374,28 @@ input[type=range]::-webkit-slider-thumb {
 <nav>
   <div class="logo">BENCH<span>CORE</span></div>
   <div class="nav-links">
-    <div class="nav-link active" onclick="showPage('home',this)">トップ</div>
-    <div class="nav-link" onclick="showPage('cpu-rank',this)">CPU ランキング</div>
-    <div class="nav-link" onclick="showPage('gpu-rank',this)">GPU ランキング</div>
-    <div class="nav-link" onclick="showPage('ram-rank',this)">RAM ランキング</div>
-    <div class="nav-link" onclick="showPage('cpu-compare',this)">CPU 比較</div>
-    <div class="nav-link" onclick="showPage('gpu-compare',this)">GPU 比較</div>
-    <div class="nav-link" onclick="showPage('bottleneck',this)">⚡ ボトルネック</div>
-    <div class="nav-link" onclick="showPage('presets',this)">🎯 おすすめ構成</div>
-    <div class="nav-link" onclick="showPage('builder',this)" style="color:var(--accent);font-weight:700">🛒 PC構成ビルダー <span class="nav-badge">NEW</span></div>
+    <div role="link" tabindex="0" class="nav-link active" onclick="showPage('home',this)">トップ</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('cpu-rank',this)">CPU ランキング</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('gpu-rank',this)">GPU ランキング</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('ram-rank',this)">RAM ランキング</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('cpu-compare',this)">CPU 比較</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('gpu-compare',this)">GPU 比較</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('bottleneck',this)">⚡ ボトルネック</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('presets',this)">🎯 おすすめ構成</div>
+    <div role="link" tabindex="0" class="nav-link" onclick="showPage('builder',this)" style="color:var(--accent);font-weight:700">🛒 PC構成ビルダー <span class="nav-badge">NEW</span></div>
   </div>
 </nav>
 
 <!-- HOME -->
 <div id="home" class="page active">
   <div class="hero">
-    <div class="hero-eyebrow">// BENCHMARK DATABASE 2025</div>
+    <div class="hero-eyebrow">// BENCHMARK DATABASE</div>
     <h1>PCパーツの<em>性能</em>を<br>数値で比べる</h1>
     <p>CPU・GPU・メモリのベンチマークスコア、コスパ、消費電力を一覧で比較。<br>最新データで最適なパーツ選びをサポートします。</p>
     <div class="hero-stats">
       <div><div class="hero-stat-val"><span id="stat-cpu-count">50</span></div><div class="hero-stat-label">CPU登録数</div></div>
       <div><div class="hero-stat-val"><span id="stat-gpu-count">45</span></div><div class="hero-stat-label">GPU登録数</div></div>
-      <div><div class="hero-stat-val"><span id="stat-ram-count">23</span></div><div class="hero-stat-label">RAM登録数</div></div>
+      <div><div class="hero-stat-val"><span id="stat-ram-count">22</span></div><div class="hero-stat-label">RAM登録数</div></div>
     </div>
     <div class="hero-cta">
       <button class="btn btn-primary" onclick="goPage('cpu-rank')">CPU ランキングを見る</button>
@@ -399,7 +403,7 @@ input[type=range]::-webkit-slider-thumb {
     </div>
   </div>
   <div class="section">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+    <div class="home-grid">
       <div>
         <div class="section-header"><div class="section-title">CPU TOP 5</div><div class="section-sub">// passmark multi</div></div>
         <div class="mini-rank" id="home-cpu-ranking"><div class="mini-rank-item"><div class="mini-rank-pos pos-1">1</div><div class="mini-rank-name">読み込み中...</div><div class="mini-rank-bar"></div><div class="mini-rank-score">—</div></div></div>
@@ -853,6 +857,28 @@ function normalizeBadges(data, type) {
     return item;
   });
 }
+// スプレッドシート由来データのバッジ判定（データは変更しない）
+// コスパ系は一定性能以上（CPU 16,000 / GPU 11,000）の中で、スコア÷価格の上位のみに付ける
+function assignSheetBadges(data, type) {
+  const minScore = type === 'cpu' ? 16000 : 11000;
+  const maxScore = Math.max(...data.map(d=>d.score), 1);
+  const elig = data.filter(d=>d.price>0 && d.score>=minScore).sort((a,b)=>b.score/b.price - a.score/a.price);
+  const nBest = Math.max(1, Math.round(elig.length*0.1)), nGood = Math.round(elig.length*0.25);
+  const best = new Set(elig.slice(0,nBest)), good = new Set(elig.slice(nBest,nGood));
+  return data.map(d => {
+    let badge='', badgeClass='';
+    if (d.score===maxScore) { badge='最強'; badgeClass='badge-purple'; }
+    else if (best.has(d)) { badge='コスパ最強'; badgeClass='badge-green'; }
+    else if (good.has(d)) { badge='コスパ'; badgeClass='badge-green'; }
+    else if (d.score>=maxScore*0.85) { badge='ハイエンド'; badgeClass='badge-blue'; }
+    return Object.assign({}, d, {badge, badgeClass});
+  });
+}
+function esc(s) { return String(s??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function jsq(s) { return esc(String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")); }
+// 評価の★は並び順ではなく性能（最高値に対する比率）で決める
+function stars(ratio) { const n=ratio>=0.85?5:ratio>=0.6?4:ratio>=0.4?3:2; return `<span class="badge ${n>=5?'badge-purple':n>=4?'badge-blue':'badge-green'}">${'★'.repeat(n)}</span>`; }
+function syncSortBtns(p, keys, key, dir) { keys.forEach(k=>{ const b=document.getElementById(p+'-sort-'+k), a=document.getElementById(p+'-arrow-'+k); if(b) b.className='sort-btn'+(key===k?' active-'+(k==='speed'?'score':k):''); if(a) a.textContent=key===k?(dir===-1?'↓':'↑'):'↓'; }); }
 function toNum(v) { return typeof v==='number'?v:parseInt(String(v||'').replace(/[^0-9.]/g,''))||0; }
 
 // ===== RENDER CPU TABLE =====
@@ -880,8 +906,8 @@ function renderCpuTable() {
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
       <td>
-        <div class="chip-name">${c.name}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div>
-        <div class="chip-sub">${c.maker} · ${c.socket||'—'}</div>
+        <div class="chip-name">${esc(c.name)}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div>
+        <div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div>
       </td>
       <td><div class="score-bar-wrap">
         <div class="score-val" style="${cpuSortKey==='score'?'':'opacity:0.6'}">${c.score.toLocaleString()}</div>
@@ -893,43 +919,43 @@ function renderCpuTable() {
       <td class="price-cell">${c.cache?c.cache+'MB':'—'}</td>
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
       <td class="price-cell" style="${cpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
-      <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('cpu','${c.name.replace(/'/g,"\\'")}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
+      <td>${stars(c.score/maxCpuScore)}</td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('cpu','${jsq(c.name)}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
       <td><button class="affiliate-btn">🛒 Amazon</button></td>
     </tr>`;}).join('');
 
   // Single tab — ソートキーを適用した上でシングルスコアも表示
-  const singleBase = applyCpuSort(base);
+  const singleBase = [...base].sort((a,b)=>(b.single||0)-(a.single||0));
   const maxSingle = Math.max(...singleBase.map(d=>d.single||0),1);
   document.getElementById('cpu-single-body').innerHTML = singleBase.map((c,i) => {
     const cospaVal = c.price>0?(c.score/c.price).toFixed(2):'—';
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${c.name}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${c.socket||'—'}</div></td>
+      <td><div class="chip-name">${esc(c.name)}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div></td>
       <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent4)">${c.single?c.single.toLocaleString():'—'}</div><div class="score-bar-bg"><div class="score-bar" style="width:${c.single?Math.round(c.single/maxSingle*100):0}%;background:linear-gradient(90deg,var(--accent4),var(--accent2))"></div></div></div></td>
       <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(c.price)}</td>
       <td class="price-cell">${c.cores||'—'}C / ${c.threads||'—'}T</td>
       <td class="price-cell">${c.clockMax?c.clockMax+'GHz':'—'}</td>
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
       <td class="price-cell" style="${cpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
-      <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
+      <td>${stars((c.single||0)/maxSingle)}</td>
       <td><button class="affiliate-btn">🛒 Amazon</button></td>
     </tr>`;}).join('');
 
   // Cospa tab — ソートキーを適用した並び順でコスパ値を表示
-  const cospaBase = applyCpuSort(base.filter(c=>c.price>0));
+  const cospaBase = base.filter(c=>c.price>0).sort((a,b)=>b.score/b.price-a.score/a.price);
   const maxCospa = Math.max(...cospaBase.map(c=>c.score/c.price),1);
   document.getElementById('cpu-cospa-body').innerHTML = cospaBase.map((c,i) => {
     const cp = (c.score/c.price).toFixed(3);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${c.name}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${c.socket||'—'}</div></td>
+      <td><div class="chip-name">${esc(c.name)}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div></td>
       <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent3)">${cp}</div><div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(parseFloat(cp)/maxCospa*100)}%;background:linear-gradient(90deg,var(--accent3),#58a6ff)"></div></div></div></td>
       <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(c.price)}</td>
       <td class="price-cell">${c.score.toLocaleString()}</td>
       <td class="price-cell">${c.cores||'—'}C / ${c.threads||'—'}T</td>
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
-      <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
+      <td>${stars(parseFloat(cp)/maxCospa)}</td>
       <td><button class="affiliate-btn">🛒 Amazon</button></td>
     </tr>`;}).join('');
 }
@@ -957,17 +983,17 @@ function renderGpuTable() {
     const isFav = gpuFavs.has(g.name);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${g.name}${g.badge?` <span class="badge ${g.badgeClass}">${g.badge}</span>`:''}</div><div class="chip-sub">${g.maker}</div></td>
+      <td><div class="chip-name">${esc(g.name)}${g.badge?` <span class="badge ${g.badgeClass}">${g.badge}</span>`:''}</div><div class="chip-sub">${g.maker}</div></td>
       <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent);${gpuSortKey!=='score'?'opacity:0.6':''}">${g.score.toLocaleString()}</div><div class="score-bar-bg"><div class="score-bar gpu" style="width:${Math.round(g.score/maxScore*100)}%;${gpuSortKey!=='score'?'opacity:0.4':''}"></div></div></div></td>
       <td class="price-cell" style="${gpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(g.price)}</td>
-      <td class="price-cell">${g.vram||'—'}</td>
-      <td class="price-cell">${g.bw||'—'}</td>
+      <td class="price-cell">${esc(g.vram||'—')}</td>
+      <td class="price-cell">${esc(g.bw||'—')}</td>
       <td class="price-cell">${g.tdp?g.tdp+'W':'—'}</td>
-      <td class="price-cell">${g.rt||'—'}</td>
-      <td class="price-cell">${g.dlss||'—'}</td>
+      <td class="price-cell">${esc(g.rt||'—')}</td>
+      <td class="price-cell">${esc(g.dlss||'—')}</td>
       <td class="price-cell" style="${gpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
-      <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('gpu','${g.name.replace(/'/g,"\\'")}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
+      <td>${stars(g.score/maxGpuScore)}</td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('gpu','${jsq(g.name)}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
       <td><button class="affiliate-btn">🛒 Amazon</button></td>
     </tr>`;}).join('');
 }
@@ -995,16 +1021,16 @@ function renderRamTable() {
     const isFav = ramFavs.has(r.name);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${r.name}${r.badge?` <span class="badge ${r.badgeClass}">${r.badge}</span>`:''}</div></td>
-      <td><span class="badge ${r.type==='DDR5'?'badge-purple':'badge-blue'}">${r.type}</span></td>
+      <td><div class="chip-name">${esc(r.name)}${r.badge?` <span class="badge ${r.badgeClass}">${r.badge}</span>`:''}</div></td>
+      <td><span class="badge ${r.type==='DDR5'?'badge-purple':'badge-blue'}">${esc(r.type)}</span></td>
       <td style="font-weight:700;color:var(--accent2)">${r.speed.toLocaleString()} MHz</td>
       <td>CL${r.cl||'—'}</td>
-      <td>${r.capacity}GB <span style="color:var(--text3);font-size:11px">${r.kit}</span></td>
+      <td>${r.capacity}GB <span style="color:var(--text3);font-size:11px">${esc(r.kit)}</span></td>
       <td style="color:var(--text2)">${bw}</td>
       <td class="price-cell" style="${ramSortKey==='price'?'color:var(--gold);font-weight:700':''}">${fmtPrice(r.price)}</td>
       <td class="price-cell" style="${ramSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">¥${cospaVal}/GB</td>
-      <td><span class="badge ${i<3?'badge-purple':i<8?'badge-blue':'badge-green'}">${i===0?'★★★★★':i<3?'★★★★':i<8?'★★★':'★★'}</span></td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('ram','${r.name.replace(/'/g,"\\'")}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
+      <td>${stars(r.speed/maxRamSpeed)}</td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('ram','${jsq(r.name)}')" title="お気に入り">${isFav?'❤️':'🤍'}</button></td>
       <td><button class="affiliate-btn">🛒 Amazon</button></td>
     </tr>`;}).join('');
 }
@@ -1086,14 +1112,14 @@ function applyRamSort(arr) {
 
 // ===== POPULATE COMPARE SELECTS =====
 function populateCpuSelects() {
-  const opts = cpuData.map((c,i)=>`<option value="${i}">${c.name}</option>`).join('');
+  const opts = cpuData.map((c,i)=>`<option value="${i}">${esc(c.name)}</option>`).join('');
   document.getElementById('cpu-a-select').innerHTML = opts;
   document.getElementById('cpu-b-select').innerHTML = opts;
   document.getElementById('cpu-b-select').selectedIndex = Math.min(1,cpuData.length-1);
   updateCompare();
 }
 function populateGpuSelects() {
-  const opts = gpuData.map((g,i)=>`<option value="${i}">${g.name}</option>`).join('');
+  const opts = gpuData.map((g,i)=>`<option value="${i}">${esc(g.name)}</option>`).join('');
   document.getElementById('gpu-a-select').innerHTML = opts;
   document.getElementById('gpu-b-select').innerHTML = opts;
   document.getElementById('gpu-b-select').selectedIndex = Math.min(1,gpuData.length-1);
@@ -1111,15 +1137,15 @@ function updateCompare() {
     <div class="perf-card">
       <div class="perf-card-title">マルチスレッドスコア (PassMark)</div>
       <div class="perf-bars">
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#58a6ff">${a.name.split(' ').slice(-2).join(' ')}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.score/maxM*100}%;background:#58a6ff"></div></div><div class="perf-bar-pct">${a.score.toLocaleString()}</div></div>
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#f78166">${b.name.split(' ').slice(-2).join(' ')}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.score/maxM*100}%;background:#f78166"></div></div><div class="perf-bar-pct">${b.score.toLocaleString()}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#58a6ff">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.score/maxM*100}%;background:#58a6ff"></div></div><div class="perf-bar-pct">${a.score.toLocaleString()}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#f78166">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.score/maxM*100}%;background:#f78166"></div></div><div class="perf-bar-pct">${b.score.toLocaleString()}</div></div>
       </div>
     </div>
     <div class="perf-card">
       <div class="perf-card-title">価格比較</div>
       <div class="perf-bars">
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#58a6ff">${a.name.split(' ').slice(-2).join(' ')}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.price/maxP*100}%;background:#58a6ff"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(a.price)}</div></div>
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#f78166">${b.name.split(' ').slice(-2).join(' ')}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.price/maxP*100}%;background:#f78166"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(b.price)}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#58a6ff">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.price/maxP*100}%;background:#58a6ff"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(a.price)}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#f78166">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.price/maxP*100}%;background:#f78166"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(b.price)}</div></div>
       </div>
     </div>`;
   const rows = [
@@ -1156,13 +1182,13 @@ function updateGpuCompare() {
 }
 
 function compareTableHTML(aName, bName, rows) {
-  return `<thead><tr><th class="label-col">項目</th><th style="color:#58a6ff">${aName}</th><th style="color:#f78166">${bName}</th></tr></thead>
+  return `<thead><tr><th class="label-col">項目</th><th style="color:#58a6ff">${esc(aName)}</th><th style="color:#f78166">${esc(bName)}</th></tr></thead>
   <tbody>${rows.map(([label,av,bv,mode])=>{
     let aC='',bC='';
     if(mode){const an=parseFloat(String(av).replace(/[^0-9.]/g,'')),bn=parseFloat(String(bv).replace(/[^0-9.]/g,''));
       if(!isNaN(an)&&!isNaN(bn)&&an!==bn){if(mode==='high'){aC=an>bn?'best-val':'';bC=bn>an?'best-val':'';}if(mode==='low'){aC=an<bn?'best-val':'';bC=bn<an?'best-val':'';}}
     }
-    return `<tr><td class="label-col">${label}</td><td class="${aC}">${av}</td><td class="${bC}">${bv}</td></tr>`;
+    return `<tr><td class="label-col">${label}</td><td class="${aC}">${esc(av)}</td><td class="${bC}">${esc(bv)}</td></tr>`;
   }).join('')}</tbody>`;
 }
 
@@ -1173,7 +1199,7 @@ function updateHomeRanking() {
     cpuList.innerHTML = cpuData.slice(0,5).map((c,i)=>`
       <div class="mini-rank-item" onclick="goPage('cpu-rank')">
         <div class="mini-rank-pos ${i===0?'pos-1':i===1?'pos-2':i===2?'pos-3':''}">${i+1}</div>
-        <div class="mini-rank-name">${c.name}</div>
+        <div class="mini-rank-name">${esc(c.name)}</div>
         <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(c.score/maxCpuScore*100)}%;background:linear-gradient(90deg,#58a6ff,#d2a8ff)"></div></div>
         <div class="mini-rank-score">${c.score.toLocaleString()}</div>
       </div>`).join('');
@@ -1183,7 +1209,7 @@ function updateHomeRanking() {
     gpuList.innerHTML = gpuData.slice(0,5).map((g,i)=>`
       <div class="mini-rank-item" onclick="goPage('gpu-rank')">
         <div class="mini-rank-pos ${i===0?'pos-1':i===1?'pos-2':i===2?'pos-3':''}">${i+1}</div>
-        <div class="mini-rank-name">${g.name}</div>
+        <div class="mini-rank-name">${esc(g.name)}</div>
         <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(g.score/maxGpuScore*100)}%;background:linear-gradient(90deg,#f78166,#ffd700)"></div></div>
         <div class="mini-rank-score" style="color:var(--accent)">${g.score.toLocaleString()}</div>
       </div>`).join('');
@@ -1203,7 +1229,7 @@ function parseCpuRow(row) {
   const score   = toNum(row['PassMarkスコア']||row['スコア']||row[keys[1]]);
   const single  = toNum(row['シングル']||row['SingleScore']||0);
   const cores   = toNum(row['コア数']);
-  const threads = toNum(row['スレッド数']||row['スレッド']||cores*2);
+  const threads = toNum(row['スレッド数']||row['スレッド']||(/ultra/i.test(String(name))?cores:cores*2));
   const tdp     = toNum(row['TDP']);
   const price   = toNum(row['価格(円)']||row['価格']);
   const cache   = toNum(row['L3キャッシュ']||row['キャッシュ']||0);
@@ -1212,7 +1238,7 @@ function parseCpuRow(row) {
   if(!clockMin&&!clockMax&&clockStr){const m=clockStr.match(/([\d.]+)[^\d.]+([\d.]+)/);if(m){clockMin=parseFloat(m[1]);clockMax=parseFloat(m[2]);}else{const m2=clockStr.match(/([\d.]+)/);if(m2)clockMax=parseFloat(m2[1]);}}
   const cospa = score>0&&price>0?score/price:0;
   const maker = name.toLowerCase().includes('ryzen')||name.toLowerCase().includes('amd')?'AMD':name.toLowerCase().includes('core')||name.toLowerCase().includes('intel')?'Intel':'Other';
-  const socket = row['ソケット']||row['socket']||(maker==='AMD'?'AM5':maker==='Intel'?'LGA1700':'');
+  const socket = row['ソケット']||row['socket']||(maker==='AMD'?(/\b5\d{3}/.test(name)?'AM4':'AM5'):maker==='Intel'?(/ultra/i.test(name)?'LGA1851':'LGA1700'):'');
   let badge='',badgeClass='';
   if(cospa>=0.5){badge='コスパ最強';badgeClass='badge-green';}else if(score>=60000){badge='ハイエンド';badgeClass='badge-blue';}else if(score>=40000){badge='ハイ';badgeClass='badge-purple';}
   return {name,maker,score,single,price,tdp,cores,threads,socket,clockMin,clockMax,cache,cospa,badge,badgeClass};
@@ -1227,7 +1253,7 @@ function parseGpuRow(row) {
   const bw    = String(row['帯域幅']||row['メモリ帯域幅']||'');
   const cospa = score>0&&price>0?score/price:0;
   const maker = name.includes('RTX')||name.includes('GTX')||name.includes('NVIDIA')?'NVIDIA':name.includes('RX')||name.includes('Radeon')||name.includes('AMD')?'AMD':'Other';
-  const dlss  = row['アップスケーリング']||(maker==='NVIDIA'?'DLSS 3':maker==='AMD'?'FSR 3':'-');
+  const dlss  = row['アップスケーリング']||(maker==='NVIDIA'?(/RTX 50/.test(name)?'DLSS 4':/RTX 40/.test(name)?'DLSS 3':'DLSS 2'):maker==='AMD'?(/RX 9\d{3}/.test(name)?'FSR 4':/RX 7\d{3}/.test(name)?'FSR 3':'FSR 2'):'-');
   const rt    = row['レイトレ']||(maker==='NVIDIA'?'◎':maker==='AMD'?'○':'△');
   let badge='',badgeClass='';
   if(cospa>=0.3){badge='コスパ最強';badgeClass='badge-green';}else if(score>=40000){badge='最強';badgeClass='badge-purple';}else if(score>=25000){badge='ハイエンド';badgeClass='badge-blue';}
@@ -1271,11 +1297,11 @@ async function loadSheetData() {
     fetchSheet(GPU_GAS_URL, 'bc_gpu_v1'),
     fetchSheet(RAM_GAS_URL, 'bc_ram_v1'),
   ]);
-  const LOADED='// Googleスプレッドシートから読み込み済み', BUILTIN='// 内蔵データ使用中 (2025)';
+  const LOADED='// Googleスプレッドシートから読み込み済み', BUILTIN='// 内蔵データ使用中';
   if (cpuR.status==='fulfilled') {
     const parsed = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
-      cpuData = normalizeBadges(parsed.sort((a,b)=>b.score-a.score),'cpu');
+      cpuData = assignSheetBadges(parsed.sort((a,b)=>b.score-a.score),'cpu');
       maxCpuScore = Math.max(...cpuData.map(d=>d.score));
       document.getElementById('cpu-rank-updated').textContent = LOADED;
     } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
@@ -1283,7 +1309,7 @@ async function loadSheetData() {
   if (gpuR.status==='fulfilled') {
     const parsed = gpuR.value.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0);
     if (parsed.length > 0) {
-      gpuData = normalizeBadges(parsed.sort((a,b)=>b.score-a.score),'gpu');
+      gpuData = assignSheetBadges(parsed.sort((a,b)=>b.score-a.score),'gpu');
       maxGpuScore = Math.max(...gpuData.map(d=>d.score));
       document.getElementById('gpu-rank-updated').textContent = LOADED;
     } else document.getElementById('gpu-rank-updated').textContent = BUILTIN;
@@ -1302,16 +1328,17 @@ async function loadSheetData() {
 }
 
 // ===== FAVORITES =====
-let cpuFavs = new Set(JSON.parse(localStorage.getItem('benchcore_cpu_favs')||'[]'));
-let gpuFavs = new Set(JSON.parse(localStorage.getItem('benchcore_gpu_favs')||'[]'));
-let ramFavs = new Set(JSON.parse(localStorage.getItem('benchcore_ram_favs')||'[]'));
+function loadFavs(k) { try { const v=JSON.parse(localStorage.getItem(k)||'[]'); return new Set(Array.isArray(v)?v:[]); } catch(e) { return new Set(); } }
+let cpuFavs = loadFavs('benchcore_cpu_favs');
+let gpuFavs = loadFavs('benchcore_gpu_favs');
+let ramFavs = loadFavs('benchcore_ram_favs');
 function favSet(type) { return type==='cpu'?cpuFavs:type==='gpu'?gpuFavs:ramFavs; }
 function favRerender(type) { (type==='cpu'?renderCpuTable:type==='gpu'?renderGpuTable:renderRamTable)(); renderFavBar(type); }
 
 function toggleFav(type, name) {
   const favs = favSet(type);
   if (favs.has(name)) favs.delete(name); else favs.add(name);
-  localStorage.setItem(`benchcore_${type}_favs`, JSON.stringify([...favs]));
+  try { localStorage.setItem(`benchcore_${type}_favs`, JSON.stringify([...favs])); } catch(e) {}
   favRerender(type);
 }
 function renderFavBar(type) {
@@ -1323,13 +1350,13 @@ function renderFavBar(type) {
   bar.style.display='flex';
   chips.innerHTML = [...favs].map(name=>`
     <span class="fav-chip">
-      <span>${name}</span>
-      <span class="fav-chip-del" onclick="toggleFav('${type}','${name.replace(/'/g,"\\'")}')">✕</span>
+      <span>${esc(name)}</span>
+      <span class="fav-chip-del" onclick="toggleFav('${type}','${jsq(name)}')">✕</span>
     </span>`).join('');
 }
 function clearFavs(type) {
   favSet(type).clear();
-  localStorage.removeItem(`benchcore_${type}_favs`);
+  try { localStorage.removeItem(`benchcore_${type}_favs`); } catch(e) {}
   favRerender(type);
 }
 
@@ -1372,8 +1399,8 @@ function shareUrl(page) {
   } else if (page==='bottleneck') {
     const ci = document.getElementById('bn-cpu-sel')?.value;
     const gi = document.getElementById('bn-gpu-sel')?.value;
-    if (ci) params.set('cpu', ci);
-    if (gi) params.set('gpu', gi);
+    if (ci) params.set('cpu', cpuData[ci]?.name||ci);
+    if (gi) params.set('gpu', gpuData[gi]?.name||gi);
   } else if (page==='builder') {
     const ids = Object.values(bSelected).map(v=>v.id);
     if (ids.length) params.set('b', ids.join('-'));
@@ -1397,24 +1424,24 @@ function restoreFromUrl() {
   if (PAGE_MAP[page]!==undefined) goPage(page, true);
   if (page==='cpu-rank') {
     const f=p.get('filter'); if(f){cpuFilter=f; document.querySelectorAll('#cpu-rank .filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.includes(f==='all'?'全て':f)));}
-    const s=p.get('sort'); if(s){cpuSortKey=s; cpuSortDir=parseInt(p.get('dir')||'-1');}
+    const s=p.get('sort'); if(['score','price','cospa'].includes(s)){cpuSortKey=s; cpuSortDir=parseInt(p.get('dir'))===1?1:-1; syncSortBtns('cpu',['score','price','cospa'],cpuSortKey,cpuSortDir);}
     const q=p.get('q'); if(q&&document.getElementById('cpu-search'))document.getElementById('cpu-search').value=q;
     renderCpuTable();
   } else if (page==='gpu-rank') {
     const f=p.get('filter'); if(f){gpuFilter=f; document.querySelectorAll('#gpu-rank .filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.includes(f==='all'?'全て':f)));}
-    const s=p.get('sort'); if(s){gpuSortKey=s; gpuSortDir=parseInt(p.get('dir')||'-1');}
+    const s=p.get('sort'); if(['score','price','cospa'].includes(s)){gpuSortKey=s; gpuSortDir=parseInt(p.get('dir'))===1?1:-1; syncSortBtns('gpu',['score','price','cospa'],gpuSortKey,gpuSortDir);}
     const q=p.get('q'); if(q&&document.getElementById('gpu-search'))document.getElementById('gpu-search').value=q;
     renderGpuTable();
   } else if (page==='ram-rank') {
     const f=p.get('filter'); if(f){ramFilter=f; document.querySelectorAll('#ram-rank .filter-btn').forEach(b=>b.classList.toggle('active',b.textContent.includes(f==='all'?'全て':f)));}
-    const s=p.get('sort'); if(s){ramSortKey=s; ramSortDir=parseInt(p.get('dir')||'-1');}
+    const s=p.get('sort'); if(['speed','price','cospa'].includes(s)){ramSortKey=s; ramSortDir=parseInt(p.get('dir'))===1?1:-1; syncSortBtns('ram',['speed','price','cospa'],ramSortKey,ramSortDir);}
     const q=p.get('q'); if(q&&document.getElementById('ram-search'))document.getElementById('ram-search').value=q;
     renderRamTable();
   } else if (page==='bottleneck') {
     setTimeout(()=>{
       const ci=p.get('cpu'); const gi=p.get('gpu');
-      if(ci){const s=document.getElementById('bn-cpu-sel');if(s){s.value=ci;}}
-      if(gi){const s=document.getElementById('bn-gpu-sel');if(s){s.value=gi;}}
+      if(ci){const s=document.getElementById('bn-cpu-sel');const ix=cpuData.findIndex(c=>c.name===ci);if(s){s.value=ix>=0?ix:ci;}}
+      if(gi){const s=document.getElementById('bn-gpu-sel');const ix=gpuData.findIndex(g=>g.name===gi);if(s){s.value=ix>=0?ix:gi;}}
       calcBottleneck();
     }, 300);
   } else if (page==='builder') {
@@ -1428,8 +1455,8 @@ function restoreFromUrl() {
 
 // ===== BOTTLENECK CALCULATOR =====
 function populateBnSelects() {
-  const cpuOpts = cpuData.map((c,i)=>`<option value="${i}">${c.name}</option>`).join('');
-  const gpuOpts = gpuData.map((g,i)=>`<option value="${i}">${g.name}</option>`).join('');
+  const cpuOpts = cpuData.map((c,i)=>`<option value="${i}">${esc(c.name)}</option>`).join('');
+  const gpuOpts = gpuData.map((g,i)=>`<option value="${i}">${esc(g.name)}</option>`).join('');
   const cs = document.getElementById('bn-cpu-sel');
   const gs = document.getElementById('bn-gpu-sel');
   if(cs) cs.innerHTML = cpuOpts;
@@ -1449,10 +1476,14 @@ function calcBottleneck() {
   // PassMark → 3DMark換算（概算スケール）
   const maxCpu = Math.max(...cpuData.map(d=>d.score));
   const maxGpu = Math.max(...gpuData.map(d=>d.score));
-  const cpuNorm = cpu.score/maxCpu * 100;
-  const gpuNorm = gpu.score/maxGpu * 100;
+  // ゲームではマルチスレッド性能は一定以上あっても伸びないため、PassMark 40,000 で頭打ちとして扱う
+  const CPU_GAME_CAP = 40000;
+  const cpuNorm = Math.min(cpu.score, CPU_GAME_CAP)/Math.min(maxCpu, CPU_GAME_CAP) * 100;
+  // 最上位GPU 1枚だけ突出しているため、Time Spy 38,000 で頭打ちとして扱う
+  const GPU_GAME_CAP = 38000;
+  const gpuNorm = Math.min(gpu.score, GPU_GAME_CAP)/Math.min(maxGpu, GPU_GAME_CAP) * 100;
   const ratio = cpuNorm / gpuNorm; // 1.0が完全バランス
-  const bottleneckPct = Math.abs(1 - ratio) * 100;
+  const bottleneckPct = (1 - Math.min(cpuNorm,gpuNorm)/Math.max(cpuNorm,gpuNorm)) * 100;
   const cpuBarW = Math.round(cpuNorm / (cpuNorm+gpuNorm) * 100);
   const gpuBarW = 100 - cpuBarW;
 
@@ -1486,7 +1517,7 @@ function calcBottleneck() {
       <div class="bn-verdict-desc">${desc}<br><br><small style="color:var(--text3)">${advice}</small></div>
     </div>
     <div class="bn-meter">
-      <div class="bn-meter-label"><span style="color:var(--accent2)">CPU: ${cpu.name}</span><span style="color:var(--accent)">GPU: ${gpu.name}</span></div>
+      <div class="bn-meter-label"><span style="color:var(--accent2)">CPU: ${esc(cpu.name)}</span><span style="color:var(--accent)">GPU: ${esc(gpu.name)}</span></div>
       <div class="bn-bar-track">
         <div class="bn-bar-cpu" style="width:${cpuBarW}%">${cpuBarW>15?'CPU':''}</div>
         <div class="bn-bar-gpu" style="width:${gpuBarW}%">${gpuBarW>15?'GPU':''}</div>
@@ -1498,7 +1529,7 @@ function calcBottleneck() {
       <div class="bn-stat"><div class="bn-stat-val" style="color:${titleColor}">${bottleneckPct.toFixed(0)}%</div><div class="bn-stat-label">ボトルネック推定</div></div>
       <div class="bn-stat"><div class="bn-stat-val" style="color:var(--accent)">${gpu.score.toLocaleString()}</div><div class="bn-stat-label">GPU Time Spy</div></div>
       <div class="bn-stat"><div class="bn-stat-val" style="color:var(--gold)">${fmtPrice(cpu.price+gpu.price)}</div><div class="bn-stat-label">CPU+GPU合計</div></div>
-      <div class="bn-stat"><div class="bn-stat-val">${cpu.tdp+gpu.tdp}W</div><div class="bn-stat-label">推奨電源容量+150W</div></div>
+      <div class="bn-stat"><div class="bn-stat-val">${Math.ceil(((cpu.tdp||0)+(gpu.tdp||0)+150)/50)*50}W</div><div class="bn-stat-label">推奨電源容量（目安）</div></div>
       <div class="bn-stat"><div class="bn-stat-val" style="color:var(--accent3)">${ratio>=0.6&&ratio<=1.6?'◎ 良':ratio<0.4||ratio>2.5?'✕ 悪':'△ 普通'}</div><div class="bn-stat-label">バランス評価</div></div>
     </div>`;
 }
@@ -1613,7 +1644,7 @@ function renderPresets() {
         <div class="preset-icon" style="background:${p.color}20;color:${p.color}">${p.icon}</div>
         <div>
           <div class="preset-title">${p.title}</div>
-          <div class="preset-budget">目安予算 ${p.budget}</div>
+          <div class="preset-budget">目安予算 約¥${Math.floor(total/10000)}万〜</div>
         </div>
       </div>
       <div class="preset-body">
@@ -1680,7 +1711,10 @@ window.addEventListener('popstate', e => {
 });
 
 // ===== AMAZON検索（全テーブルの購入ボタンをイベント委譲で処理） =====
-function amz(q) { window.open('https://www.amazon.co.jp/s?k='+encodeURIComponent(q), '_blank', 'noopener'); }
+// Amazonアソシエイトのトラッキング ID（例: 'xxxx-22'）を入れると全購入リンクに付与されます
+const AMAZON_TAG = '';
+function amz(q) { window.open('https://www.amazon.co.jp/s?k='+encodeURIComponent(q)+(AMAZON_TAG?'&tag='+encodeURIComponent(AMAZON_TAG):''), '_blank', 'noopener'); }
+document.addEventListener('keydown', e => { if ((e.key==='Enter'||e.key===' ') && e.target.classList?.contains('nav-link')) { e.preventDefault(); e.target.click(); } });
 document.addEventListener('click', e => {
   const btn = e.target.closest('.affiliate-btn');
   if (!btn) return;
