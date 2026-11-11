@@ -26,7 +26,7 @@
   --accent4: #d2a8ff;
   --text: #e6edf3;
   --text2: #8b949e;
-  --text3: #484f58;
+  --text3: #6e7681;
   --gold: #ffd700;
   --silver: #c0c0c0;
   --bronze: #cd7f32;
@@ -37,7 +37,8 @@ body::before { content: ''; position: fixed; inset: 0; background-image: url("da
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(8,11,16,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 32px; height: 56px; }
 .logo { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 22px; color: var(--text); letter-spacing: 3px; text-transform: uppercase; margin-right: 40px; }
 .logo span { color: var(--accent); }
-.nav-links { display: flex; flex: 1; }
+.nav-links { display: flex; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
 .nav-link { padding: 0 20px; height: 56px; display: flex; align-items: center; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.5px; white-space: nowrap; }
 .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.03); }
 .nav-link.active { color: var(--accent2); border-bottom-color: var(--accent2); }
@@ -49,20 +50,20 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .hero-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.6s 0.1s forwards; }
 .hero h1 { font-family: 'Rajdhani', sans-serif; font-size: clamp(42px,7vw,80px); font-weight: 700; line-height: 1; letter-spacing: -1px; margin-bottom: 16px; opacity: 0; animation: fadeUp 0.6s 0.2s forwards; }
 .hero h1 em { color: var(--accent); font-style: normal; }
-.hero p { font-size: 15px; color: var(--text2); max-width: 520px; margin: 0 auto 40px; line-height: 1.7; opacity: 0; animation: fadeUp 0.6s 0.3s forwards; }
+.hero p { font-size: 15px; color: var(--text2); max-width: 640px; text-wrap: balance; margin: 0 auto 40px; line-height: 1.7; opacity: 0; animation: fadeUp 0.6s 0.3s forwards; }
 .hero-stats { display: flex; justify-content: center; gap: 48px; margin-bottom: 48px; opacity: 0; animation: fadeUp 0.6s 0.4s forwards; }
 .hero-stat-val { font-family: 'Rajdhani', sans-serif; font-size: 36px; font-weight: 700; line-height: 1; }
 .hero-stat-val span { color: var(--accent2); }
 .hero-stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; letter-spacing: 1px; text-transform: uppercase; }
 .hero-cta { display: flex; justify-content: center; gap: 12px; opacity: 0; animation: fadeUp 0.6s 0.5s forwards; }
-.btn { padding: 10px 24px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; font-family: 'Noto Sans JP', sans-serif; }
+.btn { white-space: nowrap; padding: 10px 24px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; font-family: 'Noto Sans JP', sans-serif; }
 .btn-primary { background: var(--accent); color: #000; font-weight: 700; }
 .btn-primary:hover { background: #ff9580; transform: translateY(-1px); }
 .btn-secondary { background: transparent; border-color: var(--border2); color: var(--text2); }
 .btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(88,166,255,0.05); }
 .section { padding: 40px; max-width: 1400px; margin: 0 auto; }
-.section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 24px; }
-.section-title { font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.section-header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 24px; }
+.section-title { white-space: nowrap; font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 .section-sub { font-size: 12px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; }
@@ -77,7 +78,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .card-arrow { position: absolute; top: 20px; right: 20px; color: var(--text3); font-size: 18px; transition: all 0.2s; }
 .card:hover .card-arrow { color: var(--accent2); transform: translate(2px,-2px); }
 .rank-table { width: 100%; border-collapse: collapse; }
-.rank-table th { text-align: left; padding: 10px 12px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-weight: 400; white-space: nowrap; }
+.rank-table th { text-align: left; padding: 10px 12px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text2); border-bottom: 1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-weight: 400; white-space: nowrap; }
 .rank-table td { padding: 12px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
 .rank-table tr:last-child td { border-bottom: none; }
 .rank-table tbody tr { transition: background 0.15s; }
@@ -89,7 +90,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba
 .rank-1 { color: var(--gold); }
 .rank-2 { color: var(--silver); }
 .rank-3 { color: var(--bronze); }
-.chip-name { font-weight: 500; font-size: 14px; line-height: 1.3; }
+.chip-name { font-weight: 500; font-size: 14px; line-height: 1.3; white-space: nowrap; }
 .chip-sub { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
 .score-bar-wrap { min-width: 120px; }
 .score-val { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 5px; }
@@ -146,8 +147,8 @@ a.affiliate-btn { text-decoration: none; }
 .footer-logo span { color: var(--accent); }
 .footer-note { font-size: 11px; color: var(--text3); }
 .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-.tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 24px; background: var(--surface2); }
-.tab { padding: 12px 20px; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.tabs { overflow-x: auto; scrollbar-width: none; display: flex; border-bottom: 1px solid var(--border); padding: 0 24px; background: var(--surface2); }
+.tab { white-space: nowrap; padding: 12px 20px; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
 .tab:hover { color: var(--text); }
 .tab.active { color: var(--accent2); border-bottom-color: var(--accent2); }
 .tab-content { display: none; }
@@ -300,7 +301,7 @@ input[type=range]::-webkit-slider-thumb {
 .fav-clear:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ── SHARE BUTTON ── */
-.share-btn { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: var(--surface2); color: var(--text2); transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; }
+.share-btn { white-space: nowrap; margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); background: var(--surface2); color: var(--text2); transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; }
 .share-btn:hover { border-color: var(--accent2); color: var(--accent2); }
 .share-toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent3); color: #000; padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; z-index: 9999; opacity: 0; transition: all 0.3s; pointer-events: none; }
 .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -320,7 +321,7 @@ input[type=range]::-webkit-slider-thumb {
 .bn-verdict { text-align: center; padding: 20px; }
 .bn-verdict-icon { font-size: 40px; margin-bottom: 8px; }
 .bn-verdict-title { font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 6px; }
-.bn-verdict-desc { font-size: 13px; color: var(--text2); line-height: 1.7; max-width: 480px; margin: 0 auto; }
+.bn-verdict-desc { text-wrap: balance; font-size: 13px; color: var(--text2); line-height: 1.7; max-width: 480px; margin: 0 auto; }
 .bn-stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 20px; }
 .bn-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; text-align: center; }
 .bn-stat-val { font-family: 'Rajdhani', sans-serif; font-size: 22px; font-weight: 700; }
@@ -338,7 +339,7 @@ input[type=range]::-webkit-slider-thumb {
 .preset-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
 .preset-parts { display: flex; flex-direction: column; gap: 6px; }
 .preset-part { display: flex; align-items: center; gap: 10px; font-size: 12px; }
-.preset-part-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); width: 32px; letter-spacing: 1px; }
+.preset-part-cat { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); width: 46px; flex-shrink: 0; letter-spacing: 1px; }
 .preset-part-name { flex: 1; color: var(--text); }
 .preset-part-price { font-family: 'JetBrains Mono', monospace; color: var(--gold); font-size: 11px; }
 .preset-total-row { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
@@ -347,12 +348,15 @@ input[type=range]::-webkit-slider-thumb {
 .preset-load-btn { margin-top: 12px; width: 100%; padding: 9px; border-radius: 6px; background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.3); color: var(--accent2); font-size: 12px; font-weight: 700; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
 .preset-load-btn:hover { background: rgba(88,166,255,0.2); }
 
+button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+.bmobile-bar { display: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   nav { padding: 0 12px; gap: 0; }
   .logo { font-size: 17px; margin-right: 12px; }
-  .nav-links { overflow-x: auto; scrollbar-width: none; }
-  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links { -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); padding-right: 28px; }
   .nav-link { padding: 0 12px; font-size: 12px; }
   .section { padding: 16px; }
   .hero { padding: 48px 20px 40px; }
@@ -364,7 +368,17 @@ input[type=range]::-webkit-slider-thumb {
   .perf-visual { grid-template-columns: 1fr; }
   .compare-select-wrap { grid-template-columns: 1fr; }
   .table-wrap { overflow-x: auto; }
-  .rank-table { min-width: 700px; }
+  .rank-table { min-width: 980px; }
+  .rank-table td, .rank-table th { padding-left: 10px; padding-right: 10px; }
+  .hero-cta { flex-wrap: wrap; }
+  .section-sub { order: 3; flex-basis: 100%; }
+  .search-box { flex: none; width: 100%; }
+  .builder-left { padding: 20px 16px; }
+  .builder-layout { padding-bottom: 64px; }
+  .bmobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: rgba(13,17,23,0.96); backdrop-filter: blur(12px); border-top: 1px solid var(--border2); }
+  .bmobile-bar span { display: block; font-size: 10px; color: var(--text2); letter-spacing: 1px; }
+  .bmobile-bar strong { font-family: 'Rajdhani', sans-serif; font-size: 22px; color: var(--gold); line-height: 1.1; }
+  .bmobile-bar button { padding: 9px 16px; border-radius: 6px; border: 1px solid var(--accent2); background: rgba(88,166,255,0.1); color: var(--accent2); font-size: 12px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; white-space: nowrap; }
   .search-budget-row { flex-direction: column; }
   .budget-box { min-width: auto; width: 100%; }
   .sort-row { gap: 6px; }
@@ -666,6 +680,7 @@ input[type=range]::-webkit-slider-thumb {
 
 <!-- BUILDER -->
 <div id="builder" class="page">
+  <div class="bmobile-bar"><div><span>総合計</span><strong id="bmobile-total">¥15,000</strong></div><button onclick="document.querySelector('.builder-right').scrollIntoView({behavior:'smooth'})">構成と診断を見る ↓</button></div>
   <div class="builder-layout">
     <div class="builder-left">
       <div class="builder-hero"><h2>PC構成<span>ビルダー</span></h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">🔗 この構成をシェア</button></div>
@@ -2048,6 +2063,7 @@ function bupdateCart(){
   const osAmt=document.getElementById('b-os-check')?.checked?B_OS:0;
   document.getElementById('bos-val').textContent=osAmt?'¥'+B_OS.toLocaleString():'¥0';
   document.getElementById('bgrand-total').textContent='¥'+(partsTotal+osAmt).toLocaleString();
+  const mobileTotal=document.getElementById('bmobile-total'); if(mobileTotal) mobileTotal.textContent='¥'+(partsTotal+osAmt).toLocaleString();
   document.getElementById('bcart-count').textContent=`${items.length} / ${Object.keys(BPARTS).length} パーツ選択済み`;
   // 構成を自動保存（リロードしても消えない）
   try { localStorage.setItem('benchcore_build', JSON.stringify({ids:items.map(([,v])=>v.id), os:!!document.getElementById('b-os-check')?.checked})); } catch(e) {}
