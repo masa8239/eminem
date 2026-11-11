@@ -172,7 +172,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     // modelName はサイト表示用に補正済みの名前、sheetName はシートに書かれている名前
     const name = nameIssue(row.category, row.sheetName);
     // fix: 規則から機械的に決まる正しい名前（あるときだけ）。シート側スクリプトが自動で書き換える
-    if (name) issues.push({category: row.category, modelName: row.sheetName, type: 'name', issue: name, ...(row.modelName !== row.sheetName ? {fix: row.modelName} : {})});
+    if (name) issues.push({category: row.category, modelName: row.sheetName, type: 'name', issue: name, ...(row.modelName !== row.sheetName && !nameIssue(row.category, row.modelName) ? {fix: row.modelName} : {})});
     const key = `${row.category}\0${row.modelName}`;
     if (seenNames.has(key)) issues.push({category: row.category, modelName: row.sheetName, type: 'duplicate', issue: `「${row.modelName}」と重複しています（サイトでは1件だけ表示）`});
     seenNames.add(key);

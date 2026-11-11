@@ -29,8 +29,12 @@ function intelTier(number) {
   return null;
 }
 
+// 規則上はあり得る形だが、実際には発売されていない型番
+const NONEXISTENT_CPUS = new Set(['RYZEN 5 5500X', 'RYZEN 9 5500X', 'RYZEN 7 3800', 'RYZEN 5 3800', 'CORE I5-9500KF', 'CORE I9-9500KF', 'RYZEN 5 8600X3D', 'RYZEN 7 8600X3D', 'RYZEN 5 9500X', 'RYZEN 5 9500G', 'RYZEN 5 7500G', 'RYZEN 3 2100X', 'CORE I5-10550']);
+
 function cpuIssue(name) {
   const text = normalize(name);
+  if (NONEXISTENT_CPUS.has(text)) return '発売が確認できない型番です';
   if (text.startsWith('APPLE')) return null;
   let match = text.match(/^RYZEN (\d) (?:PRO )?(\d{4})([A-Z0-9]*)(?: AF)?$/);
   if (match) {

@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-11T15:52:47.081Z",
+ "checkedAt": "2026-11-11T16:04:45.174Z",
  "issues": [
   {
    "category": "cpu",
@@ -51,6 +51,12 @@
   },
   {
    "category": "cpu",
+   "modelName": "Ryzen 5 9500X",
+   "type": "name",
+   "issue": "発売が確認できない型番です"
+  },
+  {
+   "category": "cpu",
    "modelName": "Core i9-11900K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -99,13 +105,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core Ultra 9 235",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core Ultra 5 235）",
-   "fix": "Core Ultra 5 235"
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 7 3000XT",
    "type": "name",
    "issue": "存在しない型番の可能性があります"
@@ -137,21 +136,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-14600KF",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i5-14600KF）",
-   "fix": "Core i5-14600KF"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-14600K",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i5-14600K）",
-   "fix": "Core i5-14600K"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-14600K",
+   "modelName": "Core i5-14600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -207,8 +192,7 @@
    "category": "cpu",
    "modelName": "Ryzen 7 8600X3D",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 8600X3D）",
-   "fix": "Ryzen 5 8600X3D"
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -236,41 +220,13 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core Ultra 6 225",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core Ultra 5 225）",
-   "fix": "Core Ultra 5 225"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i5-13500",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core Ultra 9 225F",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core Ultra 5 225F）",
-   "fix": "Core Ultra 5 225F"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-14500",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i5-14500）",
-   "fix": "Core i5-14500"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-12700",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i7-12700）",
-   "fix": "Core i7-12700"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-12700",
+   "modelName": "Core i7-12700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -309,8 +265,7 @@
    "category": "cpu",
    "modelName": "Ryzen 9 5500X",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 5500X）",
-   "fix": "Ryzen 5 5500X"
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -324,6 +279,12 @@
    "type": "name",
    "issue": "等級が違います（正しくは Core i5-12600K）",
    "fix": "Core i5-12600K"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 8600X3D",
+   "type": "name",
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -366,13 +327,6 @@
    "modelName": "Apple M3 Pro (12コア)",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 5700X3D",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 7 5700X3D）",
-   "fix": "Ryzen 7 5700X3D"
   },
   {
    "category": "cpu",
@@ -431,14 +385,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13400F",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i5-13400F）",
-   "fix": "Core i5-13400F"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-13400F",
+   "modelName": "Core i5-13400F",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -450,16 +397,15 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13400",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i5-13400）",
-   "fix": "Core i5-13400"
+   "modelName": "Core i5-13400",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13400",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+   "modelName": "Ryzen 5 7500G",
+   "type": "name",
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -518,14 +464,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-10900KF",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i9-10900KF）",
-   "fix": "Core i9-10900KF"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-10900KF",
+   "modelName": "Core i9-10900KF",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -539,8 +478,7 @@
    "category": "cpu",
    "modelName": "Ryzen 5 3800",
    "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 7 3800）",
-   "fix": "Ryzen 7 3800"
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -595,6 +533,12 @@
    "modelName": "Apple M2 Pro (12コア)",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 9500G",
+   "type": "name",
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -720,8 +664,7 @@
    "category": "cpu",
    "modelName": "Core i9-9500KF",
    "type": "name",
-   "issue": "等級が違います（正しくは Core i5-9500KF）",
-   "fix": "Core i5-9500KF"
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -744,14 +687,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 3 3600",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 3600）",
-   "fix": "Ryzen 5 3600"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 3600",
+   "modelName": "Ryzen 5 3600",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -766,6 +702,12 @@
    "modelName": "AMD 4700G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 2100X",
+   "type": "name",
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -805,14 +747,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 1800X",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 7 1800X）",
-   "fix": "Ryzen 7 1800X"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 1800X",
+   "modelName": "Ryzen 7 1800X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -866,34 +801,13 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-14100F",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i3-14100F）",
-   "fix": "Core i3-14100F"
-  },
-  {
-   "category": "cpu",
    "modelName": "Apple M2",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-14100",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i3-14100）",
-   "fix": "Core i3-14100"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-13100",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i3-13100）",
-   "fix": "Core i3-13100"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-13100",
+   "modelName": "Core i3-13100",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -965,30 +879,9 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-12100F",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i3-12100F）",
-   "fix": "Core i3-12100F"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 2600X",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 2600X）",
-   "fix": "Ryzen 5 2600X"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 2600X",
+   "modelName": "Ryzen 5 2600X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12100",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i3-12100）",
-   "fix": "Core i3-12100"
   },
   {
    "category": "cpu",
@@ -1010,16 +903,15 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-8700K",
-   "type": "name",
-   "issue": "等級が違います（正しくは Core i7-8700K）",
-   "fix": "Core i7-8700K"
+   "modelName": "Core i7-8700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-8700K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+   "modelName": "Core i5-10550",
+   "type": "name",
+   "issue": "発売が確認できない型番です"
   },
   {
    "category": "cpu",
@@ -1083,14 +975,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3300X",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 3 3300X）",
-   "fix": "Ryzen 3 3300X"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 3300X",
+   "modelName": "Ryzen 3 3300X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1126,40 +1011,19 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 7 4300G",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 3 4300G）",
-   "fix": "Ryzen 3 4300G"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 4300G",
+   "modelName": "Ryzen 3 4300G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3100",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 3 3100）",
-   "fix": "Ryzen 3 3100"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 3100",
+   "modelName": "Ryzen 3 3100",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 4100",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 3 4100）",
-   "fix": "Ryzen 3 4100"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 4100",
+   "modelName": "Ryzen 3 4100",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1237,14 +1101,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 7900 GRE",
-   "type": "name",
-   "issue": "RTX 7900 は存在しません（Radeon RX や GTX の型番の可能性）",
-   "fix": "Radeon RX 7900 GRE"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 7900 GRE",
+   "modelName": "Radeon RX 7900 GRE",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1436,14 +1293,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 6700 XT",
-   "type": "name",
-   "issue": "RTX 6700 は存在しません（Radeon RX や GTX の型番の可能性）",
-   "fix": "Radeon RX 6700 XT"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 6700 XT",
+   "modelName": "Radeon RX 6700 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1497,14 +1347,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 7600 XT",
-   "type": "name",
-   "issue": "RTX 7600 は存在しません（Radeon RX や GTX の型番の可能性）",
-   "fix": "Radeon RX 7600 XT"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 7600 XT",
+   "modelName": "Radeon RX 7600 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1631,27 +1474,13 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce GTX 2060 12GB",
-   "type": "name",
-   "issue": "GTX 2060 は存在しません（RTX の型番の可能性）",
-   "fix": "GeForce RTX 2060 12GB"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 2060 12GB",
+   "modelName": "GeForce RTX 2060 12GB",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "gpu",
-   "modelName": "GeForce GTX 2060 6GB",
-   "type": "name",
-   "issue": "GTX 2060 は存在しません（RTX の型番の可能性）",
-   "fix": "GeForce RTX 2060 6GB"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 2060 6GB",
+   "modelName": "GeForce RTX 2060 6GB",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1669,14 +1498,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 5600 XT(145gpu)",
-   "type": "name",
-   "issue": "モデル名に不要な文字が入っています",
-   "fix": "Radeon RX 5600 XT"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5600 XT(145gpu)",
+   "modelName": "Radeon RX 5600 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1688,14 +1510,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RX Vega 64",
-   "type": "name",
-   "issue": "Vega は Radeon の製品です（GeForce ではありません）",
-   "fix": "Radeon RX Vega 64"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RX Vega 64",
+   "modelName": "Radeon RX Vega 64",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1732,14 +1547,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RX Vega 56",
-   "type": "name",
-   "issue": "Vega は Radeon の製品です（GeForce ではありません）",
-   "fix": "Radeon RX Vega 56"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RX Vega 56",
+   "modelName": "Radeon RX Vega 56",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
