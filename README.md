@@ -70,7 +70,7 @@ GitHub のリポジトリで **Settings → Secrets and variables → Actions �
 - `RAKUTEN_ACCESS_KEY`
 - `RAKUTEN_AFFILIATE_ID`
 
-登録後、**Actions → 楽天価格の自動更新 → Run workflow** で手動実行すると、すぐに1回目の取得が走ります。
+登録後、**Actions → 価格の自動更新 → Run workflow** で手動実行すると、すぐに1回目の取得が走ります。
 
 楽天のアプリ設定の「許可サイト」は `https://eminem-steel.vercel.app` にしてください。旧URLのままでも1回目は旧URLで再試行しますが、ログに更新を促すメッセージが出ます。
 
@@ -87,7 +87,7 @@ GitHub のリポジトリで **Settings → Secrets and variables → Actions �
 
 ### 複数ストアの価格比較とポイント
 
-GitHub の Secrets に `YAHOO_CLIENT_ID`（Yahoo!デベロッパーネットワークのアプリの Client ID）を登録すると、同じ照合ルールで Yahoo!ショッピングも検索し、安いほうを表示価格にします。もう一方のストアの価格も行内にリンクで表示します。付与ポイント（楽天はポイント倍率から概算、Yahoo! はAPIの値）を「実質」価格として併記します。クーポンやセール時の追加ポイントなど、APIに出てこない割引は反映されません。Yahoo! 側は実際のAPI応答ではまだ動作確認していません。
+楽天のキーと Yahoo! の Client ID は、どちらか片方だけでも動きます。GitHub の Secrets に `YAHOO_CLIENT_ID`（Yahoo!デベロッパーネットワークのアプリの Client ID）を登録すると、同じ照合ルールで Yahoo!ショッピングも検索し、安いほうを表示価格にします。もう一方のストアの価格も行内にリンクで表示します。付与ポイント（楽天はポイント倍率から概算、Yahoo! はAPIの値）を「実質」価格として併記します。クーポンやセール時の追加ポイントなど、APIに出てこない割引は反映されません。Yahoo! 側は実際のAPI応答ではまだ動作確認していません。
 
 Amazon の価格は自動取得していません（公式の商品情報APIの利用資格が必要で、ページの自動読み取りは規約で禁止されています）。行の「Amazonで確認」ボタンで検索結果を開けます。
 

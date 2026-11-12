@@ -1,4 +1,4 @@
-name: 楽天価格の自動更新
+name: 価格の自動更新
 
 on:
   schedule:
@@ -24,15 +24,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: 楽天市場から価格を取得
+      - name: ストアから価格を取得
         env:
           RAKUTEN_APPLICATION_ID: ${{ secrets.RAKUTEN_APPLICATION_ID }}
           RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
           RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
           YAHOO_CLIENT_ID: ${{ secrets.YAHOO_CLIENT_ID }}
         run: |
-          if [ -z "$RAKUTEN_APPLICATION_ID" ] || [ -z "$RAKUTEN_ACCESS_KEY" ] || [ -z "$RAKUTEN_AFFILIATE_ID" ]; then
-            echo "楽天のキーが未登録のため、スプレッドシートの要確認リストだけ更新します"
+          if { [ -z "$RAKUTEN_APPLICATION_ID" ] || [ -z "$RAKUTEN_ACCESS_KEY" ] || [ -z "$RAKUTEN_AFFILIATE_ID" ]; } && [ -z "$YAHOO_CLIENT_ID" ]; then
+            echo "ストアのキーが未登録のため、スプレッドシートの要確認リストだけ更新します"
             node scripts/update-rakuten-prices.js --audit-only
           else
             node scripts/update-rakuten-prices.js

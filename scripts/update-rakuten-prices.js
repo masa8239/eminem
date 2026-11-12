@@ -95,7 +95,9 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const missing = names.filter(name => !env[name]);
   // auditOnly: 楽天には問い合わせず、スプレッドシートの要確認リストだけ更新する（キー不要）
   const auditOnly = Boolean(options.auditOnly);
-  if (missing.length && !auditOnly) { log(`認証情報が未設定です: ${missing.join(', ')}`); return 1; }
+  // 楽天のキー3つがそろっていれば楽天を、YAHOO_CLIENT_ID があれば Yahoo!ショッピングを使う。どちらか片方だけでも動く
+  const rakuten = {on: !missing.length, configured: !missing.length, failures: 0};
+  if (!rakuten.configured && !env.YAHOO_CLIENT_ID && !auditOnly) { log(`ストアの認証情報が未設定です（楽天: ${missing.join(', ')} / Yahoo: YAHOO_CLIENT_ID）`); return 1; }
 
   const credentials = {applicationId: env[names[0]], accessKey: env[names[1]], affiliateId: env[names[2]], origin: env.RAKUTEN_SITE_ORIGIN || SITE_ORIGIN};
   const models = options.models || await loadModels(fetchImpl);
@@ -122,7 +124,8 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   for (const model of auditOnly ? [] : models) {
     const spec = modelSpec(model.category, model.modelName, byCategory(model.category));
     if (!spec) { unmatched.push({category: model.category, modelName: model.modelName, reason: '型番を判定できないモデル名'}); continue; }
-    let items = searchCache.get(spec.keyword) || null;
+    let items = rakuten.on ? (searchCache.get(spec.keyword) || null) : [];
+    let rakutenError = null;
     if (!items && !first && delayMs) await new Promise(resolve => setTimeout(resolve, delayMs));
     if (!items) attempted++;
     try {
@@ -143,15 +146,13 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
           if (!items) throw error;
         }
       }
-      searchCache.set(spec.keyword, items);
+      if (rakuten.on) { searchCache.set(spec.keyword, items); rakuten.failures = 0; }
     } catch (error) {
       apiErrors++;
-      const kept = previous.get(`${model.category}\0${model.modelName}`);
-      const reason = error instanceof PriceError ? error.message : '楽天APIへの接続に失敗';
-      if (kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) products.push(kept);
-      else unmatched.push({category: model.category, modelName: model.modelName, reason});
-      first = false;
-      continue;
+      rakutenError = error instanceof PriceError ? error.message : '楽天APIへの接続に失敗';
+      items = [];
+      // 続けて失敗したら、この回は楽天を使わない（障害中に全モデルでタイムアウトを待たない）
+      if (++rakuten.failures >= 3 && rakuten.on) { rakuten.on = false; log('楽天APIに続けて接続できないため、この回は楽天を使いません'); }
     }
     first = false;
     const offers = [];
@@ -170,7 +171,11 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       itemCode: yPicked.item.itemCode, itemName: yPicked.item.itemName, shopName: yPicked.item.shopName || '',
     });
     if (!offers.length) {
-      unmatched.push({category: model.category, modelName: model.modelName, reason: picked.reason || '商品リンクが不正'});
+      // ストア側の失敗で取れなかったときは、前回の価格を数日間は引き継ぐ
+      const kept = previous.get(`${model.category}\0${model.modelName}`);
+      const storeFailed = rakutenError || (rakuten.configured && !rakuten.on) || (yahoo.appid && !yItems);
+      if (storeFailed && kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) products.push(kept);
+      else unmatched.push({category: model.category, modelName: model.modelName, reason: rakutenError || (yItems || rakuten.on ? picked.reason : null) || '一致する新品単品の出品なし'});
       continue;
     }
     // 表示価格は一番安いストア。他ストアの価格も offers に残す
@@ -185,13 +190,14 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   }
 
   if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length} / 未取得 ${unmatched.length} / API失敗 ${apiErrors}`);
-  // APIの障害時は前回のファイルを壊さない
-  if (attempted && apiErrors > Math.max(3, attempted * 0.3)) {
-    log('楽天APIの失敗が多いため、今回は価格ファイルを更新しません');
+  // どのストアにも接続できなかった回は、前回のファイルを壊さない
+  const rakutenUp = rakuten.configured && rakuten.on, yahooUp = Boolean(yahoo.appid) && yahoo.failures < 3;
+  if (!auditOnly && !rakutenUp && !yahooUp) {
+    log('どのストアにも接続できなかったため、今回は価格ファイルを更新しません');
     return 1;
   }
   fs.mkdirSync(path.dirname(output), {recursive: true});
-  if (!auditOnly) fs.writeFileSync(output, JSON.stringify({checkedAt: fetchedAt, source: '楽天市場', products, unmatched}, null, 1) + '\n');
+  if (!auditOnly) fs.writeFileSync(output, JSON.stringify({checkedAt: fetchedAt, stores: [rakutenUp && '楽天市場', yahooUp && 'Yahoo!ショッピング'].filter(Boolean), products, unmatched}, null, 1) + '\n');
 
   // 新着候補: 価格取得で見た商品と、新しい順の追加検索から、サイトに未登録の型番を拾う
   if (!auditOnly) {
@@ -199,7 +205,8 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     for (const keyword of options.discoveryQueries || DISCOVERY_QUERIES) {
       try {
         if (delayMs) await new Promise(resolve => setTimeout(resolve, delayMs));
-        seen.push(...responseItems(await searchItems({keyword, hits: 30, sort: '-updateTimestamp'}, credentials, fetchImpl)));
+        if (rakuten.on) seen.push(...responseItems(await searchItems({keyword, hits: 30, sort: '-updateTimestamp'}, credentials, fetchImpl)));
+        else seen.push(...(await yahooItems(keyword) || []));
       } catch { /* 新着探しの失敗は価格更新に影響させない */ }
     }
     const candidates = discoverNewModels(seen, models);

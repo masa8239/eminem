@@ -245,3 +245,33 @@ test('a second store adds offers, the cheapest wins, and points are recorded', a
   assert.ok(!text.includes('yahoo-secret'));
   assert.deepEqual(JSON.parse(fs.readFileSync(path.join(dir, 'new-products.json'), 'utf8')).candidates, []);
 });
+
+test('Yahoo alone is enough, and a Rakuten outage falls back to Yahoo without long waits', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const models = ['5070', '5080', '5090', '4060', '4070'].map(n => ({category: 'gpu', modelName: 'GeForce RTX ' + n, referencePrice: 100000}));
+  const yahooHit = url => ({ok: true, json: async () => ({hits: [{code: 's_' + url.searchParams.get('query'), name: 'MSI GeForce ' + url.searchParams.get('query') + ' 12G', price: 99000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/1.html'}]})});
+  // Yahoo のみ
+  let rakutenCalls = 0;
+  let code = await main({YAHOO_CLIENT_ID: 'y'}, async url => { if (url.hostname !== 'shopping.yahooapis.jp') { rakutenCalls++; return {ok: false, status: 500}; } return yahooHit(url); }, {models, output, delayMs: 0, log() {}, discoveryQueries: ['q']});
+  assert.equal(code, 0);
+  assert.equal(rakutenCalls, 0);
+  let data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.deepEqual(data.stores, ['Yahoo!ショッピング']);
+  assert.deepEqual(data.products.map(p => [p.source, p.price]), Array(5).fill(['Yahoo!ショッピング', 99000]));
+  // 楽天が障害中: 3回で打ち切り、Yahoo の価格で更新する
+  rakutenCalls = 0;
+  const logs = [];
+  code = await main({RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c', YAHOO_CLIENT_ID: 'y'},
+    async url => { if (url.hostname !== 'shopping.yahooapis.jp') { rakutenCalls++; return {ok: false, status: 503}; } return yahooHit(url); }, {models, output, delayMs: 0, log: l => logs.push(l), discoveryQueries: []});
+  assert.equal(code, 0);
+  assert.equal(rakutenCalls, 3);
+  data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.deepEqual([data.stores, data.products.length], [['Yahoo!ショッピング'], 5]);
+  assert.ok(logs.some(l => l.includes('この回は楽天を使いません')));
+  // どちらも落ちているときは前回のファイルを残す
+  const before = fs.readFileSync(output, 'utf8');
+  code = await main({RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c', YAHOO_CLIENT_ID: 'y'}, async () => ({ok: false, status: 503}), {models, output, delayMs: 0, log() {}, discoveryQueries: []});
+  assert.equal(code, 1);
+  assert.equal(fs.readFileSync(output, 'utf8'), before);
+});
