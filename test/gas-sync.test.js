@@ -66,7 +66,7 @@ const files = () => ({
     {category: 'gpu', modelName: 'GeForce RTX 5080', status: 'ok', price: 198000, fetchedAt: fresh, source: 'Yahoo!ショッピング'},
     {category: 'gpu', modelName: 'Radeon RX 7600', status: 'ok', price: 31000, fetchedAt: '2020-01-01T00:00:00Z'},
     {category: 'gpu', modelName: 'GeForce RTX 4060', status: 'ok', price: 45000, fetchedAt: fresh},
-  ]},
+  ], unmatched: [{category: 'gpu', modelName: 'Radeon 780M', reason: '型番を判定できないモデル名'}]},
   'sheet-audit.json': {issues: [
     {category: 'gpu', modelName: 'GeForce RTX 6700 XT', type: 'name', issue: 'RTX 6700 は存在しません', fix: 'Radeon RX 6700 XT'},
     {category: 'gpu', modelName: 'GeForce RTX 7600 XT', type: 'name', issue: 'RTX 7600 は存在しません', fix: 'Radeon RX 7600 XT'},
@@ -83,6 +83,7 @@ const gpuGrid = () => [
   ['Radeon RX 7600 XT', 12500, 38000],
   ['Radeon RX 9000 XT', 9000, 55.4],
   ['GeForce RTX 3070', 13500, 44000],
+  ['Radeon 780M', 3357, ''],
 ];
 
 test('the loader fetches the sync code from GitHub main and preview changes nothing', () => {
@@ -117,7 +118,8 @@ test('sync writes fetched prices to a separate column and never overwrites the r
   assert.equal(sheet.backgrounds['7,0'], '#fff2cc');
   assert.equal(sheet.backgrounds['7,2'], '#f4cccc');   // 円でない価格は赤
   assert.deepEqual(g[8].slice(0, 3), ['GeForce RTX 3070', 13500, 44000]); // 正常な行はそのまま
-  assert.equal(g.length, 9);                           // 行は削除しない
+  assert.equal(sheet.backgrounds['9,2'], undefined);   // 単体で売っていない製品は価格がなくても赤くしない
+  assert.equal(g.length, 10);                          // 行は削除しない
   assert.equal(g[1][1], 38200);                        // スコア列は触らない
 });
 

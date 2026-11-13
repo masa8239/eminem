@@ -52,6 +52,11 @@ function benchcoreRun_(dryRun) {
     var valid = product.status === 'ok' && typeof product.price === 'number' && product.price >= 1000 && product.price % 1 === 0;
     if (valid && age >= 0 && age < BENCHCORE_MAX_AGE_DAYS * 86400000) prices[product.category + '|' + product.modelName] = product;
   });
+  // 内蔵グラフィックスや Apple M シリーズなど、単体で売っていない製品（価格が入らないのが正常）
+  var unpriceable = {};
+  (priceData.unmatched || []).forEach(function (item) {
+    if (item.reason === '型番を判定できないモデル名') unpriceable[item.category + '|' + item.modelName] = true;
+  });
   var nameIssues = {}, nameFixes = {};
   (auditData.issues || []).forEach(function (issue) {
     var issueKey = issue.category + '|' + issue.modelName;
@@ -111,7 +116,7 @@ function benchcoreRun_(dryRun) {
 
       // 価格(円): 人が入れる基準の価格。空・不正で、最安値も取れていない行だけ赤くする
       if (!formulas[i][0]) {
-        var ok = (typeof current === 'number' && current >= 1000 && current % 1 === 0) || Boolean(product);
+        var ok = (typeof current === 'number' && current >= 1000 && current % 1 === 0) || Boolean(product) || Boolean(unpriceable[key]);
         if (!ok && priceBackgrounds[i][0] !== BENCHCORE_COLOR_PRICE) {
           log.push(sheet.getName() + ' / ' + name + ': 価格を確認（現在の値: ' + (current === '' ? '(空)' : current) + '）');
           if (!dryRun) {
