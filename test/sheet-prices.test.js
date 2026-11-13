@@ -100,3 +100,9 @@ test('Rakuten yen is not multiplied and invalid successful payload is not labell
   assert.equal(run('gpuData[0].rakuten.status'),'error');
   assert.match(run('renderPrice(gpuData[0])'),/最新扱いではありません/);
 });
+
+test('the auto-filled lowest-price column is never read as the reference price',()=>{
+  const {run}=app();
+  assert.equal(run("sheetPrice({'価格(円)':98000,'最安値(円)':71000})"),98000);
+  assert.equal(run("sheetPrice({'価格(円)':'','最安値(円)':71000})"),null);
+});

@@ -1,21 +1,18 @@
 /**
  * BENCHCORE スプレッドシート自動メンテナンス（Google Apps Script）
  *
+ * このファイルは GitHub（masa8239/eminem の gas/sheet-sync.gs）で管理しています。
+ * シートには gas/loader.gs だけを貼り付け、毎回ここから最新のコードを読み込んで動かします。
+ *
  * できること
- *  - 楽天市場から自動取得した価格を「価格(円)」列に書き込む
- *  - 価格が空・円でない値のセルを赤く塗る
+ *  - ストア（楽天市場・Yahoo!ショッピング）から自動取得した最安値を「最安値(円)」列に書き込む
+ *    （「価格(円)」は人が入れる基準の価格なので書き換えない。自動取得の基準がずれていかないようにするため）
+ *  - 価格(円) が空・円でない値で、最安値も取れていない行の価格セルを赤く塗る
  *  - 等級違い・系列違いなど機械的に直せるモデル名を正しい名前に書き換える（元の名前はメモに残す）
  *  - 直せないモデル名（存在しない型番など）のセルを黄色く塗り、理由をメモに書く
  *
- * 使い方（最初の1回だけ）
- *  1. スプレッドシートを開き、[拡張機能] → [Apps Script] を開く
- *  2. このファイルの中身を新しいスクリプトファイルに貼り付けて保存
- *  3. 関数「benchcorePreview」を実行 → [実行ログ] で何が変わるかを確認（シートは変更されません）
- *  4. 問題なければ「benchcoreSync」を実行（実際に書き込みます）
- *  5. 「benchcoreInstallDailyTrigger」を1回実行すると、毎朝自動で benchcoreSync が動きます
- *
- * 書き換えるのは「価格(円)」列の値、機械的に直せるモデル名、価格セル・モデル名セルの背景色とメモだけです。
- * スコアなど他の列、数式の入ったセルは書き換えません。行の削除もしません。
+ * 書き換えるのは「最安値(円)」列、機械的に直せるモデル名、価格セル・モデル名セルの背景色とメモだけです。
+ * スコアや価格(円)など他の列、数式の入ったセルは書き換えません。行の削除もしません。
  * モデル名の自動修正を止めたい場合は BENCHCORE_FIX_NAMES を false にしてください。
  */
 
@@ -23,6 +20,7 @@ var BENCHCORE_DATA_URL = 'https://raw.githubusercontent.com/masa8239/eminem/main
 var BENCHCORE_MAX_AGE_DAYS = 7;
 var BENCHCORE_NAME_COLUMNS = {'CPU名': 'cpu', 'GPU名': 'gpu'};
 var BENCHCORE_PRICE_COLUMN = '価格(円)';
+var BENCHCORE_BEST_COLUMN = '最安値(円)';
 var BENCHCORE_COLOR_PRICE = '#f4cccc';
 var BENCHCORE_COLOR_NAME = '#fff2cc';
 var BENCHCORE_FIX_NAMES = true;
@@ -72,12 +70,21 @@ function benchcoreRun_(dryRun) {
     });
     var priceIndex = header.indexOf(BENCHCORE_PRICE_COLUMN);
     if (nameIndex < 0 || priceIndex < 0) return;
+    // 最安値の列がなければ右端に作る（プレビューでは作らない）
+    var bestIndex = header.indexOf(BENCHCORE_BEST_COLUMN);
+    if (bestIndex < 0 && !dryRun) {
+      bestIndex = lastColumn;
+      sheet.getRange(1, bestIndex + 1).setValue(BENCHCORE_BEST_COLUMN)
+        .setNote('ストアから自動取得した最安値です。毎朝自動で更新されます。手で書き換えないでください。');
+    }
 
     var rows = lastRow - 1;
     var nameRange = sheet.getRange(2, nameIndex + 1, rows, 1);
     var priceRange = sheet.getRange(2, priceIndex + 1, rows, 1);
     var names = nameRange.getValues(), nameBackgrounds = nameRange.getBackgrounds();
     var values = priceRange.getValues(), formulas = priceRange.getFormulas(), priceBackgrounds = priceRange.getBackgrounds();
+    var bestRange = bestIndex >= 0 ? sheet.getRange(2, bestIndex + 1, rows, 1) : null;
+    var bestValues = bestRange ? bestRange.getValues() : names.map(function () { return ['']; });
     var nameFormulas = nameRange.getFormulas();
     var existing = {};
     names.forEach(function (row) { var n = String(row[0]).trim(); if (n) existing[n] = (existing[n] || 0) + 1; });
@@ -90,17 +97,21 @@ function benchcoreRun_(dryRun) {
       var current = values[i][0];
       var product = prices[key];
 
-      if (product && !formulas[i][0]) {
-        if (current !== product.price) {
-          log.push(sheet.getName() + ' / ' + name + ': 価格 ' + (current === '' ? '(空)' : current) + ' → ' + product.price);
-          if (!dryRun) {
-            priceCell.setValue(product.price);
-            priceCell.setNote('楽天市場の価格を自動反映（' + Utilities.formatDate(new Date(product.fetchedAt), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm') + ' 取得）。以前の値: ' + (current === '' ? '(空)' : current));
-          }
+      // 最安値(円): 取れた価格を書く。取れなかった行は空にする（古い値を最新に見せない）
+      var best = product ? product.price : '';
+      if (bestValues[i][0] !== best) {
+        if (product) log.push(sheet.getName() + ' / ' + name + ': 最安値 ' + (bestValues[i][0] === '' ? '(空)' : bestValues[i][0]) + ' → ' + best);
+        if (!dryRun && bestRange) {
+          var bestCell = bestRange.getCell(i + 1, 1);
+          bestCell.setValue(best);
+          if (product) bestCell.setNote((product.source || 'ストア') + '（' + Utilities.formatDate(new Date(product.fetchedAt), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm') + ' 取得）');
+          else bestCell.clearNote();
         }
-        if (!dryRun && priceBackgrounds[i][0] === BENCHCORE_COLOR_PRICE) priceCell.setBackground(null);
-      } else if (!formulas[i][0]) {
-        var ok = typeof current === 'number' && current >= 1000 && current % 1 === 0;
+      }
+
+      // 価格(円): 人が入れる基準の価格。空・不正で、最安値も取れていない行だけ赤くする
+      if (!formulas[i][0]) {
+        var ok = (typeof current === 'number' && current >= 1000 && current % 1 === 0) || Boolean(product);
         if (!ok && priceBackgrounds[i][0] !== BENCHCORE_COLOR_PRICE) {
           log.push(sheet.getName() + ' / ' + name + ': 価格を確認（現在の値: ' + (current === '' ? '(空)' : current) + '）');
           if (!dryRun) {
