@@ -230,7 +230,7 @@ test('a second store adds offers, the cheapest wins, and points are recorded', a
     if (url.hostname === 'shopping.yahooapis.jp') {
       assert.equal(url.searchParams.get('appid'), 'yahoo-secret');
       return {ok: true, json: async () => ({hits: url.searchParams.get('query') === 'RTX 5070'
-        ? [{code: 'shop_1', name: 'ASUS GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/shop/1.html', point: {amount: 1050}, seller: {name: 'Yショップ'}},
+        ? [{code: 'shop_1', name: 'ASUS GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/shop/1.html', point: {amount: 0, bonusAmount: 1050}, seller: {name: 'Yショップ'}},
            {code: 'shop_2', name: 'GeForce RTX 5070 12G 中古', price: 70000, inStock: true, condition: 'used', url: 'https://store.shopping.yahoo.co.jp/shop/2.html'}]
         : []})};
     }
@@ -333,4 +333,39 @@ test('Yahoo is searched cheapest-first inside a plausible price range when a ref
     const model = name.includes('14700F') ? 'Core i7-14700F' : 'Ryzen 5 5600';
     assert.equal(pick(spec('cpu', model), [{itemCode: 'a:1', itemName: name, itemPrice: 30000, availability: 1}], 30000, 'cpu').item, undefined, name);
   }
+});
+
+test('Yahoo affiliate parameters are sent only when an ID is configured, and store points are read', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000}];
+  const seen = [];
+  const fetchImpl = async url => { seen.push(Object.fromEntries(url.searchParams)); return {ok: true, json: async () => ({hits: [
+    {code: 's_1', name: 'MSI GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?vs=1&vp=2', point: {amount: 0, bonusAmount: 1050}}]})}; };
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  assert.equal(seen[0].affiliate_type, undefined);
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {yahooValueCommerceId: 'VC-ID'}});
+  assert.deepEqual([seen[1].affiliate_type, seen[1].affiliate_id], ['vc', 'VC-ID']);
+  const product = JSON.parse(fs.readFileSync(output, 'utf8')).products[0];
+  assert.equal(product.points, 1050);
+  assert.match(product.url, /^https:\/\/ck\.jp\.ap\.valuecommerce\.com\//);
+});
+
+test('price history keeps one point per day for prices fetched in this run only', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000}, {category: 'gpu', modelName: 'GeForce RTX 5080', referencePrice: 200000}];
+  let price = 105000, up = true;
+  const fetchImpl = async url => (up || url.searchParams.get('query') !== 'RTX 5080'
+    ? {ok: true, json: async () => ({hits: [{code: 's_' + url.searchParams.get('query'), name: 'MSI GeForce ' + url.searchParams.get('query') + ' 16G', price: url.searchParams.get('query') === 'RTX 5070' ? price : 199000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/1.html'}]})}
+    : {ok: false, status: 500, text: async () => ''});
+  const opts = now => ({models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, now: new Date(now)});
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, opts('2026-11-13T00:00:00Z'));
+  price = 99000;
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, opts('2026-11-13T12:00:00Z'));   // 同じ日は上書き
+  up = false;                                                                     // 翌日 5080 は取れず前回分を引き継ぐ
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, opts('2026-11-14T00:00:00Z'));
+  const series = JSON.parse(fs.readFileSync(path.join(dir, 'price-history.json'), 'utf8')).series;
+  assert.deepEqual(series['gpu|GeForce RTX 5070'], [['2026-11-13', 99000], ['2026-11-14', 99000]]);
+  assert.deepEqual(series['gpu|GeForce RTX 5080'], [['2026-11-13', 199000]]);
 });

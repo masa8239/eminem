@@ -16,6 +16,12 @@ const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
 const AUDIT_OUTPUT = path.join(ROOT, 'data', 'sheet-audit.json');
 const NEW_OUTPUT = path.join(ROOT, 'data', 'new-products.json');
+const HISTORY_OUTPUT = path.join(ROOT, 'data', 'price-history.json');
+const HISTORY_DAYS = 180;
+
+function readAffiliateConfig() {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'config', 'affiliate.json'), 'utf8')); } catch { return {}; }
+}
 // 新着を探すための追加検索（新しい順）
 const DISCOVERY_QUERIES = ['GeForce RTX グラフィックボード', 'Radeon RX グラフィックボード', 'Ryzen CPU BOX', 'Core Ultra CPU BOX'];
 const FALLBACK_ORIGINS = ['https://eminem-zfet.vercel.app'];
@@ -109,7 +115,8 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const products = [], unmatched = [];
   const searchCache = new Map();
   // Yahoo!ショッピングは Client ID があるときだけ使う。失敗が続いたらその回は使わない
-  const yahoo = {appid: env.YAHOO_CLIENT_ID || '', cache: new Map(), failures: 0, successes: 0};
+  const affiliate = options.affiliate || readAffiliateConfig();
+  const yahoo = {appid: env.YAHOO_CLIENT_ID || '', affiliateId: String(affiliate.yahooValueCommerceId || '').trim(), cache: new Map(), failures: 0, successes: 0};
   // Yahoo は短時間に問い合わせすぎると 429 を返すので、間隔を空け、429 のときは待ってからやり直す
   const yahooDelay = options.yahooDelayMs ?? (delayMs ? 2000 : 0);
   const yahooBackoff = options.yahooBackoffMs ?? (delayMs ? [20000, 60000, 120000] : [0, 0, 0]);
@@ -122,7 +129,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       await wait(yahooDelay);
       let found;
       for (let attempt = 0; ; attempt++) {
-        try { found = await searchYahoo(keyword, yahoo.appid, fetchImpl, range); break; }
+        try { found = await searchYahoo(keyword, yahoo.appid, fetchImpl, range, yahoo.affiliateId); break; }
         catch (error) {
           if (error.status !== 429 || attempt >= yahooBackoff.length) throw error;
           if (attempt === 0) log(`Yahoo!ショッピングの問い合わせ回数の上限に達したため、少し待ってから続けます（${keyword}）`);
@@ -220,6 +227,26 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   }
   fs.mkdirSync(path.dirname(output), {recursive: true});
   if (!auditOnly) fs.writeFileSync(output, JSON.stringify({checkedAt: fetchedAt, stores: [rakutenUp && '楽天市場', yahooUp && 'Yahoo!ショッピング'].filter(Boolean), products, unmatched}, null, 1) + '\n');
+
+  // 価格の推移: この回に取れた価格だけを1日1点で残す（引き継いだ古い価格は記録しない）。失敗しても価格更新は止めない
+  if (!auditOnly) {
+    try {
+      const historyFile = options.historyOutput || (options.output ? output.replace(/[^/\\]+$/, 'price-history.json') : HISTORY_OUTPUT);
+      let history = {series: {}};
+      try { history = JSON.parse(fs.readFileSync(historyFile, 'utf8')); } catch { /* 初回 */ }
+      if (!history.series || typeof history.series !== 'object') history.series = {};
+      const day = fetchedAt.slice(0, 10);
+      for (const product of products) {
+        if (product.fetchedAt !== fetchedAt || !Number.isSafeInteger(product.price)) continue;
+        const key = `${product.category}|${product.modelName}`;
+        const points = (history.series[key] || []).filter(point => point[0] !== day);
+        points.push([day, product.price]);
+        history.series[key] = points.slice(-HISTORY_DAYS);
+      }
+      history.updatedAt = fetchedAt;
+      fs.writeFileSync(historyFile, JSON.stringify(history) + '\n');
+    } catch { log('価格の推移を保存できませんでした（価格の更新は完了しています）'); }
+  }
 
   // 新着候補: 価格取得で見た商品と、新しい順の追加検索から、サイトに未登録の型番を拾う
   if (!auditOnly) {

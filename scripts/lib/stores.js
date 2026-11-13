@@ -6,13 +6,17 @@
 const YAHOO_URL = 'https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch';
 
 // Yahoo!ショッピング 商品検索API（v3）。Client ID だけで使える。
-// 注意: 実際のAPI応答ではまだ動作確認していない（応答の形は公開仕様に基づく）。
 // range: {from, to} を渡すと、その価格帯を安い順に検索する（付属品など安すぎる出品は範囲で除ける）
-async function searchYahoo(keyword, appid, fetchImpl = fetch, range = null) {
+// affiliateId: バリューコマースのアフィリエイトID。渡すと返ってくる商品URLがアフィリエイトリンクになる
+async function searchYahoo(keyword, appid, fetchImpl = fetch, range = null, affiliateId = '') {
   const url = new URL(YAHOO_URL);
   url.searchParams.set('appid', appid);
   url.searchParams.set('query', keyword);
   url.searchParams.set('results', range ? '50' : '30');
+  if (affiliateId) {
+    url.searchParams.set('affiliate_type', 'vc');
+    url.searchParams.set('affiliate_id', affiliateId);
+  }
   if (range) {
     url.searchParams.set('sort', '+price');
     url.searchParams.set('price_from', String(range.from));
@@ -40,7 +44,8 @@ async function searchYahoo(keyword, appid, fetchImpl = fetch, range = null) {
     availability: hit.inStock === false ? 0 : 1,
     itemUrl: hit.url,
     shopName: hit.seller && typeof hit.seller.name === 'string' ? hit.seller.name : '',
-    points: hit.point && Number.isSafeInteger(hit.point.amount) && hit.point.amount > 0 ? hit.point.amount : 0,
+    // point.amount は2022年から0固定。ストアポイント（PayPayポイント）は bonusAmount に入る
+    points: hit.point && Number.isSafeInteger(hit.point.bonusAmount) && hit.point.bonusAmount > 0 ? hit.point.bonusAmount : 0,
   })).filter(item => item.itemCode !== 'yahoo:');
 }
 
