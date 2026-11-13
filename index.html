@@ -533,6 +533,7 @@ a.affiliate-btn:hover { background: #154e96; }
         <div class="tab active" onclick="switchTab(this,'cpu-multi')">マルチスレッド</div>
         <div class="tab" onclick="switchTab(this,'cpu-single')">シングルスレッド</div>
         <div class="tab" onclick="switchTab(this,'cpu-cospa')">コスパ</div>
+        <div class="tab" onclick="switchTab(this,'cpu-blender')">Blender</div>
       </div>
       <div id="cpu-multi" class="tab-content active">
         <div class="notice">PassMark マルチスレッドスコア。数値が高いほど高性能です。</div>
@@ -553,6 +554,13 @@ a.affiliate-btn:hover { background: #154e96; }
         <table class="rank-table">
           <thead><tr><th>順位</th><th>CPU名</th><th>コスパ指数</th><th>価格</th><th>スコア</th><th>コア / スレッド</th><th>TDP</th><th>評価</th><th>購入</th></tr></thead>
           <tbody id="cpu-cospa-body"><tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
+        </table>
+      </div>
+      <div id="cpu-blender" class="tab-content">
+        <div class="notice">Blender Benchmark（<a href="https://opendata.blender.org/" target="_blank" rel="noopener">Blender Open Data</a>、<span class="blender-version-cpu">—</span>）の中央値スコア。利用者の測定結果のうち、測定数3件以上の製品だけを載せ、毎日自動で更新します。PassMarkのスコアがまだ入っていない新製品も載ります。</div>
+        <table class="rank-table">
+          <thead><tr><th>順位</th><th>CPU名</th><th>Blender スコア</th><th>測定数</th><th>価格</th><th>PassMark</th><th>コア / スレッド</th><th>購入</th></tr></thead>
+          <tbody id="cpu-blender-body"><tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -598,11 +606,24 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（楽天市場・Yahoo!ショッピング・Amazon）が含まれます。</p>
     <div class="table-wrap">
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab(this,'gpu-3dmark')">3DMark</div>
+        <div class="tab" onclick="switchTab(this,'gpu-blender')">Blender</div>
+      </div>
+      <div id="gpu-3dmark" class="tab-content active">
       <div class="notice">3DMark Time Spy スコア。数値が高いほどゲーム性能が高いです。レイトレは専用回路の有無、専用アップスケーラーはそのGPUだけで使える機能（DLSS / FSR 4 / XeSS）です。FSR 3 以前は多くのGPUで使えるため、「—」でも使えないという意味ではありません。</div>
       <table class="rank-table">
         <thead><tr><th>順位</th><th>GPU名</th><th>スコア (Time Spy)</th><th>価格</th><th>VRAM</th><th>メモリ帯域幅</th><th>TDP</th><th>レイトレ</th><th>専用アップスケーラー</th><th>コスパ</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
         <tbody id="gpu-table-body"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
       </table>
+      </div>
+      <div id="gpu-blender" class="tab-content">
+        <div class="notice">Blender Benchmark（<a href="https://opendata.blender.org/" target="_blank" rel="noopener">Blender Open Data</a>、<span class="blender-version-gpu">—</span>）の中央値スコア。利用者の測定結果のうち、測定数3件以上の製品だけを載せ、毎日自動で更新します。3DMarkのスコアがまだ入っていない新製品も載ります。GPUは一番速い計算方式（OptiX / CUDA / HIP / oneAPI）の値で、VRAM容量違いの版は区別されません。</div>
+        <table class="rank-table">
+          <thead><tr><th>順位</th><th>GPU名</th><th>Blender スコア</th><th>測定数</th><th>価格</th><th>3DMark</th><th>VRAM</th><th>購入</th></tr></thead>
+          <tbody id="gpu-blender-body"><tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
+        </table>
+      </div>
     </div>
   </div>
   <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。ストアの価格は毎日自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developer.yahoo.co.jp/sitemap/" target="_blank" rel="noopener" style="color:inherit">Web Services by Yahoo! JAPAN</a> · スコアは3DMark Time Spyの公開値</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
@@ -754,7 +775,7 @@ a.affiliate-btn:hover { background: #154e96; }
     <p>BENCHCORE は、CPU・GPU・メモリのベンチマークスコアと価格を一覧で比較するためのサイトです。パーツ選びの参考情報として提供しています。</p>
     <h3>データの出典</h3>
     <ul>
-      <li>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値を、運営者が取得時点の値で掲載しています。どちらも利用者の測定結果の平均のため、元のサイトの値は日々少しずつ変わります。</li><li>コア数・クロック・TDP・VRAM・帯域幅などの仕様は、AMD公式の仕様一覧とWikipediaの各世代の仕様表を基に掲載し、毎日自動で照合しています。</li><li>メモリは製品ではなく規格ごとに、Yahoo!ショッピングで在庫のある新品キットの最安値を掲載しています。</li>
+      <li>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値を、運営者が取得時点の値で掲載しています。どちらも利用者の測定結果の平均のため、元のサイトの値は日々少しずつ変わります。</li><li>コア数・クロック・TDP・VRAM・帯域幅などの仕様は、AMD公式の仕様一覧とWikipediaの各世代の仕様表を基に掲載し、毎日自動で照合しています。</li><li>メモリは製品ではなく規格ごとに、Yahoo!ショッピングで在庫のある新品キットの最安値を掲載しています。</li><li>「Blender」のタブには、Blender Open Data（Blender財団が公開している、利用制限のないベンチマーク結果）の中央値を毎日自動で掲載しています。測定数が3件未満の製品は載せません。</li>
       <li>価格は参考価格です。ストアのAPIから取得できた製品には、取得元と取得日時を表示します。表示価格と販売ページの価格が異なる場合は、販売ページの価格が正しい価格です。</li>
       <li>ボトルネック診断、ゲーム性能の目安、推奨電源容量は、スコアやTDPからの推定です。実際の動作を保証するものではありません。</li>
     </ul>
@@ -1320,6 +1341,7 @@ function updateCompare() {
   const rows = [
     ['価格',             fmtPrice(a.price),                          fmtPrice(b.price),                          'low'],
     ['PassMark Multi',   a.score.toLocaleString(),                   b.score.toLocaleString(),                   'high'],
+    ...((a.blender||b.blender) ? [['Blender',  a.blender?a.blender.score.toLocaleString('ja-JP',{maximumFractionDigits:1}):'—', b.blender?b.blender.score.toLocaleString('ja-JP',{maximumFractionDigits:1}):'—', 'high']] : []),
     ...((a.single||b.single) ? [['PassMark Single',  a.single?a.single.toLocaleString():'—',     b.single?b.single.toLocaleString():'—',     'high']] : []),
     ['コア / スレッド',  `${a.cores||'—'}C / ${a.threads||'—'}T`,   `${b.cores||'—'}C / ${b.threads||'—'}T`,   null],
     ['Maxクロック',      a.clockMax?a.clockMax+'GHz':'—',            b.clockMax?b.clockMax+'GHz':'—',            'high'],
@@ -1341,6 +1363,7 @@ function updateGpuCompare() {
   const rows = [
     ['価格',               fmtPrice(a.price),         fmtPrice(b.price),         'low'],
     ['3DMark Time Spy',   a.score.toLocaleString(),   b.score.toLocaleString(),   'high'],
+    ...((a.blender||b.blender) ? [['Blender',  a.blender?a.blender.score.toLocaleString('ja-JP',{maximumFractionDigits:1}):'—', b.blender?b.blender.score.toLocaleString('ja-JP',{maximumFractionDigits:1}):'—', 'high']] : []),
     ['VRAM',               a.vram||'—',               b.vram||'—',               null],
     ['メモリ帯域幅',        a.bw||'—',                 b.bw||'—',                 null],
     ['消費電力 (TDP)',     a.tdp?a.tdp+'W':'—',       b.tdp?b.tdp+'W':'—',       'low'],
@@ -1621,7 +1644,9 @@ async function loadSheetData() {
   ]);
   const LOADED='スプレッドシートの最新データ', BUILTIN='内蔵データを表示中';
   if (cpuR.status==='fulfilled') {
-    const parsed = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0&&isStandalone('cpu',r.name));
+    const all = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&isStandalone('cpu',r.name));
+    const parsed = all.filter(r=>r.score>0);
+    cpuExtra = dedupeByName(all.filter(r=>!(r.score>0) && !parsed.some(p=>p.name===r.name)));
     if (parsed.length > 0) {
       cpuData = assignSheetBadges(fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.score-a.score)), FALLBACK_CPU),'cpu'); cpuFromSheet = true;
       maxCpuScore = Math.max(...cpuData.map(d=>d.score));
@@ -1629,7 +1654,9 @@ async function loadSheetData() {
     } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
   } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
   if (gpuR.status==='fulfilled') {
-    const parsed = gpuR.value.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0&&isStandalone('gpu',r.name));
+    const all = gpuR.value.map(parseGpuRow).filter(r=>r&&r.name&&isStandalone('gpu',r.name));
+    const parsed = all.filter(r=>r.score>0);
+    gpuExtra = dedupeByName(all.filter(r=>!(r.score>0) && !parsed.some(p=>p.name===r.name)));
     if (parsed.length > 0) {
       gpuData = assignSheetBadges(fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.score-a.score)), FALLBACK_GPU),'gpu'); gpuFromSheet = true;
       maxGpuScore = Math.max(...gpuData.map(d=>d.score));
@@ -1649,6 +1676,9 @@ async function loadSheetData() {
 const PRICE_FILE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const PRICE_FILE_URLS = ['data/rakuten-prices.json', 'https://raw.githubusercontent.com/masa8239/eminem/main/data/rakuten-prices.json'];
 let cpuFromSheet = false, gpuFromSheet = false;
+// シートにあるがPassMark / 3DMarkのスコアがまだない製品（Blenderのランキングにだけ載せる）
+let cpuExtra = [], gpuExtra = [];
+let blenderScores = null;
 async function fetchPriceProducts(url) {
   const response = await fetch(url, {headers:{Accept:'application/json'}, signal:AbortSignal.timeout(10000)});
   const payload = await response.json();
@@ -1672,7 +1702,7 @@ function applyRamProducts(products, maxAgeMs) {
   return true;
 }
 function applyRakutenProducts(products, maxAgeMs) {
-  const lists = {cpu:cpuData, gpu:gpuData, ram:ramData};
+  const lists = {cpu:cpuData.concat(cpuExtra), gpu:gpuData.concat(gpuExtra), ram:ramData};
   products.forEach(product => {
     const item = lists[product.category]?.find(candidate => candidate.name === product.modelName);
     if (!item || !['ok','error'].includes(product.status)) return;
@@ -1704,6 +1734,54 @@ async function loadRakutenPrices() {
   populateCpuSelects(); populateGpuSelects(); populateRamSelects();
   try { bsyncPrices(); } catch (error) {}
 }
+
+// Blender Benchmark のスコア（毎日自動取得: data/blender-scores.json）。サイト同梱版とGitHub上の最新版の新しい方を使う
+const BLENDER_FILE_URLS = ['data/blender-scores.json', 'https://raw.githubusercontent.com/masa8239/eminem/main/data/blender-scores.json'];
+async function loadBlenderScores() {
+  const files = (await Promise.allSettled(BLENDER_FILE_URLS.map(async url => (await fetch(url, {signal:AbortSignal.timeout(10000)})).json())))
+    .filter(r => r.status==='fulfilled' && r.value && typeof r.value === 'object').map(r => r.value);
+  blenderScores = files.sort((a,b)=>String(b.checkedAt||'').localeCompare(String(a.checkedAt||'')))[0] || null;
+  attachBlender();
+  renderBlenderTables();
+  if (typeof updateCompare === 'function') { try { updateCompare(); updateGpuCompare(); } catch (e) {} }
+}
+function attachBlender() {
+  for (const [cat, items] of [['cpu', cpuData.concat(cpuExtra)], ['gpu', gpuData.concat(gpuExtra)]]) {
+    const scores = blenderScores && blenderScores[cat] && blenderScores[cat].scores || {};
+    items.forEach(item => {
+      const b = scores[item.name];
+      item.blender = b && Number.isFinite(b.score) && b.score > 0 ? {score:b.score, samples:b.samples, computeType:b.computeType||''} : null;
+    });
+  }
+}
+function renderBlenderTable(cat) {
+  const tbody = document.getElementById(cat + '-blender-body');
+  if (!tbody) return;
+  const versionEl = document.querySelector('.blender-version-' + cat);
+  const version = blenderScores && blenderScores[cat] && blenderScores[cat].blenderVersion;
+  if (versionEl) versionEl.textContent = version ? 'Blender ' + version : '—';
+  const filter = cat === 'cpu' ? cpuFilter : gpuFilter;
+  const search = (document.getElementById(cat + '-search')?.value || '').toLowerCase();
+  const items = (cat === 'cpu' ? cpuData.concat(cpuExtra) : gpuData.concat(gpuExtra))
+    .filter(x => x.blender && (filter === 'all' || x.maker === filter) && (!search || x.name.toLowerCase().includes(search)))
+    .sort((a, b) => b.blender.score - a.blender.score);
+  if (!items.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">${blenderScores ? '条件に一致する製品がありません' : 'Blender Benchmark のスコアはまだ取得できていません'}</td></tr>`;
+    return;
+  }
+  const max = Math.max(...items.map(x => x.blender.score), 1);
+  tbody.innerHTML = items.map((x, i) => `<tr>
+      <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
+      <td><div class="chip-name">${esc(x.name)}</div><div class="chip-sub">${esc(x.maker||'')}${x.blender.computeType ? ' · ' + esc(x.blender.computeType) : ''}</div></td>
+      <td><div class="score-bar-wrap"><div class="score-val">${x.blender.score.toLocaleString('ja-JP', {maximumFractionDigits: 1})}</div><div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(x.blender.score/max*100)}%"></div></div></div></td>
+      <td class="price-cell">${Number(x.blender.samples).toLocaleString('ja-JP')}件</td>
+      <td class="price-cell">${renderPrice(x)}</td>
+      <td class="price-cell">${x.score > 0 ? x.score.toLocaleString() : '<span style="color:var(--text3)">未入力</span>'}</td>
+      <td class="price-cell">${cat === 'cpu' ? `${x.cores||'—'}C / ${x.threads||'—'}T` : esc(x.vram || '—')}</td>
+      <td>${purchaseButton(x)}</td>
+    </tr>`).join('');
+}
+function renderBlenderTables() { renderBlenderTable('cpu'); renderBlenderTable('gpu'); }
 
 // 新着候補（自動収集）。スコアがまだないのでランキングには入れず、トップに一覧だけ出す
 async function loadNewProducts() {
@@ -2355,10 +2433,16 @@ function labelCells(tbody) {
     td.classList.toggle('m-act', h === '♡' || h === '購入');
   }));
 }
-function labelAllTables() { ['cpu-table-body','cpu-single-body','cpu-cospa-body','gpu-table-body','ram-table-body'].forEach(id => labelCells(document.getElementById(id))); }
+function labelAllTables() { ['cpu-table-body','cpu-single-body','cpu-cospa-body','cpu-blender-body','gpu-table-body','gpu-blender-body','ram-table-body'].forEach(id => labelCells(document.getElementById(id))); }
 for (const name of ['renderCpuTable', 'renderGpuTable', 'renderRamTable']) {
   const original = globalThis[name];
-  globalThis[name] = function () { const r = original.apply(this, arguments); try { labelAllTables(); } catch (e) {} return r; };
+  globalThis[name] = function () {
+    const r = original.apply(this, arguments);
+    // 絞り込み・検索は Blender のタブにも反映する
+    if (name !== 'renderRamTable') { try { renderBlenderTables(); } catch (e) {} }
+    try { labelAllTables(); } catch (e) {}
+    return r;
+  };
 }
 if (AMAZON_TAG) { const d = document.getElementById('amazon-disclosure'); if (d) d.hidden = false; }
 
@@ -2388,6 +2472,7 @@ loadPriceHistory();
 populateRamSelects();
 loadSheetData().then(async()=>{
   await loadRakutenPrices();
+  try { await loadBlenderScores(); } catch (e) {}
   populateBnSelects();
   restoreFromUrl();
 });
