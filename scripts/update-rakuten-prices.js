@@ -109,14 +109,26 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const products = [], unmatched = [];
   const searchCache = new Map();
   // Yahoo!ショッピングは Client ID があるときだけ使う。失敗が続いたらその回は使わない
-  const yahoo = {appid: env.YAHOO_CLIENT_ID || '', cache: new Map(), failures: 0};
+  const yahoo = {appid: env.YAHOO_CLIENT_ID || '', cache: new Map(), failures: 0, successes: 0};
+  // Yahoo は短時間に問い合わせすぎると 429 を返すので、間隔を空け、429 のときは待ってからやり直す
+  const yahooDelay = options.yahooDelayMs ?? (delayMs ? 2000 : 0);
+  const yahooBackoff = options.yahooBackoffMs ?? (delayMs ? [20000, 60000, 120000] : [0, 0, 0]);
+  const wait = ms => ms ? new Promise(resolve => setTimeout(resolve, ms)) : Promise.resolve();
   const yahooItems = async keyword => {
     if (!yahoo.appid || yahoo.failures >= 3) return null;
     if (yahoo.cache.has(keyword)) return yahoo.cache.get(keyword);
     try {
-      if (delayMs) await new Promise(resolve => setTimeout(resolve, delayMs));
-      const found = await searchYahoo(keyword, yahoo.appid, fetchImpl);
-      yahoo.cache.set(keyword, found); yahoo.failures = 0;
+      await wait(yahooDelay);
+      let found;
+      for (let attempt = 0; ; attempt++) {
+        try { found = await searchYahoo(keyword, yahoo.appid, fetchImpl); break; }
+        catch (error) {
+          if (error.status !== 429 || attempt >= yahooBackoff.length) throw error;
+          if (attempt === 0) log(`Yahoo!ショッピングの問い合わせ回数の上限に達したため、少し待ってから続けます（${keyword}）`);
+          await wait(yahooBackoff[attempt]);
+        }
+      }
+      yahoo.cache.set(keyword, found); yahoo.failures = 0; yahoo.successes++;
       return found;
     } catch (error) {
       yahoo.failures++;
@@ -196,9 +208,9 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   }
 
   if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length} / 未取得 ${unmatched.length} / API失敗 ${apiErrors}`);
-  // どのストアにも接続できなかった回は、前回のファイルを壊さない
-  const rakutenUp = rakuten.configured && rakuten.on, yahooUp = Boolean(yahoo.appid) && yahoo.failures < 3;
-  if (!auditOnly && !rakutenUp && !yahooUp) {
+  // 1件も取れず、どのストアにも接続できなかった回だけは、前回のファイルを壊さない（途中まで取れた分は保存する）
+  const rakutenUp = rakuten.configured && rakuten.on, yahooUp = Boolean(yahoo.appid) && yahoo.successes > 0;
+  if (!auditOnly && !rakutenUp && !yahooUp && !products.some(product => product.fetchedAt === fetchedAt)) {
     log('どのストアにも接続できなかったため、今回は価格ファイルを更新しません');
     return 1;
   }

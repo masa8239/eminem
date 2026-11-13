@@ -20,7 +20,9 @@ async function searchYahoo(keyword, appid, fetchImpl = fetch) {
   if (!response.ok) {
     let detail = '';
     try { const body = await response.text(); try { const j = JSON.parse(body); detail = (j.Error && (j.Error.Message || j.Error.message)) || j.message || body; } catch { detail = body; } } catch { /* 本文なし */ }
-    throw new Error(hide(`Yahoo API HTTP ${response.status}${detail ? ': ' + detail : ''}`));
+    const error = new Error(hide(`Yahoo API HTTP ${response.status}${detail ? ': ' + detail : ''}`));
+    error.status = response.status;
+    throw error;
   }
   let payload;
   try { payload = await response.json(); } catch { throw new Error('Yahoo API: JSONを読めませんでした'); }

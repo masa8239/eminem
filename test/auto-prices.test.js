@@ -275,3 +275,24 @@ test('Yahoo alone is enough, and a Rakuten outage falls back to Yahoo without lo
   assert.equal(code, 1);
   assert.equal(fs.readFileSync(output, 'utf8'), before);
 });
+
+test('Yahoo rate limits are waited out, and a partial run still saves what it got', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const models = ['5070', '5080', '5090', '4060', '4070'].map(n => ({category: 'gpu', modelName: 'GeForce RTX ' + n, referencePrice: 100000}));
+  const ok = url => ({ok: true, json: async () => ({hits: [{code: 's_' + url.searchParams.get('query'), name: 'MSI GeForce ' + url.searchParams.get('query') + ' 12G', price: 99000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/1.html'}]})});
+  const limited = {ok: false, status: 429, text: async () => '{"Status":429,"Message":"The AppID is denied"}'};
+  // 一時的な 429 は待ってやり直し、全件取れる
+  let calls = 0;
+  let code = await main({YAHOO_CLIENT_ID: 'y'}, async url => (++calls % 3 === 0 ? limited : ok(url)), {models, output, delayMs: 0, log() {}, discoveryQueries: []});
+  assert.equal(code, 0);
+  assert.equal(JSON.parse(fs.readFileSync(output, 'utf8')).products.length, 5);
+  // 途中から 429 が続いても、それまでに取れた分は保存する
+  calls = 0;
+  fs.rmSync(output);
+  code = await main({YAHOO_CLIENT_ID: 'y'}, async url => (++calls <= 2 ? ok(url) : limited), {models, output, delayMs: 0, log() {}, discoveryQueries: []});
+  assert.equal(code, 0);
+  const data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.equal(data.products.length, 2);
+  assert.deepEqual(data.stores, ['Yahoo!ショッピング']);
+});
