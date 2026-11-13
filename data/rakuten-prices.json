@@ -90,27 +90,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 7 9800X3D",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 59800,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/alljapan-online-shop/0730143315289.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:alljapan-online-shop_0730143315289",
-   "itemName": "Ryzen 7 9800X3D BOX CPU",
-   "shopName": "販売一丁目",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 59800,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/alljapan-online-shop/0730143315289.html"
-    }
-   ]
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 7 9700X",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -2590,6 +2569,11 @@
   {
    "category": "gpu",
    "modelName": "GeForce GTX 1050",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 9800X3D",
    "reason": "照合ルールの見直しで除外"
   }
  ]
