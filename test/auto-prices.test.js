@@ -382,3 +382,17 @@ test('an affiliate run that yields no usable links keeps the previous price file
   assert.match(fs.readFileSync(output, 'utf8'), /keep/);
   assert.ok(logs.some(l => l.includes('リンクの形式を確認')));
 });
+
+test('ValueCommerce links returned over http are upgraded to https; other http links are still refused', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000}, {category: 'gpu', modelName: 'GeForce RTX 5080', referencePrice: 200000}];
+  const fetchImpl = async url => {
+    const q = url.searchParams.get('query');
+    const link = q === 'RTX 5070' ? 'http://ck.jp.ap.valuecommerce.com/servlet/referral?vs=1&vp=2&vc_url=x' : 'http://example.com/item';
+    return {ok: true, json: async () => ({hits: [{code: 's_' + q, name: 'MSI GeForce ' + q + ' 16G', price: q === 'RTX 5070' ? 105000 : 199000, inStock: true, condition: 'new', url: link}]})};
+  };
+  assert.equal(await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {yahooValueCommerceId: 'http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=1&pid=2&vc_url='}}), 0);
+  const products = JSON.parse(fs.readFileSync(output, 'utf8')).products;
+  assert.deepEqual(products.map(p => [p.modelName, p.url.slice(0, 40)]), [['GeForce RTX 5070', 'https://ck.jp.ap.valuecommerce.com/servl']]);
+});

@@ -81,6 +81,8 @@ async function loadModels(fetchImpl) {
 function safeUrl(item) {
   try {
     const url = new URL(item.affiliateUrl || item.itemUrl);
+    // Yahoo!ショッピングのアフィリエイトURL（バリューコマース）は http で返るので https にして使う
+    if (url.protocol === 'http:' && /(^|\.)valuecommerce\.com$/.test(url.hostname)) url.protocol = 'https:';
     return url.protocol === 'https:' && !url.username && !url.password ? url.href : null;
   } catch { return null; }
 }
