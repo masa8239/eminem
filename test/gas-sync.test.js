@@ -73,6 +73,7 @@ const files = () => ({
     {category: 'gpu', modelName: 'GeForce RTX 6700 XT', type: 'name', issue: 'RTX 6700 は存在しません', fix: 'Radeon RX 6700 XT'},
     {category: 'gpu', modelName: 'GeForce RTX 7600 XT', type: 'name', issue: 'RTX 7600 は存在しません', fix: 'Radeon RX 7600 XT'},
     {category: 'gpu', modelName: 'Radeon RX 9000 XT', type: 'name', issue: 'RX 9000 は存在しません'},
+    {category: 'gpu', modelName: 'GeForce RTX 4060', type: 'spec', issue: '仕様が出典と違います: 帯域幅 1024GB/s → 出典 272GB/s（Wikipedia）'},
   ]},
 });
 const gpuGrid = () => [
@@ -115,6 +116,9 @@ test('sync writes fetched prices to a separate column and never overwrites the r
   assert.equal(sheet.backgrounds['2,2'], '#f4cccc');   // 価格も最安値もない行は赤
   assert.equal(g[3][3], 45000);
   assert.equal(g[3][2], 44000);                        // 数式のセルはもちろん、基準価格も触らない
+  assert.equal(sheet.backgrounds['3,0'], '#fff2cc');   // 仕様が出典と違う行は名前を黄色にし、内容をメモに残す
+  assert.match(sheet.notes['3,0'], /帯域幅 1024GB\/s → 出典 272GB\/s/);
+  assert.equal(g[3][0], 'GeForce RTX 4060');           // 名前も値も書き換えない
   assert.equal(g[4][0], 'Radeon RX 6700 XT');          // 機械的に直せる名前は修正
   assert.match(sheet.notes['4,0'], /以前の名前: GeForce RTX 6700 XT/);
   assert.equal(g[5][0], 'GeForce RTX 7600 XT');        // 直すと重複する名前は書き換えず要確認

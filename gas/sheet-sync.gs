@@ -72,11 +72,13 @@ function benchcoreRun_(dryRun) {
   (priceData.unmatched || []).forEach(function (item) {
     if (item.reason === '型番を判定できないモデル名') unpriceable[item.category + '|' + item.modelName] = true;
   });
-  var nameIssues = {}, nameFixes = {};
+  var nameIssues = {}, nameFixes = {}, specIssues = {};
   (auditData.issues || []).forEach(function (issue) {
     var issueKey = issue.category + '|' + issue.modelName;
     if (issue.type === 'name') { nameIssues[issueKey] = issue.issue; if (issue.fix) nameFixes[issueKey] = issue.fix; }
     if (issue.type === 'duplicate' && !nameIssues[issueKey]) nameIssues[issueKey] = issue.issue;
+    // 仕様（コア数・クロック・VRAM など）が出典の照合表と違う行。名前の指摘がない行だけ、同じ黄色で知らせる
+    if (issue.type === 'spec') specIssues[issueKey] = issue.issue;
   });
 
   var log = [];
@@ -170,9 +172,11 @@ function benchcoreRun_(dryRun) {
         continue;
       }
       if (fix && existing[fix]) issue = '「' + fix + '」の書き間違いの可能性がありますが、同じ名前の行がすでにあります';
+      var note = issue ? 'モデル名を確認してください: ' + issue : specIssues[key] ? specIssues[key] + '\n（AMD公式の仕様一覧 / Wikipedia の各世代の表と照合）' : '';
+      if (!issue && specIssues[key]) issue = specIssues[key];
       if (issue && nameBackgrounds[i][0] !== BENCHCORE_COLOR_NAME) {
-        log.push(sheet.getName() + ' / ' + name + ': モデル名を確認（' + issue + '）');
-        if (!dryRun) { nameCell.setBackground(BENCHCORE_COLOR_NAME); nameCell.setNote('モデル名を確認してください: ' + issue); }
+        log.push(sheet.getName() + ' / ' + name + ': ' + (note.indexOf('モデル名') === 0 ? 'モデル名を確認（' + issue + '）' : '仕様を確認（' + issue + '）'));
+        if (!dryRun) { nameCell.setBackground(BENCHCORE_COLOR_NAME); nameCell.setNote(note); }
       }
       if (!issue && !dryRun && nameBackgrounds[i][0] === BENCHCORE_COLOR_NAME) { nameCell.setBackground(null); nameCell.clearNote(); }
     }
