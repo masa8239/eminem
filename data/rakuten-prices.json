@@ -1,6 +1,2836 @@
 {
- "checkedAt": null,
- "source": "楽天市場",
- "products": [],
- "unmatched": []
+ "checkedAt": "2026-11-13T11:27:36.213Z",
+ "stores": [
+  "Yahoo!ショッピング"
+ ],
+ "products": [
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 9950X3D",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 120030,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000032055.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:excellar-plus_1000032055",
+   "itemName": "AMD Ryzen 9 9950X3D 100-000000719 4.3GHz SocketAM5",
+   "shopName": "エクセラープラス",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 120030,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000032055.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 9950X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 95980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/spd-shop/caeb-ryzen9-9950x.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:spd-shop_caeb-ryzen9-9950x",
+   "itemName": "AMD CPU Ryzen9 9950X AM5 16コア 32スレッド 4.3GHz TDP 170W Radeon Graphics  エーエムディー CPU 企業向けバルク品 1年保証 翌日配達対応 宅配便配送",
+   "shopName": "spdshop",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 95980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/spd-shop/caeb-ryzen9-9950x.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 9900X3D",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 88200,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000033847.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:excellar-plus_1000033847",
+   "itemName": "AMD Ryzen 9 9900X3D 100-000001368 4.4GHz Socket AM5",
+   "shopName": "エクセラープラス",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 88200,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000033847.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 9900X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 64088,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/densidonya/0730143315296.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:densidonya_0730143315296",
+   "itemName": "【新品】AMD CPU Ryzen 9 9900X BOX",
+   "shopName": "電子問屋",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 64088,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/densidonya/0730143315296.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 9800X3D",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 59800,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/alljapan-online-shop/0730143315289.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:alljapan-online-shop_0730143315289",
+   "itemName": "Ryzen 7 9800X3D BOX CPU",
+   "shopName": "販売一丁目",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 59800,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/alljapan-online-shop/0730143315289.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 9700X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 43370,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000884076.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:d-rise2_p000000884076",
+   "itemName": "★AMD Ryzen 7 9700X BOX【CPU】【送料無料】",
+   "shopName": "ディーライズ2号",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 43370,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000884076.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 9600X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 35880,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000030539.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:excellar-plus_1000030539",
+   "itemName": "AMD Ryzen 5 9600X 100-000001405 3.9GHz Socket AM5",
+   "shopName": "エクセラープラス",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 35880,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000030539.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 9600",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 35979,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0094.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpamddryr0094",
+   "itemName": "送料無料　AMD Ryzen 5 9600 Box  クーラー付き 100-100000718BOX【当店3年保証】",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 35979,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0094.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 7950X3D",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 117500,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/akibaoo/0730143314893.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:akibaoo_0730143314893",
+   "itemName": "AMD Ryzen 9 7950X3D Box ICPAMDDRYR0065",
+   "shopName": "あきばおー ヤフーショップ",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 117500,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/akibaoo/0730143314893.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 7950X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 89640,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000805169.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:d-rise2_p000000805169",
+   "itemName": "★AMD Ryzen 9 7950X BOX【CPU】【送料無料】",
+   "shopName": "ディーライズ2号",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 89640,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000805169.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 7900X3D",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 73783,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/noahshoping/730143314916.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:noahshoping_730143314916",
+   "itemName": "『新品』AMD(エーエムディー) Ryzen 9 7900X3D BOX",
+   "shopName": "ノア商社Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 73783,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/noahshoping/730143314916.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 7900X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 63479,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0057.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpamddryr0057",
+   "itemName": "AMD Ryzen 9 7900X Box  12コア24スレッド / 4.7GHz(Boost 5.6GHz) 170W 100-100000589WOF 【当店保証3年】並行輸入品",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 63479,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0057.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 7900",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 62480,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpamddryr0068.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_zzz2icpamddryr0068",
+   "itemName": "箱難あり品　AMD Ryzen 9 7900 BOX Socket AM5 / 12コア24スレッド  / 3.7GHz 65W 100-100000590BOX【当店保証三年】並行輸入品",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 62480,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpamddryr0068.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 7800X3D",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 53280,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000024508.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:excellar-plus_1000024508",
+   "itemName": "AMD Ryzen 7 7800X3D 100-000000910 4.2GHz Socket AM5",
+   "shopName": "エクセラープラス",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 53280,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000024508.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 7700X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 40080,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000805167.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:d-rise2_p000000805167",
+   "itemName": "★AMD Ryzen 7 7700X BOX 100-100000591WOF 【国内正規流通品】【CPU】【送料無料】",
+   "shopName": "ディーライズ2号",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 40080,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000805167.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 7700",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 33000,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/easy-style2007/001w03302.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:easy-style2007_001w03302",
+   "itemName": "@【未使用品】 AMD Ryzen 7 7700 with Radeon Graphics ゲーミングプロセッサ BOX",
+   "shopName": "プロテクション",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 33000,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/easy-style2007/001w03302.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7600X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 29720,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000022149.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:excellar-plus_1000022149",
+   "itemName": "AMD Ryzen 5 7600X 100-100000593 4.7GHz Socket AM5",
+   "shopName": "エクセラープラス",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 29720,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000022149.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7600",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 28690,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/ecj/19909486.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:ecj_19909486",
+   "itemName": "AMD Ryzen5 7600 With Wraith Stealth Cooler (6C/12T.3.8Ghz.65W) (100-100001015BOX)",
+   "shopName": "ECJOY!",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 28690,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/ecj/19909486.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7500F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 26980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/joshin/0730143315081-44-22814.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:joshin_0730143315081-44-22814",
+   "itemName": "AMD｜エーエムディー AMD Ryzen 5 7500F W/ Wraith Stealth Cooler BOX (6C/ 12T3.7Ghz65W) 100-100000597BOX 返品種別B",
+   "shopName": "Joshin web",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 26980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/joshin/0730143315081-44-22814.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 5950X",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 65980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0043.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpamddryr0043",
+   "itemName": "送料無料AMD Ryzen 9 5950X cooler なし 3.4GHz 16コア / 32スレッド 64MB 105W 100-100000059WOF [三年保証]  海外リテール品 (沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 65980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0043.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 21980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/spd-shop/caeb-ryzen5-5600.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:spd-shop_caeb-ryzen5-5600",
+   "itemName": "ポイント2倍 AMD CPU Ryzen5 5600 AM4 6コア 12スレッド 3.5GHz TDP 65W  エーエムディー CPU 企業向けバルク品 1年保証 翌日配達対応 宅配便配送",
+   "shopName": "spdshop",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 21980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/spd-shop/caeb-ryzen5-5600.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 9 285K",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 103120,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000891436.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:d-rise2_p000000891436",
+   "itemName": "★インテル Core Ultra 9 285K BOX【CPU】【送料無料】",
+   "shopName": "ディーライズ2号",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 103120,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000891436.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 7 265K",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 52190,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/akibasoko/0735858550529.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:akibasoko_0735858550529",
+   "itemName": "Core Ultra 7 265K BOX/intel",
+   "shopName": "アキバ倉庫",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 52190,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/akibasoko/0735858550529.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 7 265KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 52478,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/noahshoping/0735858550444.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:noahshoping_0735858550444",
+   "itemName": "『新品』Intel(インテル)Core Ultra 7 265KF BOX",
+   "shopName": "ノア商社Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 52478,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/noahshoping/0735858550444.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 5 245K",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 38737,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/0735858550543.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:tsukumo-y_0735858550543",
+   "itemName": "Core Ultra 5 245K　BX80768245K",
+   "shopName": "ツクモ パソコン Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 38737,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/0735858550543.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 5 245KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 30780,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000030226.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:excellar-plus_1000030226",
+   "itemName": "Core Ultra 5 245KF 4.2GHz LGA1851 SRQCY",
+   "shopName": "エクセラープラス",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 30780,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000030226.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14900KS",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 116200,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/techno-launcher/new-b0cxhmthwp.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:techno-launcher_new-b0cxhmthwp",
+   "itemName": "インテル BX8071514900KS [Core i9 14900KS (8 Pコア 3.20GHz + 16 Eコア、36M Cache、PBP125W、LGA1700、UHD 770)]",
+   "shopName": "テクノランチャー",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 116200,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/techno-launcher/new-b0cxhmthwp.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14900K",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 91980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi9r0040.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdi9r0040",
+   "itemName": "Intel CPU Core i9 14900K 第14世代 Raptor Lake-S Refresh LGA1700 BX8071514900K BOX",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 91980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi9r0040.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14900KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 85300,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/kaden-oasis/0735858546980.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:kaden-oasis_0735858546980",
+   "itemName": "【国内正規品】Intel インテル CPU Core i9 14900KF  第14世代 LGA1700 24コア 32スレッド 6.0GHz BX8071514900KF",
+   "shopName": "家電のオアシス 大阪店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 85300,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/kaden-oasis/0735858546980.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14900F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 129590,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/kaikyou/735858547642.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:kaikyou_735858547642",
+   "itemName": "【新品】インテル Core i9 14900F BOX 【日曜日以外即日発送】【送料無料】",
+   "shopName": "モバイル販売",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 129590,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/kaikyou/735858547642.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-14700K",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 72773,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/ecjoyecj22/20451979.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:ecjoyecj22_20451979",
+   "itemName": "INTEL インテル MM99CFXW Core i7-14700K LGA1700",
+   "shopName": "ホームセンタードットコム",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 72773,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/ecjoyecj22/20451979.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-14700KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 67890,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/akibasoko/0735858546942.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:akibasoko_0735858546942",
+   "itemName": "Core i7 14700KF BOX/intel",
+   "shopName": "アキバ倉庫",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 67890,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/akibasoko/0735858546942.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-14700F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 61473,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpintdi7r0076.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_zzz2icpintdi7r0076",
+   "itemName": "箱難有り品 Intel CPU Core i7-14700F BOX 第14世代 Raptor Lake-S Refresh LGA1700 BX8071514700F GPU機能無し",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 61473,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpintdi7r0076.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-14600KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 45074,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/nanos/0735858546904.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:nanos_0735858546904",
+   "itemName": "MM99CFXZ Core i5-14600KF LGA1700 目安在庫=△",
+   "shopName": "ナノズ ヤフー店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 45074,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/nanos/0735858546904.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-14500",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 48217,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000028054.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:excellar-plus_1000028054",
+   "itemName": "Core i5 14500 2.6GHz 24MB LGA1700 SRN3T",
+   "shopName": "エクセラープラス",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 48217,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000028054.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-14400F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 26980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic497968.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dospara-y_ic497968",
+   "itemName": "【国内正規品】INTEL インテル / Core i5 14400F BOX  / 動作クロック周波数:2.5GHz / ソケット形状:LGA1700 / [Corei514400FBOX] / 735858547581",
+   "shopName": "ドスパラYahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 26980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic497968.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-14400",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 32813,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpintdi5r0096.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_zzz2icpintdi5r0096",
+   "itemName": "箱難あり品 Intel CPU Core i5-14400 BOX 第14世代 Raptor Lake-S Refresh LGA1700 BX8071514400",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 32813,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpintdi5r0096.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5080",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 336000,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/alljapan-online-shop/4710562244939.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:alljapan-online-shop_4710562244939",
+   "itemName": "Palit NE75080019T2-GB2031A RTX5080 GamingPro",
+   "shopName": "販売一丁目",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 336000,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/alljapan-online-shop/4710562244939.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5070 Ti",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 229800,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic634895.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dospara-y_ic634895",
+   "itemName": "PNY VCG5070T16TFXXPB1-O (GeForce RTX 5070 Ti 16GB)",
+   "shopName": "ドスパラYahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 229800,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic634895.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5070",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 149800,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic522671.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dospara-y_ic522671",
+   "itemName": "Palit(パリット) GeForce RTX 5070 Infinity 3 12GB / NE75070019K9-GB2050S / グラフィックボード",
+   "shopName": "ドスパラYahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 149800,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic522671.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5060 Ti 16GB",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 148000,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic523108.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dospara-y_ic523108",
+   "itemName": "Palit(パリット) GeForce RTX 5060 Ti Infinity 3 16GB / NE7506T019T1-GB2061S / グラフィックボード 【国内正規品】",
+   "shopName": "ドスパラYahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 148000,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic523108.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5060",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 87158,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4988755078276.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:tsukumo-y_4988755078276",
+   "itemName": "RTX 5060 Battle AX DUO 8GB-V",
+   "shopName": "ツクモ パソコン Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 87158,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4988755078276.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 67000,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/easy-style2007/001x00773.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:easy-style2007_001x00773",
+   "itemName": "@【未使用品】 ZOTAC GAMING GeForce RTX3070 TWIN EDGE OC PCIExp 8GB ZT-A30700H-10PLHR グラフィックボード",
+   "shopName": "プロテクション",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 67000,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/easy-style2007/001x00773.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9070 XT",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 156632,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4589785196673.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:tsukumo-y_4589785196673",
+   "itemName": "XFX Swift AMD Radeon RX 9070XT White Triple fan Gaming Edition with 16GB GDDR6　RX-97TSWF3W9-GP/U",
+   "shopName": "ツクモ パソコン Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 156632,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4589785196673.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9070",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 136600,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000033930.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:excellar-plus_1000033930",
+   "itemName": "SAPPHIRE PURE Radeon RX 9070 GAMING OC 16GB GDDR6 PCIExp 16GB 11349-02-20G",
+   "shopName": "エクセラープラス",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 136600,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000033930.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7600",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 54801,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/itempost/1-pc4u-82706.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:itempost_1-pc4u-82706",
+   "itemName": "ASRock Radeon RX 7600 Challenger 8GB OC グラフィックボード｜RX7600 CL 8GO",
+   "shopName": "shopooo by GMO",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 54801,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/itempost/1-pc4u-82706.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 84095,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/noahshoping/0735858526593.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:noahshoping_0735858526593",
+   "itemName": "『新品』Intel（インテル）Core i9 13900KF BOX",
+   "shopName": "ノア商社Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 84095,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/noahshoping/0735858526593.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 9 285",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 115780,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdu9r0002.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdu9r0002",
+   "itemName": "Intel Core Ultra 9 285 BOX ArrowLake-S LGA1851 BX80768285",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 115780,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdu9r0002.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 7 265F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 55559,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/densidonya/0735858551205.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:densidonya_0735858551205",
+   "itemName": "【ラッピング可】【即日発送】【新品】Intel インテル CPU Ultra 7 265F BOX",
+   "shopName": "電子問屋",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 55559,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/densidonya/0735858551205.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-14900",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 109980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi9r0042.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdi9r0042",
+   "itemName": "Intel CPU Core i9-14900 BOX 第14世代 Raptor Lake-S Refresh LGA1700 BX8071514900",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 109980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi9r0042.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900K",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 65980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi9r0030.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdi9r0030",
+   "itemName": "送料無料 Intel CPU Core i9 12900K 第12世代  Alder Lake-S LGA1700 BX8071512900K【 BOX 】 (沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 65980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi9r0030.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 60980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpintdi9r0031.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_zzz2icpintdi9r0031",
+   "itemName": "箱難あり品 Intel CPU Core i9 12900KF 第12世代  Alder Lake-S LGA1700 BX8071512900KF【 BOX 】 (沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 60980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpintdi9r0031.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 5 235",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 50480,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdu5r0005.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdu5r0005",
+   "itemName": "Intel Core Ultra 5 235 BOX ArrowLake-S LGA1851 BX80768235",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 50480,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdu5r0005.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700K",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 59980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi7r0066.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdi7r0066",
+   "itemName": "送料無料 Intel CPU Core i7 12700K 第12世代  Alder Lake-S LGA1700 BX8071512700K【 BOX 】 (沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 59980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi7r0066.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 50780,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi7r0067.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdi7r0067",
+   "itemName": "送料無料 Intel CPU Core i7 12700KF 第12世代  Alder Lake-S LGA1700 BX8071512700KF【 BOX 】 (沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 50780,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi7r0067.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 5 225",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 33211,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/0735858550826.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:tsukumo-y_0735858550826",
+   "itemName": "Core Ultra 5 225　BX80768225",
+   "shopName": "ツクモ パソコン Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 33211,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/0735858550826.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 8700F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 32025,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/sokutei/730143316699.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:sokutei_730143316699",
+   "itemName": "AMD エーエムディー Ryzen 7 8700F （AM5、8コア16スレッド、4.1GHz、65W、Wraith Stealth Cooler） 100-100001590BOX[ラッピング可] R-LOGI",
+   "shopName": "測定の森 2号店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 32025,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/sokutei/730143316699.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 8700G",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 48479,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/noahshoping/0730143316125.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:noahshoping_0730143316125",
+   "itemName": "『新品』AMD(エーエムディー) Ryzen 7 8700G BOX",
+   "shopName": "ノア商社Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 48479,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/noahshoping/0730143316125.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 5 225F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 25510,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/akibasoko/0735858550840.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:akibasoko_0735858550840",
+   "itemName": "Core Ultra 5 225F BOX/intel",
+   "shopName": "アキバ倉庫",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 25510,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/akibasoko/0735858550840.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600KF",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 33980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi5r0082.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdi5r0082",
+   "itemName": "送料無料 Intel CPU Core i5 12600KF 第12世代  Alder Lake-S LGA1700 BX8071512600KF【 BOX 】 (沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 33980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi5r0082.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 8600G",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 32124,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/ecjoyecj25/20580995.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:ecjoyecj25_20580995",
+   "itemName": "AMD Ryzen 5 8600G BOX With Wraith Stealth Cooler (6C12T.4.35GHz.65W) (100-100001237BOX)",
+   "shopName": "HJN ヤフー店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 32124,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/ecjoyecj25/20580995.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 8400F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 22800,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/joshin/0730143316736-44-22814.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:joshin_0730143316736-44-22814",
+   "itemName": "AMD｜エーエムディー AMD Ryzen 5 8400F BOX with Wraith Stealth Cooler(国内正規品) 100-100001591BOX 返品種別B",
+   "shopName": "Joshin web",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 22800,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/joshin/0730143316736-44-22814.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5500GT",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 22980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0076.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpamddryr0076",
+   "itemName": "AMD Ryzen 5 5500GT with cooler Box　【当店保証3年】(沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 22980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0076.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4500",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 14277,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/nanos/0730143314114.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:nanos_0730143314114",
+   "itemName": "BOX Ryzen 5 4500 with Wraith Stealth Cooler AM4 65W 取り寄せ商品",
+   "shopName": "ナノズ ヤフー店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 14277,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/nanos/0730143314114.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i3-14100F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 17779,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/0735858547536.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:tsukumo-y_0735858547536",
+   "itemName": "Core i3-14100F　BX8071514100F",
+   "shopName": "ツクモ パソコン Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 17779,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/0735858547536.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i3-14100",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 22141,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/joshin/0735858547512-44-22814.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:joshin_0735858547512-44-22814",
+   "itemName": "Intel｜インテル インテル Core i3 プロセッサー 14100 (4(4+0)コア 8スレッド 、12M キャッシュ、最大4.70 GHz)BX8071514100 返品種別B",
+   "shopName": "Joshin web",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 22141,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/joshin/0735858547512-44-22814.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i3-12100F",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 19980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpintdi3r0054.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_zzz2icpintdi3r0054",
+   "itemName": "箱難あり品 Intel CPU Core i3 12100F 第12世代  Alder Lake-S LGA1700 BX8071512100F【 BOX 】 (沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 19980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpintdi3r0054.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i3-12100",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 29980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi3r0053.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dear-i_icpintdi3r0053",
+   "itemName": "送料無料 Intel CPU Core i3 12100 第12世代  Alder Lake-S LGA1700 BX8071512100【 BOX 】 (沖縄離島送料別途)",
+   "shopName": "DEAR-I Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 29980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpintdi3r0053.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 2600",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 27388,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/jiatentusp2/20220123130815-01921.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:jiatentusp2_20220123130815-01921",
+   "itemName": "AMD CPU Ryzen 5 2600 with Wraith Stealth cooler YD2600BBAFBOX",
+   "shopName": "ユウリンポート",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 27388,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/jiatentusp2/20220123130815-01921.html"
+    }
+   ]
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 4100",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 12260,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/nanos/0730143314060.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:nanos_0730143314060",
+   "itemName": "BOX Ryzen 3 4100 with Wraith Stealth Cooler AM4 65W 取り寄せ商品",
+   "shopName": "ナノズ ヤフー店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 12260,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/nanos/0730143314060.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 10GB",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 180500,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/inter-trade/b099zc8h3g.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:inter-trade_b099zc8h3g",
+   "itemName": "【並行輸入品】 ASUS TUF Gaming NVIDIA GeForce RTX 3080 V2 OCエディション グラフィックスカード (PCIe 4.0 10GB GDDR6X LHR HDMI 2.1 DisplayPort 1.4a デュ",
+   "shopName": "インタートレーディング",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 180500,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/inter-trade/b099zc8h3g.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5060 Ti 8GB",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 97800,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic523107.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dospara-y_ic523107",
+   "itemName": "Palit(パリット)  GeForce RTX 5060 Ti Dual 8GB / NE7506T019P1 / グラフィックボード",
+   "shopName": "ドスパラYahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 97800,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic523107.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2080 Ti",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 193200,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/inter-trade/b07gj5s6ry.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:inter-trade_b07gj5s6ry",
+   "itemName": "【並行輸入品】 PNY GeForce RTX 2080 Ti Blower Graphics Card Model No:VCG2080T11BLMPB",
+   "shopName": "インタートレーディング",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 193200,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/inter-trade/b07gj5s6ry.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080 Ti",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 87500,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/trade-journey/b06y31fywy.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:trade-journey_b06y31fywy",
+   "itemName": "【平行輸入品】ASUS グラフィックスカード TURBO-GTX1080TI-11G",
+   "shopName": "Trade Journey",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 87500,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/trade-journey/b06y31fywy.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2070",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 8111,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/bbselection/rc30-0220.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:bbselection_rc30-0220",
+   "itemName": "互換品＜ 新品 ＞Razer Blade Pro 17 2017 / Blade 17 2E75 Blade GTX1060 i7-7700HQ 2019 RTX 2060 RTX 2070 RTX 2080 RZ09-0220 RZ09-02202 電池番号RC30-0220",
+   "shopName": "自社国内在庫 24時間以内スピード出荷 BEST",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 8111,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/bbselection/rc30-0220.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 42350,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/good-item-005/s-b01k5f8mjk-20260909.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:good-item-005_s-b01k5f8mjk-20260909",
+   "itemName": "ASUS R.O.G. STRIXシリーズ NVIDIA GeForce GTX1080搭載ビデオカード ベースクロック1670MHz STRIX-G",
+   "shopName": "Good-Item 5号店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 42350,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/good-item-005/s-b01k5f8mjk-20260909.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 12GB",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 73474,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4988755078283.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:tsukumo-y_4988755078283",
+   "itemName": "RTX 3060 Battle AX DUO 12GB-V",
+   "shopName": "ツクモ パソコン Yahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 73474,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4988755078283.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600 XT",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 2980,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/koharu/c20260409-8829.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:koharu_c20260409-8829",
+   "itemName": "並行輸入品 オートバイ 装飾 用ネジキャップカバー ボディ エンジン ボルト KTM 890 ADVENTURE STREETFIGHTER V4 RX 5600XT カワ",
+   "shopName": "小春日和",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 2980,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/koharu/c20260409-8829.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1070 Ti",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 76700,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/trade-journey/b076q6gyky.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:trade-journey_b076q6gyky",
+   "itemName": "【平行輸入品】GEFORCE GTX1070TI GAMING 8G",
+   "shopName": "Trade Journey",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 76700,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/trade-journey/b076q6gyky.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660 Ti",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 44000,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/oyama/25-625-1.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:oyama_25-625-1",
+   "itemName": "未使用 ZOTAC GAMING GeForce GTX 1660 Ti 6GB GDDR6",
+   "shopName": "おやま質店ヤフーショップ",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 44000,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/oyama/25-625-1.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660 SUPER",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 44000,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/oyama/25-625.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:oyama_25-625",
+   "itemName": "未使用 ZOTAC GAMING GeForce GTX 1660 SUPER Twin Fan",
+   "shopName": "おやま質店ヤフーショップ",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 44000,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/oyama/25-625.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 44955,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/hana-mira/s-b07pbldv3d-20260909.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:hana-mira_s-b07pbldv3d-20260909",
+   "itemName": "MSI GeForce GTX 1660 VENTUS XS 6G OC グラフィックスボード VD7292",
+   "shopName": "Hana-Hana",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 44955,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/hana-mira/s-b07pbldv3d-20260909.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6500 XT 4GB",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 85000,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/inter-trade/b09q98krtg.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:inter-trade_b09q98krtg",
+   "itemName": "【並行輸入品】 XFX Speedster QICK210 Radeon RX 6500XT ブラック ゲーミンググラフィックスカード 4GB GDDR6 HDMI AMD RDNA 2 RX-65XT4DBDQ付き",
+   "shopName": "インタートレーディング",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 85000,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/inter-trade/b09q98krtg.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3050 6GB",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 49280,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic584001.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:dospara-y_ic584001",
+   "itemName": "Palit NE63050018JE-1072F (GeForce RTX 3050 StormX 6GB)",
+   "shopName": "ドスパラYahoo!店",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 49280,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic584001.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 SUPER",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 81200,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/olg/b081r359zm.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:olg_b081r359zm",
+   "itemName": "【並行輸入品】 Gigabyte Gv-N165SWF2OC-4GD GeForce GTX 1650 Super Windforce OC 4G グラフィックカード ウィンドフォースファン2個 4GB 128-Bit GDDR6",
+   "shopName": "オーエルジー",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 81200,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/olg/b081r359zm.html"
+    }
+   ]
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1050",
+   "status": "ok",
+   "source": "Yahoo!ショッピング",
+   "price": 11100,
+   "points": 0,
+   "url": "https://store.shopping.yahoo.co.jp/inter-trade/b085f1hbkb.html",
+   "fetchedAt": "2026-11-13T11:27:36.213Z",
+   "itemCode": "yahoo:inter-trade_b085f1hbkb",
+   "itemName": "【並行輸入品】 Deal4GO CPU冷却ファン 交換用 GTX1050グラフィックス Lenovo Y520 Y520-15IKBN Rescuer R720 R720-15IKBN 5F10N00256 DC28000D6F1用",
+   "shopName": "インタートレーディング",
+   "offers": [
+    {
+     "store": "Yahoo!ショッピング",
+     "price": 11100,
+     "points": 0,
+     "url": "https://store.shopping.yahoo.co.jp/inter-trade/b085f1hbkb.html"
+    }
+   ]
+  }
+ ],
+ "unmatched": [
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 5900X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5800X3D",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5800X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5700X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-14600K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900KS",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13600K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13400F",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5090",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4090",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4080 SUPER",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4080",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 Ti SUPER",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 Ti",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 SUPER",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4060 Ti 16GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4060 Ti",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4060",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3090 Ti",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3090",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 Ti",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 12GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070 Ti",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 Ti",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7900 XTX",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7900 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7900 GRE",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7800 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7700 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7600 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6950 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6900 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6800 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6800",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6750 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6700 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6700",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6650 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6600 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900F",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900KS",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900T",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M1 Ultra",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700F",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700KF",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M3 Max (4コア)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-7700",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 3900XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 3900X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13500",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900T",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700T",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M3 Pro (12コア)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5700X3D",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M2 Max",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 5750G",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13400",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700KF",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 3800XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10900K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M3 Pro (11コア)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10900KF",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10850K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 3700X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600X3D",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M1 Pro",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700T",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M2 Pro (12コア)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700F",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 4750G",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 4700G",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12500",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600G",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11600K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11600KF",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12400F",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900KS",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12400",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 4750GE",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11500",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M1 (2コア)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11400F",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11400",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 1800X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700F",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 PRO 4650G",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4600G",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 1700X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 PRO 4650GE",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M2",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i3-13100",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700KF",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600KF",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Apple M1",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 2600X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700K",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700F",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900T",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600 AF",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500G",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 3300X",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10400",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 4300G",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 3100",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700T",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A770 8GB",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN V",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A750",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2080 SUPER",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN Xp",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A580",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN X",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3050",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5700 XT",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5700",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2060 12GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2060 6GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 6GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 64",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 56",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3050 8GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1070",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN X",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 980 Ti",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Fury X",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Fury",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5500 XT 8GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5500 XT 4GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 590",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Nano",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN Z",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A380",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 980",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 390X",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1060 6GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 480",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1060 3GB",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 570 6GB",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 GDDR6",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 470",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 970",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6400",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 GDDR5",
+   "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 780 Ti",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon 780M",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A310",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 380X",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 780",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon 760M",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 270",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 7070",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 960",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 770",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 680",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 950",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 560",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 460",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon 740M",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 760",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 8(Ryzen 5000)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 370",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 7(Ryzen 5000)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 8(Ryzen 4000)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 7(Ryzen 4000)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 750 Ti",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 550",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 11(Ryzen 2000)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 6(Ryzen 2000)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GT 1030",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Intel Graphics Core Ultra 200 i シリーズ",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 8(Ryzen 2000)",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 650 Ti",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Intel UHD Graphics 770",
+   "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon Graphics RDNA2 2CU",
+   "reason": "型番を判定できないモデル名"
+  }
+ ]
 }
