@@ -15,9 +15,16 @@ async function searchYahoo(keyword, appid, fetchImpl = fetch) {
   url.searchParams.set('in_stock', 'true');
   url.searchParams.set('condition', 'new');
   const response = await fetchImpl(url, {headers: {Accept: 'application/json'}, signal: AbortSignal.timeout(7000), redirect: 'error'});
-  if (!response.ok) throw new Error('Yahoo API HTTP error');
-  const payload = await response.json();
-  if (!payload || !Array.isArray(payload.hits)) throw new Error('Yahoo API response');
+  // 失敗の理由をログに出す（appid は伏せる）
+  const hide = text => String(text || '').split(appid).join('[appid]').slice(0, 200);
+  if (!response.ok) {
+    let detail = '';
+    try { const body = await response.text(); try { const j = JSON.parse(body); detail = (j.Error && (j.Error.Message || j.Error.message)) || j.message || body; } catch { detail = body; } } catch { /* 本文なし */ }
+    throw new Error(hide(`Yahoo API HTTP ${response.status}${detail ? ': ' + detail : ''}`));
+  }
+  let payload;
+  try { payload = await response.json(); } catch { throw new Error('Yahoo API: JSONを読めませんでした'); }
+  if (!payload || !Array.isArray(payload.hits)) throw new Error(hide('Yahoo API: 想定外の応答（キー: ' + Object.keys(payload || {}).join(', ') + '）'));
   return payload.hits.filter(hit => hit && typeof hit === 'object' && (hit.condition === undefined || hit.condition === 'new')).map(hit => ({
     itemCode: typeof hit.code === 'string' ? 'yahoo:' + hit.code : '',
     itemName: typeof hit.name === 'string' ? hit.name : '',

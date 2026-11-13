@@ -118,9 +118,15 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       const found = await searchYahoo(keyword, yahoo.appid, fetchImpl);
       yahoo.cache.set(keyword, found); yahoo.failures = 0;
       return found;
-    } catch { yahoo.failures++; return null; }
+    } catch (error) {
+      yahoo.failures++;
+      if (yahoo.failures <= 3) log(`Yahoo!ショッピング検索に失敗（${keyword}）: ${String(error && error.message || error).split(yahoo.appid).join('[appid]')}`);
+      if (yahoo.failures === 3) log('Yahoo!ショッピングに続けて接続できないため、この回は Yahoo を使いません');
+      return null;
+    }
   };
   let apiErrors = 0, attempted = 0, first = true;
+  log(`使うストア: ${[rakuten.configured && '楽天市場', yahoo.appid && 'Yahoo!ショッピング'].filter(Boolean).join('・') || 'なし'}`);
   for (const model of auditOnly ? [] : models) {
     const spec = modelSpec(model.category, model.modelName, byCategory(model.category));
     if (!spec) { unmatched.push({category: model.category, modelName: model.modelName, reason: '型番を判定できないモデル名'}); continue; }
