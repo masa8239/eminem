@@ -16,6 +16,8 @@ const EXCLUDE_WORDS = [
   'フィルム', 'レンタル', '延長保証', '修理', '買取', 'ふるさと納税', '抽選', 'マザーボード',
   // 互換品・交換部品・並行輸入・中古扱いの「未使用品」
   '互換', '交換用', '並行輸入', '平行輸入', '未使用', 'バッテリー', '電池', 'オートバイ', 'ネジ', '冷却ファン',
+  // 箱つぶれ品・バルク品は通常の新品（BOX）と条件が違うので比較に入れない
+  '箱難', '箱潰', '箱つぶれ', '外箱', 'バルク',
 ].map(normalize);
 
 const GPU_SUFFIXES = ['TI SUPER', 'SUPER', 'TI', 'XTX', 'XT', 'GRE'];
@@ -123,7 +125,7 @@ function pickItem(spec, items, referencePrice, category) {
       && (candidates.length < 3 || item.itemPrice >= mid * 0.8);
   } else {
     // 参考価格がないモデルは、同条件の出品が3件以上あるときだけ相場（中央値）付近を採用
-    if (candidates.length < 3) return {reason: '参考価格なし・候補3件未満'};
+    if (candidates.length < 5) return {reason: '参考価格なし・候補5件未満'};
     inBand = item => item.itemPrice >= Math.max(floor, mid * 0.75) && item.itemPrice <= mid * 1.5;
   }
   const accepted = candidates.filter(inBand).sort((a, b) => a.itemPrice - b.itemPrice);

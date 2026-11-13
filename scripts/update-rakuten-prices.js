@@ -8,7 +8,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {searchItems, responseItems, SITE_ORIGIN, PriceError} = require('../api/rakuten-prices')._test;
-const {modelSpec, pickItem, discoverNewModels} = require('./lib/match');
+const {modelSpec, pickItem, discoverNewModels, PRICE_FLOOR} = require('./lib/match');
 const {searchYahoo, rakutenPoints} = require('./lib/stores');
 const {nameIssue} = require('./lib/audit');
 
@@ -114,21 +114,22 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const yahooDelay = options.yahooDelayMs ?? (delayMs ? 2000 : 0);
   const yahooBackoff = options.yahooBackoffMs ?? (delayMs ? [20000, 60000, 120000] : [0, 0, 0]);
   const wait = ms => ms ? new Promise(resolve => setTimeout(resolve, ms)) : Promise.resolve();
-  const yahooItems = async keyword => {
+  const yahooItems = async (keyword, range = null) => {
     if (!yahoo.appid || yahoo.failures >= 3) return null;
-    if (yahoo.cache.has(keyword)) return yahoo.cache.get(keyword);
+    const cacheKey = range ? `${keyword}\0${range.from}\0${range.to}` : keyword;
+    if (yahoo.cache.has(cacheKey)) return yahoo.cache.get(cacheKey);
     try {
       await wait(yahooDelay);
       let found;
       for (let attempt = 0; ; attempt++) {
-        try { found = await searchYahoo(keyword, yahoo.appid, fetchImpl); break; }
+        try { found = await searchYahoo(keyword, yahoo.appid, fetchImpl, range); break; }
         catch (error) {
           if (error.status !== 429 || attempt >= yahooBackoff.length) throw error;
           if (attempt === 0) log(`Yahoo!ショッピングの問い合わせ回数の上限に達したため、少し待ってから続けます（${keyword}）`);
           await wait(yahooBackoff[attempt]);
         }
       }
-      yahoo.cache.set(keyword, found); yahoo.failures = 0; yahoo.successes++;
+      yahoo.cache.set(cacheKey, found); yahoo.failures = 0; yahoo.successes++;
       return found;
     } catch (error) {
       yahoo.failures++;
@@ -181,7 +182,10 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       itemCode: picked.item.itemCode, itemName: picked.item.itemName,
       shopName: typeof picked.item.shopName === 'string' ? picked.item.shopName : '',
     });
-    const yItems = await yahooItems(spec.keyword);
+    // 参考価格があるモデルは、ありえる価格帯に絞って安い順に取る（関連度順だと最安の出品を取りこぼす）
+    const ref = Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0;
+    const range = ref ? {from: Math.max(PRICE_FLOOR[model.category] || 0, Math.round(ref * 0.7)), to: Math.round(ref * 1.8)} : null;
+    const yItems = await yahooItems(spec.keyword, range);
     const yPicked = yItems && pickItem(spec, yItems, model.referencePrice, model.category);
     const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
     if (yUrl) offers.push({

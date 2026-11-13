@@ -82,8 +82,8 @@ test('item selection rejects used goods, bundles and off-market prices', () => {
   // 参考価格から大きく外れたものしかなければ採用しない
   assert.equal(pickItem(spec, [item('GeForce RTX 5070 12G', 30000)], 110000).item, undefined);
   // 参考価格がないときは3件以上の相場が必要
-  assert.match(pickItem(spec, items.slice(3, 5), null).reason, /3件未満/);
-  assert.equal(pickItem(spec, [...items.slice(3, 5), item('ZOTAC GeForce RTX 5070 12G', 115000), item('謎 GeForce RTX 5070 12G', 9800)], null).item.itemPrice, 109800);
+  assert.match(pickItem(spec, items.slice(3, 5), null).reason, /5件未満/);
+  assert.equal(pickItem(spec, [...items.slice(3, 5), item('ZOTAC GeForce RTX 5070 12G', 115000), item('Palit RTX 5070 12G', 112500), item('PNY RTX 5070 12G', 113000), item('謎 GeForce RTX 5070 12G', 9800)], null).item.itemPrice, 109800);
 });
 
 test('update script writes prices, keeps going on misses and never leaks credentials', async () => {
@@ -317,4 +317,19 @@ test('real bad listings from the first Yahoo run are rejected', () => {
   assert.equal(pick(s, [mk(59800, 'a'), mk(84800, 'b')], 89800, 'cpu').item.itemPrice, 84800);
   // 正常なグラボ名（3連ファンなど）は通る
   assert.ok(spec('gpu', 'GeForce RTX 5070', ['GeForce RTX 5070']).matches('MSI GeForce RTX 5070 12G GAMING TRIO 3連ファン'));
+});
+
+test('Yahoo is searched cheapest-first inside a plausible price range when a reference exists', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const seen = [];
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 5060', referencePrice: 58000}, {category: 'gpu', modelName: 'GeForce RTX 3050', referencePrice: null}];
+  await main({YAHOO_CLIENT_ID: 'y'}, async url => { seen.push(Object.fromEntries(url.searchParams)); return {ok: true, json: async () => ({hits: []})}; }, {models, output, delayMs: 0, log() {}, discoveryQueries: []});
+  assert.deepEqual([seen[0].sort, seen[0].price_from, seen[0].price_to, seen[0].results], ['+price', '40600', '104400', '50']);
+  assert.equal(seen[1].sort, undefined);
+  const {modelSpec: spec, pickItem: pick} = require('../scripts/lib/match');
+  for (const name of ['箱難あり品 Intel CPU Core i7-14700F BOX', 'AMD Ryzen5 5600 企業向けバルク品']) {
+    const model = name.includes('14700F') ? 'Core i7-14700F' : 'Ryzen 5 5600';
+    assert.equal(pick(spec('cpu', model), [{itemCode: 'a:1', itemName: name, itemPrice: 30000, availability: 1}], 30000, 'cpu').item, undefined, name);
+  }
 });

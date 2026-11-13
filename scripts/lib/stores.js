@@ -7,11 +7,17 @@ const YAHOO_URL = 'https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearc
 
 // Yahoo!ショッピング 商品検索API（v3）。Client ID だけで使える。
 // 注意: 実際のAPI応答ではまだ動作確認していない（応答の形は公開仕様に基づく）。
-async function searchYahoo(keyword, appid, fetchImpl = fetch) {
+// range: {from, to} を渡すと、その価格帯を安い順に検索する（付属品など安すぎる出品は範囲で除ける）
+async function searchYahoo(keyword, appid, fetchImpl = fetch, range = null) {
   const url = new URL(YAHOO_URL);
   url.searchParams.set('appid', appid);
   url.searchParams.set('query', keyword);
-  url.searchParams.set('results', '30');
+  url.searchParams.set('results', range ? '50' : '30');
+  if (range) {
+    url.searchParams.set('sort', '+price');
+    url.searchParams.set('price_from', String(range.from));
+    if (range.to) url.searchParams.set('price_to', String(range.to));
+  }
   url.searchParams.set('in_stock', 'true');
   url.searchParams.set('condition', 'new');
   const response = await fetchImpl(url, {headers: {Accept: 'application/json'}, signal: AbortSignal.timeout(7000), redirect: 'error'});
