@@ -296,3 +296,25 @@ test('Yahoo rate limits are waited out, and a partial run still saves what it go
   assert.equal(data.products.length, 2);
   assert.deepEqual(data.stores, ['Yahoo!ショッピング']);
 });
+
+test('real bad listings from the first Yahoo run are rejected', () => {
+  const {modelSpec: spec, pickItem: pick} = require('../scripts/lib/match');
+  const all = ['GeForce RTX 2070', 'GeForce RTX 2060', 'GeForce RTX 2080', 'Radeon RX 5600 XT', 'GeForce GTX 1050', 'GeForce RTX 2080 Ti'];
+  const bad = [
+    ['GeForce RTX 2070', '互換品＜ 新品 ＞Razer Blade Pro 17 2017 / Blade 17 2E75 Blade GTX1060 i7-7700HQ 2019 RTX 2060 RTX 2070 RTX 2080 RZ09-0220', 8111],
+    ['Radeon RX 5600 XT', '並行輸入品 オートバイ 装飾 用ネジキャップカバー ボディ エンジン ボルト KTM 890 ADVENTURE STREETFIGHTER V4 RX 5600XT カワ', 2980],
+    ['GeForce GTX 1050', '【並行輸入品】 Deal4GO CPU冷却ファン 交換用 GTX1050グラフィックス Lenovo Y520', 11100],
+    ['GeForce RTX 2080 Ti', '【並行輸入品】 PNY GeForce RTX 2080 Ti Blower Graphics Card', 193200],
+  ];
+  for (const [model, name, price] of bad) {
+    const s = spec('gpu', model, all);
+    const one = {itemCode: 'x:1', itemName: name, itemPrice: price, availability: 1};
+    assert.equal(pick(s, [one, {...one, itemCode: 'x:2'}, {...one, itemCode: 'x:3'}], null, 'gpu').item, undefined, model);
+  }
+  // 相場より極端に安い怪しい出品は、参考価格があれば外す
+  const s = spec('cpu', 'Ryzen 7 9800X3D');
+  const mk = (p, c) => ({itemCode: c, itemName: 'AMD Ryzen 7 9800X3D BOX', itemPrice: p, availability: 1});
+  assert.equal(pick(s, [mk(59800, 'a'), mk(84800, 'b')], 89800, 'cpu').item.itemPrice, 84800);
+  // 正常なグラボ名（3連ファンなど）は通る
+  assert.ok(spec('gpu', 'GeForce RTX 5070', ['GeForce RTX 5070']).matches('MSI GeForce RTX 5070 12G GAMING TRIO 3連ファン'));
+});

@@ -14,6 +14,8 @@ const EXCLUDE_WORDS = [
   'パソコン', 'デスクトップ', 'ノート', 'ゲーミングPC', 'BTO', 'WINDOWS', 'OFFICE', 'SSD', 'セット', '同梱', '同時購入', 'バンドル',
   'ウォーターブロック', '水冷ブロック', 'バックプレート', 'ケーブル', 'ライザー', 'ステー', 'ホルダー', 'ブラケット',
   'フィルム', 'レンタル', '延長保証', '修理', '買取', 'ふるさと納税', '抽選', 'マザーボード',
+  // 互換品・交換部品・並行輸入・中古扱いの「未使用品」
+  '互換', '交換用', '並行輸入', '平行輸入', '未使用', 'バッテリー', '電池', 'オートバイ', 'ネジ', '冷却ファン',
 ].map(normalize);
 
 const GPU_SUFFIXES = ['TI SUPER', 'SUPER', 'TI', 'XTX', 'XT', 'GRE'];
@@ -64,6 +66,9 @@ function modelSpec(category, modelName, siblingNames = []) {
         const vramIn = size => new RegExp(`(?<![0-9])${size}\\s*G(B)?(?![A-Z])`).test(text);
         if (gpu.vram && !vramIn(gpu.vram)) return false;
         if (siblingVrams.some(vramIn)) return false;
+        // 別の型番がいくつも並んでいる出品は、互換部品や対応機種の一覧
+        const numbers = new Set([...text.matchAll(/(?<![A-Z0-9])(?:RTX|GTX|RX)\s*(\d{4})(?![0-9])/g)].map(m => m[1]));
+        if (numbers.size > 1) return false;
         // CPU名が入っている出品はグラボ単品ではなくPC本体
         if (/RYZEN|CORE\s*I[3579]|CORE\s*ULTRA/.test(text)) return false;
         return true;
@@ -97,7 +102,10 @@ function median(values) {
 
 // items: 楽天APIの商品配列。referencePrice: サイト上の参考価格（なければ null）。
 // 戻り値: {item} か {reason}
-function pickItem(spec, items, referencePrice) {
+// 本体として明らかに安すぎる価格（部品やアクセサリー）
+const PRICE_FLOOR = {cpu: 8000, gpu: 15000};
+
+function pickItem(spec, items, referencePrice, category) {
   const candidates = items.filter(item => item && typeof item.itemName === 'string'
     && Number.isSafeInteger(item.itemPrice) && item.itemPrice > 0 && item.availability === 1
     && typeof item.itemCode === 'string'
@@ -108,21 +116,22 @@ function pickItem(spec, items, referencePrice) {
   const prices = candidates.map(item => item.itemPrice);
   const mid = median(prices);
   let inBand;
+  const floor = PRICE_FLOOR[category] || 0;
   if (Number.isSafeInteger(referencePrice) && referencePrice > 0) {
-    // 参考価格から大きく外れる出品（付属品・抱き合わせ・転売）は採用しない
-    inBand = item => item.itemPrice >= referencePrice * 0.6 && item.itemPrice <= referencePrice * 1.8
-      && (candidates.length < 4 || item.itemPrice >= mid * 0.6);
+    // 参考価格から大きく外れる出品（付属品・抱き合わせ・転売・相場より極端に安い怪しい出品）は採用しない
+    inBand = item => item.itemPrice >= Math.max(floor, referencePrice * 0.7) && item.itemPrice <= referencePrice * 1.8
+      && (candidates.length < 3 || item.itemPrice >= mid * 0.8);
   } else {
     // 参考価格がないモデルは、同条件の出品が3件以上あるときだけ相場（中央値）付近を採用
     if (candidates.length < 3) return {reason: '参考価格なし・候補3件未満'};
-    inBand = item => item.itemPrice >= mid * 0.6 && item.itemPrice <= mid * 1.5;
+    inBand = item => item.itemPrice >= Math.max(floor, mid * 0.75) && item.itemPrice <= mid * 1.5;
   }
   const accepted = candidates.filter(inBand).sort((a, b) => a.itemPrice - b.itemPrice);
   if (!accepted.length) return {reason: '価格が相場から外れている'};
   return {item: accepted[0]};
 }
 
-module.exports = {normalize, parseGpu, parseCpu, modelSpec, pickItem, median, EXCLUDE_WORDS};
+module.exports = {normalize, parseGpu, parseCpu, modelSpec, pickItem, median, EXCLUDE_WORDS, PRICE_FLOOR};
 
 // ---- 新着候補の発見 ----
 // 検索結果の商品名から型番を読み取り、まだサイトに載っていないモデルを候補として挙げる。

@@ -174,7 +174,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     }
     first = false;
     const offers = [];
-    const picked = pickItem(spec, items, model.referencePrice);
+    const picked = pickItem(spec, items, model.referencePrice, model.category);
     const url = picked.item && safeUrl(picked.item);
     if (picked.item && url) offers.push({
       store: '楽天市場', price: picked.item.itemPrice, points: rakutenPoints(picked.item), url,
@@ -182,7 +182,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       shopName: typeof picked.item.shopName === 'string' ? picked.item.shopName : '',
     });
     const yItems = await yahooItems(spec.keyword);
-    const yPicked = yItems && pickItem(spec, yItems, model.referencePrice);
+    const yPicked = yItems && pickItem(spec, yItems, model.referencePrice, model.category);
     const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
     if (yUrl) offers.push({
       store: 'Yahoo!ショッピング', price: yPicked.item.itemPrice, points: yPicked.item.points || 0, url: yUrl,

@@ -237,48 +237,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 9 7900X",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 63479,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0057.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:dear-i_icpamddryr0057",
-   "itemName": "AMD Ryzen 9 7900X Box  12コア24スレッド / 4.7GHz(Boost 5.6GHz) 170W 100-100000589WOF 【当店保証3年】並行輸入品",
-   "shopName": "DEAR-I Yahoo!店",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 63479,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/dear-i/icpamddryr0057.html"
-    }
-   ]
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 9 7900",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 62480,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpamddryr0068.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:dear-i_zzz2icpamddryr0068",
-   "itemName": "箱難あり品　AMD Ryzen 9 7900 BOX Socket AM5 / 12コア24スレッド  / 3.7GHz 65W 100-100000590BOX【当店保証三年】並行輸入品",
-   "shopName": "DEAR-I Yahoo!店",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 62480,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/dear-i/zzz2icpamddryr0068.html"
-    }
-   ]
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 7 7800X3D",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -316,27 +274,6 @@
      "price": 40080,
      "points": 0,
      "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000805167.html"
-    }
-   ]
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 7700",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 33000,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/easy-style2007/001w03302.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:easy-style2007_001w03302",
-   "itemName": "@【未使用品】 AMD Ryzen 7 7700 with Radeon Graphics ゲーミングプロセッサ BOX",
-   "shopName": "プロテクション",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 33000,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/easy-style2007/001w03302.html"
     }
    ]
   },
@@ -883,27 +820,6 @@
      "price": 87158,
      "points": 0,
      "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4988755078276.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3070",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 67000,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/easy-style2007/001x00773.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:easy-style2007_001x00773",
-   "itemName": "@【未使用品】 ZOTAC GAMING GeForce RTX3070 TWIN EDGE OC PCIExp 8GB ZT-A30700H-10PLHR グラフィックボード",
-   "shopName": "プロテクション",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 67000,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/easy-style2007/001x00773.html"
     }
    ]
   },
@@ -1476,27 +1392,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3080 10GB",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 180500,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/inter-trade/b099zc8h3g.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:inter-trade_b099zc8h3g",
-   "itemName": "【並行輸入品】 ASUS TUF Gaming NVIDIA GeForce RTX 3080 V2 OCエディション グラフィックスカード (PCIe 4.0 10GB GDDR6X LHR HDMI 2.1 DisplayPort 1.4a デュ",
-   "shopName": "インタートレーディング",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 180500,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/inter-trade/b099zc8h3g.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce RTX 5060 Ti 8GB",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -1513,69 +1408,6 @@
      "price": 97800,
      "points": 0,
      "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic523107.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2080 Ti",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 193200,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/inter-trade/b07gj5s6ry.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:inter-trade_b07gj5s6ry",
-   "itemName": "【並行輸入品】 PNY GeForce RTX 2080 Ti Blower Graphics Card Model No:VCG2080T11BLMPB",
-   "shopName": "インタートレーディング",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 193200,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/inter-trade/b07gj5s6ry.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1080 Ti",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 87500,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/trade-journey/b06y31fywy.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:trade-journey_b06y31fywy",
-   "itemName": "【平行輸入品】ASUS グラフィックスカード TURBO-GTX1080TI-11G",
-   "shopName": "Trade Journey",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 87500,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/trade-journey/b06y31fywy.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2070",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 8111,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/bbselection/rc30-0220.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:bbselection_rc30-0220",
-   "itemName": "互換品＜ 新品 ＞Razer Blade Pro 17 2017 / Blade 17 2E75 Blade GTX1060 i7-7700HQ 2019 RTX 2060 RTX 2070 RTX 2080 RZ09-0220 RZ09-02202 電池番号RC30-0220",
-   "shopName": "自社国内在庫 24時間以内スピード出荷 BEST",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 8111,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/bbselection/rc30-0220.html"
     }
    ]
   },
@@ -1623,90 +1455,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 5600 XT",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 2980,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/koharu/c20260409-8829.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:koharu_c20260409-8829",
-   "itemName": "並行輸入品 オートバイ 装飾 用ネジキャップカバー ボディ エンジン ボルト KTM 890 ADVENTURE STREETFIGHTER V4 RX 5600XT カワ",
-   "shopName": "小春日和",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 2980,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/koharu/c20260409-8829.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1070 Ti",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 76700,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/trade-journey/b076q6gyky.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:trade-journey_b076q6gyky",
-   "itemName": "【平行輸入品】GEFORCE GTX1070TI GAMING 8G",
-   "shopName": "Trade Journey",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 76700,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/trade-journey/b076q6gyky.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1660 Ti",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 44000,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/oyama/25-625-1.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:oyama_25-625-1",
-   "itemName": "未使用 ZOTAC GAMING GeForce GTX 1660 Ti 6GB GDDR6",
-   "shopName": "おやま質店ヤフーショップ",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 44000,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/oyama/25-625-1.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1660 SUPER",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 44000,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/oyama/25-625.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:oyama_25-625",
-   "itemName": "未使用 ZOTAC GAMING GeForce GTX 1660 SUPER Twin Fan",
-   "shopName": "おやま質店ヤフーショップ",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 44000,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/oyama/25-625.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1660",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -1728,27 +1476,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 6500 XT 4GB",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 85000,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/inter-trade/b09q98krtg.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:inter-trade_b09q98krtg",
-   "itemName": "【並行輸入品】 XFX Speedster QICK210 Radeon RX 6500XT ブラック ゲーミンググラフィックスカード 4GB GDDR6 HDMI AMD RDNA 2 RX-65XT4DBDQ付き",
-   "shopName": "インタートレーディング",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 85000,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/inter-trade/b09q98krtg.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce RTX 3050 6GB",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -1765,48 +1492,6 @@
      "price": 49280,
      "points": 0,
      "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic584001.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1650 SUPER",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 81200,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/olg/b081r359zm.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:olg_b081r359zm",
-   "itemName": "【並行輸入品】 Gigabyte Gv-N165SWF2OC-4GD GeForce GTX 1650 Super Windforce OC 4G グラフィックカード ウィンドフォースファン2個 4GB 128-Bit GDDR6",
-   "shopName": "オーエルジー",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 81200,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/olg/b081r359zm.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1050",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 11100,
-   "points": 0,
-   "url": "https://store.shopping.yahoo.co.jp/inter-trade/b085f1hbkb.html",
-   "fetchedAt": "2026-11-13T11:27:36.213Z",
-   "itemCode": "yahoo:inter-trade_b085f1hbkb",
-   "itemName": "【並行輸入品】 Deal4GO CPU冷却ファン 交換用 GTX1050グラフィックス Lenovo Y520 Y520-15IKBN Rescuer R720 R720-15IKBN 5F10N00256 DC28000D6F1用",
-   "shopName": "インタートレーディング",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 11100,
-     "points": 0,
-     "url": "https://store.shopping.yahoo.co.jp/inter-trade/b085f1hbkb.html"
     }
    ]
   }
@@ -2831,6 +2516,81 @@
    "category": "gpu",
    "modelName": "Radeon Graphics RDNA2 2CU",
    "reason": "型番を判定できないモデル名"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 7900X",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 7900",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 7700",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 10GB",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2080 Ti",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080 Ti",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2070",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600 XT",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1070 Ti",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660 Ti",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660 SUPER",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6500 XT 4GB",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 SUPER",
+   "reason": "照合ルールの見直しで除外"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1050",
+   "reason": "照合ルールの見直しで除外"
   }
  ]
 }
