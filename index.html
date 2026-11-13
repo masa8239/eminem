@@ -473,7 +473,7 @@ a.affiliate-btn:hover { background: #154e96; }
     <div class="section-header"><div class="section-title">できること</div></div>
     <div class="cards">
       <div class="card" role="link" tabindex="0" onclick="goPage('cpu-rank')"><div class="card-title">CPU ランキング</div><div class="card-desc">マルチスレッド・シングルスレッド・コスパの3つの順位。コア数、クロック、TDP、価格を一覧できます。</div><div class="card-arrow">›</div></div>
-      <div class="card" role="link" tabindex="0" onclick="goPage('gpu-rank')"><div class="card-title">GPU ランキング</div><div class="card-desc">3DMark Time Spy のスコア順。VRAM、消費電力、アップスケーリング対応も確認できます。</div><div class="card-arrow">›</div></div>
+      <div class="card" role="link" tabindex="0" onclick="goPage('gpu-rank')"><div class="card-title">GPU ランキング</div><div class="card-desc">3DMark Time Spy のスコア順。VRAM、消費電力、レイトレ対応も確認できます。</div><div class="card-arrow">›</div></div>
       <div class="card" role="link" tabindex="0" onclick="goPage('ram-rank')"><div class="card-title">メモリ ランキング</div><div class="card-desc">DDR4・DDR5 の速度、レイテンシ、1GBあたりの価格を比較できます。</div><div class="card-arrow">›</div></div>
       <div class="card" role="link" tabindex="0" onclick="goPage('cpu-compare')"><div class="card-title">2製品の比較</div><div class="card-desc">2つのCPUまたはGPUを並べて、項目ごとに優れている方を表示します。</div><div class="card-arrow">›</div></div>
       <div class="card" role="link" tabindex="0" onclick="goPage('bottleneck')"><div class="card-title">ボトルネック診断</div><div class="card-desc">CPUとGPUの組み合わせで、どちらかが性能の足を引っ張らないかを診断します。</div><div class="card-arrow">›</div></div>
@@ -557,7 +557,7 @@ a.affiliate-btn:hover { background: #154e96; }
       </div>
     </div>
   </div>
-  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。楽天市場の価格は自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developers.rakuten.com/" target="_blank" rel="noopener" style="color:inherit">Supported by Rakuten Developers</a> · <a href="https://developer.yahoo.co.jp/sitemap/" target="_blank" rel="noopener" style="color:inherit">Web Services by Yahoo! JAPAN</a> · スコアはPassMark実測値</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。ストアの価格は毎日自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developer.yahoo.co.jp/sitemap/" target="_blank" rel="noopener" style="color:inherit">Web Services by Yahoo! JAPAN</a> · スコアはPassMarkの公開値</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- GPU RANKING -->
@@ -572,6 +572,7 @@ a.affiliate-btn:hover { background: #154e96; }
       <button class="filter-btn active" onclick="filterGpu('all',this)">全て</button>
       <button class="filter-btn" onclick="filterGpu('NVIDIA',this)">NVIDIA</button>
       <button class="filter-btn" onclick="filterGpu('AMD',this)">AMD</button>
+      <button class="filter-btn" onclick="filterGpu('Intel',this)">Intel</button>
     </div>
     <div class="search-budget-row">
       <div class="search-box">
@@ -597,14 +598,14 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（楽天市場・Yahoo!ショッピング・Amazon）が含まれます。</p>
     <div class="table-wrap">
-      <div class="notice">3DMark Time Spy スコア。数値が高いほどゲーム性能が高いです。</div>
+      <div class="notice">3DMark Time Spy スコア。数値が高いほどゲーム性能が高いです。レイトレは専用回路の有無、専用アップスケーラーはそのGPUだけで使える機能（DLSS / FSR 4 / XeSS）です。FSR 3 以前は多くのGPUで使えるため、「—」でも使えないという意味ではありません。</div>
       <table class="rank-table">
-        <thead><tr><th>順位</th><th>GPU名</th><th>スコア (Time Spy)</th><th>価格</th><th>VRAM</th><th>メモリ帯域幅</th><th>TDP</th><th>レイトレ</th><th>アップスケーリング</th><th>コスパ</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
+        <thead><tr><th>順位</th><th>GPU名</th><th>スコア (Time Spy)</th><th>価格</th><th>VRAM</th><th>メモリ帯域幅</th><th>TDP</th><th>レイトレ</th><th>専用アップスケーラー</th><th>コスパ</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
         <tbody id="gpu-table-body"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
       </table>
     </div>
   </div>
-  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。楽天市場の価格は自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developers.rakuten.com/" target="_blank" rel="noopener" style="color:inherit">Supported by Rakuten Developers</a> · <a href="https://developer.yahoo.co.jp/sitemap/" target="_blank" rel="noopener" style="color:inherit">Web Services by Yahoo! JAPAN</a> · スコアは3DMark実測値</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。ストアの価格は毎日自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developer.yahoo.co.jp/sitemap/" target="_blank" rel="noopener" style="color:inherit">Web Services by Yahoo! JAPAN</a> · スコアは3DMark Time Spyの公開値</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- RAM RANKING -->
@@ -654,7 +655,7 @@ a.affiliate-btn:hover { background: #154e96; }
       </table>
     </div>
   </div>
-  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。楽天市場の価格は自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developers.rakuten.com/" target="_blank" rel="noopener" style="color:inherit">Supported by Rakuten Developers</a> · <a href="https://developer.yahoo.co.jp/sitemap/" target="_blank" rel="noopener" style="color:inherit">Web Services by Yahoo! JAPAN</a> · 帯域幅はメーカー公式スペックより算出</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は参考価格。ストアの価格は毎日自動取得のため、購入前にリンク先で商品と価格をご確認ください · <a href="https://developer.yahoo.co.jp/sitemap/" target="_blank" rel="noopener" style="color:inherit">Web Services by Yahoo! JAPAN</a> · 帯域幅はメーカー公式スペックより算出</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- CPU COMPARE -->
@@ -698,7 +699,7 @@ a.affiliate-btn:hover { background: #154e96; }
     <div id="ram-price-history"></div>
     <p class="compare-note">実効レイテンシ = CL × 2000 ÷ 速度（MT/s）。数値が小さいほど応答が速い目安です。</p>
   </div>
-  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">スペックはメーカー公式値 · 価格は参考価格</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">スペックはメーカー公表値を基に掲載 · 価格は参考価格</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- BOTTLENECK -->
@@ -725,7 +726,7 @@ a.affiliate-btn:hover { background: #154e96; }
       <div style="text-align:center;color:var(--text3);padding:32px">CPU と GPU を選択してください</div>
     </div>
   </div>
-  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">スコアはPassMark / 3DMark実測値に基づく推定です</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">スコアは PassMark / 3DMark Time Spy の公開値です</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- PRESETS -->
@@ -810,63 +811,65 @@ const RAM_GAS_URL = 'https://script.google.com/macros/s/AKfycbyzkxOQolZotFhcI4Q-
 
 // ===== FALLBACK DATA =====
 // CPU: name, maker, score(PassMark multi), single, price(円), tdp(W), cores, threads, socket, clockMin, clockMax(GHz), cache(MB), badge, badgeClass
+// 仕様（TDP=AMDのTDP / Intelのベース電力、cache=L3、クロック）は 2026年11月に AMD 公式一覧・Wikipedia と照合して修正済み。
+// スコアと価格は未照合の参考値。シングルスレッドは出典を確認できないため 0（非表示）にしている。
 // 価格: 2025年3月 Amazon Japan / 価格.com 実勢価格
 // 除外基準: PassMark マルチスレッド 9000 未満
 const FALLBACK_CPU = [
   // ── AMD Ryzen 9000 (AM5) ──
-  { name:'Ryzen 9 9950X3D',      maker:'AMD',   score:70594, single:2120, price:99800,  tdp:170, cores:16, threads:32, socket:'AM5',     clockMin:4.3, clockMax:5.7, cache:144, badge:'最強',        badgeClass:'badge-purple' },
-  { name:'Ryzen 9 9950X',        maker:'AMD',   score:66406, single:2100, price:86800,  tdp:170, cores:16, threads:32, socket:'AM5',     clockMin:4.3, clockMax:5.7, cache:80,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 9 9900X3D',      maker:'AMD',   score:55200, single:2150, price:79800,  tdp:120, cores:12, threads:24, socket:'AM5',     clockMin:4.4, clockMax:5.6, cache:140, badge:'',             badgeClass:''             },
-  { name:'Ryzen 9 9900X',        maker:'AMD',   score:52100, single:2080, price:62800,  tdp:120, cores:12, threads:24, socket:'AM5',     clockMin:4.4, clockMax:5.6, cache:76,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 7 9800X3D',      maker:'AMD',   score:41712, single:2250, price:74800,  tdp:120, cores:8,  threads:16, socket:'AM5',     clockMin:4.7, clockMax:5.6, cache:104, badge:'ゲーム最強',   badgeClass:'badge-orange' },
-  { name:'Ryzen 7 9700X',        maker:'AMD',   score:32400, single:2060, price:44800,  tdp:65,  cores:8,  threads:16, socket:'AM5',     clockMin:3.8, clockMax:5.5, cache:40,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 5 9600X',        maker:'AMD',   score:29369, single:1980, price:32800,  tdp:65,  cores:6,  threads:12, socket:'AM5',     clockMin:3.9, clockMax:5.4, cache:38,  badge:'コスパ◎',     badgeClass:'badge-green'  },
-  { name:'Ryzen 5 9600',         maker:'AMD',   score:26500, single:1940, price:26800,  tdp:65,  cores:6,  threads:12, socket:'AM5',     clockMin:3.8, clockMax:5.3, cache:38,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Ryzen 9 9950X3D',      maker:'AMD',   score:70594, single:0, price:99800,  tdp:170, cores:16, threads:32, socket:'AM5',     clockMin:4.3, clockMax:5.7, cache:128, badge:'最強',        badgeClass:'badge-purple' },
+  { name:'Ryzen 9 9950X',        maker:'AMD',   score:66406, single:0, price:86800,  tdp:170, cores:16, threads:32, socket:'AM5',     clockMin:4.3, clockMax:5.7, cache:64,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 9 9900X3D',      maker:'AMD',   score:55200, single:0, price:79800,  tdp:120, cores:12, threads:24, socket:'AM5',     clockMin:4.4, clockMax:5.5, cache:128, badge:'',             badgeClass:''             },
+  { name:'Ryzen 9 9900X',        maker:'AMD',   score:52100, single:0, price:62800,  tdp:120, cores:12, threads:24, socket:'AM5',     clockMin:4.4, clockMax:5.6, cache:64,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 7 9800X3D',      maker:'AMD',   score:41712, single:0, price:74800,  tdp:120, cores:8,  threads:16, socket:'AM5',     clockMin:4.7, clockMax:5.2, cache:96, badge:'ゲーム最強',   badgeClass:'badge-orange' },
+  { name:'Ryzen 7 9700X',        maker:'AMD',   score:32400, single:0, price:44800,  tdp:65,  cores:8,  threads:16, socket:'AM5',     clockMin:3.8, clockMax:5.5, cache:32,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 5 9600X',        maker:'AMD',   score:29369, single:0, price:32800,  tdp:65,  cores:6,  threads:12, socket:'AM5',     clockMin:3.9, clockMax:5.4, cache:32,  badge:'コスパ◎',     badgeClass:'badge-green'  },
+  { name:'Ryzen 5 9600',         maker:'AMD',   score:26500, single:0, price:26800,  tdp:65,  cores:6,  threads:12, socket:'AM5',     clockMin:3.8, clockMax:5.2, cache:32,  badge:'コスパ',       badgeClass:'badge-green'  },
   // ── AMD Ryzen 7000 (AM5) ──
-  { name:'Ryzen 9 7950X3D',      maker:'AMD',   score:57200, single:2050, price:72800,  tdp:120, cores:16, threads:32, socket:'AM5',     clockMin:4.2, clockMax:5.7, cache:144, badge:'',             badgeClass:''             },
-  { name:'Ryzen 9 7950X',        maker:'AMD',   score:54800, single:2040, price:62800,  tdp:170, cores:16, threads:32, socket:'AM5',     clockMin:4.5, clockMax:5.7, cache:80,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 9 7900X3D',      maker:'AMD',   score:37200, single:2030, price:58800,  tdp:120, cores:12, threads:24, socket:'AM5',     clockMin:4.4, clockMax:5.6, cache:140, badge:'',             badgeClass:''             },
-  { name:'Ryzen 9 7900X',        maker:'AMD',   score:36800, single:2020, price:46800,  tdp:170, cores:12, threads:24, socket:'AM5',     clockMin:4.7, clockMax:5.6, cache:76,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 9 7900',         maker:'AMD',   score:35200, single:1990, price:38800,  tdp:65,  cores:12, threads:24, socket:'AM5',     clockMin:3.7, clockMax:5.4, cache:76,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 7 7800X3D',      maker:'AMD',   score:35000, single:1990, price:49800,  tdp:120, cores:8,  threads:16, socket:'AM5',     clockMin:4.5, clockMax:5.0, cache:104, badge:'コスパ◎',     badgeClass:'badge-green'  },
-  { name:'Ryzen 7 7700X',        maker:'AMD',   score:27800, single:2010, price:28800,  tdp:105, cores:8,  threads:16, socket:'AM5',     clockMin:4.5, clockMax:5.4, cache:40,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 7 7700',         maker:'AMD',   score:26500, single:1970, price:24800,  tdp:65,  cores:8,  threads:16, socket:'AM5',     clockMin:3.8, clockMax:5.3, cache:40,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 5 7600X',        maker:'AMD',   score:19500, single:1960, price:22800,  tdp:105, cores:6,  threads:12, socket:'AM5',     clockMin:4.7, clockMax:5.3, cache:38,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Ryzen 5 7600',         maker:'AMD',   score:18200, single:1930, price:18800,  tdp:65,  cores:6,  threads:12, socket:'AM5',     clockMin:3.8, clockMax:5.1, cache:38,  badge:'コスパ最強',   badgeClass:'badge-green'  },
-  { name:'Ryzen 5 7500F',        maker:'AMD',   score:17800, single:1900, price:16800,  tdp:65,  cores:6,  threads:12, socket:'AM5',     clockMin:3.7, clockMax:5.0, cache:38,  badge:'コスパ最強',   badgeClass:'badge-green'  },
+  { name:'Ryzen 9 7950X3D',      maker:'AMD',   score:57200, single:0, price:72800,  tdp:120, cores:16, threads:32, socket:'AM5',     clockMin:4.2, clockMax:5.7, cache:128, badge:'',             badgeClass:''             },
+  { name:'Ryzen 9 7950X',        maker:'AMD',   score:54800, single:0, price:62800,  tdp:170, cores:16, threads:32, socket:'AM5',     clockMin:4.5, clockMax:5.7, cache:64,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 9 7900X3D',      maker:'AMD',   score:37200, single:0, price:58800,  tdp:120, cores:12, threads:24, socket:'AM5',     clockMin:4.4, clockMax:5.6, cache:128, badge:'',             badgeClass:''             },
+  { name:'Ryzen 9 7900X',        maker:'AMD',   score:36800, single:0, price:46800,  tdp:170, cores:12, threads:24, socket:'AM5',     clockMin:4.7, clockMax:5.6, cache:64,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 9 7900',         maker:'AMD',   score:35200, single:0, price:38800,  tdp:65,  cores:12, threads:24, socket:'AM5',     clockMin:3.7, clockMax:5.4, cache:64,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 7 7800X3D',      maker:'AMD',   score:35000, single:0, price:49800,  tdp:120, cores:8,  threads:16, socket:'AM5',     clockMin:4.2, clockMax:5.0, cache:96, badge:'コスパ◎',     badgeClass:'badge-green'  },
+  { name:'Ryzen 7 7700X',        maker:'AMD',   score:27800, single:0, price:28800,  tdp:105, cores:8,  threads:16, socket:'AM5',     clockMin:4.5, clockMax:5.4, cache:32,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 7 7700',         maker:'AMD',   score:26500, single:0, price:24800,  tdp:65,  cores:8,  threads:16, socket:'AM5',     clockMin:3.8, clockMax:5.3, cache:32,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 5 7600X',        maker:'AMD',   score:19500, single:0, price:22800,  tdp:105, cores:6,  threads:12, socket:'AM5',     clockMin:4.7, clockMax:5.3, cache:32,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Ryzen 5 7600',         maker:'AMD',   score:18200, single:0, price:18800,  tdp:65,  cores:6,  threads:12, socket:'AM5',     clockMin:3.8, clockMax:5.1, cache:32,  badge:'コスパ最強',   badgeClass:'badge-green'  },
+  { name:'Ryzen 5 7500F',        maker:'AMD',   score:17800, single:0, price:16800,  tdp:65,  cores:6,  threads:12, socket:'AM5',     clockMin:3.7, clockMax:5.0, cache:32,  badge:'コスパ最強',   badgeClass:'badge-green'  },
   // ── AMD Ryzen 5000 (AM4) ──
-  { name:'Ryzen 9 5950X',        maker:'AMD',   score:46200, single:1700, price:38800,  tdp:105, cores:16, threads:32, socket:'AM4',     clockMin:3.4, clockMax:4.9, cache:72,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 9 5900X',        maker:'AMD',   score:36500, single:1690, price:26800,  tdp:105, cores:12, threads:24, socket:'AM4',     clockMin:3.7, clockMax:4.8, cache:70,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 7 5800X3D',      maker:'AMD',   score:22000, single:1660, price:26800,  tdp:105, cores:8,  threads:16, socket:'AM4',     clockMin:3.4, clockMax:4.5, cache:100, badge:'旧ゲーム最強',  badgeClass:'badge-orange' },
-  { name:'Ryzen 7 5800X',        maker:'AMD',   score:21000, single:1670, price:15800,  tdp:105, cores:8,  threads:16, socket:'AM4',     clockMin:3.8, clockMax:4.7, cache:36,  badge:'',             badgeClass:''             },
-  { name:'Ryzen 7 5700X',        maker:'AMD',   score:19200, single:1620, price:12800,  tdp:65,  cores:8,  threads:16, socket:'AM4',     clockMin:3.4, clockMax:4.6, cache:36,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Ryzen 5 5600X',        maker:'AMD',   score:14100, single:1650, price:10800,  tdp:65,  cores:6,  threads:12, socket:'AM4',     clockMin:3.7, clockMax:4.6, cache:35,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Ryzen 5 5600',         maker:'AMD',   score:13800, single:1620, price:9800,   tdp:65,  cores:6,  threads:12, socket:'AM4',     clockMin:3.5, clockMax:4.4, cache:35,  badge:'コスパ最強',   badgeClass:'badge-green'  },
+  { name:'Ryzen 9 5950X',        maker:'AMD',   score:46200, single:0, price:38800,  tdp:105, cores:16, threads:32, socket:'AM4',     clockMin:3.4, clockMax:4.9, cache:64,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 9 5900X',        maker:'AMD',   score:36500, single:0, price:26800,  tdp:105, cores:12, threads:24, socket:'AM4',     clockMin:3.7, clockMax:4.8, cache:64,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 7 5800X3D',      maker:'AMD',   score:22000, single:0, price:26800,  tdp:105, cores:8,  threads:16, socket:'AM4',     clockMin:3.4, clockMax:4.5, cache:96, badge:'旧ゲーム最強',  badgeClass:'badge-orange' },
+  { name:'Ryzen 7 5800X',        maker:'AMD',   score:21000, single:0, price:15800,  tdp:105, cores:8,  threads:16, socket:'AM4',     clockMin:3.8, clockMax:4.7, cache:32,  badge:'',             badgeClass:''             },
+  { name:'Ryzen 7 5700X',        maker:'AMD',   score:19200, single:0, price:12800,  tdp:65,  cores:8,  threads:16, socket:'AM4',     clockMin:3.4, clockMax:4.6, cache:32,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Ryzen 5 5600X',        maker:'AMD',   score:14100, single:0, price:10800,  tdp:65,  cores:6,  threads:12, socket:'AM4',     clockMin:3.7, clockMax:4.6, cache:32,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Ryzen 5 5600',         maker:'AMD',   score:13800, single:0, price:9800,   tdp:65,  cores:6,  threads:12, socket:'AM4',     clockMin:3.5, clockMax:4.4, cache:32,  badge:'コスパ最強',   badgeClass:'badge-green'  },
   // ── Intel Arrow Lake (LGA1851) ──
-  { name:'Core Ultra 9 285K',    maker:'Intel', score:67893, single:2180, price:86800,  tdp:125, cores:24, threads:24, socket:'LGA1851', clockMin:3.7, clockMax:5.7, cache:36,  badge:'ハイエンド',   badgeClass:'badge-blue'   },
-  { name:'Core Ultra 7 265K',    maker:'Intel', score:60100, single:2070, price:48800,  tdp:125, cores:20, threads:20, socket:'LGA1851', clockMin:3.9, clockMax:5.5, cache:30,  badge:'',             badgeClass:''             },
-  { name:'Core Ultra 7 265KF',   maker:'Intel', score:58802, single:2050, price:44800,  tdp:125, cores:20, threads:20, socket:'LGA1851', clockMin:3.9, clockMax:5.5, cache:30,  badge:'コスパ最強',   badgeClass:'badge-green'  },
-  { name:'Core Ultra 5 245K',    maker:'Intel', score:38500, single:2090, price:34800,  tdp:125, cores:14, threads:14, socket:'LGA1851', clockMin:4.2, clockMax:5.2, cache:24,  badge:'',             badgeClass:''             },
-  { name:'Core Ultra 5 245KF',   maker:'Intel', score:37800, single:2080, price:32800,  tdp:125, cores:14, threads:14, socket:'LGA1851', clockMin:4.2, clockMax:5.2, cache:24,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Core Ultra 9 285K',    maker:'Intel', score:67893, single:0, price:86800,  tdp:125, cores:24, threads:24, socket:'LGA1851', clockMin:3.7, clockMax:5.7, cache:36,  badge:'ハイエンド',   badgeClass:'badge-blue'   },
+  { name:'Core Ultra 7 265K',    maker:'Intel', score:60100, single:0, price:48800,  tdp:125, cores:20, threads:20, socket:'LGA1851', clockMin:3.9, clockMax:5.5, cache:30,  badge:'',             badgeClass:''             },
+  { name:'Core Ultra 7 265KF',   maker:'Intel', score:58802, single:0, price:44800,  tdp:125, cores:20, threads:20, socket:'LGA1851', clockMin:3.9, clockMax:5.5, cache:30,  badge:'コスパ最強',   badgeClass:'badge-green'  },
+  { name:'Core Ultra 5 245K',    maker:'Intel', score:38500, single:0, price:34800,  tdp:125, cores:14, threads:14, socket:'LGA1851', clockMin:4.2, clockMax:5.2, cache:24,  badge:'',             badgeClass:''             },
+  { name:'Core Ultra 5 245KF',   maker:'Intel', score:37800, single:0, price:32800,  tdp:125, cores:14, threads:14, socket:'LGA1851', clockMin:4.2, clockMax:5.2, cache:24,  badge:'コスパ',       badgeClass:'badge-green'  },
   // ── Intel Raptor Lake Refresh (LGA1700) ──
-  { name:'Core i9-14900KS',      maker:'Intel', score:64100, single:2310, price:68800,  tdp:253, cores:24, threads:32, socket:'LGA1700', clockMin:3.2, clockMax:6.2, cache:36,  badge:'最高単核',     badgeClass:'badge-orange' },
-  { name:'Core i9-14900K',       maker:'Intel', score:62300, single:2200, price:58800,  tdp:253, cores:24, threads:32, socket:'LGA1700', clockMin:3.2, clockMax:6.0, cache:36,  badge:'',             badgeClass:''             },
-  { name:'Core i9-14900KF',      maker:'Intel', score:62100, single:2190, price:54800,  tdp:253, cores:24, threads:32, socket:'LGA1700', clockMin:3.2, clockMax:6.0, cache:36,  badge:'',             badgeClass:''             },
-  { name:'Core i9-14900F',       maker:'Intel', score:60800, single:2150, price:42800,  tdp:65,  cores:24, threads:32, socket:'LGA1700', clockMin:2.0, clockMax:5.8, cache:36,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Core i7-14700K',       maker:'Intel', score:34000, single:1980, price:46800,  tdp:253, cores:20, threads:28, socket:'LGA1700', clockMin:3.4, clockMax:5.6, cache:33,  badge:'',             badgeClass:''             },
-  { name:'Core i7-14700KF',      maker:'Intel', score:33800, single:1975, price:43800,  tdp:253, cores:20, threads:28, socket:'LGA1700', clockMin:3.4, clockMax:5.6, cache:33,  badge:'',             badgeClass:''             },
-  { name:'Core i7-14700F',       maker:'Intel', score:33200, single:1950, price:33800,  tdp:65,  cores:20, threads:28, socket:'LGA1700', clockMin:2.1, clockMax:5.3, cache:33,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Core i5-14600K',       maker:'Intel', score:24000, single:1950, price:27800,  tdp:181, cores:14, threads:20, socket:'LGA1700', clockMin:3.5, clockMax:5.3, cache:24,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Core i5-14600KF',      maker:'Intel', score:23800, single:1940, price:24800,  tdp:181, cores:14, threads:20, socket:'LGA1700', clockMin:3.5, clockMax:5.3, cache:24,  badge:'コスパ◎',     badgeClass:'badge-green'  },
-  { name:'Core i5-14500',        maker:'Intel', score:21500, single:1900, price:22800,  tdp:65,  cores:14, threads:20, socket:'LGA1700', clockMin:2.6, clockMax:5.0, cache:24,  badge:'',             badgeClass:''             },
-  { name:'Core i5-14400F',       maker:'Intel', score:16800, single:1850, price:14800,  tdp:65,  cores:10, threads:16, socket:'LGA1700', clockMin:2.5, clockMax:4.7, cache:20,  badge:'コスパ最強',   badgeClass:'badge-green'  },
-  { name:'Core i5-14400',        maker:'Intel', score:16500, single:1840, price:16800,  tdp:65,  cores:10, threads:16, socket:'LGA1700', clockMin:2.5, clockMax:4.7, cache:20,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Core i9-14900KS',      maker:'Intel', score:64100, single:0, price:68800,  tdp:150, cores:24, threads:32, socket:'LGA1700', clockMin:3.2, clockMax:6.2, cache:36,  badge:'最高単核',     badgeClass:'badge-orange' },
+  { name:'Core i9-14900K',       maker:'Intel', score:62300, single:0, price:58800,  tdp:125, cores:24, threads:32, socket:'LGA1700', clockMin:3.2, clockMax:6.0, cache:36,  badge:'',             badgeClass:''             },
+  { name:'Core i9-14900KF',      maker:'Intel', score:62100, single:0, price:54800,  tdp:125, cores:24, threads:32, socket:'LGA1700', clockMin:3.2, clockMax:6.0, cache:36,  badge:'',             badgeClass:''             },
+  { name:'Core i9-14900F',       maker:'Intel', score:60800, single:0, price:42800,  tdp:65,  cores:24, threads:32, socket:'LGA1700', clockMin:2.0, clockMax:5.8, cache:36,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Core i7-14700K',       maker:'Intel', score:34000, single:0, price:46800,  tdp:125, cores:20, threads:28, socket:'LGA1700', clockMin:3.4, clockMax:5.6, cache:33,  badge:'',             badgeClass:''             },
+  { name:'Core i7-14700KF',      maker:'Intel', score:33800, single:0, price:43800,  tdp:125, cores:20, threads:28, socket:'LGA1700', clockMin:3.4, clockMax:5.6, cache:33,  badge:'',             badgeClass:''             },
+  { name:'Core i7-14700F',       maker:'Intel', score:33200, single:0, price:33800,  tdp:65,  cores:20, threads:28, socket:'LGA1700', clockMin:2.1, clockMax:5.4, cache:33,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Core i5-14600K',       maker:'Intel', score:24000, single:0, price:27800,  tdp:125, cores:14, threads:20, socket:'LGA1700', clockMin:3.5, clockMax:5.3, cache:24,  badge:'コスパ',       badgeClass:'badge-green'  },
+  { name:'Core i5-14600KF',      maker:'Intel', score:23800, single:0, price:24800,  tdp:125, cores:14, threads:20, socket:'LGA1700', clockMin:3.5, clockMax:5.3, cache:24,  badge:'コスパ◎',     badgeClass:'badge-green'  },
+  { name:'Core i5-14500',        maker:'Intel', score:21500, single:0, price:22800,  tdp:65,  cores:14, threads:20, socket:'LGA1700', clockMin:2.6, clockMax:5.0, cache:24,  badge:'',             badgeClass:''             },
+  { name:'Core i5-14400F',       maker:'Intel', score:16800, single:0, price:14800,  tdp:65,  cores:10, threads:16, socket:'LGA1700', clockMin:2.5, clockMax:4.7, cache:20,  badge:'コスパ最強',   badgeClass:'badge-green'  },
+  { name:'Core i5-14400',        maker:'Intel', score:16500, single:0, price:16800,  tdp:65,  cores:10, threads:16, socket:'LGA1700', clockMin:2.5, clockMax:4.7, cache:20,  badge:'コスパ',       badgeClass:'badge-green'  },
   // ── Intel Raptor Lake (LGA1700) ──
-  { name:'Core i9-13900KS',      maker:'Intel', score:62800, single:2280, price:52800,  tdp:253, cores:24, threads:32, socket:'LGA1700', clockMin:3.2, clockMax:6.0, cache:36,  badge:'',             badgeClass:''             },
-  { name:'Core i9-13900K',       maker:'Intel', score:61000, single:2160, price:48800,  tdp:253, cores:24, threads:32, socket:'LGA1700', clockMin:3.0, clockMax:5.8, cache:36,  badge:'',             badgeClass:''             },
-  { name:'Core i7-13700K',       maker:'Intel', score:32000, single:1940, price:34800,  tdp:253, cores:16, threads:24, socket:'LGA1700', clockMin:3.4, clockMax:5.4, cache:30,  badge:'',             badgeClass:''             },
-  { name:'Core i5-13600K',       maker:'Intel', score:22000, single:1920, price:22800,  tdp:181, cores:14, threads:20, socket:'LGA1700', clockMin:3.5, clockMax:5.1, cache:24,  badge:'',             badgeClass:''             },
-  { name:'Core i5-13400F',       maker:'Intel', score:15200, single:1820, price:12800,  tdp:65,  cores:10, threads:16, socket:'LGA1700', clockMin:2.5, clockMax:4.6, cache:20,  badge:'コスパ最強',   badgeClass:'badge-green'  },
+  { name:'Core i9-13900KS',      maker:'Intel', score:62800, single:0, price:52800,  tdp:150, cores:24, threads:32, socket:'LGA1700', clockMin:3.2, clockMax:6.0, cache:36,  badge:'',             badgeClass:''             },
+  { name:'Core i9-13900K',       maker:'Intel', score:61000, single:0, price:48800,  tdp:125, cores:24, threads:32, socket:'LGA1700', clockMin:3.0, clockMax:5.8, cache:36,  badge:'',             badgeClass:''             },
+  { name:'Core i7-13700K',       maker:'Intel', score:32000, single:0, price:34800,  tdp:125, cores:16, threads:24, socket:'LGA1700', clockMin:3.4, clockMax:5.4, cache:30,  badge:'',             badgeClass:''             },
+  { name:'Core i5-13600K',       maker:'Intel', score:22000, single:0, price:22800,  tdp:125, cores:14, threads:20, socket:'LGA1700', clockMin:3.5, clockMax:5.1, cache:24,  badge:'',             badgeClass:''             },
+  { name:'Core i5-13400F',       maker:'Intel', score:15200, single:0, price:12800,  tdp:65,  cores:10, threads:16, socket:'LGA1700', clockMin:2.5, clockMax:4.6, cache:20,  badge:'コスパ最強',   badgeClass:'badge-green'  },
 ];
 
 // GPU: name, maker, score(3DMark TS), price(円), vram, tdp(W), bw(GB/s文字列), rt, dlss, badge, badgeClass
@@ -880,7 +883,7 @@ const FALLBACK_GPU = [
   { name:'GeForce RTX 5070 Ti',       maker:'NVIDIA', score:30800, price:185000,  vram:'16GB', tdp:300, bw:'896 GB/s',  rt:'◎', dlss:'DLSS 4', badge:'',            badgeClass:''             },
   { name:'GeForce RTX 5070',          maker:'NVIDIA', score:25500, price:148000,  vram:'12GB', tdp:250, bw:'672 GB/s',  rt:'◎', dlss:'DLSS 4', badge:'',            badgeClass:''             },
   { name:'GeForce RTX 5060 Ti 16GB',  maker:'NVIDIA', score:21500, price:95000,   vram:'16GB', tdp:180, bw:'448 GB/s',  rt:'◎', dlss:'DLSS 4', badge:'コスパ',      badgeClass:'badge-green'  },
-  { name:'GeForce RTX 5060',          maker:'NVIDIA', score:15800, price:58000,   vram:'8GB',  tdp:150, bw:'448 GB/s',  rt:'◎', dlss:'DLSS 4', badge:'コスパ',      badgeClass:'badge-green'  },
+  { name:'GeForce RTX 5060',          maker:'NVIDIA', score:15800, price:58000,   vram:'8GB',  tdp:145, bw:'448 GB/s',  rt:'◎', dlss:'DLSS 4', badge:'コスパ',      badgeClass:'badge-green'  },
   // ── NVIDIA RTX 40 ── （RTX 4090は生産終了・中古のみ）
   { name:'GeForce RTX 4090',          maker:'NVIDIA', score:36340, price:400000,  vram:'24GB', tdp:450, bw:'1008 GB/s', rt:'◎', dlss:'DLSS 3', badge:'生産終了',    badgeClass:'badge-blue'   },
   { name:'GeForce RTX 4080 SUPER',    maker:'NVIDIA', score:28531, price:165000,  vram:'16GB', tdp:320, bw:'736 GB/s',  rt:'◎', dlss:'DLSS 3', badge:'',            badgeClass:''             },
@@ -904,7 +907,7 @@ const FALLBACK_GPU = [
   { name:'GeForce RTX 3060',          maker:'NVIDIA', score:8900,  price:32000,   vram:'12GB', tdp:170, bw:'360 GB/s',  rt:'◎', dlss:'DLSS 2', badge:'',            badgeClass:''             },
   // ── AMD Radeon RX 9000 ──
   { name:'Radeon RX 9070 XT',         maker:'AMD',    score:30070, price:110000,  vram:'16GB', tdp:304, bw:'640 GB/s',  rt:'○', dlss:'FSR 4',  badge:'コスパ◎',    badgeClass:'badge-green'  },
-  { name:'Radeon RX 9070',            maker:'AMD',    score:23500, price:98000,   vram:'16GB', tdp:220, bw:'576 GB/s',  rt:'○', dlss:'FSR 4',  badge:'コスパ',      badgeClass:'badge-green'  },
+  { name:'Radeon RX 9070',            maker:'AMD',    score:23500, price:98000,   vram:'16GB', tdp:220, bw:'640 GB/s',  rt:'○', dlss:'FSR 4',  badge:'コスパ',      badgeClass:'badge-green'  },
   // ── AMD Radeon RX 7000 ──
   { name:'Radeon RX 7900 XTX',        maker:'AMD',    score:32000, price:88000,   vram:'24GB', tdp:355, bw:'960 GB/s',  rt:'○', dlss:'FSR 3',  badge:'',            badgeClass:''             },
   { name:'Radeon RX 7900 XT',         maker:'AMD',    score:24800, price:72000,   vram:'20GB', tdp:315, bw:'800 GB/s',  rt:'○', dlss:'FSR 3',  badge:'',            badgeClass:''             },
@@ -920,7 +923,7 @@ const FALLBACK_GPU = [
   { name:'Radeon RX 6800',            maker:'AMD',    score:14800, price:40000,   vram:'16GB', tdp:250, bw:'512 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''             },
   { name:'Radeon RX 6750 XT',         maker:'AMD',    score:12800, price:32000,   vram:'12GB', tdp:250, bw:'432 GB/s',  rt:'○', dlss:'FSR 2',  badge:'',            badgeClass:''             },
   { name:'Radeon RX 6700 XT',         maker:'AMD',    score:12000, price:28000,   vram:'12GB', tdp:230, bw:'384 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ',      badgeClass:'badge-green'  },
-  { name:'Radeon RX 6700',            maker:'AMD',    score:10800, price:24000,   vram:'10GB', tdp:220, bw:'320 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ',      badgeClass:'badge-green'  },
+  { name:'Radeon RX 6700',            maker:'AMD',    score:10800, price:24000,   vram:'10GB', tdp:175, bw:'320 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ',      badgeClass:'badge-green'  },
   { name:'Radeon RX 6650 XT',         maker:'AMD',    score:9200,  price:22000,   vram:'8GB',  tdp:180, bw:'280 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ最強',  badgeClass:'badge-green'  },
   { name:'Radeon RX 6600 XT',         maker:'AMD',    score:8800,  price:18000,   vram:'8GB',  tdp:160, bw:'256 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ最強',  badgeClass:'badge-green'  },
 ];
@@ -953,6 +956,9 @@ const FALLBACK_RAM = [
 ];
 
 // ===== STATE（フォールバックで即時初期化） =====
+// 内蔵データのソケット・レイトレ・アップスケーリングも、シートと同じ確認済みの規則で表示する
+FALLBACK_CPU.forEach(c => { c.socket = cpuSocket(c.name); });
+FALLBACK_GPU.forEach(g => { const f = gpuFeatures(g.name); g.rt = f.rt; g.dlss = f.upscaler; g.maker = gpuMaker(g.name); });
 let cpuData = normalizeBadges([...FALLBACK_CPU].sort((a,b) => b.score - a.score), 'cpu');
 let gpuData = normalizeBadges([...FALLBACK_GPU].sort((a,b) => b.score - a.score), 'gpu');
 let ramData = [...FALLBACK_RAM].sort((a,b) => b.speed - a.speed);
@@ -1026,8 +1032,9 @@ function renderPrice(item) {
     return `${price}<div class="price-meta">取得元: ${escapeHtml(r.source)}（${escapeHtml(fetched)}）${pts}${others}</div>`;
   }
   if (item.rakuten?.status === 'error') {
-    return `${price}<div class="price-meta price-error">楽天価格の更新失敗<br>表示額は参考価格（最新扱いではありません）</div>`;
+    return `${price}<div class="price-meta price-error">ストア価格の更新失敗<br>表示額は参考価格（最新扱いではありません）</div>`;
   }
+  if (item.priceBuiltin) return `${price}<div class="price-meta">参考価格（ストアから未取得）</div>`;
   return price;
 }
 function purchaseButton(item) {
@@ -1078,7 +1085,8 @@ function syncSortBtns(p, keys, key, dir) { keys.forEach(k=>{ const b=document.ge
 function toNum(v) { return typeof v==='number'?v:parseInt(String(v||'').replace(/[^0-9.]/g,''))||0; }
 
 // ===== RENDER CPU TABLE =====
-function renderCpuTable() {
+function renderCpuTable(){ syncSingleThreadTab(); return renderCpuTableBody.apply(this, arguments); }
+function renderCpuTableBody() {
   const searchVal = (document.getElementById('cpu-search')?.value||'').toLowerCase();
   const budgetMax = parseInt(document.getElementById('cpu-budget')?.value||130000);
   const base0 = cpuFilter==='all' ? cpuData : cpuData.filter(c=>c.maker===cpuFilter);
@@ -1336,7 +1344,7 @@ function updateCompare() {
   const rows = [
     ['価格',             fmtPrice(a.price),                          fmtPrice(b.price),                          'low'],
     ['PassMark Multi',   a.score.toLocaleString(),                   b.score.toLocaleString(),                   'high'],
-    ['PassMark Single',  a.single?a.single.toLocaleString():'—',     b.single?b.single.toLocaleString():'—',     'high'],
+    ...((a.single||b.single) ? [['PassMark Single',  a.single?a.single.toLocaleString():'—',     b.single?b.single.toLocaleString():'—',     'high']] : []),
     ['コア / スレッド',  `${a.cores||'—'}C / ${a.threads||'—'}T`,   `${b.cores||'—'}C / ${b.threads||'—'}T`,   null],
     ['Maxクロック',      a.clockMax?a.clockMax+'GHz':'—',            b.clockMax?b.clockMax+'GHz':'—',            'high'],
     ['Baseクロック',     a.clockMin?a.clockMin+'GHz':'—',            b.clockMin?b.clockMin+'GHz':'—',            null],
@@ -1361,7 +1369,7 @@ function updateGpuCompare() {
     ['メモリ帯域幅',        a.bw||'—',                 b.bw||'—',                 null],
     ['消費電力 (TDP)',     a.tdp?a.tdp+'W':'—',       b.tdp?b.tdp+'W':'—',       'low'],
     ['レイトレーシング',   a.rt||'—',                  b.rt||'—',                  null],
-    ['アップスケーリング', a.dlss||'—',                b.dlss||'—',                null],
+    ['専用アップスケーラー', a.dlss||'—',              b.dlss||'—',                null],
     ['メーカー',           a.maker,                   b.maker,                   null],
   ];
   document.getElementById('gpu-compare-table').innerHTML = compareTableHTML(a.name, b.name, rows);
@@ -1517,6 +1525,38 @@ function dedupeByName(items) {
   const seen = new Set();
   return items.filter(item => !seen.has(item.name) && seen.add(item.name));
 }
+// ===== 型番から分かる情報（推測ではなく、世代ごとに出典で確かめた規則だけ） =====
+// ソケット: Wikipedia の各世代の仕様表と AMD 公式の仕様一覧の、デスクトップ向け全モデルで食い違いがないことを確認済み。
+// 規則に当てはまらない型番（ノート向けなど）は空欄にして、構成ビルダーの互換チェックにも使わない。
+function cpuSocket(name) {
+  const s = String(name).toUpperCase().replace(/\s+/g, ' ').trim();
+  let m = s.match(/RYZEN [3579] (?:PRO )?(\d)\d{3}(X3D|XT|X|GE|GT|G|F|E|T|LE|)(?: AF)?$/);
+  if (m) return '12345'.includes(m[1]) ? 'AM4' : '789'.includes(m[1]) ? 'AM5' : '';
+  if (/CORE ULTRA [579] 2\d\d(K|KF|F|T)?( PLUS)?$/.test(s)) return 'LGA1851';
+  m = s.match(/CORE I[3579][ -](\d{1,2})\d{3}(KS|KF|K|F|TE|T|E|S|)$/);
+  if (m) return ({7:'LGA1151',8:'LGA1151',9:'LGA1151',10:'LGA1200',11:'LGA1200',12:'LGA1700',13:'LGA1700',14:'LGA1700'})[+m[1]] || '';
+  return '';
+}
+function gpuMaker(name) {
+  const s = String(name);
+  if (/RTX|GTX|GT \d|NVIDIA|TITAN/i.test(s)) return 'NVIDIA';
+  if (/\bArc\b|Intel/i.test(s)) return 'Intel';
+  if (/Radeon|\bRX\b|AMD/i.test(s)) return 'AMD';
+  return 'Other';
+}
+// レイトレーシング: 専用ハードウェアの有無（NVIDIA RTX = RTコア、AMD RX 6000 以降 = Ray Accelerator（AMD 公式一覧の全デスクトップ製品で確認済み）、Intel Arc = RTユニット）。
+// アップスケーリング: メーカー専用の機能だけを表示。FSR 4（"Redstone"）が RX 9000 だけなのは AMD 公式一覧で確認済み。
+// DLSS（RTX 全世代）と Arc の RT ユニット・XeSS は各社の公表内容に基づく（このリポジトリでは自動照合していない）。
+// FSR 3 以前は他社のGPUでも使えるため、ここには載せない。
+function gpuFeatures(name) {
+  const s = String(name);
+  if (/RTX/i.test(s)) return { rt: '対応', upscaler: 'DLSS' };
+  if (/\bArc\b/i.test(s)) return { rt: '対応', upscaler: 'XeSS' };
+  const m = s.match(/RX (\d{4})\b/);
+  if (m && m[1][0] === '9') return { rt: '対応', upscaler: 'FSR 4' };
+  if (m && '67'.includes(m[1][0])) return { rt: '対応', upscaler: '—' };
+  return { rt: '非対応', upscaler: '—' };
+}
 // ===== LOAD FROM GOOGLE APPS SCRIPT =====
 function parseCpuRow(row) {
   const keys = Object.keys(row);
@@ -1525,7 +1565,7 @@ function parseCpuRow(row) {
   const score   = toNum(row['PassMarkスコア']||row['スコア']||row[keys[1]]);
   const single  = toNum(row['シングル']||row['SingleScore']||0);
   const cores   = toNum(row['コア数']);
-  const threads = toNum(row['スレッド数']||row['スレッド']||(/ultra/i.test(String(name))?cores:cores*2));
+  const threads = toNum(row['スレッド数']||row['スレッド']||0);
   const tdp     = toNum(row['TDP']);
   const price   = sheetPrice(row);
   const cache   = toNum(row['L3キャッシュ']||row['キャッシュ']||0);
@@ -1534,7 +1574,7 @@ function parseCpuRow(row) {
   if(!clockMin&&!clockMax&&clockStr){const m=clockStr.match(/([\d.]+)[^\d.]+([\d.]+)/);if(m){clockMin=parseFloat(m[1]);clockMax=parseFloat(m[2]);}else{const m2=clockStr.match(/([\d.]+)/);if(m2)clockMax=parseFloat(m2[1]);}}
   const cospa = costPerformance({score,price});
   const maker = name.toLowerCase().includes('ryzen')||name.toLowerCase().includes('amd')?'AMD':name.toLowerCase().includes('core')||name.toLowerCase().includes('intel')?'Intel':'Other';
-  const socket = row['ソケット']||row['socket']||(maker==='AMD'?(/\b5\d{3}/.test(name)?'AM4':'AM5'):maker==='Intel'?(/ultra/i.test(name)?'LGA1851':'LGA1700'):'');
+  const socket = row['ソケット']||row['socket']||cpuSocket(name);
   let badge='',badgeClass='';
   if(cospa>=0.5){badge='コスパ最強';badgeClass='badge-green';}else if(score>=60000){badge='ハイエンド';badgeClass='badge-blue';}else if(score>=40000){badge='ハイ';badgeClass='badge-purple';}
   return {name,sheetName:String(sheetName),maker,score,single,price,tdp,cores,threads,socket,clockMin,clockMax,cache,cospa,badge,badgeClass};
@@ -1549,9 +1589,10 @@ function parseGpuRow(row) {
   const vram  = String(row['VRAM']||'');
   const bw    = String(row['帯域幅']||row['メモリ帯域幅']||'');
   const cospa = costPerformance({score,price});
-  const maker = name.includes('RTX')||name.includes('GTX')||name.includes('NVIDIA')?'NVIDIA':name.includes('RX')||name.includes('Radeon')||name.includes('AMD')?'AMD':'Other';
-  const dlss  = row['アップスケーリング']||(maker==='NVIDIA'?(/RTX 50/.test(name)?'DLSS 4':/RTX 40/.test(name)?'DLSS 3':'DLSS 2'):maker==='AMD'?(/RX 9\d{3}/.test(name)?'FSR 4':/RX 7\d{3}/.test(name)?'FSR 3':'FSR 2'):'-');
-  const rt    = row['レイトレ']||(maker==='NVIDIA'?'◎':maker==='AMD'?'○':'△');
+  const maker = gpuMaker(name);
+  const feat  = gpuFeatures(name);
+  const dlss  = row['アップスケーリング']||feat.upscaler;
+  const rt    = row['レイトレ']||feat.rt;
   let badge='',badgeClass='';
   if(cospa>=0.3){badge='コスパ最強';badgeClass='badge-green';}else if(score>=40000){badge='最強';badgeClass='badge-purple';}else if(score>=25000){badge='ハイエンド';badgeClass='badge-blue';}
   return {name,sheetName:String(sheetName),maker,score,price,vram,bw,tdp,rt,dlss,cospa,badge,badgeClass};
@@ -1580,7 +1621,7 @@ function isStandalone(category, name) { return !(NOT_STANDALONE[category]||[]).s
 // シートの価格が空・不正な製品は、同じ型番の内蔵参考価格で補う（別の型番からの推測はしない）
 function fillBuiltinPrices(parsed, builtin) {
   const byName = new Map(builtin.map(item => [item.name, item.price]));
-  parsed.forEach(item => { if (!validPrice(item.price) && validPrice(byName.get(item.name))) item.price = byName.get(item.name); });
+  parsed.forEach(item => { if (!validPrice(item.price) && validPrice(byName.get(item.name))) { item.price = byName.get(item.name); item.priceBuiltin = true; } });
   return parsed;
 }
 // スプレッドシート取得（10分間 sessionStorage キャッシュ · 8秒タイムアウト）
@@ -2121,6 +2162,17 @@ document.addEventListener('click', e => {
   const name = (nameEl.childNodes[0]?.textContent || nameEl.textContent || '').trim();
   if (name) amz(name);
 });
+// シングルスレッドのスコアがシートに無いときは、空の表を見せずにタブごと隠す
+function syncSingleThreadTab() {
+  if (typeof document === 'undefined' || typeof document.querySelector !== 'function') return;
+  const has = cpuData.some(c => c.single > 0);
+  const tab = document.querySelector(".tab[onclick*=\"'cpu-single'\"]");
+  if (tab) tab.hidden = !has;
+  if (!has && document.getElementById('cpu-single')?.classList.contains('active')) {
+    const multi = document.querySelector(".tab[onclick*=\"'cpu-multi'\"]");
+    if (multi) switchTab(multi, 'cpu-multi');
+  }
+}
 function switchTab(el,targetId) {
   el.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
@@ -2132,7 +2184,7 @@ function switchTab(el,targetId) {
 const BPARTS = {
   cpu:{ label:'CPU', icon:'CPU', color:'#1d5fa8', items:[
     {id:'bc1',name:'Ryzen 9 9950X3D',  spec:'16C · 5.7GHz · AM5',     price:99800, score:70594,socket:'AM5',    tdp:170},
-    {id:'bc2',name:'Ryzen 7 9800X3D',  spec:'8C · 5.6GHz · AM5',      price:74800, score:41712,socket:'AM5',    tdp:120},
+    {id:'bc2',name:'Ryzen 7 9800X3D',  spec:'8C · 5.2GHz · AM5',      price:74800, score:41712,socket:'AM5',    tdp:120},
     {id:'bc3',name:'Core i9-14900K',   spec:'24C · 6.0GHz · LGA1700', price:58800, score:62300,socket:'LGA1700',tdp:253},
     {id:'bc4',name:'Ryzen 7 7800X3D',  spec:'8C · 5.0GHz · AM5',      price:49800, score:35000,socket:'AM5',    tdp:120},
     {id:'bc5',name:'Core i7-14700K',   spec:'20C · 5.6GHz · LGA1700', price:46800, score:34000,socket:'LGA1700',tdp:253},
@@ -2304,7 +2356,7 @@ function banalyze(){
 }
 
 // ===== スマホ表示: 表の各セルに見出しを付け、カード表示で使う =====
-const MOBILE_HIDE = ['クロック', 'L3キャッシュ', 'メモリ帯域幅', 'レイトレ', 'アップスケーリング', '帯域幅', '評価', 'Maxクロック', 'コア / スレッド', 'TDP'];
+const MOBILE_HIDE = ['クロック', 'L3キャッシュ', 'メモリ帯域幅', 'レイトレ', '専用アップスケーラー', '帯域幅', '評価', 'Maxクロック', 'コア / スレッド', 'TDP'];
 function labelCells(tbody) {
   if (!tbody || !tbody.querySelectorAll || !tbody.closest) return;
   const heads = [...(tbody.closest('table')?.querySelectorAll('thead th') || [])].map(th => th.textContent.trim());

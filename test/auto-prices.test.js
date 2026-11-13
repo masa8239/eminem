@@ -204,7 +204,29 @@ test('site-side name correction agrees with the audit and leaves valid names alo
   // 補正後は系列に合ったメーカー・機能になり、重複は1件にまとまる
   const parsed = JSON.parse(vm.runInContext(`JSON.stringify(dedupeByName([{'GPU名':'GeForce RTX 6700 XT','スコア':12000},{'GPU名':'Radeon RX 6700 XT','スコア':11000}].map(parseGpuRow)))`, context));
   assert.equal(parsed.length, 1);
-  assert.deepEqual([parsed[0].name, parsed[0].sheetName, parsed[0].maker, parsed[0].dlss], ['Radeon RX 6700 XT', 'GeForce RTX 6700 XT', 'AMD', 'FSR 2']);
+  assert.deepEqual([parsed[0].name, parsed[0].sheetName, parsed[0].maker, parsed[0].rt, parsed[0].dlss], ['Radeon RX 6700 XT', 'GeForce RTX 6700 XT', 'AMD', '対応', '—']);
+});
+
+test('socket, ray tracing and upscaler follow the rules checked against maker and Wikipedia specs', () => {
+  const vm = require('node:vm');
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  const document = {addEventListener() {}, getElementById() { return {value: '', innerHTML: '', textContent: '', style: {}}; }};
+  const context = vm.createContext({document, window: {addEventListener() {}}, localStorage: {getItem() { return null; }}, URL, URLSearchParams, console});
+  vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].split('// ===== INIT =====')[0], context);
+  const run = code => vm.runInContext(code, context);
+  const socket = name => run(`cpuSocket(${JSON.stringify(name)})`);
+  for (const [name, want] of [['Core i7-7700', 'LGA1151'], ['Core i9-9900KS', 'LGA1151'], ['Core i9-10850K', 'LGA1200'], ['Core i5-11400F', 'LGA1200'],
+    ['Core i5-12600', 'LGA1700'], ['Core i9-14900KS', 'LGA1700'], ['Core Ultra 7 270K Plus', 'LGA1851'], ['Core Ultra 5 225F', 'LGA1851'],
+    ['Ryzen 7 1800X', 'AM4'], ['Ryzen 5 3600 AF', 'AM4'], ['Ryzen 7 PRO 4750G', 'AM4'], ['Ryzen 7 5700X3D', 'AM4'], ['Ryzen 5 5600GT', 'AM4'],
+    ['Ryzen 7 7700', 'AM5'], ['Ryzen 5 8600G', 'AM5'], ['Ryzen 9 9950X3D', 'AM5'],
+    // 規則に当てはまらない型番は推測しない（空欄）
+    ['Ryzen 7 8845HS', ''], ['Core i7-1260P', ''], ['Apple M2', '']]) assert.equal(socket(name), want, name);
+  const feat = name => JSON.parse(run(`JSON.stringify(gpuFeatures(${JSON.stringify(name)}))`));
+  for (const [name, rt, up] of [['GeForce RTX 2060 12GB', '対応', 'DLSS'], ['GeForce RTX 5090', '対応', 'DLSS'], ['GeForce GTX 1080 Ti', '非対応', '—'],
+    ['NVIDIA TITAN V', '非対応', '—'], ['GeForce GTX TITAN X', '非対応', '—'], ['Radeon RX 9070 XT', '対応', 'FSR 4'], ['Radeon RX 7600', '対応', '—'],
+    ['Radeon RX 6500 XT 4GB', '対応', '—'], ['Radeon RX 5700 XT', '非対応', '—'], ['Radeon RX 590', '非対応', '—'], ['Radeon RX Vega 64', '非対応', '—'],
+    ['Arc A380', '対応', 'XeSS']]) assert.deepEqual([feat(name).rt, feat(name).upscaler], [rt, up], name);
+  for (const [name, maker] of [['Arc A770 8GB', 'Intel'], ['NVIDIA TITAN Xp', 'NVIDIA'], ['GeForce GT 1030', 'NVIDIA'], ['Radeon R9 Fury X', 'AMD']]) assert.equal(run(`gpuMaker(${JSON.stringify(name)})`), maker, name);
 });
 
 test('new models are discovered from listings and known or doubtful ones are ignored', () => {
