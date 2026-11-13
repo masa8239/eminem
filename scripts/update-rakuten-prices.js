@@ -12,6 +12,7 @@ const {modelSpec, pickItem, discoverNewModels, PRICE_FLOOR} = require('./lib/mat
 const {searchYahoo, rakutenPoints} = require('./lib/stores');
 const {nameIssue} = require('./lib/audit');
 const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
+const {checkSpecs} = require('./lib/spec-check');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -45,6 +46,7 @@ async function loadModels(fetchImpl) {
   const {context, run} = siteContext();
   const models = new Map();
   const sheetRows = [];
+  const specRows = []; // スコアの有無に関係なく、シートの全行（仕様の照合用）
   const add = (category, item) => {
     if (!item || typeof item.name !== 'string' || !item.name.trim()) return;
     const key = `${category}\0${item.name}`;
@@ -62,6 +64,7 @@ async function loadModels(fetchImpl) {
       const rows = await response.json();
       if (!Array.isArray(rows)) throw new Error('bad payload');
       context.__rows = rows;
+      JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&isStandalone('${category}',r.name)))`)).forEach(item => specRows.push({...item, category}));
       JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&r.score>0&&isStandalone('${category}',r.name)))`)).forEach(item => {
         const key = `${category}\0${item.name}`;
         const price = Number.isSafeInteger(item.price) && item.price > 0 ? item.price : null;
@@ -76,6 +79,7 @@ async function loadModels(fetchImpl) {
   }
   const list = [...models.values()];
   list.sheetRows = sheetRows;
+  list.specRows = specRows;
   return list;
 }
 
@@ -325,12 +329,14 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       issues.push({category: row.category, modelName: row.sheetName, type: 'price', issue: '価格が未入力または不正で、楽天からも取得できていません'});
     }
   }
+  // 仕様（コア数・クロック・VRAM など）を照合表と比べる
+  issues.push(...checkSpecs(models.specRows || [], options.specReference));
   const auditFile = options.auditOutput || (options.output ? output.replace(/[^/\\]+$/, 'sheet-audit.json') : AUDIT_OUTPUT);
   // 内容が変わったときだけ書き換える（毎日の無意味な更新を避ける）
   let unchanged = false;
   try { unchanged = JSON.stringify(JSON.parse(fs.readFileSync(auditFile, 'utf8')).issues) === JSON.stringify(issues); } catch { /* 初回 */ }
   if (!unchanged) fs.writeFileSync(auditFile, JSON.stringify({checkedAt: fetchedAt, issues}, null, 1) + '\n');
-  log(`スプレッドシートの要確認: モデル名 ${issues.filter(i => i.type === 'name').length} 件 / 重複 ${issues.filter(i => i.type === 'duplicate').length} 件 / 価格 ${issues.filter(i => i.type === 'price').length} 件`);
+  log(`スプレッドシートの要確認: モデル名 ${issues.filter(i => i.type === 'name').length} 件 / 重複 ${issues.filter(i => i.type === 'duplicate').length} 件 / 価格 ${issues.filter(i => i.type === 'price').length} 件 / 仕様 ${issues.filter(i => i.type === 'spec').length} 件`);
   return 0;
 }
 

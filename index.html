@@ -754,7 +754,7 @@ a.affiliate-btn:hover { background: #154e96; }
     <p>BENCHCORE は、CPU・GPU・メモリのベンチマークスコアと価格を一覧で比較するためのサイトです。パーツ選びの参考情報として提供しています。</p>
     <h3>データの出典</h3>
     <ul>
-      <li>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy の数値を掲載しています。</li>
+      <li>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値を、運営者が取得時点の値で掲載しています。どちらも利用者の測定結果の平均のため、元のサイトの値は日々少しずつ変わります。</li><li>コア数・クロック・TDP・VRAM・帯域幅などの仕様は、AMD公式の仕様一覧とWikipediaの各世代の仕様表を基に掲載し、毎日自動で照合しています。</li><li>メモリは製品ではなく規格ごとに、Yahoo!ショッピングで在庫のある新品キットの最安値を掲載しています。</li>
       <li>価格は参考価格です。ストアのAPIから取得できた製品には、取得元と取得日時を表示します。表示価格と販売ページの価格が異なる場合は、販売ページの価格が正しい価格です。</li>
       <li>ボトルネック診断、ゲーム性能の目安、推奨電源容量は、スコアやTDPからの推定です。実際の動作を保証するものではありません。</li>
     </ul>
@@ -785,7 +785,7 @@ a.affiliate-btn:hover { background: #154e96; }
   <div class="bmobile-bar"><div><span>総合計</span><strong id="bmobile-total">¥15,000</strong></div><button onclick="document.querySelector('.builder-right').scrollIntoView({behavior:'smooth'})">構成と診断を見る ↓</button></div>
   <div class="builder-layout">
     <div class="builder-left">
-      <div class="builder-hero"><h2>構成ビルダー</h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
+      <div class="builder-hero"><h2>構成ビルダー</h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><p style="font-size:12px;opacity:.8;margin-top:4px">CPU・GPU・メモリの価格はランキングと同じ価格（ストアから取得できたものは最安値）です。CPUクーラー・マザーボード・SSD・電源・ケースの価格は自動取得しておらず、目安の参考価格です。</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">

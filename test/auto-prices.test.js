@@ -452,3 +452,28 @@ test('memory is priced per spec from clearly matching new desktop kits only', as
   assert.deepEqual(ram.map(p => [p.modelName, p.price, p.spec.cl, p.spec.kit]), [['DDR5-6000 32GB（16GB×2）', 21000, 36, '16GB×2']]);
   assert.deepEqual(data.unmatched.filter(u => u.category === 'ram').map(u => u.reason), ['規格が一致する新品キットの出品なし']);
 });
+
+test('sheet specs are checked against the committed reference and only real differences are reported', () => {
+  const {checkSpecs} = require('../scripts/lib/spec-check');
+  const rows = [
+    {category: 'cpu', sheetName: 'Ryzen 7 7700', cores: 8, threads: 16, tdp: 105, clockMin: 4.5, clockMax: 5.4, cache: 32},   // 7700X の値が入った行
+    {category: 'cpu', sheetName: 'Ryzen 7 7700X', cores: 8, threads: 16, tdp: 105, clockMin: 4.5, clockMax: 5.4, cache: 32},
+    {category: 'cpu', sheetName: 'AMD Ryzen 7 7700X3D', cores: 8, threads: 16, tdp: 120, clockMin: 4.0, clockMax: 4.5, cache: 96},
+    {category: 'cpu', sheetName: 'Core i9-12900T', cores: 12, threads: 20, tdp: 35, clockMin: 1.4, clockMax: 5.1, cache: 30},
+    {category: 'cpu', sheetName: 'Core Ultra 9 285', cores: 24, threads: 24, tdp: 65, clockMin: 2.5, clockMax: 5.6, cache: 36}, // 最大クロックは照合しない世代
+    {category: 'cpu', sheetName: 'Ryzen 5 3500G', cores: 4, threads: 8, tdp: 65, clockMin: 4, clockMax: 4.2, cache: 16},
+    {category: 'gpu', sheetName: 'GeForce RTX 5080', vram: '16GB', bw: '2063GB/s', tdp: 360},
+    {category: 'gpu', sheetName: 'GeForce RTX 4070 Ti SUPER', vram: '16GB', bw: '672GB/s', tdp: 285},
+    {category: 'gpu', sheetName: 'Radeon RX 6750 XT', vram: '12GB', bw: '5538MB/s', tdp: 250},
+    {category: 'gpu', sheetName: 'Radeon RX 6500 XT 4GB', vram: '4GB', bw: '144GB/s', tdp: 107},   // 照合表にない容量の版は指摘しない
+    {category: 'gpu', sheetName: 'Radeon RX 9060 XT 8GB', vram: '8GB', bw: '320GB/s', tdp: 150},
+    {category: 'gpu', sheetName: 'GeForce RTX 3060 Ti', vram: '8GB', bw: '448GB/s', tdp: 200},
+  ];
+  const issues = Object.fromEntries(checkSpecs(rows).map(i => [i.modelName, i.issue]));
+  assert.deepEqual(Object.keys(issues).sort(), ['Core i9-12900T', 'GeForce RTX 5080', 'Radeon RX 6750 XT', 'Ryzen 5 3500G', 'Ryzen 7 7700'].sort());
+  assert.match(issues['Ryzen 7 7700'], /TDP 105W → 出典 65W.*AMD公式/);
+  assert.match(issues['Core i9-12900T'], /コア数 12 → 出典 16/);
+  assert.match(issues['GeForce RTX 5080'], /帯域幅 2063GB\/s → 出典 960GB\/s/);
+  assert.match(issues['Radeon RX 6750 XT'], /帯域幅 5\.538GB\/s → 出典 432GB\/s/);
+  assert.match(issues['Ryzen 5 3500G'], /照合表にない型番/);
+});
