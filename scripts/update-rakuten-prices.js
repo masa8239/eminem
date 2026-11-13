@@ -11,6 +11,7 @@ const {searchItems, responseItems, SITE_ORIGIN, PriceError} = require('../api/ra
 const {modelSpec, pickItem, discoverNewModels, PRICE_FLOOR} = require('./lib/match');
 const {searchYahoo, rakutenPoints} = require('./lib/stores');
 const {nameIssue} = require('./lib/audit');
+const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -220,7 +221,38 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     });
   }
 
-  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length} / 未取得 ${unmatched.length} / API失敗 ${apiErrors}`);
+  // メモリ: 規格ごとに Yahoo!ショッピングの最安キットを探す（製品名ではなく規格で並べる）
+  let ramFound = 0;
+  for (const spec of auditOnly || options.skipRam ? [] : (options.ramSpecs || RAM_SPECS)) {
+    const items = [];
+    let anyResponse = false;
+    for (const query of ramQueries(spec)) {
+      const found = await yahooItems(query, {from: spec.capacity * 80, to: 0});
+      if (found) { anyResponse = true; items.push(...found); }
+    }
+    const offers = pickRamOffers(spec, items);
+    const ramSpec = {type: spec.type, speed: spec.speed, capacity: spec.capacity, kit: `${spec.perStick}GB×${spec.sticks}`};
+    if (!offers.length) {
+      const kept = previous.get(`ram\0${spec.label}`);
+      if (!anyResponse && kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) products.push(kept);
+      else unmatched.push({category: 'ram', modelName: spec.label, reason: anyResponse ? '規格が一致する新品キットの出品なし' : 'Yahoo!ショッピングに接続できませんでした'});
+      continue;
+    }
+    const rows = offers.map(item => ({item, url: safeUrl(item)})).filter(row => row.url);
+    if (!rows.length) { unmatched.push({category: 'ram', modelName: spec.label, reason: '商品ページのURLが不正'}); continue; }
+    const best = rows[0].item;
+    ramFound++;
+    products.push({
+      category: 'ram', modelName: spec.label, status: 'ok', source: 'Yahoo!ショッピング',
+      price: best.itemPrice, points: best.points || 0, url: rows[0].url, fetchedAt,
+      itemCode: best.itemCode, itemName: best.itemName, shopName: best.shopName || '',
+      spec: {...ramSpec, cl: best.cl},
+      offers: rows.map(({item, url}) => ({store: item.shopName || 'Yahoo!ショッピング', price: item.itemPrice, points: item.points || 0, url, itemName: item.itemName, cl: item.cl})),
+    });
+  }
+
+  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length - ramFound} / 未取得 ${unmatched.filter(u => u.category !== 'ram').length} / API失敗 ${apiErrors}`);
+  if (!auditOnly && !options.skipRam) log(`メモリ: ${(options.ramSpecs || RAM_SPECS).length} 規格のうち ${ramFound} 規格の最安値を取得`);
   // 1件も取れず、どのストアにも接続できなかった回だけは、前回のファイルを壊さない（途中まで取れた分は保存する）
   const rakutenUp = rakuten.configured && rakuten.on, yahooUp = Boolean(yahoo.appid) && yahoo.successes > 0;
   const freshCount = products.filter(product => product.fetchedAt === fetchedAt).length;

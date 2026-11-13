@@ -474,7 +474,7 @@ a.affiliate-btn:hover { background: #154e96; }
     <div class="cards">
       <div class="card" role="link" tabindex="0" onclick="goPage('cpu-rank')"><div class="card-title">CPU ランキング</div><div class="card-desc">マルチスレッド・シングルスレッド・コスパの3つの順位。コア数、クロック、TDP、価格を一覧できます。</div><div class="card-arrow">›</div></div>
       <div class="card" role="link" tabindex="0" onclick="goPage('gpu-rank')"><div class="card-title">GPU ランキング</div><div class="card-desc">3DMark Time Spy のスコア順。VRAM、消費電力、レイトレ対応も確認できます。</div><div class="card-arrow">›</div></div>
-      <div class="card" role="link" tabindex="0" onclick="goPage('ram-rank')"><div class="card-title">メモリ ランキング</div><div class="card-desc">DDR4・DDR5 の速度、レイテンシ、1GBあたりの価格を比較できます。</div><div class="card-arrow">›</div></div>
+      <div class="card" role="link" tabindex="0" onclick="goPage('ram-rank')"><div class="card-title">メモリ ランキング</div><div class="card-desc">DDR4・DDR5 の規格ごとの最安値と、1GBあたりの価格を比較できます。</div><div class="card-arrow">›</div></div>
       <div class="card" role="link" tabindex="0" onclick="goPage('cpu-compare')"><div class="card-title">2製品の比較</div><div class="card-desc">2つのCPUまたはGPUを並べて、項目ごとに優れている方を表示します。</div><div class="card-arrow">›</div></div>
       <div class="card" role="link" tabindex="0" onclick="goPage('bottleneck')"><div class="card-title">ボトルネック診断</div><div class="card-desc">CPUとGPUの組み合わせで、どちらかが性能の足を引っ張らないかを診断します。</div><div class="card-arrow">›</div></div>
       <div class="card" role="link" tabindex="0" onclick="goPage('builder')"><div class="card-title">構成ビルダー</div><div class="card-desc">パーツを選ぶと合計金額と遊べるゲームの目安を表示。ソケットや電源容量の確認もします。</div><div class="card-arrow">›</div></div>
@@ -627,7 +627,7 @@ a.affiliate-btn:hover { background: #154e96; }
     <div class="search-budget-row">
       <div class="search-box">
         <span class="search-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg></span>
-        <input type="text" id="ram-search" placeholder="製品名で検索... (例: DDR5-6000, Corsair)" oninput="renderRamTable()">
+        <input type="text" id="ram-search" placeholder="規格・製品名で検索... (例: DDR5-6000, Crucial)" oninput="renderRamTable()">
       </div>
       <div class="budget-box">
         <div class="budget-label">予算上限 <span id="ram-budget-val">制限なし</span></div>
@@ -648,9 +648,9 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（楽天市場・Yahoo!ショッピング・Amazon）が含まれます。</p>
     <div class="table-wrap">
-      <div class="notice">帯域幅 = 速度 × 8バイト / 1000（理論値・シングルチャネル）。デュアルチャネル構成では実効帯域幅は2倍になります。</div>
+      <div class="notice">規格（世代・速度・容量・枚数）ごとに、Yahoo!ショッピングで在庫のある新品のデスクトップ用キットの最安値を毎日自動で取得しています。CLは最安の商品の値で、同じ規格でも製品によって異なります。帯域幅 = 速度 × 8バイト / 1000（理論値・1枚あたり）。</div>
       <table class="rank-table">
-        <thead><tr><th>順位</th><th>製品名</th><th>タイプ</th><th>速度</th><th>CL</th><th>容量 / 構成</th><th>帯域幅(理論)</th><th>価格</th><th>コスパ/GB</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
+        <thead><tr><th>順位</th><th>製品名</th><th>タイプ</th><th>速度</th><th>CL（最安品）</th><th>容量 / 構成</th><th>帯域幅(理論)</th><th>価格</th><th>コスパ/GB</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
         <tbody id="ram-table-body"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent2);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
       </table>
     </div>
@@ -807,7 +807,6 @@ a.affiliate-btn:hover { background: #154e96; }
 // ===== Google Apps Script URLs =====
 const CPU_GAS_URL = 'https://script.google.com/macros/s/AKfycbxWHs4CEGCGVa-Z_QfMA0vMQUq_sQ8dL47POcPvJYynJIhwxgJYWdJ0XOtOLIaLNfJM/exec';
 const GPU_GAS_URL = 'https://script.google.com/macros/s/AKfycbxyrOzS96rGJPUzFdqDguRqN08dTEElLAcjiZgM5Mq0zzHkiAZbjr8-fsN5Q83HcXcj/exec';
-const RAM_GAS_URL = 'https://script.google.com/macros/s/AKfycbyzkxOQolZotFhcI4Q-MX1v7ESz9ytI0Bk0YG6oHwp6rnMlNyv06ARyrY7fnsTN6O4C/exec';
 
 // ===== FALLBACK DATA =====
 // CPU: name, maker, score(PassMark multi), single, price(円), tdp(W), cores, threads, socket, clockMin, clockMax(GHz), cache(MB), badge, badgeClass
@@ -928,32 +927,9 @@ const FALLBACK_GPU = [
   { name:'Radeon RX 6600 XT',         maker:'AMD',    score:8800,  price:18000,   vram:'8GB',  tdp:160, bw:'256 GB/s',  rt:'○', dlss:'FSR 2',  badge:'コスパ最強',  badgeClass:'badge-green'  },
 ];
 
-const FALLBACK_RAM = [
-  // DDR5
-  { name:'G.Skill Trident Z5 DDR5-7200',           type:'DDR5', speed:7200, cl:34, capacity:32, kit:'2x16GB', price:28800, badge:'ハイエンド',  badgeClass:'badge-purple' },
-  { name:'Corsair Dominator Titanium DDR5-7200',    type:'DDR5', speed:7200, cl:34, capacity:32, kit:'2x16GB', price:32800, badge:'ハイエンド',  badgeClass:'badge-purple' },
-  { name:'G.Skill Trident Z5 DDR5-6400',            type:'DDR5', speed:6400, cl:32, capacity:32, kit:'2x16GB', price:24800, badge:'',            badgeClass:''             },
-  { name:'Corsair Vengeance DDR5-6000 32GB',        type:'DDR5', speed:6000, cl:36, capacity:32, kit:'2x16GB', price:18800, badge:'コスパ◎',     badgeClass:'badge-green'  },
-  { name:'G.Skill Ripjaws S5 DDR5-6000 32GB',       type:'DDR5', speed:6000, cl:36, capacity:32, kit:'2x16GB', price:16800, badge:'コスパ最強',  badgeClass:'badge-green'  },
-  { name:'Kingston FURY Beast DDR5-6000 32GB',      type:'DDR5', speed:6000, cl:36, capacity:32, kit:'2x16GB', price:15800, badge:'コスパ最強',  badgeClass:'badge-green'  },
-  { name:'Corsair Vengeance DDR5-6000 64GB',        type:'DDR5', speed:6000, cl:36, capacity:64, kit:'2x32GB', price:34800, badge:'大容量',       badgeClass:'badge-blue'   },
-  { name:'Crucial Pro DDR5-5600 32GB',              type:'DDR5', speed:5600, cl:46, capacity:32, kit:'2x16GB', price:13800, badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Kingston FURY Beast DDR5-5600 32GB',      type:'DDR5', speed:5600, cl:40, capacity:32, kit:'2x16GB', price:12800, badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Crucial Pro DDR5-5600 64GB',              type:'DDR5', speed:5600, cl:46, capacity:64, kit:'2x32GB', price:28800, badge:'大容量',       badgeClass:'badge-blue'   },
-  { name:'Samsung DDR5-4800 32GB',                  type:'DDR5', speed:4800, cl:40, capacity:32, kit:'2x16GB', price:10800, badge:'',             badgeClass:''             },
-  { name:'Crucial DDR5-4800 16GB',                  type:'DDR5', speed:4800, cl:40, capacity:16, kit:'2x8GB',  price:6800,  badge:'',             badgeClass:''             },
-  // DDR4
-  { name:'G.Skill Trident Z RGB DDR4-4000 32GB',    type:'DDR4', speed:4000, cl:18, capacity:32, kit:'2x16GB', price:18800, badge:'ハイエンド',  badgeClass:'badge-purple' },
-  { name:'Corsair Dominator Platinum DDR4-3600 32GB',type:'DDR4', speed:3600, cl:18, capacity:32, kit:'2x16GB', price:16800, badge:'',            badgeClass:''             },
-  { name:'G.Skill Trident Z RGB DDR4-3600 32GB',    type:'DDR4', speed:3600, cl:18, capacity:32, kit:'2x16GB', price:13800, badge:'',             badgeClass:''             },
-  { name:'Kingston FURY Renegade DDR4-3600 16GB',   type:'DDR4', speed:3600, cl:16, capacity:16, kit:'2x8GB',  price:8800,  badge:'コスパ',       badgeClass:'badge-green'  },
-  { name:'Corsair Vengeance LPX DDR4-3200 32GB',    type:'DDR4', speed:3200, cl:16, capacity:32, kit:'2x16GB', price:9800,  badge:'コスパ◎',     badgeClass:'badge-green'  },
-  { name:'G.Skill Ripjaws V DDR4-3200 32GB',        type:'DDR4', speed:3200, cl:16, capacity:32, kit:'2x16GB', price:8800,  badge:'コスパ◎',     badgeClass:'badge-green'  },
-  { name:'Kingston FURY Beast DDR4-3200 16GB',      type:'DDR4', speed:3200, cl:16, capacity:16, kit:'2x8GB',  price:4800,  badge:'コスパ最強',  badgeClass:'badge-green'  },
-  { name:'Crucial Ballistix DDR4-3200 16GB',        type:'DDR4', speed:3200, cl:16, capacity:16, kit:'2x8GB',  price:4500,  badge:'コスパ最強',  badgeClass:'badge-green'  },
-  { name:'Crucial DDR4-3200 16GB',                  type:'DDR4', speed:3200, cl:22, capacity:16, kit:'1x16GB', price:3800,  badge:'エントリー',  badgeClass:'badge-blue'   },
-  { name:'Corsair Vengeance LPX DDR4-3200 64GB',    type:'DDR4', speed:3200, cl:16, capacity:64, kit:'2x32GB', price:18800, badge:'大容量',       badgeClass:'badge-blue'   },
-];
+// メモリは製品ではなく規格ごとに、Yahoo!ショッピングで毎日取得した最安値だけを表示する（data/rakuten-prices.json の category: 'ram'）。
+// 以前の内蔵データ（記憶で入れた製品と価格）は確認できないため使わない。
+const FALLBACK_RAM = [];
 
 // ===== STATE（フォールバックで即時初期化） =====
 // 内蔵データのソケット・レイトレ・アップスケーリングも、シートと同じ確認済みの規則で表示する
@@ -967,7 +943,7 @@ let gpuFilter = 'all';
 let ramFilter = 'all';
 let maxCpuScore = Math.max(...cpuData.map(d => d.score));
 let maxGpuScore = Math.max(...gpuData.map(d => d.score));
-let maxRamSpeed = Math.max(...ramData.map(d => d.speed));
+let maxRamSpeed = Math.max(1, ...ramData.map(d => d.speed));
 
 // ===== HELPERS =====
 // Sheet prices below this conservative floor require source confirmation; never guess a multiplier.
@@ -1216,7 +1192,7 @@ function renderRamTable() {
     return r.capacity===parseInt(ramFilter);
   });
   base = base.filter(r => {
-    if(searchVal && !r.name.toLowerCase().includes(searchVal)) return false;
+    if(searchVal && !(r.name+' '+(r.itemName||'')).toLowerCase().includes(searchVal)) return false;
     if(budgetMax<80000 && (!validPrice(r.price) || r.price>budgetMax)) return false;
     return true;
   });
@@ -1224,16 +1200,16 @@ function renderRamTable() {
   const rc = document.getElementById('ram-result-count');
   if(rc) rc.textContent = `${filtered.length} 件`;
   const tbody = document.getElementById('ram-table-body');
-  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)">条件に一致するメモリがありません</td></tr>`;return;}
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)">${ramData.length?'条件に一致するメモリがありません':'メモリの価格を取得中です。取得できるまで表示しません'}</td></tr>`;return;}
   tbody.innerHTML = filtered.map((r,i) => {
     const bw = (r.speed*8/1000).toFixed(1)+' GB/s';
     const cospaVal = costPerformance(r,true)!==null?'¥'+Math.round(costPerformance(r,true)).toLocaleString('ja-JP')+'/GB':'—';
     const isFav = ramFavs.has(r.name);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${esc(r.name)}${r.badge?` <span class="badge ${r.badgeClass}">${r.badge}</span>`:''}</div></td>
+      <td><div class="chip-name">${esc(r.name)}${r.badge?` <span class="badge ${r.badgeClass}">${r.badge}</span>`:''}</div>${r.itemName?`<div class="chip-sub">最安: ${esc(r.itemName.length>48?r.itemName.slice(0,48)+'…':r.itemName)}</div>`:''}</td>
       <td><span class="badge ${r.type==='DDR5'?'badge-purple':'badge-blue'}">${esc(r.type)}</span></td>
-      <td style="font-weight:700;color:var(--accent2)">${r.speed.toLocaleString()} MHz</td>
+      <td style="font-weight:700;color:var(--accent2)">${r.speed.toLocaleString()} MT/s</td>
       <td>CL${r.cl||'—'}</td>
       <td>${r.capacity}GB <span style="color:var(--text3);font-size:11px">${esc(r.kit)}</span></td>
       <td style="color:var(--text2)">${bw}</td>
@@ -1398,7 +1374,7 @@ function updateRamCompare() {
     ['1GBあたりの価格',  perGb(a),                                   perGb(b),                                  'low'],
     ['規格',             a.type||'—',                                b.type||'—',                               null],
     ['速度',             a.speed?a.speed.toLocaleString()+' MT/s':'—', b.speed?b.speed.toLocaleString()+' MT/s':'—', 'high'],
-    ['CL（レイテンシ）', a.cl?'CL'+a.cl:'—',                         b.cl?'CL'+b.cl:'—',                        'low'],
+    ['CL（最安品）',     a.cl?'CL'+a.cl:'—',                         b.cl?'CL'+b.cl:'—',                        'low'],
     ['実効レイテンシ',   latency(a),                                 latency(b),                                'low'],
     ['容量',             a.capacity?a.capacity+'GB':'—',             b.capacity?b.capacity+'GB':'—',            'high'],
     ['構成',             a.kit||'—',                                 b.kit||'—',                                null],
@@ -1638,11 +1614,10 @@ async function fetchSheet(url, cacheKey) {
   return rows;
 }
 async function loadSheetData() {
-  // 3シート並列取得（直列だと最悪24秒 → 並列で最大8秒）
-  const [cpuR, gpuR, ramR] = await Promise.allSettled([
+  // CPU・GPUのシートを並列取得（メモリはシートを使わず、価格ファイルの規格別最安値で表示する）
+  const [cpuR, gpuR] = await Promise.allSettled([
     fetchSheet(CPU_GAS_URL, 'bc_cpu_v1'),
     fetchSheet(GPU_GAS_URL, 'bc_gpu_v1'),
-    fetchSheet(RAM_GAS_URL, 'bc_ram_v1'),
   ]);
   const LOADED='スプレッドシートの最新データ', BUILTIN='内蔵データを表示中';
   if (cpuR.status==='fulfilled') {
@@ -1661,14 +1636,6 @@ async function loadSheetData() {
       document.getElementById('gpu-rank-updated').textContent = LOADED;
     } else document.getElementById('gpu-rank-updated').textContent = BUILTIN;
   } else document.getElementById('gpu-rank-updated').textContent = BUILTIN;
-  if (ramR.status==='fulfilled') {
-    const parsed = ramR.value.map(parseRamRow).filter(r=>r&&r.name&&r.speed>0);
-    if (parsed.length > 0) {
-      ramData = fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.speed-a.speed)), FALLBACK_RAM);
-      maxRamSpeed = Math.max(...ramData.map(d=>d.speed));
-      document.getElementById('ram-rank-updated').textContent = LOADED;
-    } else document.getElementById('ram-rank-updated').textContent = BUILTIN;
-  } else document.getElementById('ram-rank-updated').textContent = BUILTIN;
   renderCpuTable(); renderGpuTable(); renderRamTable();
   populateCpuSelects(); populateGpuSelects(); populateRamSelects();
   updateHomeRanking();
@@ -1687,6 +1654,22 @@ async function fetchPriceProducts(url) {
   const payload = await response.json();
   if (!Array.isArray(payload.products)) throw new Error(payload.error || `HTTP ${response.status}`);
   return payload;
+}
+function applyRamProducts(products, maxAgeMs) {
+  const fresh = products.filter(p => p && p.category === 'ram' && p.status === 'ok' && validPrice(p.price) && p.spec && typeof p.modelName === 'string'
+    && Date.now() - new Date(p.fetchedAt).getTime() < maxAgeMs);
+  if (!fresh.length) return false;
+  ramData = fresh.map(p => ({
+    name: p.modelName, type: p.spec.type, speed: p.spec.speed, capacity: p.spec.capacity, kit: p.spec.kit,
+    cl: Number.isSafeInteger(p.spec.cl) ? p.spec.cl : 0, price: p.price, itemName: typeof p.itemName === 'string' ? p.itemName : '',
+    badge: '', badgeClass: '',
+    rakuten: {status:'ok', fetchedAt:p.fetchedAt, url:p.url, source:'Yahoo!ショッピング', points:p.points,
+      offers: (Array.isArray(p.offers) ? p.offers.slice(1) : []).map(o => ({...o, store: 'Yahoo!（' + (o.store || 'ストア') + '）'}))},
+  })).sort((a,b) => b.speed - a.speed || b.capacity - a.capacity);
+  maxRamSpeed = Math.max(1, ...ramData.map(d => d.speed));
+  const date = new Date(fresh[0].fetchedAt);
+  document.getElementById('ram-rank-updated').textContent = 'Yahoo!ショッピングの最安値' + (Number.isNaN(date.getTime()) ? '' : `（${date.getMonth()+1}/${date.getDate()} 取得）`);
+  return true;
 }
 function applyRakutenProducts(products, maxAgeMs) {
   const lists = {cpu:cpuData, gpu:gpuData, ram:ramData};
@@ -1708,6 +1691,7 @@ async function loadRakutenPrices() {
   const files = (await Promise.allSettled(PRICE_FILE_URLS.map(fetchPriceProducts))).filter(r=>r.status==='fulfilled').map(r=>r.value);
   const newest = files.sort((a,b)=>String(b.checkedAt||'').localeCompare(String(a.checkedAt||'')))[0];
   if (newest) applyRakutenProducts(newest.products, PRICE_FILE_MAX_AGE_MS);
+  if (!(newest && applyRamProducts(newest.products, PRICE_FILE_MAX_AGE_MS))) document.getElementById('ram-rank-updated').textContent = 'メモリの価格はまだ取得できていません';
   try {
     applyRakutenProducts((await fetchPriceProducts('/api/rakuten-prices')).products, 0);
   } catch (error) {
@@ -1717,7 +1701,7 @@ async function loadRakutenPrices() {
   if (cpuFromSheet) cpuData = assignSheetBadges(cpuData, 'cpu');
   if (gpuFromSheet) gpuData = assignSheetBadges(gpuData, 'gpu');
   renderCpuTable(); renderGpuTable(); renderRamTable();
-  populateCpuSelects(); populateGpuSelects();
+  populateCpuSelects(); populateGpuSelects(); populateRamSelects();
   try { bsyncPrices(); } catch (error) {}
 }
 
@@ -2064,6 +2048,7 @@ function bsyncPrices() {
   });
   sync(BPARTS.cpu.items, cpuData, (a, b) => a === b);
   sync(BPARTS.gpu.items, gpuData, (a, b) => a === b || a === 'GeForce ' + b || a === 'Radeon ' + b);
+  sync(BPARTS.ram.items, ramData, (a, b) => a === b);
   if (!changed) return;
   const ids = Object.values(bSelected).map(v => v.id);
   brenderParts();
@@ -2228,10 +2213,10 @@ const BPARTS = {
     {id:'bm7',name:'MSI PRO B760M-A',           spec:'LGA1700 · DDR5 · mATX',price:14800,socket:'LGA1700'},
   ]},
   ram:{ label:'メモリ (RAM)', icon:'RAM', color:'#55698f', items:[
-    {id:'br1',name:'DDR5-6000 64GB (32×2)', spec:'G.Skill Trident Z5',  price:34800,gb:64},
-    {id:'br2',name:'DDR5-6000 32GB (16×2)', spec:'Kingston Fury Beast', price:18800,gb:32},
-    {id:'br3',name:'DDR5-4800 32GB (16×2)', spec:'Crucial Pro',         price:12800,gb:32},
-    {id:'br4',name:'DDR5-5200 16GB (8×2)',  spec:'Corsair Vengeance',   price:8800, gb:16},
+    {id:'br1',name:'DDR5-6000 64GB（32GB×2）', spec:'規格ごとの最安値', price:34800,gb:64},
+    {id:'br2',name:'DDR5-6000 32GB（16GB×2）', spec:'規格ごとの最安値', price:18800,gb:32},
+    {id:'br3',name:'DDR5-5600 32GB（16GB×2）', spec:'規格ごとの最安値', price:12800,gb:32},
+    {id:'br4',name:'DDR5-5600 16GB（8GB×2）',  spec:'規格ごとの最安値', price:8800, gb:16},
   ]},
   storage:{ label:'SSD', icon:'SSD', color:'#8c6200', items:[
     {id:'bs1',name:'Samsung 990 Pro 2TB',  spec:'NVMe Gen4 · 7450MB/s', price:22800},
