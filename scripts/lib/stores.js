@@ -44,8 +44,8 @@ async function searchYahoo(keyword, appid, fetchImpl = fetch, range = null, affi
     availability: hit.inStock === false ? 0 : 1,
     itemUrl: hit.url,
     shopName: hit.seller && typeof hit.seller.name === 'string' ? hit.seller.name : '',
-    // point.amount は2022年から0固定。ストアポイント（PayPayポイント）は bonusAmount に入る
-    points: hit.point && Number.isSafeInteger(hit.point.bonusAmount) && hit.point.bonusAmount > 0 ? hit.point.bonusAmount : 0,
+    // point.amount（2022年〜）と bonusAmount（2025年2月〜）は0固定。ストアポイントは lyLimitedBonusAmount（PayPayポイント期間限定）に入る
+    points: hit.point && Number.isSafeInteger(hit.point.lyLimitedBonusAmount) && hit.point.lyLimitedBonusAmount > 0 ? hit.point.lyLimitedBonusAmount : 0,
   })).filter(item => item.itemCode !== 'yahoo:');
 }
 

@@ -230,7 +230,7 @@ test('a second store adds offers, the cheapest wins, and points are recorded', a
     if (url.hostname === 'shopping.yahooapis.jp') {
       assert.equal(url.searchParams.get('appid'), 'yahoo-secret');
       return {ok: true, json: async () => ({hits: url.searchParams.get('query') === 'RTX 5070'
-        ? [{code: 'shop_1', name: 'ASUS GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/shop/1.html', point: {amount: 0, bonusAmount: 1050}, seller: {name: 'Yショップ'}},
+        ? [{code: 'shop_1', name: 'ASUS GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/shop/1.html', point: {amount: 0, bonusAmount: 0, lyLimitedBonusAmount: 1050}, seller: {name: 'Yショップ'}},
            {code: 'shop_2', name: 'GeForce RTX 5070 12G 中古', price: 70000, inStock: true, condition: 'used', url: 'https://store.shopping.yahoo.co.jp/shop/2.html'}]
         : []})};
     }
@@ -341,7 +341,7 @@ test('Yahoo affiliate parameters are sent only when an ID is configured, and sto
   const models = [{category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000}];
   const seen = [];
   const fetchImpl = async url => { seen.push(Object.fromEntries(url.searchParams)); return {ok: true, json: async () => ({hits: [
-    {code: 's_1', name: 'MSI GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?vs=1&vp=2', point: {amount: 0, bonusAmount: 1050}}]})}; };
+    {code: 's_1', name: 'MSI GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?vs=1&vp=2', point: {amount: 0, bonusAmount: 0, lyLimitedBonusAmount: 1050}}]})}; };
   await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
   assert.equal(seen[0].affiliate_type, undefined);
   await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {yahooValueCommerceId: 'VC-ID'}});
@@ -368,4 +368,17 @@ test('price history keeps one point per day for prices fetched in this run only'
   const series = JSON.parse(fs.readFileSync(path.join(dir, 'price-history.json'), 'utf8')).series;
   assert.deepEqual(series['gpu|GeForce RTX 5070'], [['2026-11-13', 99000], ['2026-11-14', 99000]]);
   assert.deepEqual(series['gpu|GeForce RTX 5080'], [['2026-11-13', 199000]]);
+});
+
+test('an affiliate run that yields no usable links keeps the previous price file', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  fs.writeFileSync(output, '{"products":[{"modelName":"keep"}]}');
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000}];
+  const fetchImpl = async () => ({ok: true, json: async () => ({hits: [{code: 's_1', name: 'MSI GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'javascript:alert(1)'}]})});
+  const logs = [];
+  const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {models, output, delayMs: 0, log: l => logs.push(l), discoveryQueries: [], affiliate: {yahooValueCommerceId: 'VC'}});
+  assert.equal(code, 1);
+  assert.match(fs.readFileSync(output, 'utf8'), /keep/);
+  assert.ok(logs.some(l => l.includes('リンクの形式を確認')));
 });

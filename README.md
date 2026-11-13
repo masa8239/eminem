@@ -93,10 +93,9 @@ Amazon の価格は自動取得していません（公式の商品情報APIの�
 
 ### アフィリエイトの設定
 
-`config/affiliate.json` に入れます。どちらも各リンクに表示される値なので、秘密情報ではありません。
+Yahoo!ショッピングは `config/affiliate.json`、Amazon は `index.html` の `AMAZON_TAG` に入れます。どちらも各リンクに表示される値なので、秘密情報ではありません。
 
 - `yahooValueCommerceId`: バリューコマースのアフィリエイトID。入れると、Yahoo!ショッピングの検索に `affiliate_type=vc` と一緒に渡し、返ってくる商品URL（アフィリエイトリンク）をそのまま使います。空なら通常の商品URLです。
-- `amazonTag`: Amazonアソシエイトのトラッキング ID。サイトの「Amazonで確認」ボタンに付けます（`index.html` の `AMAZON_TAG`）。
 
 ### 価格の推移
 

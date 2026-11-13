@@ -221,7 +221,13 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length} / 未取得 ${unmatched.length} / API失敗 ${apiErrors}`);
   // 1件も取れず、どのストアにも接続できなかった回だけは、前回のファイルを壊さない（途中まで取れた分は保存する）
   const rakutenUp = rakuten.configured && rakuten.on, yahooUp = Boolean(yahoo.appid) && yahoo.successes > 0;
-  if (!auditOnly && !rakutenUp && !yahooUp && !products.some(product => product.fetchedAt === fetchedAt)) {
+  const freshCount = products.filter(product => product.fetchedAt === fetchedAt).length;
+  // アフィリエイトIDを入れた回で1件も取れなかったら、リンクの形が想定と違う可能性が高い。前回のファイルを残す
+  if (!auditOnly && yahoo.affiliateId && yahooUp && !rakutenUp && freshCount === 0) {
+    log('アフィリエイトIDを使った検索で価格が1件も取れませんでした。リンクの形式を確認してください（今回は価格ファイルを更新しません）');
+    return 1;
+  }
+  if (!auditOnly && !rakutenUp && !yahooUp && freshCount === 0) {
     log('どのストアにも接続できなかったため、今回は価格ファイルを更新しません');
     return 1;
   }
