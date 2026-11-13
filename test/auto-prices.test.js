@@ -505,3 +505,31 @@ test('Blender Open Data names map to site models, with sample and laptop filters
   ], ['GeForce RTX 4070', 'NVIDIA TITAN V']);
   assert.deepEqual(Object.entries(gpu).map(([k, v]) => [k, v.score, v.computeType]), [['GeForce RTX 4070', 5000, 'OPTIX'], ['NVIDIA TITAN V', 2000, 'OPTIX']]);
 });
+
+test('product pages show only known values, skip empty products and escape names', () => {
+  const {buildData, productPage, slug} = require('../scripts/build-pages');
+  const now = new Date('2026-11-14T00:00:00Z');
+  const rows = [
+    {category: 'cpu', name: 'Ryzen 7 7800X3D', maker: 'AMD', score: 34000, cores: 8, threads: 16, clockMin: 4.2, clockMax: 5, cache: 96, tdp: 120, socket: 'AM5'},
+    {category: 'cpu', name: 'Ryzen 5 7600X', maker: 'AMD', score: 28000, cores: 6, threads: 12},
+    {category: 'cpu', name: 'Core i5-14600', maker: 'Intel', score: 0},                      // スコアも価格もない
+    {category: 'cpu', name: 'Core Ultra 7 270K Plus', maker: 'Intel', score: 0},             // Blender だけある
+    {category: 'gpu', name: '<script>x</script>', maker: 'Other', score: 1000},
+  ];
+  const prices = [{category: 'cpu', modelName: 'Ryzen 7 7800X3D', status: 'ok', price: 53280, fetchedAt: '2026-11-13T11:00:00Z', url: 'https://store.shopping.yahoo.co.jp/a/1.html', source: 'Yahoo!ショッピング', shopName: 'A店'},
+    {category: 'cpu', modelName: 'Ryzen 5 7600X', status: 'ok', price: 30000, fetchedAt: '2026-10-01T00:00:00Z', url: 'https://x/1'}]; // 古い価格は使わない
+  const blender = {cpu: {blenderVersion: '4.5.0', scores: {'Core Ultra 7 270K Plus': {score: 611.1, samples: 20}}}};
+  const data = buildData(rows, prices, blender, now);
+  assert.deepEqual(data.cpu.map(x => x.name), ['Ryzen 7 7800X3D', 'Ryzen 5 7600X', 'Core Ultra 7 270K Plus']);
+  assert.equal(data.cpu[1].offer, null);
+  const html = productPage(data.cpu[0], data.cpu, '2026/11/14');
+  assert.match(html, /<title>Ryzen 7 7800X3D の最安値と性能/);
+  assert.match(html, /¥53,280/);
+  assert.match(html, /rel="sponsored noopener"/);
+  assert.match(html, /2製品中 1 位/);
+  assert.match(html, /href="\/p\/ryzen-5-7600x.html"/);
+  assert.match(productPage(data.cpu[2], data.cpu, '2026/11/14'), /Blender Benchmark（Blender 4.5.0）<\/th><td>611.1（1製品中 1 位・測定 20 件/);
+  const evil = productPage(data.gpu[0], data.gpu, '2026/11/14');
+  assert.ok(!evil.includes('<script>x'));
+  assert.equal(slug('GeForce RTX 4070 Ti SUPER'), 'geforce-rtx-4070-ti-super');
+});
