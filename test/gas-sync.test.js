@@ -27,6 +27,7 @@ function makeSheet(name, grid, formulas = {}) {
     getName: () => name,
     getLastRow: () => grid.length,
     deleteRow(row) { grid.splice(row - 1, 1); },
+    appendRow(values) { grid.push(values.slice()); },
     getLastColumn: width,
     getRange(row, column, rows, columns) {
       const r0 = row - 1, c0 = column - 1;
@@ -169,4 +170,32 @@ test('sheets without the expected headers are ignored and a missing data file st
   const sheet = makeSheet('GPU', gpuGrid());
   assert.throws(() => run([sheet], {'sheet-audit.json': {issues: []}}, 'benchcoreSync'), /取得できませんでした/);
   assert.equal(sheet.grid[1][2], 91);
+});
+
+test('new products are appended once with an empty, highlighted score cell', () => {
+  const f = files();
+  f['new-products.json'] = {candidates: [
+    {category: 'gpu', modelName: 'Radeon RX 9070 GRE', listings: 8, medianPrice: 104767, example: 'ASRock Radeon RX9070 GRE CL 12G'},
+    {category: 'gpu', modelName: 'GeForce RTX 3070', listings: 5, medianPrice: 50000, example: 'x'},
+    {category: 'cpu', modelName: 'Core Ultra 7 270K Plus', listings: 8, medianPrice: 57425, example: 'x'},
+    {category: 'gpu', modelName: 'Radeon 890M', listings: 3, medianPrice: 30000, example: 'x'},
+  ]};
+  const grid = [['GPU名', '3DMark Time Spy', 'TDP', '価格(円)'], ['GeForce RTX 3070', 13500, '220W', 44000]];
+  const sheet = makeSheet('GPU', grid);
+  const preview = run([sheet], f, 'benchcorePreview');
+  assert.equal(sheet.grid.length, 2);
+  assert.ok(preview.logs.some(line => line.includes('Radeon RX 9070 GRE') && line.includes('追加（予定）')));
+  run([sheet], f, 'benchcoreSync');
+  assert.deepEqual(sheet.grid.map(r => r[0]), ['GPU名', 'GeForce RTX 3070', 'Radeon RX 9070 GRE']); // 既存・CPU・内蔵は足さない
+  assert.equal(sheet.grid[2][1], '');                       // スコアは空欄
+  assert.equal(sheet.backgrounds['2,1'], '#fff2cc');        // スコアの欄を黄色に
+  assert.match(sheet.notes['2,1'], /3DMark Time Spy のスコアを入力/);
+  assert.match(sheet.notes['2,0'], /新製品として自動で追加/);
+  run([sheet], f, 'benchcoreSync');
+  assert.equal(sheet.grid.length, 3);                       // 翌日も重複して増えない
+  // 候補ファイルがなくても他の処理は止まらない
+  const g = files();
+  const other = makeSheet('GPU', gpuGrid());
+  run([other], g, 'benchcoreSync');
+  assert.equal(other.grid[1][3], 198000);
 });

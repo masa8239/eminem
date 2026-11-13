@@ -11,6 +11,7 @@
  *  - 等級違い・系列違いなど機械的に直せるモデル名を正しい名前に書き換える（元の名前はメモに残す）
  *  - 直せないモデル名（存在しない型番など）のセルを黄色く塗り、理由をメモに書く
  *  - 単体のパーツとして売っていない製品（CPU内蔵グラフィックス、Apple M シリーズ）の行を削除する
+ *  - ストアで見つかった新製品の行を末尾に追加する（スコアは空欄・黄色。スコアを入れるとサイトに載る）
  *
  * 書き換えるのは「最安値(円)」列、機械的に直せるモデル名、価格セル・モデル名セルの背景色とメモだけです。
  * スコアや価格(円)など他の列、数式の入ったセルは書き換えません。
@@ -26,6 +27,9 @@ var BENCHCORE_BEST_COLUMN = '最安値(円)';
 var BENCHCORE_COLOR_PRICE = '#f4cccc';
 var BENCHCORE_COLOR_NAME = '#fff2cc';
 var BENCHCORE_FIX_NAMES = true;
+var BENCHCORE_ADD_NEW = true;
+var BENCHCORE_SCORE_COLUMNS = {cpu: 'PassMarkスコア', gpu: '3DMark Time Spy'};
+var BENCHCORE_SCORE_SITE = {cpu: 'PassMark', gpu: '3DMark Time Spy'};
 // 単体のパーツとして売っていない製品。シートから行ごと削除する
 var BENCHCORE_NOT_STANDALONE = {
   cpu: [/^Apple M\d/i],
@@ -52,6 +56,10 @@ function benchcoreFetch_(file) {
 function benchcoreRun_(dryRun) {
   var priceData = benchcoreFetch_('rakuten-prices.json');
   var auditData = benchcoreFetch_('sheet-audit.json');
+  // 新製品の候補（取得できなくても他の処理は続ける）
+  var newData = {candidates: []};
+  var newDataMissing = false;
+  try { newData = benchcoreFetch_('new-products.json'); } catch (e) { newDataMissing = true; }
   var now = new Date().getTime();
   var prices = {};
   (priceData.products || []).forEach(function (product) {
@@ -168,8 +176,36 @@ function benchcoreRun_(dryRun) {
       }
       if (!issue && !dryRun && nameBackgrounds[i][0] === BENCHCORE_COLOR_NAME) { nameCell.setBackground(null); nameCell.clearNote(); }
     }
+
+    // 新製品の行を末尾に追加する。同じ名前の行がすでにあれば何もしない（毎日重複して増えない）
+    var scoreIndex = header.indexOf(BENCHCORE_SCORE_COLUMNS[category]);
+    if (!BENCHCORE_ADD_NEW || scoreIndex < 0) return;
+    var have = {};
+    sheet.getRange(2, nameIndex + 1, Math.max(sheet.getLastRow() - 1, 1), 1).getValues().forEach(function (row) {
+      have[String(row[0]).trim().toUpperCase().replace(/\s+/g, ' ')] = true;
+    });
+    (newData.candidates || []).forEach(function (c) {
+      if (c.category !== category || typeof c.modelName !== 'string' || !c.modelName.trim()) return;
+      var name = c.modelName.trim();
+      if (have[name.toUpperCase().replace(/\s+/g, ' ')]) return;
+      if ((BENCHCORE_NOT_STANDALONE[category] || []).some(function (p) { return p.test(name); })) return;
+      have[name.toUpperCase().replace(/\s+/g, ' ')] = true;
+      log.push(sheet.getName() + ' / ' + name + ': 新製品として行を追加' + (dryRun ? '（予定）' : '') + '（出品 ' + c.listings + ' 件、相場 約' + c.medianPrice + '円）');
+      if (dryRun) return;
+      var width = Math.max(sheet.getLastColumn(), scoreIndex + 1, nameIndex + 1);
+      var row = [];
+      for (var k = 0; k < width; k++) row.push('');
+      row[nameIndex] = name;
+      sheet.appendRow(row);
+      var at = sheet.getLastRow();
+      var query = encodeURIComponent(name + ' ' + BENCHCORE_SCORE_SITE[category]);
+      sheet.getRange(at, nameIndex + 1).setNote('新製品として自動で追加しました（' + Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy/MM/dd') + '、出品 ' + c.listings + ' 件、相場 約' + c.medianPrice + '円）。\n例: ' + String(c.example || '').slice(0, 80));
+      sheet.getRange(at, scoreIndex + 1).setBackground(BENCHCORE_COLOR_NAME)
+        .setNote(BENCHCORE_SCORE_SITE[category] + ' のスコアを入力してください。入力するとサイトのランキングに載ります。\n検索: https://www.google.com/search?q=' + query);
+    });
   });
 
   Logger.log((dryRun ? '【プレビュー：シートは変更していません】' : '【反映しました】') + ' ' + log.length + ' 件');
   log.forEach(function (line) { Logger.log(line); });
+  if (newDataMissing) Logger.log('新製品の候補を取得できなかったため、行の追加は行いませんでした');
 }

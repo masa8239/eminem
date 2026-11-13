@@ -58,12 +58,13 @@ function cpuIssue(name) {
     if (expected !== Number(tier)) return `等級が違います（正しくは Core i${expected}-${number}${suffix}）`;
     return null;
   }
-  match = text.match(/^CORE ULTRA (\d) (\d{3})([A-Z]{0,2})$/);
+  match = text.match(/^CORE ULTRA (\d) (\d{3})([A-Z]{0,2})( PLUS)?$/);
   if (match) {
     const [, tier, number] = match;
-    const expected = number[1] === '8' ? 9 : number[1] === '6' ? 7 : number[1] === '4' || number[1] === '3' || number[1] === '2' ? 5 : null;
+    // 285 / 290 → 9、265 / 270 → 7、225〜250 → 5
+    const expected = {9: 9, 8: 9, 7: 7, 6: 7, 5: 5, 4: 5, 3: 5, 2: 5}[number[1]] ?? null;
     if (expected === null) return '存在しない型番の可能性があります';
-    if (expected !== Number(tier)) return `等級が違います（正しくは Core Ultra ${expected} ${match[2]}${match[3]}）`;
+    if (expected !== Number(tier)) return `等級が違います（正しくは Core Ultra ${expected} ${match[2]}${match[3]}${match[4] ? ' Plus' : ''}）`;
     return null;
   }
   return '型番の形式を判定できません';
@@ -89,7 +90,7 @@ function gpuIssue(name) {
     if (number.length === 4 && ![10, 16].includes(series)) return `GTX ${number} は存在しません（RTX の型番の可能性）`;
   }
   if (family === 'RX') {
-    const known = ['460', '470', '480', '550', '560', '570', '580', '590', '5500', '5600', '5700', '6400', '6500', '6600', '6650', '6700', '6750', '6800', '6900', '6950', '7600', '7700', '7800', '7900', '9060', '9070'];
+    const known = ['460', '470', '480', '550', '560', '570', '580', '590', '5500', '5600', '5700', '6400', '6500', '6600', '6650', '6700', '6750', '6800', '6900', '6950', '7600', '7700', '7800', '7900', '9050', '9060', '9070'];
     if (!known.includes(number)) return `RX ${number} は存在しません`;
   }
   if (/\(.*GPU\)/.test(text)) return 'モデル名に不要な文字が入っています';

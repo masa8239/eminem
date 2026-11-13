@@ -41,8 +41,9 @@ function parseCpu(name) {
     return match ? {brand: 'RYZEN', token: match[1]} : null;
   }
   if (text.includes('ULTRA')) {
-    const match = text.match(/\b(\d{3}[A-Z]{0,2})\s*$/);
-    return match ? {brand: 'ULTRA', token: match[1]} : null;
+    // 「Core Ultra 7 270K Plus」のように末尾に Plus が付く型番がある
+    const match = text.match(/\b(\d{3}[A-Z]{0,2})(\s*PLUS)?\s*$/);
+    return match ? {brand: 'ULTRA', token: match[1], plus: Boolean(match[2])} : null;
   }
   const match = text.match(/\bI[3579][\s-]*(\d{4,5}[A-Z]{0,2})\b/);
   return match ? {brand: 'CORE', token: match[1]} : null;
@@ -80,12 +81,13 @@ function modelSpec(category, modelName, siblingNames = []) {
   if (category === 'cpu') {
     const cpu = parseCpu(modelName);
     if (!cpu) return null;
-    const pattern = new RegExp(`(?<![A-Z0-9])${cpu.token}(?![A-Z0-9])`);
+    const pattern = cpu.plus ? new RegExp(`(?<![A-Z0-9])${cpu.token}\\s*PLUS(?![A-Z0-9])`)
+      : new RegExp(`(?<![A-Z0-9])${cpu.token}(?![A-Z0-9])(?!\\s*PLUS)`);
     const brandOk = text => cpu.brand === 'RYZEN' ? text.includes('RYZEN')
       : cpu.brand === 'ULTRA' ? text.includes('ULTRA')
       : /CORE|INTEL|インテル/.test(text);
     return {
-      keyword: cpu.brand === 'RYZEN' ? `Ryzen ${cpu.token}` : cpu.brand === 'ULTRA' ? `Core Ultra ${cpu.token}` : `Core ${cpu.token}`,
+      keyword: cpu.brand === 'RYZEN' ? `Ryzen ${cpu.token}` : cpu.brand === 'ULTRA' ? `Core Ultra ${cpu.token}${cpu.plus ? ' Plus' : ''}` : `Core ${cpu.token}`,
       matches(itemName) {
         const text = normalize(itemName);
         // グラボ名やメモリ規格が入っている出品はCPU単品ではない
@@ -155,8 +157,8 @@ function modelFromItemName(itemName) {
   if (/DDR[45]|メモリ/.test(text)) return null;
   let m = text.match(/RYZEN\s*([3579])\s*(\d{4})(X3D|XT|X|F|GT|GE|G)?(?![A-Z0-9])/);
   if (m) return {category: 'cpu', modelName: `Ryzen ${m[1]} ${m[2]}${m[3] || ''}`};
-  m = text.match(/CORE\s*ULTRA\s*([3579])\s*(?:プロセッサー\s*)?(\d{3})(KF|K|F|T)?(?![A-Z0-9])/);
-  if (m) return {category: 'cpu', modelName: `Core Ultra ${m[1]} ${m[2]}${m[3] || ''}`};
+  m = text.match(/CORE\s*ULTRA\s*([3579])\s*(?:プロセッサー\s*)?(\d{3})(KF|K|F|T)?(?![A-Z0-9])(\s*PLUS(?![A-Z0-9]))?/);
+  if (m) return {category: 'cpu', modelName: `Core Ultra ${m[1]} ${m[2]}${m[3] || ''}${m[4] ? ' Plus' : ''}`};
   m = text.match(/CORE\s*I([3579])[\s-]*(\d{5})(KF|KS|K|F|T)?(?![A-Z0-9])/);
   if (m) return {category: 'cpu', modelName: `Core i${m[1]}-${m[2]}${m[3] || ''}`};
   return null;

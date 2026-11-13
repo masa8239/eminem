@@ -16,7 +16,8 @@ test('model names are parsed into exact grades', () => {
   assert.deepEqual(parseGpu('Radeon RX 7900 GRE'), {family: 'RX', number: '7900', suffix: 'GRE', vram: null});
   assert.deepEqual(parseCpu('Ryzen 9 9950X3D'), {brand: 'RYZEN', token: '9950X3D'});
   assert.deepEqual(parseCpu('Core i9-14900KS'), {brand: 'CORE', token: '14900KS'});
-  assert.deepEqual(parseCpu('Core Ultra 7 265KF'), {brand: 'ULTRA', token: '265KF'});
+  assert.deepEqual(parseCpu('Core Ultra 7 265KF'), {brand: 'ULTRA', token: '265KF', plus: false});
+  assert.deepEqual(parseCpu('Core Ultra 7 270K Plus'), {brand: 'ULTRA', token: '270K', plus: true});
   assert.equal(modelSpec('ram', 'G.Skill Trident Z5 DDR5-7200'), null);
 });
 

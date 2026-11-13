@@ -17,7 +17,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core Ultra 7 270K",
+   "modelName": "Core Ultra 7 270K Plus",
    "listings": 8,
    "medianPrice": 57425,
    "example": "Intel Core Ultra 7 270K Plus BOX"
@@ -38,7 +38,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core Ultra 5 250K",
+   "modelName": "Core Ultra 5 250K Plus",
    "listings": 4,
    "medianPrice": 41000,
    "example": "Core Ultra 5 250K Plus　BX80768250K"
