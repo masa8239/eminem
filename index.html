@@ -1459,6 +1459,9 @@ function parseRamRow(row) {
   return {name,type,speed,cl,capacity,kit,price,badge,badgeClass};
 }
 
+// 単体のパーツとして売っていない製品（CPU内蔵グラフィックス、Apple M シリーズ）はランキングに載せない
+const NOT_STANDALONE = {cpu:[/^Apple M\d/i], gpu:[/^Radeon \d{3}M\b/i, /^Radeon RX Vega \d+\s*\(Ryzen/i, /^Intel (UHD |Iris )?Graphics/i, /^Radeon Graphics/i]};
+function isStandalone(category, name) { return !(NOT_STANDALONE[category]||[]).some(p => p.test(String(name).trim())); }
 // シートの価格が空・不正な製品は、同じ型番の内蔵参考価格で補う（別の型番からの推測はしない）
 function fillBuiltinPrices(parsed, builtin) {
   const byName = new Map(builtin.map(item => [item.name, item.price]));
@@ -1487,7 +1490,7 @@ async function loadSheetData() {
   ]);
   const LOADED='スプレッドシートの最新データ', BUILTIN='内蔵データを表示中';
   if (cpuR.status==='fulfilled') {
-    const parsed = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0);
+    const parsed = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&r.score>0&&isStandalone('cpu',r.name));
     if (parsed.length > 0) {
       cpuData = assignSheetBadges(fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.score-a.score)), FALLBACK_CPU),'cpu'); cpuFromSheet = true;
       maxCpuScore = Math.max(...cpuData.map(d=>d.score));
@@ -1495,7 +1498,7 @@ async function loadSheetData() {
     } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
   } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
   if (gpuR.status==='fulfilled') {
-    const parsed = gpuR.value.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0);
+    const parsed = gpuR.value.map(parseGpuRow).filter(r=>r&&r.name&&r.score>0&&isStandalone('gpu',r.name));
     if (parsed.length > 0) {
       gpuData = assignSheetBadges(fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.score-a.score)), FALLBACK_GPU),'gpu'); gpuFromSheet = true;
       maxGpuScore = Math.max(...gpuData.map(d=>d.score));

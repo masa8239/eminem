@@ -26,6 +26,7 @@ function makeSheet(name, grid, formulas = {}) {
     grid, notes, backgrounds,
     getName: () => name,
     getLastRow: () => grid.length,
+    deleteRow(row) { grid.splice(row - 1, 1); },
     getLastColumn: width,
     getRange(row, column, rows, columns) {
       const r0 = row - 1, c0 = column - 1;
@@ -84,6 +85,7 @@ const gpuGrid = () => [
   ['Radeon RX 9000 XT', 9000, 55.4],
   ['GeForce RTX 3070', 13500, 44000],
   ['Radeon 780M', 3357, ''],
+  ['Radeon RX Vega 8(Ryzen 5000)', 1570, ''],
 ];
 
 test('the loader fetches the sync code from GitHub main and preview changes nothing', () => {
@@ -94,6 +96,8 @@ test('the loader fetches the sync code from GitHub main and preview changes noth
   assert.equal(JSON.stringify(sheet.grid), before);
   assert.deepEqual([sheet.notes, sheet.backgrounds], [{}, {}]);
   assert.match(logs[0], /プレビュー/);
+  assert.ok(logs.some(line => line.includes('Radeon 780M') && line.includes('削除（予定）')));
+  assert.equal(sheet.grid.length, 11);
   assert.ok(logs.some(line => line.includes('GeForce RTX 5080') && line.includes('198000')));
 });
 
@@ -118,8 +122,8 @@ test('sync writes fetched prices to a separate column and never overwrites the r
   assert.equal(sheet.backgrounds['7,0'], '#fff2cc');
   assert.equal(sheet.backgrounds['7,2'], '#f4cccc');   // 円でない価格は赤
   assert.deepEqual(g[8].slice(0, 3), ['GeForce RTX 3070', 13500, 44000]); // 正常な行はそのまま
-  assert.equal(sheet.backgrounds['9,2'], undefined);   // 単体で売っていない製品は価格がなくても赤くしない
-  assert.equal(g.length, 10);                          // 行は削除しない
+  assert.deepEqual(g.map(r => r[0]).filter(n => /780M|Vega 8/.test(n)), []); // 内蔵グラフィックスの行は削除
+  assert.equal(g.length, 9);                           // それ以外の行は削除しない
   assert.equal(g[1][1], 38200);                        // スコア列は触らない
 });
 

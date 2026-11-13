@@ -55,7 +55,7 @@ async function loadModels(fetchImpl) {
       const rows = await response.json();
       if (!Array.isArray(rows)) throw new Error('bad payload');
       context.__rows = rows;
-      JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&r.score>0))`)).forEach(item => {
+      JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&r.score>0&&isStandalone('${category}',r.name)))`)).forEach(item => {
         const key = `${category}\0${item.name}`;
         const price = Number.isSafeInteger(item.price) && item.price > 0 ? item.price : null;
         sheetRows.push({category, sheetName: item.sheetName || item.name, modelName: item.name, priceValid: price !== null});

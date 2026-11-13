@@ -10,9 +10,11 @@
  *  - 価格(円) が空・円でない値で、最安値も取れていない行の価格セルを赤く塗る
  *  - 等級違い・系列違いなど機械的に直せるモデル名を正しい名前に書き換える（元の名前はメモに残す）
  *  - 直せないモデル名（存在しない型番など）のセルを黄色く塗り、理由をメモに書く
+ *  - 単体のパーツとして売っていない製品（CPU内蔵グラフィックス、Apple M シリーズ）の行を削除する
  *
  * 書き換えるのは「最安値(円)」列、機械的に直せるモデル名、価格セル・モデル名セルの背景色とメモだけです。
- * スコアや価格(円)など他の列、数式の入ったセルは書き換えません。行の削除もしません。
+ * スコアや価格(円)など他の列、数式の入ったセルは書き換えません。
+ * 行を削除するのは、下の BENCHCORE_NOT_STANDALONE に当てはまる行だけです（止めたい場合は空の配列にする）。
  * モデル名の自動修正を止めたい場合は BENCHCORE_FIX_NAMES を false にしてください。
  */
 
@@ -24,6 +26,11 @@ var BENCHCORE_BEST_COLUMN = '最安値(円)';
 var BENCHCORE_COLOR_PRICE = '#f4cccc';
 var BENCHCORE_COLOR_NAME = '#fff2cc';
 var BENCHCORE_FIX_NAMES = true;
+// 単体のパーツとして売っていない製品。シートから行ごと削除する
+var BENCHCORE_NOT_STANDALONE = {
+  cpu: [/^Apple M\d/i],
+  gpu: [/^Radeon \d{3}M\b/i, /^Radeon RX Vega \d+\s*\(Ryzen/i, /^Intel (UHD |Iris )?Graphics/i, /^Radeon Graphics/i],
+};
 
 function benchcorePreview() { benchcoreRun_(true); }
 function benchcoreSync() { benchcoreRun_(false); }
@@ -83,6 +90,19 @@ function benchcoreRun_(dryRun) {
         .setNote('ストアから自動取得した最安値です。毎朝自動で更新されます。手で書き換えないでください。');
     }
 
+    // 単体で売っていない製品の行を、下から順に削除する（プレビューでは削除予定を表示するだけ）
+    var patterns = BENCHCORE_NOT_STANDALONE[category] || [];
+    var allNames = sheet.getRange(2, nameIndex + 1, lastRow - 1, 1).getValues();
+    var skip = {};
+    for (var d = allNames.length - 1; d >= 0; d--) {
+      var n = String(allNames[d][0]).trim();
+      if (!n || !patterns.some(function (p) { return p.test(n); })) continue;
+      log.push(sheet.getName() + ' / ' + n + ': 単体で売っていない製品のため行を削除' + (dryRun ? '（予定）' : ''));
+      if (dryRun) skip[d] = true; else sheet.deleteRow(d + 2);
+    }
+    if (!dryRun) lastRow = sheet.getLastRow();
+    if (lastRow < 2) return;
+
     var rows = lastRow - 1;
     var nameRange = sheet.getRange(2, nameIndex + 1, rows, 1);
     var priceRange = sheet.getRange(2, priceIndex + 1, rows, 1);
@@ -96,7 +116,7 @@ function benchcoreRun_(dryRun) {
 
     for (var i = 0; i < rows; i++) {
       var name = String(names[i][0]).trim();
-      if (!name) continue;
+      if (!name || skip[i]) continue;
       var key = category + '|' + name;
       var nameCell = nameRange.getCell(i + 1, 1), priceCell = priceRange.getCell(i + 1, 1);
       var current = values[i][0];
