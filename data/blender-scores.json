@@ -1,0 +1,1165 @@
+{
+ "checkedAt": "2026-11-13T21:20:59.571Z",
+ "source": "https://opendata.blender.org/",
+ "note": "Blender Open Data（公開データ・利用制限なし）の中央値。測定数3件以上のみ。GPUは一番速い計算方式の値",
+ "cpu": {
+  "blenderVersion": "4.5.0",
+  "scores": {
+   "Ryzen 9 9950X3D": {
+    "score": 663.5,
+    "samples": 1290,
+    "deviceName": "AMD Ryzen 9 9950X3D 16-Core Processor"
+   },
+   "Ryzen 9 9950X": {
+    "score": 625.37,
+    "samples": 624,
+    "deviceName": "AMD Ryzen 9 9950X 16-Core Processor"
+   },
+   "Core Ultra 7 270K Plus": {
+    "score": 611.12,
+    "samples": 20,
+    "deviceName": "Intel Core Ultra 7 270K Plus"
+   },
+   "Core Ultra 9 285K": {
+    "score": 562.02,
+    "samples": 280,
+    "deviceName": "Intel Core Ultra 9 285K"
+   },
+   "Ryzen 9 7950X": {
+    "score": 550.73,
+    "samples": 246,
+    "deviceName": "AMD Ryzen 9 7950X 16-Core Processor"
+   },
+   "Ryzen 9 7950X3D": {
+    "score": 540.32,
+    "samples": 211,
+    "deviceName": "AMD Ryzen 9 7950X3D 16-Core Processor"
+   },
+   "Core i9-14900KS": {
+    "score": 523.5,
+    "samples": 31,
+    "deviceName": "Intel Core i9-14900KS"
+   },
+   "Core i9-14900K": {
+    "score": 507.54,
+    "samples": 275,
+    "deviceName": "Intel Core i9-14900K"
+   },
+   "Core i9-13900KS": {
+    "score": 507.49,
+    "samples": 12,
+    "deviceName": "13th Gen Intel Core i9-13900KS"
+   },
+   "Ryzen 9 9900X": {
+    "score": 500.98,
+    "samples": 383,
+    "deviceName": "AMD Ryzen 9 9900X 12-Core Processor"
+   },
+   "Core i9-14900KF": {
+    "score": 496,
+    "samples": 65,
+    "deviceName": "Intel Core i9-14900KF"
+   },
+   "Core i9-13900KF": {
+    "score": 485.25,
+    "samples": 62,
+    "deviceName": "13th Gen Intel Core i9-13900KF"
+   },
+   "Core i9-13900K": {
+    "score": 484.13,
+    "samples": 84,
+    "deviceName": "13th Gen Intel Core i9-13900K"
+   },
+   "Core Ultra 9 285": {
+    "score": 482.67,
+    "samples": 12,
+    "deviceName": "Intel Core Ultra 9 285"
+   },
+   "Core Ultra 7 265K": {
+    "score": 478.04,
+    "samples": 279,
+    "deviceName": "Intel Core Ultra 7 265K"
+   },
+   "Core Ultra 7 265KF": {
+    "score": 475.87,
+    "samples": 70,
+    "deviceName": "Intel Core Ultra 7 265KF"
+   },
+   "Ryzen 9 9900X3D": {
+    "score": 473.12,
+    "samples": 33,
+    "deviceName": "AMD Ryzen 9 9900X3D 12-Core Processor"
+   },
+   "Core i7-14700KF": {
+    "score": 445.65,
+    "samples": 125,
+    "deviceName": "Intel Core i7-14700KF"
+   },
+   "Core i7-14700K": {
+    "score": 441.61,
+    "samples": 106,
+    "deviceName": "Intel Core i7-14700K"
+   },
+   "Core Ultra 5 250K Plus": {
+    "score": 432.64,
+    "samples": 6,
+    "deviceName": "Intel Core Ultra 5 250K Plus"
+   },
+   "Ryzen 9 7900X": {
+    "score": 413.6,
+    "samples": 161,
+    "deviceName": "AMD Ryzen 9 7900X 12-Core Processor"
+   },
+   "Ryzen 9 7900": {
+    "score": 411.1,
+    "samples": 143,
+    "deviceName": "AMD Ryzen 9 7900 12-Core Processor"
+   },
+   "Core i9-13900F": {
+    "score": 402.73,
+    "samples": 5,
+    "deviceName": "13th Gen Intel Core i9-13900F"
+   },
+   "Ryzen 9 7900X3D": {
+    "score": 402.03,
+    "samples": 31,
+    "deviceName": "AMD Ryzen 9 7900X3D 12-Core Processor"
+   },
+   "Ryzen 9 5950X": {
+    "score": 391.47,
+    "samples": 491,
+    "deviceName": "AMD Ryzen 9 5950X 16-Core Processor"
+   },
+   "Core i7-13700K": {
+    "score": 386.71,
+    "samples": 122,
+    "deviceName": "13th Gen Intel Core i7-13700K"
+   },
+   "Core Ultra 7 265": {
+    "score": 375.6,
+    "samples": 12,
+    "deviceName": "Intel Core Ultra 7 265"
+   },
+   "Core i9-12900KS": {
+    "score": 373.02,
+    "samples": 10,
+    "deviceName": "Intel Core i9-12900KS"
+   },
+   "Ryzen 9 5900XT": {
+    "score": 363.35,
+    "samples": 76,
+    "deviceName": "AMD Ryzen 9 5900XT 16-Core Processor"
+   },
+   "Core i7-13700KF": {
+    "score": 362.84,
+    "samples": 90,
+    "deviceName": "13th Gen Intel Core i7-13700KF"
+   },
+   "Core i7-13700": {
+    "score": 362.25,
+    "samples": 9,
+    "deviceName": "13th Gen Intel Core i7-13700"
+   },
+   "Core Ultra 7 265F": {
+    "score": 359.17,
+    "samples": 12,
+    "deviceName": "Intel Core Ultra 7 265F"
+   },
+   "Core i9-12900K": {
+    "score": 353.56,
+    "samples": 68,
+    "deviceName": "Intel Core i9-12900K"
+   },
+   "Core i9-12900KF": {
+    "score": 346.12,
+    "samples": 29,
+    "deviceName": "Intel Core i9-12900KF"
+   },
+   "Ryzen 7 9850X3D": {
+    "score": 345.16,
+    "samples": 19,
+    "deviceName": "AMD Ryzen 7 9850X3D 8-Core Processor"
+   },
+   "Core Ultra 5 245KF": {
+    "score": 340.29,
+    "samples": 5,
+    "deviceName": "Intel Core Ultra 5 245KF"
+   },
+   "Ryzen 7 9800X3D": {
+    "score": 333.9,
+    "samples": 1084,
+    "deviceName": "AMD Ryzen 7 9800X3D 8-Core Processor"
+   },
+   "Core i9-14900F": {
+    "score": 320.39,
+    "samples": 6,
+    "deviceName": "Intel Core i9-14900F"
+   },
+   "Core i9-13900": {
+    "score": 319.73,
+    "samples": 7,
+    "deviceName": "13th Gen Intel Core i9-13900"
+   },
+   "Core Ultra 5 245K": {
+    "score": 317.95,
+    "samples": 25,
+    "deviceName": "Intel Core Ultra 5 245K"
+   },
+   "Core i9-14900": {
+    "score": 317.9,
+    "samples": 9,
+    "deviceName": "Intel Core i9-14900"
+   },
+   "Core Ultra 5 235": {
+    "score": 309.87,
+    "samples": 5,
+    "deviceName": "Intel Core Ultra 5 235"
+   },
+   "Core i5-14600KF": {
+    "score": 309.6,
+    "samples": 76,
+    "deviceName": "Intel Core i5-14600KF"
+   },
+   "Ryzen 7 9700X": {
+    "score": 309.3,
+    "samples": 439,
+    "deviceName": "AMD Ryzen 7 9700X 8-Core Processor"
+   },
+   "Core i7-13700T": {
+    "score": 307.76,
+    "samples": 4,
+    "deviceName": "13th Gen Intel Core i7-13700T"
+   },
+   "Ryzen 9 5900X": {
+    "score": 305.86,
+    "samples": 299,
+    "deviceName": "AMD Ryzen 9 5900X 12-Core Processor"
+   },
+   "Core i5-13600K": {
+    "score": 302.33,
+    "samples": 35,
+    "deviceName": "13th Gen Intel Core i5-13600K"
+   },
+   "Core i5-14600K": {
+    "score": 301.46,
+    "samples": 102,
+    "deviceName": "Intel Core i5-14600K"
+   },
+   "Core i7-14700": {
+    "score": 299.92,
+    "samples": 38,
+    "deviceName": "Intel Core i7-14700"
+   },
+   "Core i5-13600KF": {
+    "score": 299.8,
+    "samples": 45,
+    "deviceName": "13th Gen Intel Core i5-13600KF"
+   },
+   "Core i7-14700F": {
+    "score": 294.65,
+    "samples": 46,
+    "deviceName": "Intel Core i7-14700F"
+   },
+   "Core i9-12900F": {
+    "score": 293.98,
+    "samples": 3,
+    "deviceName": "Intel Core i9-12900F"
+   },
+   "Core i7-12700KF": {
+    "score": 292.47,
+    "samples": 102,
+    "deviceName": "Intel Core i7-12700KF"
+   },
+   "Core i7-12700K": {
+    "score": 285.88,
+    "samples": 120,
+    "deviceName": "Intel Core i7-12700K"
+   },
+   "Core i7-13700F": {
+    "score": 280.8,
+    "samples": 14,
+    "deviceName": "13th Gen Intel Core i7-13700F"
+   },
+   "Ryzen 7 7700X": {
+    "score": 279.04,
+    "samples": 134,
+    "deviceName": "AMD Ryzen 7 7700X 8-Core Processor"
+   },
+   "Ryzen 9 3900XT": {
+    "score": 277.45,
+    "samples": 7,
+    "deviceName": "AMD Ryzen 9 3900XT 12-Core Processor"
+   },
+   "Core i5-12600KF": {
+    "score": 272.03,
+    "samples": 77,
+    "deviceName": "Intel Core i5-12600KF"
+   },
+   "Ryzen 9 3900X": {
+    "score": 268.35,
+    "samples": 123,
+    "deviceName": "AMD Ryzen 9 3900X 12-Core Processor"
+   },
+   "Ryzen 7 7700": {
+    "score": 265.85,
+    "samples": 156,
+    "deviceName": "AMD Ryzen 7 7700 8-Core Processor"
+   },
+   "Core i5-13500": {
+    "score": 264.87,
+    "samples": 24,
+    "deviceName": "13th Gen Intel Core i5-13500"
+   },
+   "Ryzen 7 7800X3D": {
+    "score": 264.02,
+    "samples": 362,
+    "deviceName": "AMD Ryzen 7 7800X3D 8-Core Processor"
+   },
+   "Ryzen 5 9600X": {
+    "score": 262.65,
+    "samples": 325,
+    "deviceName": "AMD Ryzen 5 9600X 6-Core Processor"
+   },
+   "Ryzen 7 8700G": {
+    "score": 250.18,
+    "samples": 34,
+    "deviceName": "AMD Ryzen 7 8700G w/ Radeon 780M Graphics"
+   },
+   "Ryzen 7 8700F": {
+    "score": 240.66,
+    "samples": 19,
+    "deviceName": "AMD Ryzen 7 8700F 8-Core Processor"
+   },
+   "Core i9-10900K": {
+    "score": 239.18,
+    "samples": 29,
+    "deviceName": "Intel Core i9-10900K CPU @ 3.70GHz"
+   },
+   "Core i7-12700F": {
+    "score": 236.15,
+    "samples": 26,
+    "deviceName": "Intel Core i7-12700F"
+   },
+   "Core i9-11900K": {
+    "score": 228.28,
+    "samples": 19,
+    "deviceName": "Intel Core i9-11900K @ 3.50GHz"
+   },
+   "Core i9-10900KF": {
+    "score": 226.26,
+    "samples": 11,
+    "deviceName": "Intel Core i9-10900KF CPU @ 3.70GHz"
+   },
+   "Core i9-10850K": {
+    "score": 225.45,
+    "samples": 32,
+    "deviceName": "Intel Core i9-10850K CPU @ 3.60GHz"
+   },
+   "Core i7-12700": {
+    "score": 224.39,
+    "samples": 26,
+    "deviceName": "Intel Core i7-12700"
+   },
+   "Core i5-12600K": {
+    "score": 222.41,
+    "samples": 44,
+    "deviceName": "Intel Core i5-12600K"
+   },
+   "Core Ultra 5 225": {
+    "score": 221.91,
+    "samples": 3,
+    "deviceName": "Intel Core Ultra 5 225"
+   },
+   "Core i5-14500": {
+    "score": 218.5,
+    "samples": 9,
+    "deviceName": "Intel Core i5-14500"
+   },
+   "Ryzen 7 5700X": {
+    "score": 214.39,
+    "samples": 424,
+    "deviceName": "AMD Ryzen 7 5700X 8-Core Processor"
+   },
+   "Ryzen 7 5800XT": {
+    "score": 212.89,
+    "samples": 91,
+    "deviceName": "AMD Ryzen 7 5800XT 8-Core Processor"
+   },
+   "Core Ultra 5 225F": {
+    "score": 212.82,
+    "samples": 10,
+    "deviceName": "Intel Core Ultra 5 225F"
+   },
+   "Ryzen 7 5800X3D": {
+    "score": 209.5,
+    "samples": 128,
+    "deviceName": "AMD Ryzen 7 5800X3D 8-Core Processor"
+   },
+   "Ryzen 7 5800X": {
+    "score": 207.2,
+    "samples": 323,
+    "deviceName": "AMD Ryzen 7 5800X 8-Core Processor"
+   },
+   "Core i5-13400F": {
+    "score": 205.4,
+    "samples": 87,
+    "deviceName": "13th Gen Intel Core i5-13400F"
+   },
+   "Ryzen 5 7600X": {
+    "score": 203.98,
+    "samples": 143,
+    "deviceName": "AMD Ryzen 5 7600X 6-Core Processor"
+   },
+   "Core i5-14400F": {
+    "score": 202.41,
+    "samples": 45,
+    "deviceName": "Intel Core i5-14400F"
+   },
+   "Core i5-14400": {
+    "score": 198.81,
+    "samples": 10,
+    "deviceName": "Intel Core i5-14400"
+   },
+   "Core i7-11700K": {
+    "score": 198.46,
+    "samples": 18,
+    "deviceName": "Intel Core i7-11700K @ 3.60GHz"
+   },
+   "Ryzen 5 7600": {
+    "score": 198.08,
+    "samples": 69,
+    "deviceName": "AMD Ryzen 5 7600 6-Core Processor"
+   },
+   "Ryzen 5 7500F": {
+    "score": 194.24,
+    "samples": 94,
+    "deviceName": "AMD Ryzen 5 7500F 6-Core Processor"
+   },
+   "Core i5-13400": {
+    "score": 191.89,
+    "samples": 9,
+    "deviceName": "13th Gen Intel Core i5-13400"
+   },
+   "Ryzen 7 3800XT": {
+    "score": 191.32,
+    "samples": 14,
+    "deviceName": "AMD Ryzen 7 3800XT 8-Core Processor"
+   },
+   "Ryzen 7 5700G": {
+    "score": 187.82,
+    "samples": 49,
+    "deviceName": "AMD Ryzen 7 5700G with Radeon Graphics"
+   },
+   "Ryzen 7 5700": {
+    "score": 187.79,
+    "samples": 16,
+    "deviceName": "AMD Ryzen 7 5700"
+   },
+   "Ryzen 7 5700X3D": {
+    "score": 186.8,
+    "samples": 66,
+    "deviceName": "AMD Ryzen 7 5700X3D 8-Core Processor"
+   },
+   "Ryzen 5 8400F": {
+    "score": 186.64,
+    "samples": 18,
+    "deviceName": "AMD Ryzen 5 8400F 6-Core Processor"
+   },
+   "Ryzen 5 8600G": {
+    "score": 184.47,
+    "samples": 24,
+    "deviceName": "AMD Ryzen 5 8600G w/ Radeon 760M Graphics"
+   },
+   "Core i9-11900": {
+    "score": 182.79,
+    "samples": 5,
+    "deviceName": "Intel Core i9-11900 @ 2.50GHz"
+   },
+   "Core i7-10700K": {
+    "score": 180.36,
+    "samples": 41,
+    "deviceName": "Intel Core i7-10700K CPU @ 3.80GHz"
+   },
+   "Ryzen 5 5600X3D": {
+    "score": 180.09,
+    "samples": 9,
+    "deviceName": "AMD Ryzen 5 5600X3D 6-Core Processor"
+   },
+   "Core i7-11700F": {
+    "score": 176.32,
+    "samples": 10,
+    "deviceName": "Intel Core i7-11700F @ 2.50GHz"
+   },
+   "Ryzen 7 3700X": {
+    "score": 173.72,
+    "samples": 105,
+    "deviceName": "AMD Ryzen 7 3700X 8-Core Processor"
+   },
+   "Core i7-10700F": {
+    "score": 159.41,
+    "samples": 9,
+    "deviceName": "Intel Core i7-10700F CPU @ 2.90GHz"
+   },
+   "Core i7-10700": {
+    "score": 157.59,
+    "samples": 46,
+    "deviceName": "Intel Core i7-10700 CPU @ 2.90GHz"
+   },
+   "Ryzen 5 5600GT": {
+    "score": 157.18,
+    "samples": 30,
+    "deviceName": "AMD Ryzen 5 5600GT with Radeon Graphics"
+   },
+   "Core i5-12400F": {
+    "score": 154.37,
+    "samples": 97,
+    "deviceName": "Intel Core i5-12400F"
+   },
+   "Core i5-12400": {
+    "score": 154.34,
+    "samples": 28,
+    "deviceName": "Intel Core i5-12400"
+   },
+   "Ryzen 5 8500G": {
+    "score": 153.35,
+    "samples": 14,
+    "deviceName": "AMD Ryzen 5 8500G w/ Radeon 740M Graphics"
+   },
+   "Core i5-12500": {
+    "score": 152.89,
+    "samples": 6,
+    "deviceName": "Intel Core i5-12500"
+   },
+   "Ryzen 5 5600XT": {
+    "score": 152.53,
+    "samples": 6,
+    "deviceName": "AMD Ryzen 5 5600XT 6-Core Processor"
+   },
+   "Ryzen 5 5600X": {
+    "score": 151.25,
+    "samples": 241,
+    "deviceName": "AMD Ryzen 5 5600X 6-Core Processor"
+   },
+   "Ryzen 5 5600": {
+    "score": 149.9,
+    "samples": 131,
+    "deviceName": "AMD Ryzen 5 5600 6-Core Processor"
+   },
+   "Core i9-9900": {
+    "score": 148.87,
+    "samples": 3,
+    "deviceName": "Intel Core i9-9900 CPU @ 3.10GHz"
+   },
+   "Core i7-9700KF": {
+    "score": 145.85,
+    "samples": 3,
+    "deviceName": "Intel Core i7-9700KF CPU @ 3.60GHz"
+   },
+   "Ryzen 5 5600G": {
+    "score": 145.64,
+    "samples": 165,
+    "deviceName": "AMD Ryzen 5 5600G with Radeon Graphics"
+   },
+   "Core i5-11600K": {
+    "score": 144.88,
+    "samples": 7,
+    "deviceName": "Intel Core i5-11600K @ 3.90GHz"
+   },
+   "Core i5-11500": {
+    "score": 141.49,
+    "samples": 6,
+    "deviceName": "Intel Core i5-11500 @ 2.70GHz"
+   },
+   "Ryzen 5 3600XT": {
+    "score": 140.31,
+    "samples": 4,
+    "deviceName": "AMD Ryzen 5 3600XT 6-Core Processor"
+   },
+   "Ryzen 5 5500GT": {
+    "score": 140.27,
+    "samples": 6,
+    "deviceName": "AMD Ryzen 5 5500GT with Radeon Graphics"
+   },
+   "Ryzen 7 1800X": {
+    "score": 140.21,
+    "samples": 16,
+    "deviceName": "AMD Ryzen 7 1800X Eight-Core Processor"
+   },
+   "Core i5-10600": {
+    "score": 140.2,
+    "samples": 7,
+    "deviceName": "Intel Core i5-10600 CPU @ 3.30GHz"
+   },
+   "Ryzen 5 5500": {
+    "score": 138.72,
+    "samples": 97,
+    "deviceName": "AMD Ryzen 5 5500"
+   },
+   "Ryzen 5 3600X": {
+    "score": 137.92,
+    "samples": 22,
+    "deviceName": "AMD Ryzen 5 3600X 6-Core Processor"
+   },
+   "Core i7-9700K": {
+    "score": 136.23,
+    "samples": 41,
+    "deviceName": "Intel Core i7-9700K CPU @ 3.60GHz"
+   },
+   "Core i5-10600K": {
+    "score": 135.34,
+    "samples": 8,
+    "deviceName": "Intel Core i5-10600K CPU @ 4.10GHz"
+   },
+   "Ryzen 5 3600": {
+    "score": 130.34,
+    "samples": 156,
+    "deviceName": "AMD Ryzen 5 3600 6-Core Processor"
+   },
+   "Core i7-9700F": {
+    "score": 128.02,
+    "samples": 19,
+    "deviceName": "Intel Core i7-9700F CPU @ 3.00GHz"
+   },
+   "Core i5-11400": {
+    "score": 127.82,
+    "samples": 9,
+    "deviceName": "Intel Core i5-11400 @ 2.60GHz"
+   },
+   "Ryzen 7 1700X": {
+    "score": 126.06,
+    "samples": 5,
+    "deviceName": "AMD Ryzen 7 1700X Eight-Core Processor"
+   },
+   "Ryzen 5 PRO 4650G": {
+    "score": 124.43,
+    "samples": 8,
+    "deviceName": "AMD Ryzen 5 PRO 4650G with Radeon Graphics"
+   },
+   "Ryzen 5 4500": {
+    "score": 123.8,
+    "samples": 21,
+    "deviceName": "AMD Ryzen 5 4500 6-Core Processor"
+   },
+   "Core i5-11400F": {
+    "score": 122.76,
+    "samples": 24,
+    "deviceName": "Intel Core i5-11400F @ 2.60GHz"
+   },
+   "Core i7-8700K": {
+    "score": 122.44,
+    "samples": 42,
+    "deviceName": "Intel Core i7-8700K CPU @ 3.70GHz"
+   },
+   "Core i5-10600KF": {
+    "score": 121.41,
+    "samples": 5,
+    "deviceName": "Intel Core i5-10600KF CPU @ 4.10GHz"
+   },
+   "Core i3-14100F": {
+    "score": 118.37,
+    "samples": 4,
+    "deviceName": "Intel Core i3-14100F"
+   },
+   "Core i5-10400": {
+    "score": 116.93,
+    "samples": 18,
+    "deviceName": "Intel Core i5-10400 CPU @ 2.90GHz"
+   },
+   "Core i3-14100": {
+    "score": 116.39,
+    "samples": 3,
+    "deviceName": "Intel Core i3-14100"
+   },
+   "Core i7-8700": {
+    "score": 114.79,
+    "samples": 36,
+    "deviceName": "Intel Core i7-8700 CPU @ 3.20GHz"
+   },
+   "Ryzen 5 4600G": {
+    "score": 113.27,
+    "samples": 5,
+    "deviceName": "AMD Ryzen 5 4600G with Radeon Graphics"
+   },
+   "Ryzen 5 2600": {
+    "score": 107.08,
+    "samples": 68,
+    "deviceName": "AMD Ryzen 5 2600 Six-Core Processor"
+   },
+   "Core i3-12100F": {
+    "score": 105.48,
+    "samples": 12,
+    "deviceName": "Intel Core i3-12100F"
+   },
+   "Ryzen 5 2600X": {
+    "score": 105.33,
+    "samples": 9,
+    "deviceName": "AMD Ryzen 5 2600X Six-Core Processor"
+   },
+   "Core i3-12100": {
+    "score": 96.61,
+    "samples": 6,
+    "deviceName": "Intel Core i3-12100"
+   },
+   "Ryzen 5 3500X": {
+    "score": 85.54,
+    "samples": 8,
+    "deviceName": "AMD Ryzen 5 3500X 6-Core Processor"
+   }
+  }
+ },
+ "gpu": {
+  "blenderVersion": "4.5.0",
+  "scores": {
+   "GeForce RTX 5090": {
+    "score": 14965.98,
+    "samples": 1555,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 5090"
+   },
+   "GeForce RTX 4090": {
+    "score": 11061.46,
+    "samples": 527,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4090"
+   },
+   "GeForce RTX 5080": {
+    "score": 9138.16,
+    "samples": 1432,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 5080"
+   },
+   "GeForce RTX 4080 SUPER": {
+    "score": 8419.17,
+    "samples": 239,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4080 SUPER"
+   },
+   "GeForce RTX 4080": {
+    "score": 8388.14,
+    "samples": 219,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4080"
+   },
+   "GeForce RTX 5070 Ti": {
+    "score": 7589.02,
+    "samples": 1416,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 5070 Ti"
+   },
+   "GeForce RTX 4070 Ti SUPER": {
+    "score": 7116.08,
+    "samples": 253,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4070 Ti SUPER"
+   },
+   "GeForce RTX 4070 Ti": {
+    "score": 6369.29,
+    "samples": 156,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4070 Ti"
+   },
+   "GeForce RTX 4070 SUPER": {
+    "score": 6249.54,
+    "samples": 469,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4070 SUPER"
+   },
+   "GeForce RTX 5070": {
+    "score": 6173.52,
+    "samples": 914,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 5070"
+   },
+   "GeForce RTX 3090 Ti": {
+    "score": 5552.78,
+    "samples": 139,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3090 Ti"
+   },
+   "GeForce RTX 3090": {
+    "score": 5412.21,
+    "samples": 630,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3090"
+   },
+   "GeForce RTX 3080 Ti": {
+    "score": 5323.08,
+    "samples": 209,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3080 Ti"
+   },
+   "GeForce RTX 4070": {
+    "score": 5218.96,
+    "samples": 262,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4070"
+   },
+   "GeForce RTX 3080": {
+    "score": 4529.17,
+    "samples": 579,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3080"
+   },
+   "Radeon RX 7900 XTX": {
+    "score": 4328.73,
+    "samples": 223,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 7900 XTX"
+   },
+   "GeForce RTX 4060 Ti": {
+    "score": 3940.76,
+    "samples": 332,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4060 Ti"
+   },
+   "GeForce RTX 5060": {
+    "score": 3680.11,
+    "samples": 373,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 5060"
+   },
+   "Radeon RX 7900 XT": {
+    "score": 3628.49,
+    "samples": 128,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 7900 XT"
+   },
+   "GeForce RTX 3070 Ti": {
+    "score": 3494.45,
+    "samples": 118,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3070 Ti"
+   },
+   "Radeon RX 9070 XT": {
+    "score": 3279.21,
+    "samples": 676,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 9070 XT"
+   },
+   "GeForce RTX 3070": {
+    "score": 3190.15,
+    "samples": 312,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3070"
+   },
+   "GeForce RTX 4060": {
+    "score": 3181.92,
+    "samples": 439,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 4060"
+   },
+   "Radeon RX 7900 GRE": {
+    "score": 2897.93,
+    "samples": 44,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 7900 GRE"
+   },
+   "GeForce RTX 5050": {
+    "score": 2863.34,
+    "samples": 59,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 5050"
+   },
+   "Radeon RX 9070": {
+    "score": 2840.49,
+    "samples": 90,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 9070"
+   },
+   "GeForce RTX 2080 Ti": {
+    "score": 2837.62,
+    "samples": 136,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 2080 Ti"
+   },
+   "GeForce RTX 3060 Ti": {
+    "score": 2764.46,
+    "samples": 232,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3060 Ti"
+   },
+   "Radeon RX 6950 XT": {
+    "score": 2623.1,
+    "samples": 35,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6950 XT"
+   },
+   "Radeon RX 6900 XT": {
+    "score": 2603.42,
+    "samples": 56,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6900 XT"
+   },
+   "Radeon RX 7800 XT": {
+    "score": 2480.61,
+    "samples": 14,
+    "computeType": "HIP",
+    "deviceName": "AMD  Radeon RX 7800 XT"
+   },
+   "Radeon RX 6800 XT": {
+    "score": 2406.13,
+    "samples": 42,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6800 XT"
+   },
+   "Radeon RX 9070 GRE": {
+    "score": 2374.22,
+    "samples": 6,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 9070 GRE"
+   },
+   "GeForce RTX 2080 SUPER": {
+    "score": 2292.64,
+    "samples": 40,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 2080 SUPER"
+   },
+   "Arc A750": {
+    "score": 2226.39,
+    "samples": 72,
+    "computeType": "ONEAPI",
+    "deviceName": "Intel Arc A750 Graphics"
+   },
+   "GeForce RTX 3060": {
+    "score": 2155.05,
+    "samples": 632,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3060"
+   },
+   "GeForce RTX 2070": {
+    "score": 2105.4,
+    "samples": 66,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 2070"
+   },
+   "Radeon RX 7700 XT": {
+    "score": 2083.57,
+    "samples": 24,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 7700 XT"
+   },
+   "Arc A580": {
+    "score": 1876.1,
+    "samples": 5,
+    "computeType": "ONEAPI",
+    "deviceName": "Intel Arc A580 Graphics"
+   },
+   "Radeon RX 6800": {
+    "score": 1872.32,
+    "samples": 36,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6800"
+   },
+   "NVIDIA TITAN V": {
+    "score": 1744.73,
+    "samples": 8,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA TITAN V"
+   },
+   "Radeon RX 9060 XT": {
+    "score": 1615,
+    "samples": 213,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 9060 XT"
+   },
+   "Radeon RX 6750 XT": {
+    "score": 1539.12,
+    "samples": 23,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6750 XT"
+   },
+   "Radeon RX 6700 XT": {
+    "score": 1462.08,
+    "samples": 85,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6700 XT"
+   },
+   "GeForce RTX 3050": {
+    "score": 1344.74,
+    "samples": 145,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce RTX 3050"
+   },
+   "Radeon RX 6700": {
+    "score": 1296.41,
+    "samples": 3,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6700"
+   },
+   "Radeon RX 7600 XT": {
+    "score": 1249.61,
+    "samples": 31,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 7600 XT"
+   },
+   "Radeon RX 7600": {
+    "score": 1156.59,
+    "samples": 75,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 7600"
+   },
+   "Radeon RX 6650 XT": {
+    "score": 1064.8,
+    "samples": 24,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6650 XT"
+   },
+   "Radeon RX 6600 XT": {
+    "score": 1050.49,
+    "samples": 39,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6600 XT"
+   },
+   "Radeon RX 5700 XT": {
+    "score": 961.09,
+    "samples": 51,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 5700 XT"
+   },
+   "NVIDIA TITAN Xp": {
+    "score": 822.89,
+    "samples": 3,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA TITAN Xp"
+   },
+   "GeForce GTX 1080 Ti": {
+    "score": 821.26,
+    "samples": 63,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1080 Ti"
+   },
+   "GeForce GTX 1660 SUPER": {
+    "score": 748.03,
+    "samples": 112,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1660 SUPER"
+   },
+   "GeForce GTX 1660 Ti": {
+    "score": 743.01,
+    "samples": 62,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1660 Ti"
+   },
+   "Radeon RX 5600 XT": {
+    "score": 696.34,
+    "samples": 21,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 5600 XT"
+   },
+   "GeForce GTX 1660": {
+    "score": 679.73,
+    "samples": 22,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1660"
+   },
+   "GeForce GTX 1070 Ti": {
+    "score": 589.15,
+    "samples": 25,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1070 Ti"
+   },
+   "GeForce GTX 1080": {
+    "score": 584.9,
+    "samples": 81,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1080"
+   },
+   "GeForce GTX 1650 SUPER": {
+    "score": 554.85,
+    "samples": 19,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1650 SUPER"
+   },
+   "GeForce GTX TITAN X": {
+    "score": 523.51,
+    "samples": 6,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX TITAN X"
+   },
+   "GeForce GTX 1070": {
+    "score": 520.63,
+    "samples": 78,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1070"
+   },
+   "Arc A380": {
+    "score": 520.25,
+    "samples": 18,
+    "computeType": "ONEAPI",
+    "deviceName": "Intel Arc A380 Graphics"
+   },
+   "GeForce GTX 980 Ti": {
+    "score": 504.62,
+    "samples": 10,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 980 Ti"
+   },
+   "GeForce GTX 1650": {
+    "score": 486.03,
+    "samples": 6,
+    "computeType": "CUDA",
+    "deviceName": "NVIDIA GeForce GTX 1650"
+   },
+   "GeForce GTX 1060 6GB": {
+    "score": 360.15,
+    "samples": 62,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1060 6GB"
+   },
+   "Radeon RX 6400": {
+    "score": 303.7,
+    "samples": 9,
+    "computeType": "HIP",
+    "deviceName": "AMD Radeon RX 6400"
+   },
+   "GeForce GTX 980": {
+    "score": 292.8,
+    "samples": 5,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 980"
+   },
+   "GeForce GTX 1060 3GB": {
+    "score": 271.11,
+    "samples": 33,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 1060 3GB"
+   },
+   "GeForce GTX 970": {
+    "score": 254.76,
+    "samples": 22,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 970"
+   },
+   "GeForce GTX 1050": {
+    "score": 224.44,
+    "samples": 3,
+    "computeType": "CUDA",
+    "deviceName": "NVIDIA GeForce GTX 1050"
+   },
+   "GeForce GTX 960": {
+    "score": 163.51,
+    "samples": 17,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 960"
+   },
+   "GeForce GTX 950": {
+    "score": 113.89,
+    "samples": 6,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 950"
+   },
+   "GeForce GTX 750 Ti": {
+    "score": 92.24,
+    "samples": 5,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GTX 750 Ti"
+   },
+   "GeForce GT 1030": {
+    "score": 59.69,
+    "samples": 10,
+    "computeType": "OPTIX",
+    "deviceName": "NVIDIA GeForce GT 1030"
+   }
+  }
+ }
+}

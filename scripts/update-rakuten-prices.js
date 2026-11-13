@@ -13,12 +13,14 @@ const {searchYahoo, rakutenPoints} = require('./lib/stores');
 const {nameIssue} = require('./lib/audit');
 const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
 const {checkSpecs} = require('./lib/spec-check');
+const {fetchBlenderScores} = require('./lib/blender');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
 const AUDIT_OUTPUT = path.join(ROOT, 'data', 'sheet-audit.json');
 const NEW_OUTPUT = path.join(ROOT, 'data', 'new-products.json');
 const HISTORY_OUTPUT = path.join(ROOT, 'data', 'price-history.json');
+const BLENDER_OUTPUT = path.join(ROOT, 'data', 'blender-scores.json');
 const HISTORY_DAYS = 180;
 
 function readAffiliateConfig() {
@@ -65,7 +67,7 @@ async function loadModels(fetchImpl) {
       if (!Array.isArray(rows)) throw new Error('bad payload');
       context.__rows = rows;
       JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&isStandalone('${category}',r.name)))`)).forEach(item => specRows.push({...item, category}));
-      JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&r.score>0&&isStandalone('${category}',r.name)))`)).forEach(item => {
+      JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&isStandalone('${category}',r.name)))`)).forEach(item => {
         const key = `${category}\0${item.name}`;
         const price = Number.isSafeInteger(item.price) && item.price > 0 ? item.price : null;
         sheetRows.push({category, sheetName: item.sheetName || item.name, modelName: item.name, priceValid: price !== null});
@@ -308,6 +310,29 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     try { same = JSON.stringify(JSON.parse(fs.readFileSync(newFile, 'utf8')).candidates) === JSON.stringify(candidates); } catch { /* 初回 */ }
     if (!same) fs.writeFileSync(newFile, JSON.stringify({checkedAt: fetchedAt, candidates}, null, 1) + '\n');
     log(`新着候補 ${candidates.length} 件${candidates.length ? ': ' + candidates.slice(0, 8).map(c => c.modelName).join(', ') : ''}`);
+  }
+
+  // Blender Benchmark のスコア（公開データ）。取れなかった回は前回のファイルを残す
+  if (!auditOnly && !options.skipBlender) {
+    try {
+      const names = {cpu: [], gpu: []};
+      for (const row of models.specRows || models) if (names[row.category]) names[row.category].push(row.name || row.modelName);
+      for (const model of models) if (names[model.category]) names[model.category].push(model.modelName);
+      for (const key of Object.keys(names)) names[key] = [...new Set(names[key])];
+      const blender = await fetchBlenderScores(names, fetchImpl, options.blenderOptions || {});
+      if (blender.cpu || blender.gpu) {
+        const file = options.blenderOutput || (options.output ? output.replace(/[^/\\]+$/, 'blender-scores.json') : BLENDER_OUTPUT);
+        let previousBlender = {};
+        try { previousBlender = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { /* 初回 */ }
+        const payload = {
+          checkedAt: fetchedAt, source: 'https://opendata.blender.org/',
+          note: 'Blender Open Data（公開データ・利用制限なし）の中央値。測定数3件以上のみ。GPUは一番速い計算方式の値',
+          cpu: blender.cpu || previousBlender.cpu || null, gpu: blender.gpu || previousBlender.gpu || null,
+        };
+        fs.writeFileSync(file, JSON.stringify(payload, null, 1) + '\n');
+        log(`Blender Benchmark: CPU ${Object.keys(payload.cpu?.scores || {}).length} 件（${payload.cpu?.blenderVersion || '-'}）/ GPU ${Object.keys(payload.gpu?.scores || {}).length} 件（${payload.gpu?.blenderVersion || '-'}）`);
+      } else log('Blender Benchmark のスコアを取得できませんでした（前回のファイルを残します）');
+    } catch { log('Blender Benchmark のスコアを取得できませんでした（前回のファイルを残します）'); }
   }
 
   // スプレッドシートの要確認リスト（モデル名の誤り・価格の未入力）。シートは書き換えない
