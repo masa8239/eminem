@@ -1,47 +1,12 @@
 {
- "checkedAt": "2026-11-13T11:27:36.213Z",
+ "checkedAt": "2026-11-13T23:50:49.673Z",
  "candidates": [
   {
    "category": "cpu",
-   "modelName": "Ryzen 7 7700X3D",
-   "listings": 15,
-   "medianPrice": 61415,
-   "example": "AMD｜エーエムディー AMD Ryzen 7 7700X3D W/ O Cooler (8C/ 16T4.0GHz120W)(国内正規品) 100-100002235WOF 返品種別B"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 9070 GRE",
-   "listings": 8,
-   "medianPrice": 104767,
-   "example": "ASRock｜アスロック ASRock Radeon RX9070 GRE CL 12G グラフィックボード(ブラック) RX9070GRECL12G 返品種別B"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core Ultra 7 270K Plus",
-   "listings": 8,
-   "medianPrice": 57425,
-   "example": "Intel Core Ultra 7 270K Plus BOX"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 9060 XT",
-   "listings": 6,
-   "medianPrice": 98195,
-   "example": "ASRock｜アスロック ASRock Radeon RX 9060XT Challenger 16G OC グラフィックボード(ブラック) RX9060XTCL16GO 返品種別B"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 9050",
-   "listings": 6,
-   "medianPrice": 55564,
-   "example": "GIGABYTE GV-R9050GAMING OC-8GD Radeon RX 9050 グラフィックボード"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core Ultra 5 250K Plus",
-   "listings": 4,
-   "medianPrice": 41000,
-   "example": "Core Ultra 5 250K Plus　BX80768250K"
+   "modelName": "Ryzen 7 8600G",
+   "listings": 3,
+   "medianPrice": 40159,
+   "example": "BOX Ryzen7 8600G with Wraith Stealth Cooler AM5 65W 目安在庫=○"
   }
  ]
 }

@@ -1,285 +1,51 @@
 {
- "checkedAt": "2026-11-13T14:58:36.675Z",
+ "checkedAt": "2026-11-13T23:50:49.673Z",
  "issues": [
   {
    "category": "cpu",
-   "modelName": "Core i9-13900KS",
+   "modelName": "Core i3-13100",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13900K",
+   "modelName": "Core i5-10400",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13900KF",
+   "modelName": "Core i5-10600",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13900F",
+   "modelName": "Core i5-10600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13900",
+   "modelName": "Core i5-10600KF",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-12900KS",
+   "modelName": "Core i5-11400",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-12900K",
+   "modelName": "Core i5-11400F",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-12900KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-14600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-13700F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-13700",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-13700KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-12700K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-7700",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-12700KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-12900",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 9 3900XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 9 3900X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13500",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-12700",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-12900T",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-13700T",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 5800X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 5700X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-11900K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 PRO 5750G",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13400F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-11700K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13400",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-11700KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 3800XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-10900K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-10900KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-11900",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-10850K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 3700X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 5600X3D",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-12700T",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-11700F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 PRO 4750G",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 4700G",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12500",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 5600G",
+   "modelName": "Core i5-11500",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -303,67 +69,55 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-9900KS",
+   "modelName": "Core i5-12500",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-10700K",
+   "modelName": "Core i5-12600",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3600XT",
+   "modelName": "Core i5-12600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 7 PRO 4750GE",
+   "modelName": "Core i5-12600KF",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3600",
+   "modelName": "Core i5-13400",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-11500",
+   "modelName": "Core i5-13400F",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-11400F",
+   "modelName": "Core i5-13500",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-11400",
+   "modelName": "Core i5-13600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-9900",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 1800X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-10700F",
+   "modelName": "Core i5-14600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -375,7 +129,283 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 PRO 4650G",
+   "modelName": "Core i7-10700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10850K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10900K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10900KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900KS",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900KS",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900KS",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 3100",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 3300X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 4100",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 4300G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 2600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 2600X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600 AF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -393,7 +423,19 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 7 1700X",
+   "modelName": "Ryzen 5 5600G",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600X3D",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 PRO 4650G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -405,145 +447,169 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i3-13100",
+   "modelName": "Ryzen 7 1700X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-9700K",
+   "modelName": "Ryzen 7 1800X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-10600K",
+   "modelName": "Ryzen 7 3700X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-9700KF",
+   "modelName": "Ryzen 7 3800XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-10600KF",
+   "modelName": "Ryzen 7 4700G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 2600X",
+   "modelName": "Ryzen 7 5700X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-10600",
+   "modelName": "Ryzen 7 5800X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-8700K",
+   "modelName": "Ryzen 7 PRO 4750G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-9700F",
+   "modelName": "Ryzen 7 PRO 4750GE",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-9900T",
+   "modelName": "Ryzen 7 PRO 5750G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 2600",
+   "modelName": "Ryzen 9 3900X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3500X",
+   "modelName": "Ryzen 9 3900XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3600X",
+   "modelName": "Ryzen 5 7400F",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3600 AF",
+   "modelName": "Ryzen 9 5900X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3500G",
+   "modelName": "Ryzen 7 5800X3D",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 3500",
+   "modelName": "Ryzen 7 5700G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-8700",
+   "modelName": "Ryzen 7 5700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 3 3300X",
+   "modelName": "Ryzen 5 5600X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-10400",
+   "modelName": "Ryzen 5 5600GT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 3 4300G",
+   "modelName": "Ryzen 5 5500",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 3 3100",
+   "modelName": "Core Ultra 7 265",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 3 4100",
+   "modelName": "Core Ultra 5 245",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-8700T",
+   "modelName": "Core i7-14700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4090",
+   "category": "cpu",
+   "modelName": "Core i5-14600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13600KF",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i3-13100F",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -597,12 +663,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 4060 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 7800 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -633,12 +693,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3080 10GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 6900 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -651,12 +705,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 5060 Ti 8GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce RTX 3070 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -664,12 +712,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce RTX 2080 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3070",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -801,12 +843,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3060 12GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 5700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -831,7 +867,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3060 6GB",
+   "modelName": "GeForce RTX 3060 8GB",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -862,18 +898,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce GTX 1660 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3050 8GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1660 SUPER",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1005,7 +1029,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 570 6GB",
+   "modelName": "Radeon RX 570",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1072,12 +1096,6 @@
   {
    "category": "gpu",
    "modelName": "Radeon R9 270",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 7070",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1158,6 +1176,90 @@
    "modelName": "GeForce GTX 650 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9060 XT 8GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7700 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7900 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6950 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6650 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060",
+   "type": "spec",
+   "issue": "仕様が出典と違います: 帯域幅 360GB/s → 出典 224 / 336GB/s（Wikipedia）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A580",
+   "type": "spec",
+   "issue": "仕様が出典と違います: 消費電力 185W → 出典 175W（Wikipedia）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 8GB",
+   "type": "spec",
+   "issue": "仕様が出典と違います: 帯域幅 240GB/s → 出典 224GB/s（Wikipedia）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN Z",
+   "type": "spec",
+   "issue": "仕様の照合表にない型番です。型番が正しいか確認してください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 480",
+   "type": "spec",
+   "issue": "仕様が出典と違います: 帯域幅 104GB/s → 出典 224GB/s（AMD公式）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 270",
+   "type": "spec",
+   "issue": "仕様が出典と違います: VRAM 4GB → 出典 2GB（AMD公式）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 560",
+   "type": "spec",
+   "issue": "仕様が出典と違います: 消費電力 80W → 出典 60W（AMD公式）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 370",
+   "type": "spec",
+   "issue": "仕様が出典と違います: 消費電力 110W → 出典 150W（Wikipedia）"
   }
  ]
 }
