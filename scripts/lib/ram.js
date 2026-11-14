@@ -14,7 +14,7 @@ function ramLabel(type, speed, perStick, sticks) {
 }
 
 // デスクトップ用の普通のメモリ以外（ノート用・サーバー用・中古など）と、対応マザーボードが限られるものを除く
-const EXCLUDE = /SO-?DIMM|ノート|laptop|notebook|ECC|RDIMM|Registered|レジスタード|サーバ|server|CUDIMM|CAMM|中古|リユース|アウトレット|訳あり|ジャンク|再生品|未使用品|開封|展示品|Mac\b|Apple|iMac|ゲーミングPC|デスクトップPC|パソコン本体|BTO|ヒートシンク単体|冷却ファン/i;
+const EXCLUDE = /SO-?DIMM|ノート|laptop|notebook|ECC|RDIMM|Registered|レジスタード|サーバ|server|CUDIMM|CAMM|中古|リユース|並行輸入|平行輸入|海外版|アウトレット|訳あり|ジャンク|再生品|未使用品|開封|展示品|Mac\b|Apple|iMac|ゲーミングPC|デスクトップPC|パソコン本体|BTO|ヒートシンク単体|冷却ファン/i;
 
 function speedsIn(text) {
   const out = new Set();
@@ -68,7 +68,8 @@ function pickRamOffers(spec, items) {
     out.push({...item, cl: parseRamTitle(item.itemName).cl});
     if (out.length >= 3) break;
   }
-  return out;
+  // 1店だけの出品は相場とかけ離れていても気づけないので、2店以上で売られている規格だけ載せる
+  return out.length >= 2 ? out : [];
 }
 
 module.exports = {RAM_SPECS, ramLabel, parseRamTitle, matchesSpec, ramQueries, pickRamOffers};

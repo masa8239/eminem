@@ -450,7 +450,7 @@ a.affiliate-btn:hover { background: #154e96; }
       <dl class="home-facts">
         <div><dt>CPU 掲載数</dt><dd><span id="stat-cpu-count">—</span> 製品</dd></div>
         <div><dt>GPU 掲載数</dt><dd><span id="stat-gpu-count">—</span> 製品</dd></div>
-        <div><dt>メモリ 掲載数</dt><dd><span id="stat-ram-count">—</span> 製品</dd></div>
+        <div><dt>メモリ 掲載数</dt><dd><span id="stat-ram-count">—</span> 規格</dd></div>
         <div><dt>CPUの指標</dt><dd>PassMark</dd></div>
         <div><dt>GPUの指標</dt><dd>3DMark Time Spy</dd></div>
       </dl>
@@ -530,7 +530,7 @@ a.affiliate-btn:hover { background: #154e96; }
       <div id="cpu-fav-chips" style="display:flex;gap:6px;flex-wrap:wrap;flex:1"></div>
       <button class="fav-clear" onclick="clearFavs('cpu')">クリア</button>
     </div>
-    <p class="ad-note">このページの購入リンクには、アフィリエイト広告（楽天市場・Yahoo!ショッピング・Amazon）が含まれます。</p>
+    <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング・Amazon）が含まれます。</p>
     <div class="table-wrap">
       <div class="tabs">
         <div class="tab active" onclick="switchTab(this,'cpu-multi')">マルチスレッド</div>
@@ -607,7 +607,7 @@ a.affiliate-btn:hover { background: #154e96; }
       <div id="gpu-fav-chips" style="display:flex;gap:6px;flex-wrap:wrap;flex:1"></div>
       <button class="fav-clear" onclick="clearFavs('gpu')">クリア</button>
     </div>
-    <p class="ad-note">このページの購入リンクには、アフィリエイト広告（楽天市場・Yahoo!ショッピング・Amazon）が含まれます。</p>
+    <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング・Amazon）が含まれます。</p>
     <div class="table-wrap">
       <div class="tabs">
         <div class="tab active" onclick="switchTab(this,'gpu-3dmark')">3DMark</div>
@@ -670,7 +670,7 @@ a.affiliate-btn:hover { background: #154e96; }
       <div id="ram-fav-chips" style="display:flex;gap:6px;flex-wrap:wrap;flex:1"></div>
       <button class="fav-clear" onclick="clearFavs('ram')">クリア</button>
     </div>
-    <p class="ad-note">このページの購入リンクには、アフィリエイト広告（楽天市場・Yahoo!ショッピング・Amazon）が含まれます。</p>
+    <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング・Amazon）が含まれます。</p>
     <div class="table-wrap">
       <div class="notice">規格（世代・速度・容量・枚数）ごとに、Yahoo!ショッピングで在庫のある新品のデスクトップ用キットの最安値を毎日自動で取得しています。CLは最安の商品の値で、同じ規格でも製品によって異なります。帯域幅 = 速度 × 8バイト / 1000（理論値・1枚あたり）。</div>
       <table class="rank-table">
@@ -758,7 +758,7 @@ a.affiliate-btn:hover { background: #154e96; }
   <div class="section">
     <div class="section-header">
       <div class="section-title">用途別おすすめ構成</div>
-      <div class="section-sub">プリセット構成をビルダーに読み込めます</div>
+      <div class="section-sub">プリセット構成をビルダーに読み込めます。CPU・GPU・メモリ以外のパーツの価格は、自動取得していない目安です</div>
     </div>
     <div class="preset-grid" id="preset-grid"></div>
   </div>
@@ -1645,7 +1645,7 @@ async function loadSheetData() {
     fetchSheet(CPU_GAS_URL, 'bc_cpu_v1'),
     fetchSheet(GPU_GAS_URL, 'bc_gpu_v1'),
   ]);
-  const LOADED='スプレッドシートの最新データ', BUILTIN='内蔵データを表示中';
+  const LOADED='最新データ（毎日更新）', BUILTIN='内蔵データを表示中（最新データを読み込めませんでした）';
   if (cpuR.status==='fulfilled') {
     const all = cpuR.value.map(parseCpuRow).filter(r=>r&&r.name&&isStandalone('cpu',r.name));
     const parsed = all.filter(r=>r.score>0);
@@ -1748,6 +1748,7 @@ async function loadRakutenPrices() {
   renderCpuTable(); renderGpuTable(); renderRamTable();
   populateCpuSelects(); populateGpuSelects(); populateRamSelects();
   try { bsyncPrices(); } catch (error) {}
+  try { updateHomeRanking(); } catch (error) {}  // メモリの件数などは価格ファイルを読んだあとに確定する
 }
 
 // Blender Benchmark のスコア（毎日自動取得: data/blender-scores.json）。サイト同梱版とGitHub上の最新版の新しい方を使う
@@ -2133,14 +2134,18 @@ function presetParts(p) {
 // ビルダーのCPU・GPUの価格とスコアを、ランキングと同じデータに合わせる
 function bsyncPrices() {
   let changed = false;
-  const sync = (items, data, same) => items.forEach(item => {
+  const sync = (items, data, same, hasScore) => items.forEach(item => {
     const found = data.find(d => same(d.name, item.name));
     if (!found) return;
     if (validPrice(found.price) && found.price !== item.price) { item.price = found.price; changed = true; }
-    if (found.score > 0 && found.score !== item.score) { item.score = found.score; changed = true; }
+    // スコアはシートの値だけを使う。シートにまだスコアがない製品は、内蔵の仮の値を出さない
+    if (hasScore) {
+      const score = found.score > 0 ? found.score : 0;
+      if (score !== item.score) { item.score = score; changed = true; }
+    }
   });
-  sync(BPARTS.cpu.items, cpuData, (a, b) => a === b);
-  sync(BPARTS.gpu.items, gpuData, (a, b) => a === b || a === 'GeForce ' + b || a === 'Radeon ' + b);
+  sync(BPARTS.cpu.items, cpuData.concat(cpuExtra), (a, b) => a === b, cpuFromSheet);
+  sync(BPARTS.gpu.items, gpuData.concat(gpuExtra), (a, b) => a === b || a === 'GeForce ' + b || a === 'Radeon ' + b, gpuFromSheet);
   sync(BPARTS.ram.items, ramData, (a, b) => a === b);
   if (!changed) return;
   const ids = Object.values(bSelected).map(v => v.id);
@@ -2405,6 +2410,8 @@ function bupdateCart(){
 function banalyze(){
   const cpu=bSelected.cpu,gpu=bSelected.gpu;if(!cpu||!gpu)return;
   const gs=gpu.score,cs=cpu.score;
+  // スコアが未登録のパーツがあるときは、推測で判定しない
+  if(!(gs>0)||!(cs>0)){document.getElementById('bgame-result').innerHTML=`<div style="text-align:center;padding:24px;color:var(--text3);font-size:12px;margin-top:12px">${esc(!(cs>0)?cpu.name:gpu.name)} のベンチマークスコアがまだ登録されていないため、<br>ゲーム性能は判定できません</div>`;return;}
   let tier,tierLabel,tierColor,tierDesc;
   if(gs>=30000&&cs>=30000){tier='ultra';tierLabel='ULTRA / ハイエンド';tierColor='var(--gold)';tierDesc='4K Ultra設定でほぼ全ゲームを最高画質でプレイ可能。レイトレ・4Kも余裕です。';}
   else if(gs>=18000&&cs>=18000){tier='high';tierLabel='HIGH / ハイスペック';tierColor='var(--accent2)';tierDesc='1440p〜4KでほとんどのAAAタイトルを快適にプレイできます。';}

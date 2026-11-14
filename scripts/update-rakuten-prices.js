@@ -304,7 +304,8 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
         else seen.push(...(await yahooItems(keyword) || []));
       } catch { /* 新着探しの失敗は価格更新に影響させない */ }
     }
-    const candidates = discoverNewModels(seen, models);
+    // 型番の規則に合わない名前（例: Ryzen 7 8600G。正しくは Ryzen 5）は、出品名の誤りなので候補にしない
+    const candidates = discoverNewModels(seen, models).filter(c => !nameIssue(c.category, c.modelName));
     const newFile = options.newOutput || (options.output ? output.replace(/[^/\\]+$/, 'new-products.json') : NEW_OUTPUT);
     let same = false;
     try { same = JSON.stringify(JSON.parse(fs.readFileSync(newFile, 'utf8')).candidates) === JSON.stringify(candidates); } catch { /* 初回 */ }

@@ -439,11 +439,15 @@ test('memory is priced per spec from clearly matching new desktop kits only', as
     item('DDR5-5600 16GBx2', 15000, 'f'),                       // 速度違い
   ]);
   assert.deepEqual(offers.map(o => [o.shopName, o.itemPrice, o.cl]), [['d', 21000, 36], ['e', 23000, 30]]);
+  // 1店だけの規格や並行輸入品は載せない
+  assert.deepEqual(pickRamOffers(spec, [item('Crucial Pro DDR5-6000 32GB(16GBx2) CL36', 21000, 'd')]), []);
+  assert.equal(parseRamTitle('【並行輸入品】TEAMGROUP DDR5-6000 32GB (2 x 16GB)'), null);
 
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ram-'));
   const output = path.join(dir, 'prices.json');
   const fetchImpl = async url => ({ok: true, json: async () => ({hits: String(url.searchParams.get('query')).startsWith('DDR5-6000') ? [
     {code: 'd_1', name: 'Crucial Pro DDR5-6000 32GB(16GBx2) CL36', price: 21000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/d/1.html', seller: {name: 'd'}},
+    {code: 'e_1', name: 'G.Skill DDR5-6000 16GB×2枚 CL30', price: 23000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/e/1.html', seller: {name: 'e'}},
   ] : []})});
   const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipBlender: true, models: [], output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, ramSpecs: [spec, RAM_SPECS.find(s => s.type === 'DDR4')]});
   assert.equal(code, 0);
