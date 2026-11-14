@@ -37,7 +37,7 @@ var BENCHCORE_SCORE_SITE = {cpu: 'PassMark', gpu: '3DMark Time Spy'};
 var BENCHCORE_PARTS_SHEET = 'パーツ最安値';
 var BENCHCORE_FIX_SHEET = 'パーツの修正';
 var BENCHCORE_PART_KINDS = {ram: 'メモリ', ssd: 'SSD', psu: '電源', mb: 'マザーボード'};
-var BENCHCORE_PARTS_HEADER = ['種類', '規格', 'メーカー', '最安値(円)', '店', '商品名', '商品コード', '取得日時', '除外する', '正しいメーカー'];
+var BENCHCORE_PARTS_HEADER = ['種類', '規格', 'メーカー', '最安値(円)', '店', '商品名', '商品ページ', '商品コード', '取得日時', '除外する', '正しいメーカー'];
 var BENCHCORE_FIX_HEADER = ['商品コード', '種類', '商品名', '除外する', '正しいメーカー', '登録日', 'メモ'];
 var BENCHCORE_NOT_STANDALONE = {
   cpu: [/^Apple M\d/i],
@@ -231,6 +231,12 @@ function benchcoreHeader_(sheet) {
   return sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(function (v) { return String(v).trim(); });
 }
 
+// 商品ページのURL（https だけ。数式として解釈されないよう、= などで始まる値は使わない）
+function benchcoreSafeUrl_(url) {
+  url = String(url || '');
+  return /^https:\/\/[^\s"]+$/.test(url) ? url : '';
+}
+
 function benchcoreParts_(ss, priceData, dryRun, log) {
   // GPUのシートがあるスプレッドシートだけで行う（CPUとGPUの両方に書かない）
   var hasGpu = ss.getSheets().some(function (sheet) { return benchcoreHeader_(sheet).indexOf('GPU名') >= 0; });
@@ -279,7 +285,7 @@ function benchcoreParts_(ss, priceData, dryRun, log) {
     var fix = fixes[p.itemCode] || {};
     var shop = p.shopName || '';
     return [BENCHCORE_PART_KINDS[p.category], spec.label || String(p.modelName).split('｜')[0], spec.maker || (p.category === 'ram' ? '—' : ''), p.price,
-      shop, p.itemName || '', p.itemCode || '', Utilities.formatDate(new Date(p.fetchedAt), tz, 'yyyy/MM/dd HH:mm'), fix.exclude === true, fix.maker || ''];
+      shop, p.itemName || '', benchcoreSafeUrl_(p.url), p.itemCode || '', Utilities.formatDate(new Date(p.fetchedAt), tz, 'yyyy/MM/dd HH:mm'), fix.exclude === true, fix.maker || ''];
   });
   // 内容が前回と同じなら書き直さない（毎日の無意味な更新とログを避ける）
   if (partsSheet && partsSheet.getLastRow() >= 1) {
