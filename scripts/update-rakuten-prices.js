@@ -15,7 +15,7 @@ const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
 const {checkSpecs} = require('./lib/spec-check');
 const {fetchBlenderScores} = require('./lib/blender');
 const {PSU_SPECS, SSD_SPECS, MB_SPECS, pickByMaker} = require('./lib/parts');
-const {loadCorrections} = require('./lib/corrections');
+const {loadCorrections, loadBoardSpecs} = require('./lib/corrections');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -23,6 +23,7 @@ const AUDIT_OUTPUT = path.join(ROOT, 'data', 'sheet-audit.json');
 const NEW_OUTPUT = path.join(ROOT, 'data', 'new-products.json');
 const HISTORY_OUTPUT = path.join(ROOT, 'data', 'price-history.json');
 const BLENDER_OUTPUT = path.join(ROOT, 'data', 'blender-scores.json');
+const MB_SPECS_OUTPUT = path.join(ROOT, 'data', 'mb-specs.json');
 const HISTORY_DAYS = 180;
 
 function readSheetsConfig() {
@@ -296,7 +297,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
         spec: {key: spec.key, label: spec.label, order: spec.order, maker: p.maker, shops: p.shops,
           ...(spec.category === 'psu' ? {watts: spec.watts, rating: spec.rating, atx3: Boolean(parsed.atx3)}
             : spec.category === 'ssd' ? {type: spec.type, capacity: spec.capacity}
-            : {chipset: spec.chipset, form: spec.form, socket: spec.socket, memory: spec.memory})},
+            : {chipset: spec.chipset, form: spec.form, socket: spec.socket, memory: spec.memory, wifi: Boolean(parsed.wifi)})},
       });
     }
   }
@@ -356,6 +357,16 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     try { same = JSON.stringify(JSON.parse(fs.readFileSync(newFile, 'utf8')).candidates) === JSON.stringify(candidates); } catch { /* 初回 */ }
     if (!same) fs.writeFileSync(newFile, JSON.stringify({checkedAt: fetchedAt, candidates}, null, 1) + '\n');
     log(`新着候補 ${candidates.length} 件${candidates.length ? ': ' + candidates.slice(0, 8).map(c => c.modelName).join(', ') : ''}`);
+  }
+
+  // マザーボードの板ごとの仕様（運営者がシートに入れたもの）。読めなかった回は前回のファイルを残す
+  if (!auditOnly && !options.skipBoardSpecs) {
+    const boards = await loadBoardSpecs(readSheetsConfig().correctionsSpreadsheetId, fetchImpl);
+    if (boards.ok) {
+      const file = options.boardSpecsOutput || (options.output ? output.replace(/[^/\\]+$/, 'mb-specs.json') : MB_SPECS_OUTPUT);
+      fs.writeFileSync(file, JSON.stringify({checkedAt: fetchedAt, columns: boards.columns, boards: boards.boards}, null, 1) + '\n');
+      log(`マザーボード仕様: ${boards.boards.length} 枚`);
+    }
   }
 
   // Blender Benchmark のスコア（公開データ）。取れなかった回は前回のファイルを残す
