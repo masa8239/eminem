@@ -12,7 +12,8 @@ async function searchYahoo(keyword, appid, fetchImpl = fetch, range = null, affi
   const url = new URL(YAHOO_URL);
   url.searchParams.set('appid', appid);
   url.searchParams.set('query', keyword);
-  url.searchParams.set('results', range ? '50' : '30');
+  url.searchParams.set('results', String(range && range.results ? range.results : (range ? 50 : 30)));
+  if (range && range.start) url.searchParams.set('start', String(range.start));
   if (affiliateId) {
     url.searchParams.set('affiliate_type', 'vc');
     url.searchParams.set('affiliate_id', affiliateId);

@@ -90,6 +90,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(
 .badge-blue { background: #e6eef9; color: var(--accent2); }
 .badge-orange { background: #f9ece2; color: var(--accent); }
 .badge-purple { background: #ececf5; color: var(--accent4); }
+tr.part-group-first td { border-top: 2px solid var(--border2); }
 .plink { color: inherit; text-decoration: underline; text-decoration-color: var(--border2); text-underline-offset: 3px; }
 .plink:hover { text-decoration-color: currentColor; }
 .notice { padding: 9px 14px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text2); }
@@ -423,6 +424,8 @@ a.affiliate-btn:hover { background: #154e96; }
     <div role="link" tabindex="0" class="nav-link" aria-label="CPUランキング" data-page="cpu-rank" onclick="showPage('cpu-rank',this)">CPU</div>
     <div role="link" tabindex="0" class="nav-link" aria-label="GPUランキング" data-page="gpu-rank" onclick="showPage('gpu-rank',this)">GPU</div>
     <div role="link" tabindex="0" class="nav-link" aria-label="メモリランキング" data-page="ram-rank" onclick="showPage('ram-rank',this)">メモリ</div>
+    <div role="link" tabindex="0" class="nav-link" aria-label="SSDの最安値" data-page="ssd-rank" onclick="showPage('ssd-rank',this)">SSD</div>
+    <div role="link" tabindex="0" class="nav-link" aria-label="電源の最安値" data-page="psu-rank" onclick="showPage('psu-rank',this)">電源</div>
     <span class="nav-group">2製品比較</span>
     <div role="link" tabindex="0" class="nav-link" aria-label="CPU比較" data-page="cpu-compare" onclick="showPage('cpu-compare',this)">CPU</div>
     <div role="link" tabindex="0" class="nav-link" aria-label="GPU比較" data-page="gpu-compare" onclick="showPage('gpu-compare',this)">GPU</div>
@@ -712,6 +715,48 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- RAM COMPARE -->
+<div id="ssd-rank" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">SSD メーカー別最安値</div>
+      <div class="section-sub" id="ssd-rank-updated">データ読み込み中...</div>
+      <button class="share-btn" onclick="shareUrl('ssd-rank')">シェア</button>
+    </div>
+    <div class="filters" id="ssd-filters"><button class="filter-btn active" onclick="filterPart('ssd','all',this)">全て</button><button class="filter-btn" onclick="filterPart('ssd','Gen5',this)">Gen5</button><button class="filter-btn" onclick="filterPart('ssd','Gen4',this)">Gen4</button><button class="filter-btn" onclick="filterPart('ssd','SATA',this)">SATA</button><button class="filter-btn" onclick="filterPart('ssd','500',this)">500GB</button><button class="filter-btn" onclick="filterPart('ssd','1000',this)">1TB</button><button class="filter-btn" onclick="filterPart('ssd','2000',this)">2TB</button><button class="filter-btn" onclick="filterPart('ssd','4000',this)">4TB</button></div>
+    <div class="filters" style="margin-top:8px">
+      <label style="font-size:13px;display:inline-flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="ssd-show-other" onchange="renderPartTable('ssd')"> メーカーがわからない安い製品も表示する</label>
+    </div>
+    <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング）が含まれます。</p>
+    <div class="table-wrap">
+      <div class="notice">接続（NVMe Gen5 / Gen4・SATA）と容量ごとに、Yahoo!ショッピングで在庫のある新品の、メーカー別の最安値を毎日自動で取得しています。2店以上で売られているメーカーだけを載せ、ノート向けの小さいサイズ（M.2 2230など）・外付け・中古・並行輸入品は除いています。読み書きの速度は製品ごとに違うため、購入前にリンク先で確認してください。</div>
+      <table class="rank-table">
+        <thead><tr><th>規格</th><th>メーカー</th><th>最安値</th><th>1TBあたり</th><th>最安の商品</th><th>購入</th></tr></thead>
+        <tbody id="ssd-table-body"><tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div id="psu-rank" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">電源ユニット メーカー別最安値</div>
+      <div class="section-sub" id="psu-rank-updated">データ読み込み中...</div>
+      <button class="share-btn" onclick="shareUrl('psu-rank')">シェア</button>
+    </div>
+    <div class="filters" id="psu-filters"><button class="filter-btn active" onclick="filterPart('psu','all',this)">全て</button><button class="filter-btn" onclick="filterPart('psu','650',this)">650W</button><button class="filter-btn" onclick="filterPart('psu','750',this)">750W</button><button class="filter-btn" onclick="filterPart('psu','850',this)">850W</button><button class="filter-btn" onclick="filterPart('psu','1000',this)">1000W</button><button class="filter-btn" onclick="filterPart('psu','1200',this)">1200W</button><button class="filter-btn" onclick="filterPart('psu','Bronze',this)">Bronze</button><button class="filter-btn" onclick="filterPart('psu','Gold',this)">Gold</button><button class="filter-btn" onclick="filterPart('psu','Platinum',this)">Platinum</button></div>
+    <div class="filters" style="margin-top:8px">
+      <label style="font-size:13px;display:inline-flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="psu-show-other" onchange="renderPartTable('psu')"> メーカーがわからない安い製品も表示する</label>
+    </div>
+    <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング）が含まれます。</p>
+    <div class="table-wrap">
+      <div class="notice">容量と80PLUSの等級ごとに、Yahoo!ショッピングで在庫のある新品のATX電源の、メーカー別の最安値を毎日自動で取得しています。2店以上で売られているメーカーだけを載せ、SFXなど小型の電源・中古・並行輸入品は除いています。「ATX 3.x」は商品名に対応と書かれているものです。</div>
+      <table class="rank-table">
+        <thead><tr><th>規格</th><th>メーカー</th><th>最安値</th><th>ATX 3.x</th><th>最安の商品</th><th>購入</th></tr></thead>
+        <tbody id="psu-table-body"><tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
 <div id="ram-compare" class="page">
   <div class="section">
     <div class="section-header"><div class="section-title">メモリ 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
@@ -778,7 +823,7 @@ a.affiliate-btn:hover { background: #154e96; }
     <p>BENCHCORE は、CPU・GPU・メモリのベンチマークスコアと価格を一覧で比較するためのサイトです。パーツ選びの参考情報として提供しています。</p>
     <h3>データの出典</h3>
     <ul>
-      <li>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値を、運営者が取得時点の値で掲載しています。どちらも利用者の測定結果の平均のため、元のサイトの値は日々少しずつ変わります。</li><li>コア数・クロック・TDP・VRAM・帯域幅などの仕様は、AMD公式の仕様一覧とWikipediaの各世代の仕様表を基に掲載し、毎日自動で照合しています。</li><li>メモリは製品ではなく規格ごとに、Yahoo!ショッピングで在庫のある新品キットの最安値を掲載しています。</li><li>「Blender」のタブには、Blender Open Data（Blender財団が公開している、利用制限のないベンチマーク結果）の中央値を毎日自動で掲載しています。測定数が3件未満の製品は載せません。</li>
+      <li>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値を、運営者が取得時点の値で掲載しています。どちらも利用者の測定結果の平均のため、元のサイトの値は日々少しずつ変わります。</li><li>コア数・クロック・TDP・VRAM・帯域幅などの仕様は、AMD公式の仕様一覧とWikipediaの各世代の仕様表を基に掲載し、毎日自動で照合しています。</li><li>メモリは製品ではなく規格ごとに、Yahoo!ショッピングで在庫のある新品キットの最安値を掲載しています。</li><li>SSDと電源ユニットは、規格（接続・容量 / 容量・80PLUSの等級）ごとに、メーカー別の最安値を掲載しています。メーカーがわからない製品は、ボタンを押したときだけ表示します。</li><li>「Blender」のタブには、Blender Open Data（Blender財団が公開している、利用制限のないベンチマーク結果）の中央値を毎日自動で掲載しています。測定数が3件未満の製品は載せません。</li>
       <li>価格は参考価格です。ストアのAPIから取得できた製品には、取得元と取得日時を表示します。表示価格と販売ページの価格が異なる場合は、販売ページの価格が正しい価格です。</li>
       <li>ボトルネック診断、ゲーム性能の目安、推奨電源容量は、スコアやTDPからの推定です。実際の動作を保証するものではありません。</li>
     </ul>
@@ -1736,6 +1781,7 @@ async function loadRakutenPrices() {
   const files = (await Promise.allSettled(PRICE_FILE_URLS.map(fetchPriceProducts))).filter(r=>r.status==='fulfilled').map(r=>r.value);
   const newest = files.sort((a,b)=>String(b.checkedAt||'').localeCompare(String(a.checkedAt||'')))[0];
   if (newest) applyRakutenProducts(newest.products, PRICE_FILE_MAX_AGE_MS);
+  try { applyPartProducts(newest ? newest.products : [], PRICE_FILE_MAX_AGE_MS); } catch (e) {}
   if (!(newest && applyRamProducts(newest.products, PRICE_FILE_MAX_AGE_MS))) document.getElementById('ram-rank-updated').textContent = 'メモリの価格はまだ取得できていません';
   try {
     applyRakutenProducts((await fetchPriceProducts('/api/rakuten-prices')).products, 0);
@@ -1798,6 +1844,74 @@ function renderBlenderTable(cat) {
     </tr>`).join('');
 }
 function renderBlenderTables() { renderBlenderTable('cpu'); renderBlenderTable('gpu'); }
+
+// 電源・SSD: 規格 × メーカーごとの最安値（毎日自動取得: data/rakuten-prices.json の category 'psu' / 'ssd'）
+const PART_ORDER = {
+  ssd: ['Gen5 1TB','Gen5 2TB','Gen5 4TB','Gen4 500GB','Gen4 1TB','Gen4 2TB','Gen4 4TB','SATA 500GB','SATA 1TB','SATA 2TB'],
+  psu: [650,750,850,1000,1200].flatMap(w => ['Bronze','Gold','Platinum'].map(r => `${w}W ${r}`)),
+};
+let partsData = {ssd: [], psu: []};
+const partFilter = {ssd: 'all', psu: 'all'};
+function applyPartProducts(products, maxAgeMs) {
+  const at = {ssd: null, psu: null};
+  for (const kind of ['ssd', 'psu']) {
+    partsData[kind] = products.filter(p => p && p.category === kind && p.status === 'ok' && validPrice(p.price) && p.spec && typeof p.spec.key === 'string'
+      && Date.now() - new Date(p.fetchedAt).getTime() < maxAgeMs).map(p => ({
+        name: p.modelName, key: p.spec.key, label: p.spec.label, maker: p.spec.maker || 'その他', spec: p.spec, price: p.price,
+        itemName: typeof p.itemName === 'string' ? p.itemName : '',
+        rakuten: {status:'ok', fetchedAt:p.fetchedAt, url:p.url, source:'Yahoo!ショッピング', points:p.points, offers:[]},
+      }));
+    at[kind] = partsData[kind][0]?.rakuten.fetchedAt || null;
+    const el = document.getElementById(kind + '-rank-updated');
+    const d = at[kind] ? new Date(at[kind]) : null;
+    if (el) el.textContent = d && !Number.isNaN(d.getTime()) ? `Yahoo!ショッピングの最安値（${d.getMonth()+1}/${d.getDate()} 取得）` : '価格はまだ取得できていません';
+  }
+  renderPartTable('ssd'); renderPartTable('psu');
+}
+function partButtons(kind, x) {
+  const url = safeRakutenUrl(x.rakuten.url);
+  const words = kind === 'ssd'
+    ? [x.maker !== 'その他' ? x.maker : '', 'SSD', x.spec.type === 'SATA' ? 'SATA' : 'NVMe ' + x.spec.type, x.spec.capacity >= 1000 ? x.spec.capacity / 1000 + 'TB' : x.spec.capacity + 'GB']
+    : [x.maker !== 'その他' ? x.maker : '', '電源', x.spec.watts + 'W', '80PLUS', x.spec.rating];
+  return (url ? `<a class="affiliate-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">Yahoo!ショッピング</a>` : '')
+    + `<button class="affiliate-btn" style="margin-top:4px" data-q="${escapeHtml(words.filter(Boolean).join(' '))}" title="Amazonの価格は自動取得していません。検索結果で確認できます">Amazonで確認</button>`;
+}
+function filterPart(kind, value, el) {
+  partFilter[kind] = value;
+  document.querySelectorAll(`#${kind}-filters .filter-btn`).forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderPartTable(kind);
+}
+function renderPartTable(kind) {
+  const tbody = document.getElementById(kind + '-table-body');
+  if (!tbody) return;
+  const showOther = document.getElementById(kind + '-show-other')?.checked;
+  const f = partFilter[kind];
+  const order = PART_ORDER[kind];
+  const rows = partsData[kind].filter(x => (showOther || x.maker !== 'その他') && (f === 'all'
+      || (kind === 'ssd' ? (x.spec.type === f || String(x.spec.capacity) === f) : (String(x.spec.watts) === f || x.spec.rating === f))))
+    .sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key) || a.price - b.price);
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3)">${partsData[kind].length ? '条件に一致する製品がありません' : '価格はまだ取得できていません'}</td></tr>`;
+    return;
+  }
+  let last = '';
+  tbody.innerHTML = rows.map(x => {
+    const first = x.key !== last; last = x.key;
+    const extra = kind === 'ssd'
+      ? (x.spec.capacity ? '¥' + Math.round(x.price / (x.spec.capacity / 1000)).toLocaleString('ja-JP') : '—')
+      : (x.spec.atx3 ? '対応' : '—');
+    return `<tr${first ? ' class="part-group-first"' : ''}>
+      <td>${first ? `<strong>${esc(x.label)}</strong>` : ''}</td>
+      <td>${x.maker === 'その他' ? '<span style="color:var(--text3)">メーカー不明</span>' : esc(x.maker)}</td>
+      <td class="price-cell">${renderPrice(x)}</td>
+      <td class="price-cell">${extra}</td>
+      <td style="font-size:12px;color:var(--text2)">${esc(x.itemName.length > 60 ? x.itemName.slice(0, 60) + '…' : x.itemName)}</td>
+      <td>${partButtons(kind, x)}</td>
+    </tr>`;
+  }).join('');
+  try { labelCells(tbody); } catch (e) {}
+}
 
 // 新着候補（自動収集）。スコアがまだないのでランキングには入れず、トップに一覧だけ出す
 async function loadNewProducts() {
@@ -2211,8 +2325,8 @@ function loadPresetToBuilder(presetId) {
 
 // ===== NAV =====
 // ナビのリンクは data-page で探す（並び順に依存しない）
-const PAGE_IDS = ['home','cpu-rank','gpu-rank','ram-rank','cpu-compare','gpu-compare','ram-compare','bottleneck','presets','builder','about'];
-const PAGE_TITLES = {home:'BENCHCORE — PCパーツ性能比較','cpu-rank':'CPUランキング — BENCHCORE','gpu-rank':'GPUランキング — BENCHCORE','ram-rank':'メモリランキング — BENCHCORE','cpu-compare':'CPU比較 — BENCHCORE','gpu-compare':'GPU比較 — BENCHCORE','ram-compare':'メモリ比較 — BENCHCORE',bottleneck:'ボトルネック診断 — BENCHCORE',presets:'おすすめ構成 — BENCHCORE',builder:'構成ビルダー — BENCHCORE',about:'このサイトについて — BENCHCORE'};
+const PAGE_IDS = ['home','cpu-rank','gpu-rank','ram-rank','ssd-rank','psu-rank','cpu-compare','gpu-compare','ram-compare','bottleneck','presets','builder','about'];
+const PAGE_TITLES = {home:'BENCHCORE — PCパーツ性能比較','ssd-rank':'SSDのメーカー別最安値 — BENCHCORE','psu-rank':'電源ユニットのメーカー別最安値 — BENCHCORE','cpu-rank':'CPUランキング — BENCHCORE','gpu-rank':'GPUランキング — BENCHCORE','ram-rank':'メモリランキング — BENCHCORE','cpu-compare':'CPU比較 — BENCHCORE','gpu-compare':'GPU比較 — BENCHCORE','ram-compare':'メモリ比較 — BENCHCORE',bottleneck:'ボトルネック診断 — BENCHCORE',presets:'おすすめ構成 — BENCHCORE',builder:'構成ビルダー — BENCHCORE',about:'このサイトについて — BENCHCORE'};
 function goPage(page, skipHistory) { showPage(page, document.querySelector(`.nav-link[data-page="${page}"]`), skipHistory); }
 function showPage(id,clickedEl,skipHistory) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -2239,6 +2353,7 @@ document.addEventListener('keydown', e => { if ((e.key==='Enter'||e.key===' ') &
 document.addEventListener('click', e => {
   const btn = e.target.closest('button.affiliate-btn');
   if (!btn) return;
+  if (btn.dataset.q) { amz(btn.dataset.q); return; }
   const row = btn.closest('tr');
   const nameEl = row?.querySelector('.chip-name');
   if (!nameEl) return;
