@@ -237,3 +237,13 @@ test('parts list is written to the GPU spreadsheet, and ticks there move to the 
   run(cpuOnly, files(), 'benchcoreSync');
   assert.equal(cpuOnly.length, 1);
 });
+
+test('operator-picked motherboards and SSDs get the fetched cheapest price, other columns untouched', () => {
+  const gpu = makeSheet('GPU', gpuGrid());
+  const mb = makeSheet('マザーボード', [['製品名', 'メーカー', 'M.2スロット'], ['MSI PRO B650M-A WIFI', 'MSI', '2'], ['ASUS TUF GAMING B650-PLUS', 'ASUS', '3']]);
+  const f = files();
+  f['rakuten-prices.json'].products.push({category: 'mbp', modelName: 'MSI PRO B650M-A WIFI', status: 'ok', price: 16800, fetchedAt: fresh, source: 'Yahoo!ショッピング', itemName: 'MSI PRO B650M-A WIFI マザーボード'});
+  run([gpu, mb], f, 'benchcoreSync');
+  assert.deepEqual(mb.grid.map(r => [r[0], r[1], r[2], r[3] ?? '']), [['製品名', 'メーカー', 'M.2スロット', '最安値(円)'], ['MSI PRO B650M-A WIFI', 'MSI', '2', 16800], ['ASUS TUF GAMING B650-PLUS', 'ASUS', '3', '']]);
+  assert.match(mb.notes['1,3'], /Yahoo!ショッピング/);
+});
