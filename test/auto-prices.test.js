@@ -563,3 +563,17 @@ test('PSU and SSD listings are read strictly and grouped by maker with the 2-sho
   assert.deepEqual(picks.map(p => [p.maker, p.item.itemPrice, p.shops]), [['その他', 6000, 2], ['Corsair', 15800, 2]]);
   assert.ok(SSD_SPECS.some(s => s.key === 'Gen4 2TB') && PSU_SPECS.length === 15);
 });
+
+test('motherboard listings are read by chipset, size and memory without guessing', () => {
+  const {parseMb, MB_SPECS} = require('../scripts/lib/parts');
+  assert.deepEqual(parseMb('MSI PRO B650M-A WIFI マザーボード Micro ATX AM5 DDR5'), {chipset: 'B650', form: 'mATX', socket: 'AM5', memory: 'DDR5', maker: 'MSI'});
+  assert.deepEqual(parseMb('ASUS ROG STRIX B650E-F GAMING WIFI ATX マザーボード AM5'), {chipset: 'B650E', form: 'ATX', socket: 'AM5', memory: 'DDR5', maker: 'ASUS'});
+  assert.deepEqual(parseMb('ASRock B760M Pro RS/D4 Micro ATX マザーボード DDR4'), {chipset: 'B760', form: 'mATX', socket: 'LGA1700', memory: 'DDR4', maker: 'ASRock'});
+  assert.deepEqual(parseMb('ASRock B650I Lightning WiFi Mini-ITX マザーボード'), {chipset: 'B650', form: 'ITX', socket: 'AM5', memory: 'DDR5', maker: 'ASRock'});
+  for (const t of ['MSI MAG B760 TOMAHAWK WIFI マザーボード',          // LGA1700 でメモリの種類もサイズも書かれていない
+    'MSI B650 / B650M 選べる マザーボード', 'Ryzen 7 7800X3D + B650M マザーボード セット', 'ASRock X870E Taichi E-ATX マザーボード',
+    'GIGABYTE B650M AORUS ELITE マザーボード ATX',                       // 型番と表記のサイズが食い違う
+    'ASUS PRIME B650M-A マザーボード DDR4']) assert.equal(parseMb(t), null, t); // AM5 なのに DDR4
+  assert.equal(MB_SPECS.length, 30);
+  assert.ok(MB_SPECS.every(s => s.order >= 0));
+});

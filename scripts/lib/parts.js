@@ -4,7 +4,7 @@
 // 規格・メーカーは商品名から読み取り、少しでもあいまいな商品は使わない（推測しない）。
 // 一覧にないメーカーは「その他」にまとめる（サイトではボタンを押したときだけ表示）。
 
-const COMMON_EXCLUDE = /中古|リユース|並行輸入|平行輸入|海外版|アウトレット|訳あり|ジャンク|再生品|未使用品|開封|展示品|バルク|福袋|セット品|ゲーミングPC|デスクトップPC|パソコン本体|BTO|ノートPC本体/i;
+const COMMON_EXCLUDE = /選べる|選択式|よりどり|中古|リユース|並行輸入|平行輸入|海外版|アウトレット|訳あり|ジャンク|再生品|未使用品|開封|展示品|バルク|福袋|セット品|ゲーミングPC|デスクトップPC|パソコン本体|BTO|ノートPC本体/i;
 
 function normalizeTitle(title) {
   return String(title || '')
@@ -127,4 +127,71 @@ function pickByMaker(spec, items) {
     .sort((a, b) => a.item.itemPrice - b.item.itemPrice);
 }
 
-module.exports = {PSU_SPECS, SSD_SPECS, parsePsu, parseSsd, pickByMaker, makerOf, PSU_MAKERS, SSD_MAKERS};
+// ---- マザーボード ----
+const MB_MAKERS = [
+  ['ASUS', /(?<![A-Z])ASUS(?![A-Z])|エイスース|ROG\s*STRIX|TUF\s*GAMING|PRIME\s*[A-Z]\d{3}|PROART/i], ['MSI', /(?<![A-Z])MSI(?![A-Z])|エムエスアイ|MAG\s|MPG\s|MEG\s/i],
+  ['GIGABYTE', /GIGABYTE|ギガバイト|AORUS/i], ['ASRock', /ASROCK|アスロック/i], ['BIOSTAR', /BIOSTAR|バイオスター/i], ['NZXT', /NZXT/i],
+];
+// チップセット → ソケット・メモリ（LGA1700 だけは DDR4 と DDR5 の両方がある）
+const CHIPSETS = {
+  X870E: ['AM5', 'DDR5'], X870: ['AM5', 'DDR5'], B850: ['AM5', 'DDR5'], X670E: ['AM5', 'DDR5'], X670: ['AM5', 'DDR5'], B650E: ['AM5', 'DDR5'], B650: ['AM5', 'DDR5'], A620: ['AM5', 'DDR5'],
+  X570: ['AM4', 'DDR4'], B550: ['AM4', 'DDR4'], A520: ['AM4', 'DDR4'],
+  Z890: ['LGA1851', 'DDR5'], B860: ['LGA1851', 'DDR5'], H810: ['LGA1851', 'DDR5'],
+  Z790: ['LGA1700', null], B760: ['LGA1700', null], H610: ['LGA1700', null], Z690: ['LGA1700', null], B660: ['LGA1700', null],
+};
+const CHIPSET_RE = /(?<![A-Z0-9])(X870E|X670E|B650E|X870|X670|B850|B650|A620|X570|B550|A520|Z890|B860|H810|Z790|B760|H610|Z690|B660)(M|I)?(?![A-Z0-9])/gi;
+const MB_EXCLUDE = /セット|バンドル|同梱|CPU付|メモリ付|組み合わせ|ジャンク|中古|ノート|サーバー|WS\b|ワークステーション|I\/Oシールド単体|バックプレート|ケーブル|ヒートシンク単体/i;
+
+function parseMb(title) {
+  const t = normalizeTitle(title);
+  if (COMMON_EXCLUDE.test(t) || MB_EXCLUDE.test(t)) return null;
+  if (!/マザーボード|MOTHERBOARD|マザボ/i.test(t)) return null;
+  const found = [...t.matchAll(CHIPSET_RE)];
+  const chipsets = [...new Set(found.map(m => m[1].toUpperCase()))];
+  if (chipsets.length !== 1) return null;
+  // 「B650 / B650M」のように同じチップセットで別サイズの型番が並ぶ商品は、どれの値段かわからないので使わない
+  if (new Set(found.map(m => (m[2] || '').toUpperCase())).size > 1) return null;
+  const chipset = chipsets[0];
+  // サイズ: 型番の末尾（B650M / B650I）と、商品名の表記（Micro-ATX など）の両方を見て、食い違えば使わない
+  const forms = new Set(found.map(m => (m[2] || '').toUpperCase()).filter(Boolean).map(x => (x === 'M' ? 'mATX' : 'ITX')));
+  let rest = t;
+  if (/MICRO[\s-]?ATX|M[\s-]ATX|MATX|μATX|マイクロATX/i.test(rest)) { forms.add('mATX'); rest = rest.replace(/MICRO[\s-]?ATX|M[\s-]ATX|MATX|μATX|マイクロATX/gi, ' '); }
+  if (/MINI[\s-]?ITX|(?<![A-Z])ITX(?![A-Z])/i.test(rest)) { forms.add('ITX'); rest = rest.replace(/MINI[\s-]?ITX|(?<![A-Z])ITX(?![A-Z])/gi, ' '); }
+  if (/E[\s-]ATX|EATX|EXTENDED[\s-]ATX/i.test(rest)) return null;
+  if (/(?<![A-Z])ATX(?![A-Z0-9.])/i.test(rest)) forms.add('ATX');
+  if (forms.size !== 1) return null;
+  const [socket, fixedMemory] = CHIPSETS[chipset];
+  const mems = [...new Set([...t.matchAll(/DDR([45])/gi)].map(m => 'DDR' + m[1]))];
+  let memory = fixedMemory;
+  if (fixedMemory) { if (mems.some(x => x !== fixedMemory)) return null; }
+  else { if (mems.length !== 1) return null; memory = mems[0]; } // LGA1700 はメモリの種類が書かれていない商品を使わない
+  const maker = makerOf(t, MB_MAKERS);
+  if (!maker) return null;
+  return {chipset, form: [...forms][0], socket, memory, maker};
+}
+
+const FORM_LABEL = {ATX: 'ATX', mATX: 'Micro-ATX', ITX: 'Mini-ITX'};
+const MB_LIST = [
+  ['X870E', ['ATX']], ['X870', ['ATX', 'mATX']], ['B850', ['ATX', 'mATX', 'ITX']], ['B650E', ['ATX']], ['B650', ['ATX', 'mATX', 'ITX']], ['A620', ['ATX', 'mATX']],
+  ['X570', ['ATX']], ['B550', ['ATX', 'mATX']], ['A520', ['mATX']],
+  ['Z890', ['ATX', 'mATX', 'ITX']], ['B860', ['ATX', 'mATX', 'ITX']], ['H810', ['mATX']],
+  ['Z790', ['ATX'], 'DDR5'], ['B760', ['ATX', 'mATX'], 'DDR5'], ['B760', ['ATX', 'mATX'], 'DDR4'], ['H610', ['mATX'], 'DDR4'], ['H610', ['mATX'], 'DDR5'],
+];
+const MB_SPECS = MB_LIST.flatMap(([chipset, forms, mem]) => forms.map(form => {
+  const [socket, fixed] = CHIPSETS[chipset];
+  const memory = mem || fixed;
+  const formQ = form === 'ATX' ? 'ATX' : form === 'mATX' ? 'Micro ATX' : 'Mini-ITX';
+  return {
+    category: 'mb', key: `${chipset} ${form}${mem ? ' ' + mem : ''}`, label: `${chipset} ${FORM_LABEL[form]}${mem ? '（' + mem + '）' : ''}`,
+    chipset, form, socket, memory,
+    queries: [`マザーボード ${chipset} ${formQ}${mem ? ' ' + mem : ''}`],
+    floor: 6000,
+    matches: p => p.chipset === chipset && p.form === form && p.memory === memory,
+    parse: parseMb,
+  };
+}));
+
+// サイトで並べる順番（規格の一覧の順）
+[...PSU_SPECS, ...SSD_SPECS, ...MB_SPECS].forEach((spec, i) => { spec.order = i; });
+
+module.exports = {PSU_SPECS, SSD_SPECS, MB_SPECS, parsePsu, parseSsd, parseMb, pickByMaker, makerOf, PSU_MAKERS, SSD_MAKERS, MB_MAKERS};
