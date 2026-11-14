@@ -73,8 +73,8 @@ function run(sheets, files, fn, {code = SYNC_SOURCE, codeStatus = 200} = {}) {
 const fresh = new Date().toISOString();
 const files = () => ({
   'rakuten-prices.json': {products: [
-    {category: 'ssd', modelName: 'NVMe Gen4 2TB｜Crucial', status: 'ok', price: 19800, fetchedAt: fresh, itemCode: 'yahoo:a_1', itemName: 'Crucial T500 2TB', shopName: 'A店', spec: {label: 'NVMe Gen4 2TB', maker: 'Crucial'}},
-    {category: 'psu', modelName: '850W 80PLUS Gold｜その他', status: 'ok', price: 6000, fetchedAt: fresh, itemCode: 'yahoo:b_1', itemName: 'ノーブランド 850W GOLD', shopName: 'B店', spec: {label: '850W 80PLUS Gold', maker: 'その他'}},
+    {category: 'ssd', modelName: 'NVMe Gen4 2TB｜Crucial', status: 'ok', price: 19800, fetchedAt: fresh, itemCode: 'yahoo:a_1', itemName: 'Crucial T500 2TB', shopName: 'A店', url: 'https://store.shopping.yahoo.co.jp/a/1.html', spec: {label: 'NVMe Gen4 2TB', maker: 'Crucial'}},
+    {category: 'psu', modelName: '850W 80PLUS Gold｜その他', status: 'ok', price: 6000, fetchedAt: fresh, itemCode: 'yahoo:b_1', itemName: 'ノーブランド 850W GOLD', shopName: 'B店', url: '=HYPERLINK("x")', spec: {label: '850W 80PLUS Gold', maker: 'その他'}},
     {category: 'gpu', modelName: 'GeForce RTX 5080', status: 'ok', price: 198000, fetchedAt: fresh, source: 'Yahoo!ショッピング'},
     {category: 'gpu', modelName: 'Radeon RX 7600', status: 'ok', price: 31000, fetchedAt: '2020-01-01T00:00:00Z'},
     {category: 'gpu', modelName: 'GeForce RTX 4060', status: 'ok', price: 45000, fetchedAt: fresh},
@@ -224,13 +224,13 @@ test('parts list is written to the GPU spreadsheet, and ticks there move to the 
   assert.ok(parts && fix);
   assert.deepEqual(parts.grid[0].slice(0, 3), ['種類', '規格', 'メーカー']);
   assert.equal(parts.grid.length, 3);                                   // 見出し + SSD + 電源（CPU・GPUは書かない）
-  assert.deepEqual(parts.grid.map(r => [r[0], r[2], r[6], r[8]]).slice(1), [['SSD', 'Crucial', 'yahoo:a_1', false], ['電源', 'その他', 'yahoo:b_1', false]]);
+  assert.deepEqual(parts.grid.map(r => [r[0], r[2], r[6], r[7], r[9]]).slice(1), [['SSD', 'Crucial', 'https://store.shopping.yahoo.co.jp/a/1.html', 'yahoo:a_1', false], ['電源', 'その他', '', 'yahoo:b_1', false]]);
   // 人がチェックを付けると、次の実行で「パーツの修正」に移り、一覧にもチェックが残る
-  parts.grid[2][8] = true;
-  parts.grid[1][9] = 'Micron';
+  parts.grid[2][9] = true;
+  parts.grid[1][10] = 'Micron';
   const {logs} = run(sheets, files(), 'benchcoreSync');
   assert.deepEqual(fix.grid.slice(1).map(r => [r[0], r[3], r[4]]), [['yahoo:a_1', false, 'Micron'], ['yahoo:b_1', true, '']]);
-  assert.deepEqual([parts.grid[1][9], parts.grid[2][8]], ['Micron', true]);
+  assert.deepEqual([parts.grid[1][10], parts.grid[2][9]], ['Micron', true]);
   assert.ok(logs.some(l => l.includes('除外')));
   // CPUのスプレッドシート（GPU名の列がない）には書かない
   const cpuOnly = [makeSheet('CPU', [['CPU名', 'スコア', '価格(円)'], ['Core i5-14400F', 25000, 26000]])];
