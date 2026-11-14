@@ -14,6 +14,7 @@ const {nameIssue} = require('./lib/audit');
 const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
 const {checkSpecs} = require('./lib/spec-check');
 const {fetchBlenderScores} = require('./lib/blender');
+const {PSU_SPECS, SSD_SPECS, pickByMaker} = require('./lib/parts');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -132,7 +133,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const wait = ms => ms ? new Promise(resolve => setTimeout(resolve, ms)) : Promise.resolve();
   const yahooItems = async (keyword, range = null) => {
     if (!yahoo.appid || yahoo.failures >= 3) return null;
-    const cacheKey = range ? `${keyword}\0${range.from}\0${range.to}` : keyword;
+    const cacheKey = range ? `${keyword}\0${range.from}\0${range.to}\0${range.start || 1}\0${range.results || 50}` : keyword;
     if (yahoo.cache.has(cacheKey)) return yahoo.cache.get(cacheKey);
     try {
       await wait(yahooDelay);
@@ -257,7 +258,40 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     });
   }
 
-  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length - ramFound} / 未取得 ${unmatched.filter(u => u.category !== 'ram').length} / API失敗 ${apiErrors}`);
+  // 電源・SSD: 規格ごとに、メーカー別の最安値を探す（安い順に200件まで見る）
+  let partsFound = 0;
+  for (const spec of auditOnly || options.skipParts ? [] : (options.partSpecs || [...PSU_SPECS, ...SSD_SPECS])) {
+    const items = [];
+    let anyResponse = false;
+    for (const query of spec.queries) {
+      for (const start of [1, 101]) {
+        const found = await yahooItems(query, {from: spec.floor, to: 0, results: 100, start});
+        if (found) { anyResponse = true; items.push(...found); }
+        if (!found || found.length < 100) break;
+      }
+    }
+    const picks = pickByMaker(spec, items).map(p => ({...p, url: safeUrl(p.item)})).filter(p => p.url);
+    if (!picks.length) {
+      // 店側の失敗で取れなかったときは、前回の価格を数日間は引き継ぐ
+      const kept = [...previous.values()].filter(p => p.category === spec.category && p.spec && p.spec.key === spec.key && p.status === 'ok' && now - new Date(p.fetchedAt) < KEEP_PREVIOUS_MS);
+      if (!anyResponse && kept.length) products.push(...kept);
+      else unmatched.push({category: spec.category, modelName: spec.label, reason: anyResponse ? '規格が一致する新品を2店以上で確認できませんでした' : 'Yahoo!ショッピングに接続できませんでした'});
+      continue;
+    }
+    for (const p of picks) {
+      partsFound++;
+      const {parsed} = p.item;
+      products.push({
+        category: spec.category, modelName: `${spec.label}｜${p.maker}`, status: 'ok', source: 'Yahoo!ショッピング',
+        price: p.item.itemPrice, points: p.item.points || 0, url: p.url, fetchedAt,
+        itemCode: p.item.itemCode, itemName: p.item.itemName, shopName: p.item.shopName || '',
+        spec: {key: spec.key, label: spec.label, maker: p.maker, shops: p.shops, ...(spec.category === 'psu' ? {watts: spec.watts, rating: spec.rating, atx3: Boolean(parsed.atx3)} : {type: spec.type, capacity: spec.capacity})},
+      });
+    }
+  }
+  if (!auditOnly && !options.skipParts) log(`電源・SSD: ${partsFound} 件（規格×メーカー）`);
+
+  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length - ramFound - partsFound} / 未取得 ${unmatched.filter(u => u.category !== 'ram').length} / API失敗 ${apiErrors}`);
   if (!auditOnly && !options.skipRam) log(`メモリ: ${(options.ramSpecs || RAM_SPECS).length} 規格のうち ${ramFound} 規格の最安値を取得`);
   // 1件も取れず、どのストアにも接続できなかった回だけは、前回のファイルを壊さない（途中まで取れた分は保存する）
   const rakutenUp = rakuten.configured && rakuten.on, yahooUp = Boolean(yahoo.appid) && yahoo.successes > 0;
