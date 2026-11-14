@@ -27,6 +27,8 @@ function makeSheet(name, grid, formulas = {}) {
     getName: () => name,
     getLastRow: () => grid.length,
     deleteRow(row) { grid.splice(row - 1, 1); },
+    clearContents() { grid.length = 0; },
+    setFrozenRows() {},
     appendRow(values) { grid.push(values.slice()); },
     getLastColumn: width,
     getRange(row, column, rows, columns) {
@@ -38,6 +40,8 @@ function makeSheet(name, grid, formulas = {}) {
         getFormulas: () => read((r, c) => formulas[`${r},${c}`] || ''),
         getBackgrounds: () => read((r, c) => backgrounds[`${r},${c}`] || '#ffffff'),
         getCell: (i, j) => cell(r0 + i - 1, c0 + j - 1),
+        setValues(values) { values.forEach((v, i) => { while (grid.length <= r0 + i) grid.push([]); v.forEach((x, j) => { grid[r0 + i][c0 + j] = x; }); }); },
+        insertCheckboxes() { for (let i = 0; i < rows; i++) { const v = grid[r0 + i][c0]; if (v !== true) grid[r0 + i][c0] = false; } },
       };
     },
   };
@@ -46,7 +50,11 @@ function makeSheet(name, grid, formulas = {}) {
 function run(sheets, files, fn, {code = SYNC_SOURCE, codeStatus = 200} = {}) {
   const logs = [], fetched = [];
   const context = vm.createContext({
-    SpreadsheetApp: {getActiveSpreadsheet: () => ({getSheets: () => sheets})},
+    SpreadsheetApp: {getActiveSpreadsheet: () => ({
+      getSheets: () => sheets,
+      getSheetByName: name => sheets.find(sheet => sheet.getName() === name) || null,
+      insertSheet: name => { const sheet = makeSheet(name, []); sheets.push(sheet); return sheet; },
+    })},
     UrlFetchApp: {fetch: url => {
       fetched.push(url);
       const file = url.split('/').pop();
@@ -65,6 +73,8 @@ function run(sheets, files, fn, {code = SYNC_SOURCE, codeStatus = 200} = {}) {
 const fresh = new Date().toISOString();
 const files = () => ({
   'rakuten-prices.json': {products: [
+    {category: 'ssd', modelName: 'NVMe Gen4 2TB｜Crucial', status: 'ok', price: 19800, fetchedAt: fresh, itemCode: 'yahoo:a_1', itemName: 'Crucial T500 2TB', shopName: 'A店', spec: {label: 'NVMe Gen4 2TB', maker: 'Crucial'}},
+    {category: 'psu', modelName: '850W 80PLUS Gold｜その他', status: 'ok', price: 6000, fetchedAt: fresh, itemCode: 'yahoo:b_1', itemName: 'ノーブランド 850W GOLD', shopName: 'B店', spec: {label: '850W 80PLUS Gold', maker: 'その他'}},
     {category: 'gpu', modelName: 'GeForce RTX 5080', status: 'ok', price: 198000, fetchedAt: fresh, source: 'Yahoo!ショッピング'},
     {category: 'gpu', modelName: 'Radeon RX 7600', status: 'ok', price: 31000, fetchedAt: '2020-01-01T00:00:00Z'},
     {category: 'gpu', modelName: 'GeForce RTX 4060', status: 'ok', price: 45000, fetchedAt: fresh},
@@ -134,9 +144,10 @@ test('sync writes fetched prices to a separate column and never overwrites the r
 
 test('running twice is stable, and a price that is no longer fetched is cleared', () => {
   const sheet = makeSheet('GPU', gpuGrid());
-  run([sheet], files(), 'benchcoreSync');
+  const sheets = [sheet];                              // 自動で作るタブも含めて、同じスプレッドシートで2回動かす
+  run(sheets, files(), 'benchcoreSync');
   const after = JSON.stringify([sheet.grid, sheet.notes, sheet.backgrounds]);
-  const {logs} = run([sheet], files(), 'benchcoreSync');
+  const {logs} = run(sheets, files(), 'benchcoreSync');
   assert.equal(JSON.stringify([sheet.grid, sheet.notes, sheet.backgrounds]), after);
   assert.match(logs[0], / 0 件/);
   const f = files();
@@ -202,4 +213,27 @@ test('new products are appended once with an empty, highlighted score cell', () 
   const other = makeSheet('GPU', gpuGrid());
   run([other], g, 'benchcoreSync');
   assert.equal(other.grid[1][3], 198000);
+});
+
+test('parts list is written to the GPU spreadsheet, and ticks there move to the corrections tab', () => {
+  const gpu = makeSheet('GPU', gpuGrid());
+  const sheets = [gpu];
+  run(sheets, files(), 'benchcoreSync');
+  const parts = sheets.find(s => s.getName() === 'パーツ最安値');
+  const fix = sheets.find(s => s.getName() === 'パーツの修正');
+  assert.ok(parts && fix);
+  assert.deepEqual(parts.grid[0].slice(0, 3), ['種類', '規格', 'メーカー']);
+  assert.equal(parts.grid.length, 3);                                   // 見出し + SSD + 電源（CPU・GPUは書かない）
+  assert.deepEqual(parts.grid.map(r => [r[0], r[2], r[6], r[8]]).slice(1), [['SSD', 'Crucial', 'yahoo:a_1', false], ['電源', 'その他', 'yahoo:b_1', false]]);
+  // 人がチェックを付けると、次の実行で「パーツの修正」に移り、一覧にもチェックが残る
+  parts.grid[2][8] = true;
+  parts.grid[1][9] = 'Micron';
+  const {logs} = run(sheets, files(), 'benchcoreSync');
+  assert.deepEqual(fix.grid.slice(1).map(r => [r[0], r[3], r[4]]), [['yahoo:a_1', false, 'Micron'], ['yahoo:b_1', true, '']]);
+  assert.deepEqual([parts.grid[1][9], parts.grid[2][8]], ['Micron', true]);
+  assert.ok(logs.some(l => l.includes('除外')));
+  // CPUのスプレッドシート（GPU名の列がない）には書かない
+  const cpuOnly = [makeSheet('CPU', [['CPU名', 'スコア', '価格(円)'], ['Core i5-14400F', 25000, 26000]])];
+  run(cpuOnly, files(), 'benchcoreSync');
+  assert.equal(cpuOnly.length, 1);
 });

@@ -15,6 +15,7 @@ const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
 const {checkSpecs} = require('./lib/spec-check');
 const {fetchBlenderScores} = require('./lib/blender');
 const {PSU_SPECS, SSD_SPECS, MB_SPECS, pickByMaker} = require('./lib/parts');
+const {loadCorrections} = require('./lib/corrections');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -24,6 +25,9 @@ const HISTORY_OUTPUT = path.join(ROOT, 'data', 'price-history.json');
 const BLENDER_OUTPUT = path.join(ROOT, 'data', 'blender-scores.json');
 const HISTORY_DAYS = 180;
 
+function readSheetsConfig() {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'config', 'sheets.json'), 'utf8')); } catch { return {}; }
+}
 function readAffiliateConfig() {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'config', 'affiliate.json'), 'utf8')); } catch { return {}; }
 }
@@ -117,6 +121,10 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
 
   const credentials = {applicationId: env[names[0]], accessKey: env[names[1]], affiliateId: env[names[2]], origin: env.RAKUTEN_SITE_ORIGIN || SITE_ORIGIN};
   const models = options.models || await loadModels(fetchImpl);
+  // シートで人が入れた修正（除外する商品・正しいメーカー）
+  const corrections = options.corrections || (auditOnly ? {exclude: new Set(), maker: new Map()} : await loadCorrections(readSheetsConfig().correctionsSpreadsheetId, fetchImpl));
+  if (corrections.ok) log(`シートの修正: 除外 ${corrections.exclude.size} 件 / メーカー修正 ${corrections.maker.size} 件`);
+  const notExcluded = items => (items || []).filter(item => !corrections.exclude.has(item.itemCode));
   const byCategory = category => models.filter(model => model.category === category).map(model => model.modelName);
   const previous = new Map(readPrevious(output).map(product => [`${product.category}\0${product.modelName}`, product]));
   const fetchedAt = now.toISOString();
@@ -192,7 +200,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     }
     first = false;
     const offers = [];
-    const picked = pickItem(spec, items, model.referencePrice, model.category);
+    const picked = pickItem(spec, notExcluded(items), model.referencePrice, model.category);
     const url = picked.item && safeUrl(picked.item);
     if (picked.item && url) offers.push({
       store: '楽天市場', price: picked.item.itemPrice, points: rakutenPoints(picked.item), url,
@@ -203,7 +211,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     const ref = Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0;
     const range = ref ? {from: Math.max(PRICE_FLOOR[model.category] || 0, Math.round(ref * 0.7)), to: Math.round(ref * 1.8)} : null;
     const yItems = await yahooItems(spec.keyword, range);
-    const yPicked = yItems && pickItem(spec, yItems, model.referencePrice, model.category);
+    const yPicked = yItems && pickItem(spec, notExcluded(yItems), model.referencePrice, model.category);
     const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
     if (yUrl) offers.push({
       store: 'Yahoo!ショッピング', price: yPicked.item.itemPrice, points: yPicked.item.points || 0, url: yUrl,
@@ -237,7 +245,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       const found = await yahooItems(query, {from: spec.capacity * 80, to: 0});
       if (found) { anyResponse = true; items.push(...found); }
     }
-    const offers = pickRamOffers(spec, items);
+    const offers = pickRamOffers(spec, notExcluded(items));
     const ramSpec = {type: spec.type, speed: spec.speed, capacity: spec.capacity, kit: `${spec.perStick}GB×${spec.sticks}`};
     if (!offers.length) {
       const kept = previous.get(`ram\0${spec.label}`);
@@ -270,7 +278,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
         if (!found || found.length < 100) break;
       }
     }
-    const picks = pickByMaker(spec, items).map(p => ({...p, url: safeUrl(p.item)})).filter(p => p.url);
+    const picks = pickByMaker(spec, notExcluded(items), corrections.maker).map(p => ({...p, url: safeUrl(p.item)})).filter(p => p.url);
     if (!picks.length) {
       // 店側の失敗で取れなかったときは、前回の価格を数日間は引き継ぐ
       const kept = [...previous.values()].filter(p => p.category === spec.category && p.spec && p.spec.key === spec.key && p.status === 'ok' && now - new Date(p.fetchedAt) < KEEP_PREVIOUS_MS);
