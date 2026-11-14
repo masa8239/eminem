@@ -68,4 +68,39 @@ async function loadCorrections(spreadsheetId, fetchImpl = fetch) {
   return {...toCorrections(texts), ok};
 }
 
-module.exports = {loadCorrections, toCorrections, parseCsv};
+// 「マザーボード仕様」タブ: 1行 = 1枚の板。「型番」列（商品名に含まれる文字）と、自由に足せる仕様の列
+const BOARD_SHEET = 'マザーボード仕様';
+function toBoardSpecs(text) {
+  const rows = parseCsv(text || '');
+  if (rows.length < 1) return {columns: [], boards: []};
+  const header = rows[0].map(h => h.trim());
+  const modelAt = header.indexOf('型番');
+  if (modelAt < 0) return {columns: [], boards: []};
+  const columns = header.filter((h, i) => i !== modelAt && h && !/^(メモ|備考)$/.test(h)).slice(0, 12);
+  const boards = [];
+  const seen = new Set();
+  for (const r of rows.slice(1)) {
+    const model = String(r[modelAt] || '').trim();
+    const key = model.toUpperCase().replace(/[\s_-]+/g, '');
+    // 短すぎる型番は別の板に当たってしまうので使わない
+    if (key.length < 5 || seen.has(key)) continue;
+    seen.add(key);
+    const fields = {};
+    header.forEach((h, i) => { if (columns.includes(h)) { const v = String(r[i] ?? '').trim(); if (v) fields[h] = v.slice(0, 80); } });
+    if (Object.keys(fields).length) boards.push({model: model.slice(0, 60), fields});
+  }
+  return {columns, boards};
+}
+
+async function loadBoardSpecs(spreadsheetId, fetchImpl = fetch) {
+  if (!spreadsheetId || !/^[A-Za-z0-9_-]{20,}$/.test(spreadsheetId)) return {ok: false};
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&headers=1&sheet=${encodeURIComponent(BOARD_SHEET)}`;
+    const response = await fetchImpl(url, {signal: AbortSignal.timeout(20000)});
+    const text = await response.text();
+    if (!response.ok || !/型番/.test(text.split('\n')[0] || '')) return {ok: false};
+    return {ok: true, ...toBoardSpecs(text)};
+  } catch { return {ok: false}; }
+}
+
+module.exports = {loadCorrections, toCorrections, parseCsv, toBoardSpecs, loadBoardSpecs};

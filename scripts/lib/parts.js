@@ -169,7 +169,9 @@ function parseMb(title) {
   else { if (mems.length !== 1) return null; memory = mems[0]; } // LGA1700 はメモリの種類が書かれていない商品を使わない
   const maker = makerOf(t, MB_MAKERS);
   if (!maker) return null;
-  return {chipset, form: [...forms][0], socket, memory, maker};
+  // Wi-Fi は商品名に書かれているときだけ「あり」にする（書かれていないときは不明。「なし」とは決めない）
+  const wifi = /WI-?FI|(?<![A-Z])AX(?![A-Z0-9])/i.test(t);
+  return {chipset, form: [...forms][0], socket, memory, maker, wifi};
 }
 
 const FORM_LABEL = {ATX: 'ATX', mATX: 'Micro-ATX', ITX: 'Mini-ITX'};
