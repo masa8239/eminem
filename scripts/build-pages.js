@@ -191,7 +191,7 @@ async function main(options = {}) {
   for (const file of fs.readdirSync(outDir)) if (file.endsWith('.html') && !written.has(file)) fs.unlinkSync(path.join(outDir, file));
 
   const day = now.toISOString().slice(0, 10);
-  const urls = ['/', '/?page=cpu-rank', '/?page=gpu-rank', '/?page=ram-rank', '/?page=ssd-rank', '/?page=psu-rank', '/p/cpu.html', '/p/gpu.html',
+  const urls = ['/', '/?page=cpu-rank', '/?page=gpu-rank', '/?page=ram-rank', '/?page=ssd-rank', '/?page=psu-rank', '/?page=mb-rank', '/p/cpu.html', '/p/gpu.html',
     ...data.cpu.map(x => `/p/${x.slug}.html`), ...data.gpu.map(x => `/p/${x.slug}.html`)];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `<url><loc>${esc(SITE + u)}</loc><lastmod>${day}</lastmod></url>`).join('\n')}\n</urlset>\n`;
   fs.writeFileSync(options.sitemapFile || path.join(ROOT, 'sitemap.xml'), sitemap);

@@ -14,7 +14,7 @@ const {nameIssue} = require('./lib/audit');
 const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
 const {checkSpecs} = require('./lib/spec-check');
 const {fetchBlenderScores} = require('./lib/blender');
-const {PSU_SPECS, SSD_SPECS, pickByMaker} = require('./lib/parts');
+const {PSU_SPECS, SSD_SPECS, MB_SPECS, pickByMaker} = require('./lib/parts');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -258,9 +258,9 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     });
   }
 
-  // 電源・SSD: 規格ごとに、メーカー別の最安値を探す（安い順に200件まで見る）
+  // 電源・SSD・マザーボード: 規格ごとに、メーカー別の最安値を探す（安い順に200件まで見る）
   let partsFound = 0;
-  for (const spec of auditOnly || options.skipParts ? [] : (options.partSpecs || [...PSU_SPECS, ...SSD_SPECS])) {
+  for (const spec of auditOnly || options.skipParts ? [] : (options.partSpecs || [...PSU_SPECS, ...SSD_SPECS, ...MB_SPECS])) {
     const items = [];
     let anyResponse = false;
     for (const query of spec.queries) {
@@ -285,11 +285,14 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
         category: spec.category, modelName: `${spec.label}｜${p.maker}`, status: 'ok', source: 'Yahoo!ショッピング',
         price: p.item.itemPrice, points: p.item.points || 0, url: p.url, fetchedAt,
         itemCode: p.item.itemCode, itemName: p.item.itemName, shopName: p.item.shopName || '',
-        spec: {key: spec.key, label: spec.label, maker: p.maker, shops: p.shops, ...(spec.category === 'psu' ? {watts: spec.watts, rating: spec.rating, atx3: Boolean(parsed.atx3)} : {type: spec.type, capacity: spec.capacity})},
+        spec: {key: spec.key, label: spec.label, order: spec.order, maker: p.maker, shops: p.shops,
+          ...(spec.category === 'psu' ? {watts: spec.watts, rating: spec.rating, atx3: Boolean(parsed.atx3)}
+            : spec.category === 'ssd' ? {type: spec.type, capacity: spec.capacity}
+            : {chipset: spec.chipset, form: spec.form, socket: spec.socket, memory: spec.memory})},
       });
     }
   }
-  if (!auditOnly && !options.skipParts) log(`電源・SSD: ${partsFound} 件（規格×メーカー）`);
+  if (!auditOnly && !options.skipParts) log(`電源・SSD・マザーボード: ${partsFound} 件（規格×メーカー）`);
 
   if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length - ramFound - partsFound} / 未取得 ${unmatched.filter(u => u.category !== 'ram').length} / API失敗 ${apiErrors}`);
   if (!auditOnly && !options.skipRam) log(`メモリ: ${(options.ramSpecs || RAM_SPECS).length} 規格のうち ${ramFound} 規格の最安値を取得`);
