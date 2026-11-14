@@ -112,11 +112,13 @@ const SSD_SPECS = [['Gen5', [1000, 2000, 4000]], ['Gen4', [500, 1000, 2000, 4000
 
 // 安い順の検索結果から、規格が一致する在庫ありの新品を、メーカーごとに最安1件ずつ選ぶ。
 // 1店だけの出品は相場とかけ離れていても気づけないので、2店以上で売られているメーカーだけ残す
-function pickByMaker(spec, items) {
+// makerFix: 商品コード → 人がシートで直したメーカー名
+function pickByMaker(spec, items, makerFix = new Map()) {
   const byMaker = new Map();
   for (const item of [...items].sort((a, b) => a.itemPrice - b.itemPrice)) {
     if (!item || item.availability === 0 || !Number.isSafeInteger(item.itemPrice) || item.itemPrice < spec.floor) continue;
-    const parsed = spec.parse(item.itemName);
+    let parsed = spec.parse(item.itemName);
+    if (parsed && makerFix.has(item.itemCode)) parsed = {...parsed, maker: makerFix.get(item.itemCode)};
     if (!parsed || !spec.matches(parsed)) continue;
     if (!byMaker.has(parsed.maker)) byMaker.set(parsed.maker, {best: null, shops: new Set()});
     const entry = byMaker.get(parsed.maker);
