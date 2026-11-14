@@ -1698,44 +1698,6 @@
      "url": "https://store.shopping.yahoo.co.jp/joshin/0840440438656-44-61330.html",
      "itemName": "CORSAIR｜コルセア VENGEANCE DDR5 32GB (2 x 16GB) DDR5 6000 CL38 1.35V Intel XMP ＆ AMD EXPO - WHITE CMK32GX5M2D6000Z38W 返品種別B",
      "cl": 38
-    },
-    {
-     "store": "Trade Journey",
-     "price": 83800,
-     "points": 761,
-     "url": "https://store.shopping.yahoo.co.jp/trade-journey/b0cky3ffx1.html",
-     "itemName": "【平行輸入品】DDR5 32GB 6000MHz ラム（16GB×2、PC5-48000） デスクトップ用（DIMM）コンピュータメモリ クロッ",
-     "cl": null
-    }
-   ]
-  },
-  {
-   "category": "ram",
-   "modelName": "DDR5-6000 48GB（24GB×2）",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 237700,
-   "points": 2160,
-   "url": "https://store.shopping.yahoo.co.jp/basque2/mem26101343.html",
-   "fetchedAt": "2026-11-13T23:50:49.673Z",
-   "itemCode": "yahoo:basque2_mem26101343",
-   "itemName": "G.SKILL 48GB(2x24GB) DDR5-6000 デスクトップ用 U-DIMM メモリ F5-6000J4048F24GX2-TZ5RK",
-   "shopName": "Basqueバスク",
-   "spec": {
-    "type": "DDR5",
-    "speed": 6000,
-    "capacity": 48,
-    "kit": "24GB×2",
-    "cl": null
-   },
-   "offers": [
-    {
-     "store": "Basqueバスク",
-     "price": 237700,
-     "points": 2160,
-     "url": "https://store.shopping.yahoo.co.jp/basque2/mem26101343.html",
-     "itemName": "G.SKILL 48GB(2x24GB) DDR5-6000 デスクトップ用 U-DIMM メモリ F5-6000J4048F24GX2-TZ5RK",
-     "cl": null
     }
    ]
   },
@@ -1971,44 +1933,6 @@
   },
   {
    "category": "ram",
-   "modelName": "DDR5-7200 32GB（16GB×2）",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 105120,
-   "points": 955,
-   "url": "https://store.shopping.yahoo.co.jp/arkonline-store/11770117.html",
-   "fetchedAt": "2026-11-13T23:50:49.673Z",
-   "itemCode": "yahoo:arkonline-store_11770117",
-   "itemName": "KLEVV(Essencore) KD5AGUA80-72B340G 288pin DDR5-7200 CL34 32GB(16GBx2枚組) 1.4Volt XMP3..0",
-   "shopName": "パソコンSHOPアーク",
-   "spec": {
-    "type": "DDR5",
-    "speed": 7200,
-    "capacity": 32,
-    "kit": "16GB×2",
-    "cl": 34
-   },
-   "offers": [
-    {
-     "store": "パソコンSHOPアーク",
-     "price": 105120,
-     "points": 955,
-     "url": "https://store.shopping.yahoo.co.jp/arkonline-store/11770117.html",
-     "itemName": "KLEVV(Essencore) KD5AGUA80-72B340G 288pin DDR5-7200 CL34 32GB(16GBx2枚組) 1.4Volt XMP3..0",
-     "cl": 34
-    },
-    {
-     "store": "オーエルジー",
-     "price": 159600,
-     "points": 2901,
-     "url": "https://store.shopping.yahoo.co.jp/olg/b0bg5lzq6m.html",
-     "itemName": "【並行輸入品】 Team Group FF3D532G7200HC34ADC01 メモリモジュール 32GB 2 x 16GB DDR5 7200MHz",
-     "cl": null
-    }
-   ]
-  },
-  {
-   "category": "ram",
    "modelName": "DDR4-3200 16GB（8GB×2）",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -2058,13 +1982,13 @@
    "modelName": "DDR4-3200 32GB（16GB×2）",
    "status": "ok",
    "source": "Yahoo!ショッピング",
-   "price": 41100,
-   "points": 373,
-   "url": "https://store.shopping.yahoo.co.jp/trade-journey/b08t17rq87.html",
+   "price": 41500,
+   "points": 377,
+   "url": "https://store.shopping.yahoo.co.jp/arkonline-store/11705228.html",
    "fetchedAt": "2026-11-13T23:50:49.673Z",
    "itemCode": "yahoo:trade-journey_b08t17rq87",
-   "itemName": "【平行輸入品】TEAMGROUP Elite DDR4 32GB キット (2 x 16GB) 3200MHz PC4-25600 CL22 (",
-   "shopName": "Trade Journey",
+   "itemName": "SanMax SMD4-U32G48S-32AA-D 2Rank両面実装モデル 288pin DDR4-3200 CL22 32GB(16GBx2枚組)SET 1.2Volt JEDEC/Samsung 2Rank",
+   "shopName": "パソコンSHOPアーク",
    "spec": {
     "type": "DDR4",
     "speed": 3200,
@@ -2073,14 +1997,6 @@
     "cl": 22
    },
    "offers": [
-    {
-     "store": "Trade Journey",
-     "price": 41100,
-     "points": 373,
-     "url": "https://store.shopping.yahoo.co.jp/trade-journey/b08t17rq87.html",
-     "itemName": "【平行輸入品】TEAMGROUP Elite DDR4 32GB キット (2 x 16GB) 3200MHz PC4-25600 CL22 (",
-     "cl": 22
-    },
     {
      "store": "パソコンSHOPアーク",
      "price": 41500,
@@ -2096,44 +2012,6 @@
      "url": "https://store.shopping.yahoo.co.jp/silicon-powerplus/sp032gblfu320f22.html",
      "itemName": "シリコンパワー DDR4 32GB(16GB×2) デスクトップ用 PCメモリ DDR4-3200 メモリ 3200MHz(PC4-25600)288ピン CL22 1.2V RAM SP032GBLFU320F22",
      "cl": 22
-    }
-   ]
-  },
-  {
-   "category": "ram",
-   "modelName": "DDR4-3200 64GB（32GB×2）",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 99800,
-   "points": 907,
-   "url": "https://store.shopping.yahoo.co.jp/powerdepot/0649528937797.html",
-   "fetchedAt": "2026-11-13T23:50:49.673Z",
-   "itemCode": "yahoo:powerdepot_0649528937797",
-   "itemName": "crucial製デスクトップ用メモリー DDR4-3200 32GBX2枚組 CP2K32G4DFRA32A",
-   "shopName": "パワーデポ ヤフー店",
-   "spec": {
-    "type": "DDR4",
-    "speed": 3200,
-    "capacity": 64,
-    "kit": "32GB×2",
-    "cl": null
-   },
-   "offers": [
-    {
-     "store": "パワーデポ ヤフー店",
-     "price": 99800,
-     "points": 907,
-     "url": "https://store.shopping.yahoo.co.jp/powerdepot/0649528937797.html",
-     "itemName": "crucial製デスクトップ用メモリー DDR4-3200 32GBX2枚組 CP2K32G4DFRA32A",
-     "cl": null
-    },
-    {
-     "store": "Trade Journey",
-     "price": 100600,
-     "points": 914,
-     "url": "https://store.shopping.yahoo.co.jp/trade-journey/b0d1j3tpr8.html",
-     "itemName": "【平行輸入品】A-Tech Velocity RAM 64GB (2x32GB) DDR4 3200MHz (PC4-25600) XMP 2.",
-     "cl": null
     }
    ]
   },
@@ -2188,13 +2066,13 @@
    "modelName": "DDR4-3600 32GB（16GB×2）",
    "status": "ok",
    "source": "Yahoo!ショッピング",
-   "price": 58000,
-   "points": 1054,
-   "url": "https://store.shopping.yahoo.co.jp/olg/b091fkd2n3.html",
+   "price": 59680,
+   "points": 1085,
+   "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000017164.html",
    "fetchedAt": "2026-11-13T23:50:49.673Z",
    "itemCode": "yahoo:olg_b091fkd2n3",
-   "itemName": "【並行輸入品】 TTCED432G3600HC18JDC01  T-CREATE EXPERT 32GB (16GBx2) DDR4 3600MHz (PC4-28800) CL18-22-22-42 1.35V",
-   "shopName": "オーエルジー",
+   "itemName": "Corsair デスクトップ用 CMK32GX4M2D3600C18 DDR4 PC4-3600 PC4-28800 16GB 2枚組",
+   "shopName": "エクセラープラス",
    "spec": {
     "type": "DDR4",
     "speed": 3600,
@@ -2203,14 +2081,6 @@
     "cl": 18
    },
    "offers": [
-    {
-     "store": "オーエルジー",
-     "price": 58000,
-     "points": 1054,
-     "url": "https://store.shopping.yahoo.co.jp/olg/b091fkd2n3.html",
-     "itemName": "【並行輸入品】 TTCED432G3600HC18JDC01  T-CREATE EXPERT 32GB (16GBx2) DDR4 3600MHz (PC4-28800) CL18-22-22-42 1.35V",
-     "cl": 18
-    },
     {
      "store": "エクセラープラス",
      "price": 59680,
@@ -3275,6 +3145,21 @@
    "category": "gpu",
    "modelName": "Radeon RX 9060 XT 8GB",
    "reason": "一致する新品単品の出品なし"
+  },
+  {
+   "category": "ram",
+   "modelName": "DDR5-6000 48GB（24GB×2）",
+   "reason": "規格が一致する新品キットを2店以上で確認できませんでした"
+  },
+  {
+   "category": "ram",
+   "modelName": "DDR5-7200 32GB（16GB×2）",
+   "reason": "規格が一致する新品キットを2店以上で確認できませんでした"
+  },
+  {
+   "category": "ram",
+   "modelName": "DDR4-3200 64GB（32GB×2）",
+   "reason": "規格が一致する新品キットを2店以上で確認できませんでした"
   }
  ]
 }
