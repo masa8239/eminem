@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-13T23:50:49.673Z",
+ "checkedAt": "2026-11-14T22:43:12.240Z",
  "source": "https://opendata.blender.org/",
  "note": "Blender Open Data（公開データ・利用制限なし）の中央値。測定数3件以上のみ。GPUは一番速い計算方式の値",
  "cpu": {
@@ -146,8 +146,8 @@
     "deviceName": "Intel Core i9-12900KS"
    },
    "Ryzen 9 5900XT": {
-    "score": 363.35,
-    "samples": 76,
+    "score": 363.54,
+    "samples": 77,
     "deviceName": "AMD Ryzen 9 5900XT 16-Core Processor"
    },
    "Core i7-13700KF": {
@@ -596,8 +596,8 @@
     "deviceName": "AMD Ryzen 5 5500"
    },
    "Ryzen 5 3600X": {
-    "score": 137.92,
-    "samples": 22,
+    "score": 137.76,
+    "samples": 23,
     "deviceName": "AMD Ryzen 5 3600X 6-Core Processor"
    },
    "Core i7-9700K": {

@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-13T23:50:49.673Z",
+ "checkedAt": "2026-11-14T22:43:12.240Z",
  "issues": [
   {
    "category": "cpu",
@@ -614,6 +614,19 @@
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
+   "category": "cpu",
+   "modelName": "Ryzen 7 8600G",
+   "type": "name",
+   "issue": "等級が違います（正しくは Ryzen 5 8600G）",
+   "fix": "Ryzen 5 8600G"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 8600G",
+   "type": "duplicate",
+   "issue": "「Ryzen 5 8600G」と重複しています（サイトでは1件だけ表示）"
+  },
+  {
    "category": "gpu",
    "modelName": "Radeon RX 7900 XTX",
    "type": "price",
@@ -1212,6 +1225,12 @@
    "modelName": "Radeon RX 6650 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 8600G",
+   "type": "spec",
+   "issue": "仕様の照合表にない型番です。型番が正しいか確認してください"
   },
   {
    "category": "gpu",
