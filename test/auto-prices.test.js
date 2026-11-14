@@ -107,7 +107,7 @@ test('update script writes prices, keeps going on misses and never leaks credent
       : [item('【中古】Radeon RX 7600 8GB', 20000)];
     return {ok: true, json: async () => ({Items})};
   };
-  const code = await main(env, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log: line => logs.push(line), now: new Date('2026-11-11T00:00:00Z'), discoveryQueries: []});
+  const code = await main(env, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log: line => logs.push(line), now: new Date('2026-11-11T00:00:00Z'), discoveryQueries: []});
   assert.equal(code, 0);
   assert.deepEqual(keywords, ['RTX 5070', 'Ryzen 5600', 'RX 7600']);
   const text = fs.readFileSync(output, 'utf8');
@@ -125,10 +125,10 @@ test('an API outage keeps the previous price file untouched', async () => {
   fs.writeFileSync(output, '{"products":[{"category":"gpu","modelName":"GeForce RTX 5070","status":"ok","price":1,"fetchedAt":"2026-11-10T00:00:00Z"}]}');
   const env = {RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c'};
   const models = ['5070', '5070 Ti', '5080', '5090', '4060'].map(n => ({category: 'gpu', modelName: 'GeForce RTX ' + n, referencePrice: 100000}));
-  const code = await main(env, async () => ({ok: false, status: 503}), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}});
+  const code = await main(env, async () => ({ok: false, status: 503}), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}});
   assert.equal(code, 1);
   assert.match(fs.readFileSync(output, 'utf8'), /"price":1/);
-  assert.equal(await main({}, async () => assert.fail('no network without credentials'), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, log() {}}), 1);
+  assert.equal(await main({}, async () => assert.fail('no network without credentials'), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, log() {}}), 1);
 });
 
 test('the site model list can be read from index.html without network', async () => {
@@ -170,7 +170,7 @@ test('update run also writes the sheet audit next to the price file', async () =
   ];
   let calls = 0;
   const fetchImpl = async url => { calls++; return {ok: true, json: async () => ({Items: url.searchParams.get('keyword') === 'RTX 5070' ? [item('MSI GeForce RTX 5070 12G', 111000)] : []})}; };
-  assert.equal(await main(env, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []}), 0);
+  assert.equal(await main(env, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []}), 0);
   assert.equal(calls, 3);
   const audit = JSON.parse(fs.readFileSync(path.join(dir, 'sheet-audit.json'), 'utf8'));
   assert.deepEqual(audit.issues.map(i => [i.modelName, i.type]), [['GeForce RTX 6700 XT', 'name'], ['GeForce RTX 6700 XT', 'price']]);
@@ -260,7 +260,7 @@ test('a second store adds offers, the cheapest wins, and points are recorded', a
     const keyword = url.searchParams.get('keyword');
     return {ok: true, json: async () => ({Items: keyword === 'RTX 5070' ? [item('MSI GeForce RTX 5070 12G', 111000, {pointRate: 5})] : keyword === 'Ryzen 5600' ? [item('AMD Ryzen 5 5600 BOX', 9980)] : []})};
   };
-  assert.equal(await main(env, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: ['x']}), 0);
+  assert.equal(await main(env, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: ['x']}), 0);
   const text = fs.readFileSync(output, 'utf8');
   const [gpu, cpu] = JSON.parse(text).products;
   assert.deepEqual([gpu.source, gpu.price, gpu.points], ['Yahoo!ショッピング', 105000, 1050]);
@@ -277,7 +277,7 @@ test('Yahoo alone is enough, and a Rakuten outage falls back to Yahoo without lo
   const yahooHit = url => ({ok: true, json: async () => ({hits: [{code: 's_' + url.searchParams.get('query'), name: 'MSI GeForce ' + url.searchParams.get('query') + ' 12G', price: 99000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/1.html'}]})});
   // Yahoo のみ
   let rakutenCalls = 0;
-  let code = await main({YAHOO_CLIENT_ID: 'y'}, async url => { if (url.hostname !== 'shopping.yahooapis.jp') { rakutenCalls++; return {ok: false, status: 500}; } return yahooHit(url); }, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: ['q']});
+  let code = await main({YAHOO_CLIENT_ID: 'y'}, async url => { if (url.hostname !== 'shopping.yahooapis.jp') { rakutenCalls++; return {ok: false, status: 500}; } return yahooHit(url); }, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: ['q']});
   assert.equal(code, 0);
   assert.equal(rakutenCalls, 0);
   let data = JSON.parse(fs.readFileSync(output, 'utf8'));
@@ -287,7 +287,7 @@ test('Yahoo alone is enough, and a Rakuten outage falls back to Yahoo without lo
   rakutenCalls = 0;
   const logs = [];
   code = await main({RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c', YAHOO_CLIENT_ID: 'y'},
-    async url => { if (url.hostname !== 'shopping.yahooapis.jp') { rakutenCalls++; return {ok: false, status: 503}; } return yahooHit(url); }, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log: l => logs.push(l), discoveryQueries: []});
+    async url => { if (url.hostname !== 'shopping.yahooapis.jp') { rakutenCalls++; return {ok: false, status: 503}; } return yahooHit(url); }, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log: l => logs.push(l), discoveryQueries: []});
   assert.equal(code, 0);
   assert.equal(rakutenCalls, 3);
   data = JSON.parse(fs.readFileSync(output, 'utf8'));
@@ -295,7 +295,7 @@ test('Yahoo alone is enough, and a Rakuten outage falls back to Yahoo without lo
   assert.ok(logs.some(l => l.includes('この回は楽天を使いません')));
   // どちらも落ちているときは前回のファイルを残す
   const before = fs.readFileSync(output, 'utf8');
-  code = await main({RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c', YAHOO_CLIENT_ID: 'y'}, async () => ({ok: false, status: 503}), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
+  code = await main({RAKUTEN_APPLICATION_ID: 'a', RAKUTEN_ACCESS_KEY: 'b', RAKUTEN_AFFILIATE_ID: 'c', YAHOO_CLIENT_ID: 'y'}, async () => ({ok: false, status: 503}), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
   assert.equal(code, 1);
   assert.equal(fs.readFileSync(output, 'utf8'), before);
 });
@@ -308,13 +308,13 @@ test('Yahoo rate limits are waited out, and a partial run still saves what it go
   const limited = {ok: false, status: 429, text: async () => '{"Status":429,"Message":"The AppID is denied"}'};
   // 一時的な 429 は待ってやり直し、全件取れる
   let calls = 0;
-  let code = await main({YAHOO_CLIENT_ID: 'y'}, async url => (++calls % 3 === 0 ? limited : ok(url)), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
+  let code = await main({YAHOO_CLIENT_ID: 'y'}, async url => (++calls % 3 === 0 ? limited : ok(url)), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
   assert.equal(code, 0);
   assert.equal(JSON.parse(fs.readFileSync(output, 'utf8')).products.length, 5);
   // 途中から 429 が続いても、それまでに取れた分は保存する
   calls = 0;
   fs.rmSync(output);
-  code = await main({YAHOO_CLIENT_ID: 'y'}, async url => (++calls <= 2 ? ok(url) : limited), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
+  code = await main({YAHOO_CLIENT_ID: 'y'}, async url => (++calls <= 2 ? ok(url) : limited), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
   assert.equal(code, 0);
   const data = JSON.parse(fs.readFileSync(output, 'utf8'));
   assert.equal(data.products.length, 2);
@@ -348,7 +348,7 @@ test('Yahoo is searched cheapest-first inside a plausible price range when a ref
   const output = path.join(dir, 'rakuten-prices.json');
   const seen = [];
   const models = [{category: 'gpu', modelName: 'GeForce RTX 5060', referencePrice: 58000}, {category: 'gpu', modelName: 'GeForce RTX 3050', referencePrice: null}];
-  await main({YAHOO_CLIENT_ID: 'y'}, async url => { seen.push(Object.fromEntries(url.searchParams)); return {ok: true, json: async () => ({hits: []})}; }, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
+  await main({YAHOO_CLIENT_ID: 'y'}, async url => { seen.push(Object.fromEntries(url.searchParams)); return {ok: true, json: async () => ({hits: []})}; }, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
   assert.deepEqual([seen[0].sort, seen[0].price_from, seen[0].price_to, seen[0].results], ['+price', '40600', '104400', '50']);
   assert.equal(seen[1].sort, undefined);
   const {modelSpec: spec, pickItem: pick} = require('../scripts/lib/match');
@@ -365,9 +365,9 @@ test('Yahoo affiliate parameters are sent only when an ID is configured, and sto
   const seen = [];
   const fetchImpl = async url => { seen.push(Object.fromEntries(url.searchParams)); return {ok: true, json: async () => ({hits: [
     {code: 's_1', name: 'MSI GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'https://ck.jp.ap.valuecommerce.com/servlet/referral?vs=1&vp=2', point: {amount: 0, bonusAmount: 0, lyLimitedBonusAmount: 1050}}]})}; };
-  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
   assert.equal(seen[0].affiliate_type, undefined);
-  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {yahooValueCommerceId: 'VC-ID'}});
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {yahooValueCommerceId: 'VC-ID'}});
   assert.deepEqual([seen[1].affiliate_type, seen[1].affiliate_id], ['vc', 'VC-ID']);
   const product = JSON.parse(fs.readFileSync(output, 'utf8')).products[0];
   assert.equal(product.points, 1050);
@@ -382,7 +382,7 @@ test('price history keeps one point per day for prices fetched in this run only'
   const fetchImpl = async url => (up || url.searchParams.get('query') !== 'RTX 5080'
     ? {ok: true, json: async () => ({hits: [{code: 's_' + url.searchParams.get('query'), name: 'MSI GeForce ' + url.searchParams.get('query') + ' 16G', price: url.searchParams.get('query') === 'RTX 5070' ? price : 199000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/1.html'}]})}
     : {ok: false, status: 500, text: async () => ''});
-  const opts = now => ({skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, now: new Date(now)});
+  const opts = now => ({skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, now: new Date(now)});
   await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, opts('2026-11-13T00:00:00Z'));
   price = 99000;
   await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, opts('2026-11-13T12:00:00Z'));   // 同じ日は上書き
@@ -400,7 +400,7 @@ test('an affiliate run that yields no usable links keeps the previous price file
   const models = [{category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000}];
   const fetchImpl = async () => ({ok: true, json: async () => ({hits: [{code: 's_1', name: 'MSI GeForce RTX 5070 12G', price: 105000, inStock: true, condition: 'new', url: 'javascript:alert(1)'}]})});
   const logs = [];
-  const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log: l => logs.push(l), discoveryQueries: [], affiliate: {yahooValueCommerceId: 'VC'}});
+  const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log: l => logs.push(l), discoveryQueries: [], affiliate: {yahooValueCommerceId: 'VC'}});
   assert.equal(code, 1);
   assert.match(fs.readFileSync(output, 'utf8'), /keep/);
   assert.ok(logs.some(l => l.includes('リンクの形式を確認')));
@@ -415,7 +415,7 @@ test('ValueCommerce links returned over http are upgraded to https; other http l
     const link = q === 'RTX 5070' ? 'http://ck.jp.ap.valuecommerce.com/servlet/referral?vs=1&vp=2&vc_url=x' : 'http://example.com/item';
     return {ok: true, json: async () => ({hits: [{code: 's_' + q, name: 'MSI GeForce ' + q + ' 16G', price: q === 'RTX 5070' ? 105000 : 199000, inStock: true, condition: 'new', url: link}]})};
   };
-  assert.equal(await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {yahooValueCommerceId: 'http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=1&pid=2&vc_url='}}), 0);
+  assert.equal(await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {yahooValueCommerceId: 'http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=1&pid=2&vc_url='}}), 0);
   const products = JSON.parse(fs.readFileSync(output, 'utf8')).products;
   assert.deepEqual(products.map(p => [p.modelName, p.url.slice(0, 40)]), [['GeForce RTX 5070', 'https://ck.jp.ap.valuecommerce.com/servl']]);
 });
@@ -450,7 +450,7 @@ test('memory is priced per spec from clearly matching new desktop kits only', as
     {code: 'd_1', name: 'Crucial Pro DDR5-6000 32GB(16GBx2) CL36', price: 21000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/d/1.html', seller: {name: 'd'}},
     {code: 'e_1', name: 'G.Skill DDR5-6000 16GB×2枚 CL30', price: 23000, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/e/1.html', seller: {name: 'e'}},
   ] : []})});
-  const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipBlender: true, skipParts: true, skipBoardSpecs: true, corrections: NO_FIX, models: [], output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, ramSpecs: [spec, RAM_SPECS.find(s => s.type === 'DDR4')]});
+  const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models: [], output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, ramSpecs: [spec, RAM_SPECS.find(s => s.type === 'DDR4')]});
   assert.equal(code, 0);
   const data = JSON.parse(fs.readFileSync(output, 'utf8'));
   const ram = data.products.filter(p => p.category === 'ram');
@@ -602,4 +602,18 @@ test('per-board specs come from the sheet tab, keyed by a model string of 5+ cha
   const csv = '"型番","M.2","背面USB","メモ"\n"PRO B650M-A WIFI","2","8","x"\n"B650","9","9",""\n"TUF GAMING B650-PLUS","",""\n"pro b650m-a wifi","3","3",""\n';
   assert.deepEqual(toBoardSpecs(csv), {columns: ['M.2', '背面USB'], boards: [{model: 'PRO B650M-A WIFI', fields: {'M.2': '2', '背面USB': '8'}}]});
   assert.deepEqual(toBoardSpecs('"名前","M.2"\n"x","1"\n'), {columns: [], boards: []});
+});
+
+test('operator-picked products are read from the sheet and priced only from matching listings', () => {
+  const {toProducts, listingMatches, pickForProduct} = require('../scripts/lib/sheet-parts');
+  const csv = '"製品名","メーカー","チップセット","サイズ","M.2スロット","最安値(円)","メモ"\n"MSI PRO B650M-A WIFI","MSI","B650","Micro-ATX","2","16800","x"\n"abc","","","","","",""\n';
+  assert.deepEqual(toProducts(csv, 'mb'), [{kind: 'mb', name: 'MSI PRO B650M-A WIFI', maker: 'MSI', fields: {'メーカー': 'MSI', 'チップセット': 'B650', 'サイズ': 'Micro-ATX', 'M.2スロット': '2'}}]);
+  const mb = toProducts(csv, 'mb')[0];
+  assert.ok(listingMatches(mb, 'エムエスアイ PRO B650M-A WIFI マザーボード MicroATX'));
+  for (const t of ['MSI PRO B650M-P マザーボード', 'MSI PRO B650M-A WIFI マザーボード + Ryzen 5 7600 セット', 'MSI PRO B650-S WIFI マザーボード ATX']) assert.equal(listingMatches(mb, t), false, t);
+  const ssd = {kind: 'ssd', name: 'Samsung 990 PRO 2TB', maker: 'Samsung', fields: {'接続': 'NVMe Gen4', '容量': '2TB'}};
+  assert.ok(listingMatches(ssd, 'サムスン 990 PRO with Heatsink 2TB NVMe SSD'));
+  for (const t of ['Samsung 990 PRO 1TB NVMe SSD', 'Samsung 990 PRO 1TB/2TB/4TB SSD', 'Samsung 990 EVO Plus 2TB SSD', 'Samsung 990 PRO 2TB 外付け SSD']) assert.equal(listingMatches(ssd, t), false, t);
+  const it = (name, price) => ({itemCode: name + price, itemName: name, itemPrice: price, availability: 1});
+  assert.equal(pickForProduct(ssd, [it('Samsung 990 PRO 2TB SSD', 30000), it('Samsung 990 PRO 1TB SSD', 15000), it('Samsung 990 PRO 2TB SSD', 28000)]).itemPrice, 28000);
 });

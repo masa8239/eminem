@@ -15,7 +15,8 @@ const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
 const {checkSpecs} = require('./lib/spec-check');
 const {fetchBlenderScores} = require('./lib/blender');
 const {PSU_SPECS, SSD_SPECS, MB_SPECS, pickByMaker} = require('./lib/parts');
-const {loadCorrections, loadBoardSpecs} = require('./lib/corrections');
+const {loadCorrections} = require('./lib/corrections');
+const {loadSheetParts, pickForProduct} = require('./lib/sheet-parts');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -24,6 +25,7 @@ const NEW_OUTPUT = path.join(ROOT, 'data', 'new-products.json');
 const HISTORY_OUTPUT = path.join(ROOT, 'data', 'price-history.json');
 const BLENDER_OUTPUT = path.join(ROOT, 'data', 'blender-scores.json');
 const MB_SPECS_OUTPUT = path.join(ROOT, 'data', 'mb-specs.json');
+const SHEET_PARTS_OUTPUT = path.join(ROOT, 'data', 'sheet-parts.json');
 const HISTORY_DAYS = 180;
 
 function readSheetsConfig() {
@@ -303,7 +305,40 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   }
   if (!auditOnly && !options.skipParts) log(`電源・SSD・マザーボード: ${partsFound} 件（規格×メーカー）`);
 
-  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length - ramFound - partsFound} / 未取得 ${unmatched.filter(u => u.category !== 'ram').length} / API失敗 ${apiErrors}`);
+  // 運営者がシートで管理する「おすすめ製品」（マザーボード・SSD）。製品名で検索して、その製品の最安値を取る
+  let sheetFound = 0;
+  const sheetParts = options.sheetParts || (auditOnly || options.skipSheetParts ? {ok: false, mb: [], ssd: []} : await loadSheetParts(readSheetsConfig().correctionsSpreadsheetId, fetchImpl));
+  for (const product of [...sheetParts.mb, ...sheetParts.ssd]) {
+    const category = product.kind === 'mb' ? 'mbp' : 'ssdp';
+    const found = await yahooItems(product.name, {from: product.kind === 'mb' ? 6000 : 2000, to: 0});
+    const item = found && pickForProduct(product, notExcluded(found));
+    const url = item && safeUrl(item);
+    if (!url) {
+      const kept = previous.get(`${category}\0${product.name}`);
+      if (!found && kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) products.push(kept);
+      else unmatched.push({category, modelName: product.name, reason: found ? '製品名と仕様が一致する新品の出品なし' : 'Yahoo!ショッピングに接続できませんでした'});
+      continue;
+    }
+    sheetFound++;
+    products.push({category, modelName: product.name, status: 'ok', source: 'Yahoo!ショッピング', price: item.itemPrice, points: item.points || 0, url, fetchedAt,
+      itemCode: item.itemCode, itemName: item.itemName, shopName: item.shopName || ''});
+  }
+  if (sheetParts.ok) {
+    const file = options.sheetPartsOutput || (options.output ? output.replace(/[^/\\]+$/, 'sheet-parts.json') : SHEET_PARTS_OUTPUT);
+    fs.writeFileSync(file, JSON.stringify({checkedAt: fetchedAt, mb: sheetParts.mb, ssd: sheetParts.ssd}, null, 1) + '\n');
+    // 自動の一覧（規格別の最安値）にも、シートに入れた板の仕様を出せるように書き出す
+    const boards = sheetParts.mb.map(p => {
+      const makerWords = new Set(String(p.maker).toUpperCase().split(/\s+/));
+      const model = p.name.split(' ').filter(w => !makerWords.has(w.toUpperCase())).join(' ');
+      const fields = Object.fromEntries(Object.entries(p.fields).filter(([k]) => !['メーカー', 'チップセット', 'サイズ'].includes(k)));
+      return {model, fields};
+    }).filter(b => b.model.replace(/[\s_-]/g, '').length >= 5 && Object.keys(b.fields).length);
+    const mbFile = options.boardSpecsOutput || (options.output ? output.replace(/[^/\\]+$/, 'mb-specs.json') : MB_SPECS_OUTPUT);
+    fs.writeFileSync(mbFile, JSON.stringify({checkedAt: fetchedAt, boards}, null, 1) + '\n');
+    log(`シートのおすすめ製品: マザーボード ${sheetParts.mb.length} / SSD ${sheetParts.ssd.length}（価格を取れた ${sheetFound} 件）`);
+  }
+
+  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length - ramFound - partsFound - sheetFound} / 未取得 ${unmatched.filter(u => u.category !== 'ram').length} / API失敗 ${apiErrors}`);
   if (!auditOnly && !options.skipRam) log(`メモリ: ${(options.ramSpecs || RAM_SPECS).length} 規格のうち ${ramFound} 規格の最安値を取得`);
   // 1件も取れず、どのストアにも接続できなかった回だけは、前回のファイルを壊さない（途中まで取れた分は保存する）
   const rakutenUp = rakuten.configured && rakuten.on, yahooUp = Boolean(yahoo.appid) && yahoo.successes > 0;
@@ -357,16 +392,6 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     try { same = JSON.stringify(JSON.parse(fs.readFileSync(newFile, 'utf8')).candidates) === JSON.stringify(candidates); } catch { /* 初回 */ }
     if (!same) fs.writeFileSync(newFile, JSON.stringify({checkedAt: fetchedAt, candidates}, null, 1) + '\n');
     log(`新着候補 ${candidates.length} 件${candidates.length ? ': ' + candidates.slice(0, 8).map(c => c.modelName).join(', ') : ''}`);
-  }
-
-  // マザーボードの板ごとの仕様（運営者がシートに入れたもの）。読めなかった回は前回のファイルを残す
-  if (!auditOnly && !options.skipBoardSpecs) {
-    const boards = await loadBoardSpecs(readSheetsConfig().correctionsSpreadsheetId, fetchImpl);
-    if (boards.ok) {
-      const file = options.boardSpecsOutput || (options.output ? output.replace(/[^/\\]+$/, 'mb-specs.json') : MB_SPECS_OUTPUT);
-      fs.writeFileSync(file, JSON.stringify({checkedAt: fetchedAt, columns: boards.columns, boards: boards.boards}, null, 1) + '\n');
-      log(`マザーボード仕様: ${boards.boards.length} 枚`);
-    }
   }
 
   // Blender Benchmark のスコア（公開データ）。取れなかった回は前回のファイルを残す

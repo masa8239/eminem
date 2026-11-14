@@ -198,4 +198,4 @@ const MB_SPECS = MB_LIST.flatMap(([chipset, forms, mem]) => forms.map(form => {
 // サイトで並べる順番（規格の一覧の順）
 [...PSU_SPECS, ...SSD_SPECS, ...MB_SPECS].forEach((spec, i) => { spec.order = i; });
 
-module.exports = {PSU_SPECS, SSD_SPECS, MB_SPECS, parsePsu, parseSsd, parseMb, pickByMaker, makerOf, PSU_MAKERS, SSD_MAKERS, MB_MAKERS};
+module.exports = {PSU_SPECS, SSD_SPECS, MB_SPECS, parsePsu, parseSsd, parseMb, pickByMaker, makerOf, PSU_MAKERS, SSD_MAKERS, MB_MAKERS, normalizeTitle, COMMON_EXCLUDE, SSD_EXCLUDE, MB_EXCLUDE, CAPS};

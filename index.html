@@ -729,11 +729,24 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング）が含まれます。</p>
     <div class="table-wrap">
+      <div class="tabs">
+        <div class="tab" id="ssd-tab-pick" onclick="switchTab(this,'ssd-picks')" hidden>おすすめ製品</div>
+        <div class="tab active" id="ssd-tab-auto" onclick="switchTab(this,'ssd-auto')">規格別の最安値</div>
+      </div>
+      <div id="ssd-picks" class="tab-content">
+        <div class="notice">運営者が選んで仕様を確認したSSDです。価格は毎朝、製品名で検索して自動で取得しています（上の絞り込みは「規格別の最安値」だけに効きます）。</div>
+        <table class="rank-table">
+          <thead><tr><th>製品名</th><th>仕様</th><th>最安値</th><th>購入</th></tr></thead>
+          <tbody id="ssd-picks-body"><tr><td colspan="4" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
+        </table>
+      </div>
+      <div id="ssd-auto" class="tab-content active">
       <div class="notice">接続（NVMe Gen5 / Gen4・SATA）と容量ごとに、Yahoo!ショッピングで在庫のある新品の、メーカー別の最安値を毎日自動で取得しています。2店以上で売られているメーカーだけを載せ、ノート向けの小さいサイズ（M.2 2230など）・外付け・中古・並行輸入品は除いています。読み書きの速度は製品ごとに違うため、購入前にリンク先で確認してください。</div>
       <table class="rank-table">
         <thead><tr><th>規格</th><th>メーカー</th><th>最安値</th><th>1TBあたり</th><th>最安の商品</th><th>購入</th></tr></thead>
         <tbody id="ssd-table-body"><tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
       </table>
+      </div>
     </div>
   </div>
 </div>
@@ -771,11 +784,24 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング）が含まれます。</p>
     <div class="table-wrap">
+      <div class="tabs">
+        <div class="tab" id="mb-tab-pick" onclick="switchTab(this,'mb-picks')" hidden>おすすめ製品</div>
+        <div class="tab active" id="mb-tab-auto" onclick="switchTab(this,'mb-auto')">規格別の最安値</div>
+      </div>
+      <div id="mb-picks" class="tab-content">
+        <div class="notice">運営者が選んで仕様を確認したマザーボードです。価格は毎朝、製品名で検索して自動で取得しています（上の絞り込みは「規格別の最安値」だけに効きます）。</div>
+        <table class="rank-table">
+          <thead><tr><th>製品名</th><th>仕様</th><th>最安値</th><th>購入</th></tr></thead>
+          <tbody id="mb-picks-body"><tr><td colspan="4" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
+        </table>
+      </div>
+      <div id="mb-auto" class="tab-content active">
       <div class="notice">チップセットとサイズ（ATX / Micro-ATX / Mini-ITX）ごとに、Yahoo!ショッピングで在庫のある新品の、メーカー別の最安値を毎日自動で取得しています。2店以上で売られているメーカーだけを載せ、CPUとのセット品・複数の型番から選ぶ商品・中古・並行輸入品は除いています。ソケットはチップセットで決まります。LGA1700はDDR4用とDDR5用で別の製品です。「Wi-Fi あり」は商品名に書かれているものです。端子の数などは運営者が確認して登録した板だけに表示しています。</div>
       <table class="rank-table">
         <thead><tr><th>規格</th><th>メーカー</th><th>最安値</th><th>ソケット / メモリ</th><th>最安の商品</th><th>購入</th></tr></thead>
         <tbody id="mb-table-body"><tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
       </table>
+      </div>
     </div>
   </div>
 </div>
@@ -1804,6 +1830,12 @@ async function loadRakutenPrices() {
   const newest = files.sort((a,b)=>String(b.checkedAt||'').localeCompare(String(a.checkedAt||'')))[0];
   if (newest) applyRakutenProducts(newest.products, PRICE_FILE_MAX_AGE_MS);
   try { applyPartProducts(newest ? newest.products : [], PRICE_FILE_MAX_AGE_MS); } catch (e) {}
+  try {
+    sheetPartPrices = {};
+    (newest ? newest.products : []).forEach(p => {
+      if (p && (p.category === 'mbp' || p.category === 'ssdp') && p.status === 'ok' && validPrice(p.price) && Date.now() - new Date(p.fetchedAt).getTime() < PRICE_FILE_MAX_AGE_MS) sheetPartPrices[p.category + '|' + p.modelName] = p;
+    });
+  } catch (e) {}
   if (!(newest && applyRamProducts(newest.products, PRICE_FILE_MAX_AGE_MS))) document.getElementById('ram-rank-updated').textContent = 'メモリの価格はまだ取得できていません';
   try {
     applyRakutenProducts((await fetchPriceProducts('/api/rakuten-prices')).products, 0);
@@ -1873,7 +1905,43 @@ const PART_ORDER = {
   psu: [650,750,850,1000,1200].flatMap(w => ['Bronze','Gold','Platinum'].map(r => `${w}W ${r}`)),
 };
 let partsData = {ssd: [], psu: [], mb: []};
-// マザーボードの板ごとの仕様（運営者がシートの「マザーボード仕様」タブに入れたもの。毎日 data/mb-specs.json に書き出す）
+// 運営者がシートで管理する「おすすめ製品」（data/sheet-parts.json）と、その価格（価格ファイルの category 'mbp' / 'ssdp'）
+let sheetParts = {mb: [], ssd: []};
+let sheetPartPrices = {};
+async function loadSheetParts() {
+  try {
+    const data = await (await fetch('data/sheet-parts.json', {signal: AbortSignal.timeout(8000)})).json();
+    for (const kind of ['mb', 'ssd']) sheetParts[kind] = (Array.isArray(data[kind]) ? data[kind] : []).filter(p => p && typeof p.name === 'string' && p.fields && typeof p.fields === 'object');
+  } catch (e) {}
+  renderSheetParts('mb'); renderSheetParts('ssd');
+}
+function renderSheetParts(kind) {
+  const tbody = document.getElementById(kind + '-picks-body');
+  const tab = document.getElementById(kind + '-tab-pick');
+  if (!tbody || !tab) return;
+  const list = sheetParts[kind];
+  tab.hidden = !list.length;
+  // おすすめ製品があるときは、最初にそちらを見せる（利用者がすでに切り替えていたら触らない）
+  if (list.length && !tab.dataset.shown) { tab.dataset.shown = '1'; switchTab(tab, kind + '-picks'); }
+  if (!list.length) { tbody.innerHTML = ''; return; }
+  const cat = kind === 'mb' ? 'mbp' : 'ssdp';
+  tbody.innerHTML = list.map(p => {
+    const offer = sheetPartPrices[cat + '|' + p.name];
+    const item = {name: p.name, price: offer ? offer.price : null,
+      rakuten: offer ? {status: 'ok', fetchedAt: offer.fetchedAt, url: offer.url, source: 'Yahoo!ショッピング', points: offer.points, offers: []} : null};
+    const specs = Object.entries(p.fields).filter(([k]) => k !== 'メーカー').map(([k, v]) => `${esc(k)}: ${esc(v)}`).join(' · ');
+    const url = offer && safeRakutenUrl(offer.url);
+    return `<tr>
+      <td><div class="chip-name">${esc(p.name)}</div>${p.maker ? `<div class="chip-sub">${esc(p.maker)}</div>` : ''}</td>
+      <td style="font-size:12px">${specs || '—'}</td>
+      <td class="price-cell">${offer ? renderPrice(item) : '<span style="color:var(--text3)">価格を取得できていません</span>'}</td>
+      <td>${url ? `<a class="affiliate-btn" href="${escapeHtml(url)}" target="_blank" rel="noopener sponsored">Yahoo!ショッピング</a>` : ''}<button class="affiliate-btn" style="margin-top:4px" data-q="${escapeHtml(p.name)}" title="Amazonの価格は自動取得していません。検索結果で確認できます">Amazonで確認</button></td>
+    </tr>`;
+  }).join('');
+  try { labelCells(tbody); } catch (e) {}
+}
+
+// マザーボードの板ごとの仕様（運営者がシートの「マザーボード」タブに入れたもの。毎日 data/mb-specs.json に書き出す）
 let boardSpecs = [];
 const normModel = s => String(s || '').toUpperCase().replace(/[\s_\-]+/g, '');
 function boardSpecFor(itemName) {
@@ -2664,6 +2732,7 @@ loadSheetData().then(async()=>{
   await loadRakutenPrices();
   try { await loadProductPages(); } catch (e) {}
   try { await loadBoardSpecs(); } catch (e) {}
+  try { await loadSheetParts(); } catch (e) {}
   try { await loadBlenderScores(); } catch (e) {}
   renderCpuTable(); renderGpuTable();
   populateBnSelects();

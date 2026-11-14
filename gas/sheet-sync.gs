@@ -217,6 +217,8 @@ function benchcoreRun_(dryRun) {
     });
   });
 
+  try { benchcoreSheetPartPrices_(SpreadsheetApp.getActiveSpreadsheet(), priceData, dryRun, log); }
+  catch (e) { log.push('おすすめ製品の最安値を書けませんでした: ' + e.message); }
   try { benchcoreParts_(SpreadsheetApp.getActiveSpreadsheet(), priceData, dryRun, log); }
   catch (e) { log.push('パーツ最安値タブを更新できませんでした: ' + e.message); }
 
@@ -303,4 +305,45 @@ function benchcoreParts_(ss, priceData, dryRun, log) {
   }
   partsSheet.getRange(1, 1).setNote('毎朝自動で書き直します。間違った商品は「除外する」にチェック、メーカーの判定違いは「正しいメーカー」に書いてください。'
     + '翌朝「パーツの修正」タブに保存され、その次の価格取得から反映されます。');
+}
+
+// 運営者が管理する「マザーボード」「SSD」タブ（製品名の列がある）に、自動取得した最安値を書く。ほかの列は触らない
+function benchcoreSheetPartPrices_(ss, priceData, dryRun, log) {
+  var tabs = {'マザーボード': 'mbp', 'SSD': 'ssdp'};
+  var now = new Date().getTime();
+  Object.keys(tabs).forEach(function (tabName) {
+    var sheet = ss.getSheetByName(tabName);
+    if (!sheet || sheet.getLastRow() < 2) return;
+    var header = benchcoreHeader_(sheet);
+    var nameIndex = header.indexOf('製品名');
+    if (nameIndex < 0) return;
+    var bestIndex = header.indexOf(BENCHCORE_BEST_COLUMN);
+    if (bestIndex < 0) {
+      if (dryRun) return;
+      bestIndex = header.length;
+      sheet.getRange(1, bestIndex + 1).setValue(BENCHCORE_BEST_COLUMN).setNote('ストアから自動取得した最安値です。毎朝自動で更新されます。手で書き換えないでください。');
+    }
+    var prices = {};
+    (priceData.products || []).forEach(function (p) {
+      var age = now - new Date(p.fetchedAt).getTime();
+      if (p.category === tabs[tabName] && p.status === 'ok' && typeof p.price === 'number' && age >= 0 && age < BENCHCORE_MAX_AGE_DAYS * 86400000) prices[p.modelName] = p;
+    });
+    var rows = sheet.getLastRow() - 1;
+    var names = sheet.getRange(2, nameIndex + 1, rows, 1).getValues();
+    var bestRange = sheet.getRange(2, bestIndex + 1, rows, 1);
+    var current = bestRange.getValues();
+    for (var i = 0; i < rows; i++) {
+      var name = String(names[i][0]).trim().replace(/\s+/g, ' ');
+      if (!name) continue;
+      var p = prices[name];
+      var value = p ? p.price : '';
+      if (current[i][0] === value) continue;
+      log.push(tabName + ' / ' + name + ': 最安値 ' + (current[i][0] === '' ? '(空)' : current[i][0]) + ' → ' + (value === '' ? '(取得できず)' : value));
+      if (dryRun) continue;
+      var cell = bestRange.getCell(i + 1, 1);
+      cell.setValue(value);
+      if (p) cell.setNote((p.source || 'ストア') + '（' + Utilities.formatDate(new Date(p.fetchedAt), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm') + ' 取得）\n' + String(p.itemName || '').slice(0, 80));
+      else cell.clearNote();
+    }
+  });
 }
