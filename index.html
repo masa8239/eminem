@@ -724,6 +724,12 @@ a.affiliate-btn:hover { background: #154e96; }
       <button class="share-btn" onclick="shareUrl('ssd-rank')">シェア</button>
     </div>
     <div class="filters" id="ssd-filters"><button class="filter-btn active" onclick="filterPart('ssd','all',this)">全て</button><button class="filter-btn" onclick="filterPart('ssd','Gen5',this)">Gen5</button><button class="filter-btn" onclick="filterPart('ssd','Gen4',this)">Gen4</button><button class="filter-btn" onclick="filterPart('ssd','SATA',this)">SATA</button><button class="filter-btn" onclick="filterPart('ssd','500',this)">500GB</button><button class="filter-btn" onclick="filterPart('ssd','1000',this)">1TB</button><button class="filter-btn" onclick="filterPart('ssd','2000',this)">2TB</button><button class="filter-btn" onclick="filterPart('ssd','4000',this)">4TB</button></div>
+    <div class="sort-row">
+      <span class="sort-label">並び替え：</span>
+      <button class="sort-btn active-score" id="ssd-sort-score" onclick="sortPart('ssd','score')">性能 <span class="sort-arrow" id="ssd-arrow-score">↓</span></button>
+      <button class="sort-btn" id="ssd-sort-price" onclick="sortPart('ssd','price')">値段 <span class="sort-arrow" id="ssd-arrow-price">↓</span></button>
+      <button class="sort-btn" id="ssd-sort-cospa" onclick="sortPart('ssd','cospa')" title="1TBあたりの価格が安い順">コスパ <span class="sort-arrow" id="ssd-arrow-cospa">↓</span></button>
+    </div>
     <div class="filters" style="margin-top:8px">
       <label style="font-size:13px;display:inline-flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="ssd-show-other" onchange="renderPartTable('ssd')"> メーカーがわからない安い製品も表示する</label>
     </div>
@@ -758,6 +764,12 @@ a.affiliate-btn:hover { background: #154e96; }
       <button class="share-btn" onclick="shareUrl('psu-rank')">シェア</button>
     </div>
     <div class="filters" id="psu-filters"><button class="filter-btn active" onclick="filterPart('psu','all',this)">全て</button><button class="filter-btn" onclick="filterPart('psu','650',this)">650W</button><button class="filter-btn" onclick="filterPart('psu','750',this)">750W</button><button class="filter-btn" onclick="filterPart('psu','850',this)">850W</button><button class="filter-btn" onclick="filterPart('psu','1000',this)">1000W</button><button class="filter-btn" onclick="filterPart('psu','1200',this)">1200W</button><button class="filter-btn" onclick="filterPart('psu','Bronze',this)">Bronze</button><button class="filter-btn" onclick="filterPart('psu','Gold',this)">Gold</button><button class="filter-btn" onclick="filterPart('psu','Platinum',this)">Platinum</button></div>
+    <div class="sort-row">
+      <span class="sort-label">並び替え：</span>
+      <button class="sort-btn active-score" id="psu-sort-score" onclick="sortPart('psu','score')">性能 <span class="sort-arrow" id="psu-arrow-score">↓</span></button>
+      <button class="sort-btn" id="psu-sort-price" onclick="sortPart('psu','price')">値段 <span class="sort-arrow" id="psu-arrow-price">↓</span></button>
+      <button class="sort-btn" id="psu-sort-cospa" onclick="sortPart('psu','cospa')" title="1Wあたりの価格が安い順">コスパ <span class="sort-arrow" id="psu-arrow-cospa">↓</span></button>
+    </div>
     <div class="filters" style="margin-top:8px">
       <label style="font-size:13px;display:inline-flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="psu-show-other" onchange="renderPartTable('psu')"> メーカーがわからない安い製品も表示する</label>
     </div>
@@ -1995,6 +2007,25 @@ function boardSpecHTML(x) {
   if (b) Object.entries(b.fields).forEach(([k, v]) => parts.push(`${esc(k)}: ${esc(v)}`));
   return `<div style="margin-top:4px;color:var(--text)">${parts.length ? parts.join(' · ') : ''}${b ? '' : `<span style="color:var(--text3)">${parts.length ? ' · ' : ''}端子などの仕様は未登録</span>`}</div>`;
 }
+// 並び替え（SSD・電源）。性能 = SSDは接続（Gen5 > Gen4 > SATA）→容量、電源は80PLUSの等級→容量。
+// コスパ = SSDは1TBあたり、電源は1Wあたりの価格。マザーボードは並び替えなし（規格の順）
+const partSort = {ssd: {key: 'score', dir: -1}, psu: {key: 'score', dir: -1}};
+const PART_RANK = {
+  ssd: x => ({Gen5: 3, Gen4: 2, SATA: 1}[x.spec.type] || 0) * 1e6 + (x.spec.capacity || 0),
+  psu: x => ({Titanium: 4, Platinum: 3, Gold: 2, Bronze: 1}[x.spec.rating] || 0) * 1e6 + (x.spec.watts || 0),
+};
+const PART_UNIT = {ssd: x => x.spec.capacity ? x.price / (x.spec.capacity / 1000) : Infinity, psu: x => x.spec.watts ? x.price / x.spec.watts : Infinity};
+function sortPart(kind, key) {
+  const st = partSort[kind];
+  if (st.key === key) st.dir *= -1; else { st.key = key; st.dir = key === 'score' ? -1 : 1; }
+  ['score', 'price', 'cospa'].forEach(k => {
+    const btn = document.getElementById(`${kind}-sort-${k}`);
+    const arrow = document.getElementById(`${kind}-arrow-${k}`);
+    if (btn) btn.className = 'sort-btn' + (st.key === k ? ' active-' + k : '');
+    if (arrow) arrow.textContent = st.key === k ? (st.dir === -1 ? '↓' : '↑') : '↓';
+  });
+  renderPartTable(kind);
+}
 function filterPart(kind, value, el) {
   partFilter[kind] = value;
   document.querySelectorAll(`#${kind}-filters .filter-btn`).forEach(b => b.classList.remove('active'));
@@ -2012,19 +2043,27 @@ function renderPartTable(kind) {
       || (kind === 'ssd' ? (x.spec.type === f || String(x.spec.capacity) === f)
         : kind === 'psu' ? (String(x.spec.watts) === f || x.spec.rating === f)
         : (x.spec.socket === f || x.spec.form === f))))
-    .sort((a, b) => pos(a) - pos(b) || a.price - b.price);
+    .sort((a, b) => {
+      const st = partSort[kind];
+      if (!st) return pos(a) - pos(b) || a.price - b.price;
+      if (st.key === 'price') return (a.price - b.price) * st.dir;
+      if (st.key === 'cospa') return (PART_UNIT[kind](a) - PART_UNIT[kind](b)) * st.dir || a.price - b.price;
+      return (PART_RANK[kind](a) - PART_RANK[kind](b)) * st.dir || a.price - b.price; // dir -1 = 性能の高い順
+    });
+  // 規格ごとにまとまって並ぶとき（性能順）だけ、規格名を各まとまりの先頭に出す。値段・コスパ順では毎行に出す
+  const grouped = !partSort[kind] || partSort[kind].key === 'score';
   if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3)">${partsData[kind].length ? '条件に一致する製品がありません' : '価格はまだ取得できていません'}</td></tr>`;
     return;
   }
   let last = '';
   tbody.innerHTML = rows.map(x => {
-    const first = x.key !== last; last = x.key;
+    const first = !grouped || x.key !== last; last = x.key;
     const extra = kind === 'ssd'
       ? (x.spec.capacity ? '¥' + Math.round(x.price / (x.spec.capacity / 1000)).toLocaleString('ja-JP') : '—')
-      : kind === 'psu' ? (x.spec.atx3 ? '対応' : '—')
+      : kind === 'psu' ? `${x.spec.atx3 ? '対応' : '—'}<div style="font-size:11px;color:var(--text3)">1Wあたり ¥${(x.price / x.spec.watts).toLocaleString('ja-JP', {maximumFractionDigits: 1})}</div>`
       : esc(`${x.spec.socket || '—'}・${x.spec.memory || '—'}`);
-    return `<tr${first ? ' class="part-group-first"' : ''}>
+    return `<tr${first && grouped ? ' class="part-group-first"' : ''}>
       <td>${first ? `<strong>${esc(x.label)}</strong>` : ''}</td>
       <td>${x.maker === 'その他' ? '<span style="color:var(--text3)">メーカー不明</span>' : esc(x.maker)}</td>
       <td class="price-cell">${renderPrice(x)}</td>
