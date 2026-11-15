@@ -1906,6 +1906,8 @@ const PART_ORDER = {
 };
 let partsData = {ssd: [], psu: [], mb: []};
 // 運営者がシートで管理する「おすすめ製品」（data/sheet-parts.json）と、その価格（価格ファイルの category 'mbp' / 'ssdp'）
+// おすすめ製品のタブをサイトに出すか。運営者の準備ができるまでは false（シートでの管理と価格の取得は続ける）
+const SHOW_SHEET_PICKS = false;
 let sheetParts = {mb: [], ssd: []};
 let sheetPartPrices = {};
 async function loadSheetParts() {
@@ -1919,7 +1921,7 @@ function renderSheetParts(kind) {
   const tbody = document.getElementById(kind + '-picks-body');
   const tab = document.getElementById(kind + '-tab-pick');
   if (!tbody || !tab) return;
-  const list = sheetParts[kind];
+  const list = SHOW_SHEET_PICKS ? sheetParts[kind] : [];
   tab.hidden = !list.length;
   // おすすめ製品があるときは、最初にそちらを見せる（利用者がすでに切り替えていたら触らない）
   if (list.length && !tab.dataset.shown) { tab.dataset.shown = '1'; switchTab(tab, kind + '-picks'); }
