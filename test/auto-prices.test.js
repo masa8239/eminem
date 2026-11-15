@@ -606,7 +606,7 @@ test('per-board specs come from the sheet tab, keyed by a model string of 5+ cha
 
 test('operator-picked products are read from the sheet and priced only from matching listings', () => {
   const {toProducts, listingMatches, pickForProduct} = require('../scripts/lib/sheet-parts');
-  const csv = '"製品名","メーカー","チップセット","サイズ","M.2スロット","最安値(円)","メモ"\n"MSI PRO B650M-A WIFI","MSI","B650","Micro-ATX","2","16800","x"\n"abc","","","","","",""\n';
+  const csv = '"製品名","メーカー","チップセット","サイズ","M.2スロット","最安値(円)","メモ","商品ページ","仕様を調べる"\n"MSI PRO B650M-A WIFI","MSI","B650","Micro-ATX","2","16800","x","https://a","https://b"\n"abc","","","","","","","",""\n';
   assert.deepEqual(toProducts(csv, 'mb'), [{kind: 'mb', name: 'MSI PRO B650M-A WIFI', maker: 'MSI', fields: {'メーカー': 'MSI', 'チップセット': 'B650', 'サイズ': 'Micro-ATX', 'M.2スロット': '2'}}]);
   const mb = toProducts(csv, 'mb')[0];
   assert.ok(listingMatches(mb, 'エムエスアイ PRO B650M-A WIFI マザーボード MicroATX'));
