@@ -317,12 +317,19 @@ function benchcoreSheetPartPrices_(ss, priceData, dryRun, log) {
     var header = benchcoreHeader_(sheet);
     var nameIndex = header.indexOf('製品名');
     if (nameIndex < 0) return;
-    var bestIndex = header.indexOf(BENCHCORE_BEST_COLUMN);
-    if (bestIndex < 0) {
-      if (dryRun) return;
-      bestIndex = header.length;
-      sheet.getRange(1, bestIndex + 1).setValue(BENCHCORE_BEST_COLUMN).setNote('ストアから自動取得した最安値です。毎朝自動で更新されます。手で書き換えないでください。');
-    }
+    // 自動で書く列（なければ右端に作る）。商品ページと仕様の検索リンクは、運営者が仕様を入れやすくするためのもの（サイトには出さない）
+    var ensure = function (title, note) {
+      var at = header.indexOf(title);
+      if (at >= 0 || dryRun) return at;
+      at = header.length;
+      header.push(title);
+      sheet.getRange(1, at + 1).setValue(title).setNote(note);
+      return at;
+    };
+    var bestIndex = ensure(BENCHCORE_BEST_COLUMN, 'ストアから自動取得した最安値です。毎朝自動で更新されます。手で書き換えないでください。');
+    var pageIndex = ensure('商品ページ', '最安値の出品のページです（毎朝自動で更新）。店の説明は間違っていることがあるので、仕様はメーカー公式で確認してください。サイトには表示しません。');
+    var searchIndex = ensure('仕様を調べる', 'メーカー公式の仕様ページを探すための検索リンクです（自動で入ります）。サイトには表示しません。');
+    if (bestIndex < 0) return;
     var prices = {};
     (priceData.products || []).forEach(function (p) {
       var age = now - new Date(p.fetchedAt).getTime();
@@ -332,10 +339,22 @@ function benchcoreSheetPartPrices_(ss, priceData, dryRun, log) {
     var names = sheet.getRange(2, nameIndex + 1, rows, 1).getValues();
     var bestRange = sheet.getRange(2, bestIndex + 1, rows, 1);
     var current = bestRange.getValues();
+    var pageRange = pageIndex >= 0 ? sheet.getRange(2, pageIndex + 1, rows, 1) : null;
+    var pages = pageRange ? pageRange.getValues() : [];
+    var searchRange = searchIndex >= 0 ? sheet.getRange(2, searchIndex + 1, rows, 1) : null;
+    var searches = searchRange ? searchRange.getValues() : [];
     for (var i = 0; i < rows; i++) {
       var name = String(names[i][0]).trim().replace(/\s+/g, ' ');
       if (!name) continue;
       var p = prices[name];
+      if (!dryRun && pageRange) {
+        var page = p ? benchcoreSafeUrl_(p.url) : '';
+        if (pages[i][0] !== page) pageRange.getCell(i + 1, 1).setValue(page);
+      }
+      if (!dryRun && searchRange) {
+        var search = 'https://www.google.com/search?q=' + encodeURIComponent(name + ' 仕様');
+        if (searches[i][0] !== search) searchRange.getCell(i + 1, 1).setValue(search);
+      }
       var value = p ? p.price : '';
       if (current[i][0] === value) continue;
       log.push(tabName + ' / ' + name + ': 最安値 ' + (current[i][0] === '' ? '(空)' : current[i][0]) + ' → ' + (value === '' ? '(取得できず)' : value));

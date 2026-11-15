@@ -8,7 +8,7 @@ const {parseCsv} = require('./corrections');
 const {normalizeTitle, COMMON_EXCLUDE, SSD_EXCLUDE, MB_EXCLUDE, CAPS} = require('./parts');
 
 const TABS = {mb: 'マザーボード', ssd: 'SSD'};
-const HIDDEN = /^(最安値\(円\)|最安値|メモ|備考)$/;
+const HIDDEN = /^(最安値\(円\)|最安値|メモ|備考|商品ページ|仕様を調べる)$/; // 運営者用の列はサイトに出さない
 
 const compact = s => normalizeTitle(s).toUpperCase().replace(/[\s_\-‐－・/()（）]+/g, '');
 

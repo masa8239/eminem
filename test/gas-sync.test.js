@@ -242,8 +242,12 @@ test('operator-picked motherboards and SSDs get the fetched cheapest price, othe
   const gpu = makeSheet('GPU', gpuGrid());
   const mb = makeSheet('マザーボード', [['製品名', 'メーカー', 'M.2スロット'], ['MSI PRO B650M-A WIFI', 'MSI', '2'], ['ASUS TUF GAMING B650-PLUS', 'ASUS', '3']]);
   const f = files();
-  f['rakuten-prices.json'].products.push({category: 'mbp', modelName: 'MSI PRO B650M-A WIFI', status: 'ok', price: 16800, fetchedAt: fresh, source: 'Yahoo!ショッピング', itemName: 'MSI PRO B650M-A WIFI マザーボード'});
+  f['rakuten-prices.json'].products.push({category: 'mbp', modelName: 'MSI PRO B650M-A WIFI', status: 'ok', price: 16800, fetchedAt: fresh, source: 'Yahoo!ショッピング', itemName: 'MSI PRO B650M-A WIFI マザーボード', url: 'https://store.shopping.yahoo.co.jp/m/1.html'});
   run([gpu, mb], f, 'benchcoreSync');
   assert.deepEqual(mb.grid.map(r => [r[0], r[1], r[2], r[3] ?? '']), [['製品名', 'メーカー', 'M.2スロット', '最安値(円)'], ['MSI PRO B650M-A WIFI', 'MSI', '2', 16800], ['ASUS TUF GAMING B650-PLUS', 'ASUS', '3', '']]);
   assert.match(mb.notes['1,3'], /Yahoo!ショッピング/);
+  assert.deepEqual(mb.grid[0].slice(3, 6), ['最安値(円)', '商品ページ', '仕様を調べる']);
+  assert.equal(mb.grid[1][4], 'https://store.shopping.yahoo.co.jp/m/1.html');
+  assert.equal(mb.grid[2][4] ?? '', '');                                   // 価格が取れていない製品は空
+  assert.equal(mb.grid[2][5], 'https://www.google.com/search?q=' + encodeURIComponent('ASUS TUF GAMING B650-PLUS 仕様'));
 });
