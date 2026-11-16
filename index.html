@@ -1852,6 +1852,7 @@ async function loadRakutenPrices() {
   const newest = files.sort((a,b)=>String(b.checkedAt||'').localeCompare(String(a.checkedAt||'')))[0];
   if (newest) applyRakutenProducts(newest.products, PRICE_FILE_MAX_AGE_MS);
   try { applyPartProducts(newest ? newest.products : [], PRICE_FILE_MAX_AGE_MS); } catch (e) {}
+  try { bloadPartsFromData(); } catch (e) {}
   try {
     sheetPartPrices = {};
     (newest ? newest.products : []).forEach(p => {
@@ -2371,7 +2372,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Seasonic Focus GX-750',price:14800},
       {cat:'Case',name:'NZXT H7 Flow',       price:16800},
     ],
-    builderIds:{cpu:'bc9',cpucooler:'bco2',gpu:'bg7',mb:'bm2',ram:'br2',storage:'bs3',psu:'bp4',case:'bk3'}
+    builderIds:{cpu:'bc9',cpucooler:'bco2',gpu:'bg7',mb:'spec:B850 ATX',ram:'br2',storage:'spec:Gen4 1TB',psu:'spec:750W Gold',case:'bk3'}
   },
   {
     id:'aaa4k', icon:'4K', color:'var(--gold)', title:'4K AAA最高画質',
@@ -2387,7 +2388,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Seasonic Prime TX-1000W',price:39800},
       {cat:'Case',name:'Fractal Design Torrent',price:24800},
     ],
-    builderIds:{cpu:'bc1',cpucooler:'bco7',gpu:'bg1',mb:'bm1',ram:'br1',storage:'bs1',psu:'bp1',case:'bk1'}
+    builderIds:{cpu:'bc1',cpucooler:'bco7',gpu:'bg1',mb:'spec:X870E ATX',ram:'br1',storage:'spec:Gen4 2TB',psu:'spec:1000W Platinum',case:'bk1'}
   },
   {
     id:'video', icon:'編集', color:'var(--accent4)', title:'動画編集・配信',
@@ -2403,7 +2404,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Corsair RM1000x',     price:24800},
       {cat:'Case',name:'Lian Li PC-O11 Dynamic',price:18800},
     ],
-    builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bg5',mb:'bm4',ram:'br1',storage:'bs2',psu:'bp2',case:'bk2'}
+    builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bg5',mb:'spec:Z790 ATX DDR5',ram:'br1',storage:'spec:Gen4 2TB',psu:'spec:1000W Gold',case:'bk2'}
   },
   {
     id:'cospa', icon:'定番', color:'var(--accent3)', title:'コスパ最強バランス',
@@ -2419,7 +2420,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Seasonic Focus GX-750',price:14800},
       {cat:'Case',name:'Cooler Master HAF 500',price:12800},
     ],
-    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bg8',mb:'bm3',ram:'br4',storage:'bs3',psu:'bp4',case:'bk4'}
+    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bg8',mb:'spec:B650 ATX',ram:'br4',storage:'spec:Gen4 1TB',psu:'spec:750W Gold',case:'bk4'}
   },
   {
     id:'streaming', icon:'配信', color:'var(--accent)', title:'ゲーム配信・マルチタスク',
@@ -2435,7 +2436,7 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'be quiet! Dark Power 850W',price:22800},
       {cat:'Case',name:'Fractal Design Torrent',price:24800},
     ],
-    builderIds:{cpu:'bc4',cpucooler:'bco8',gpu:'bg4',mb:'bm2',ram:'br2',storage:'bs2',psu:'bp3',case:'bk1'}
+    builderIds:{cpu:'bc4',cpucooler:'bco8',gpu:'bg4',mb:'spec:B850 ATX',ram:'br2',storage:'spec:Gen4 2TB',psu:'spec:850W Platinum',case:'bk1'}
   },
   {
     id:'entry', icon:'入門', color:'var(--text2)', title:'エントリー・ライトゲーム',
@@ -2451,18 +2452,51 @@ const PRESET_BUILDS = [
       {cat:'PSU', name:'Corsair CX650M',      price:8800},
       {cat:'Case',name:'Cooler Master HAF 500',price:12800},
     ],
-    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bgc',mb:'bm3',ram:'br4',storage:'bs4',psu:'bp5',case:'bk4'}
+    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bgc',mb:'spec:B650 mATX',ram:'br4',storage:'spec:Gen4 1TB',psu:'spec:650W Bronze',case:'bk4'}
   },
 ];
 
 // おすすめ構成の価格は、ビルダーの同じパーツの価格をそのまま使う（表示とビルダー読み込み後の合計を必ず一致させる）
 const PRESET_CAT_KEYS = {CPU:'cpu', Cooler:'cpucooler', GPU:'gpu', MB:'mb', RAM:'ram', SSD:'storage', PSU:'psu', Case:'case'};
+// 'spec:<規格>' の指定は、その規格で一番安い（メーカーが分かっている）パーツに読み替える
+function resolveBuilderId(cat, value) {
+  if (typeof value !== 'string' || !value.startsWith('spec:')) return value;
+  const key = value.slice(5);
+  const item = (BPARTS[cat]?.items || []).filter(i => i.specKey === key).sort((a, b) => a.price - b.price)[0];
+  return item ? item.id : null;
+}
+function presetIds(p) { return Object.entries(p.builderIds).map(([cat, v]) => resolveBuilderId(cat, v)).filter(Boolean); }
 function presetParts(p) {
   return p.parts.map(pt => {
     const key = PRESET_CAT_KEYS[pt.cat];
-    const item = key && BPARTS[key]?.items.find(i => i.id === p.builderIds[key]);
-    return item ? {...pt, price: item.price} : pt;
+    const id = key && resolveBuilderId(key, p.builderIds[key]);
+    const item = id && BPARTS[key]?.items.find(i => i.id === id);
+    if (item) return {...pt, name: item.name, price: item.price};
+    // 規格指定でその日の価格が取れていないパーツは、価格を合計に入れない
+    return String(p.builderIds[key] || '').startsWith('spec:') ? {...pt, name: pt.name + '（価格取得中）', price: 0} : pt;
   });
+}
+// ビルダーのマザーボード・SSD・電源を、毎日の最安値（規格 × メーカー）から作る。メーカー不明の製品は出さない
+const partSlug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function bloadPartsFromData() {
+  const build = (kind, prefix) => (partsData[kind] || []).filter(x => x.maker !== 'その他').map(x => ({
+    id: prefix + partSlug(x.key + '-' + x.maker), specKey: x.key, name: `${x.maker} / ${x.label}`,
+    spec: x.itemName.length > 44 ? x.itemName.slice(0, 44) + '…' : x.itemName, price: x.price, url: safeRakutenUrl(x.rakuten?.url || ''),
+    ...(kind === 'mb' ? {socket: x.spec.socket, memory: x.spec.memory, chipset: x.spec.chipset} : {}),
+    ...(kind === 'psu' ? {watts: x.spec.watts} : {}),
+  }));
+  const mb = build('mb', 'pm-').sort((a, b) => (SOCKET_ORDER[b.socket] || 0) - (SOCKET_ORDER[a.socket] || 0) || (CHIPSET_TIER[b.chipset] || 0) - (CHIPSET_TIER[a.chipset] || 0) || a.price - b.price);
+  const ssd = build('ssd', 'ps-').sort((a, b) => PART_RANK.ssd({spec: partsData.ssd.find(x => x.key === b.specKey).spec}) - PART_RANK.ssd({spec: partsData.ssd.find(x => x.key === a.specKey).spec}) || a.price - b.price);
+  const psu = build('psu', 'pp-').sort((a, b) => a.watts - b.watts || a.price - b.price);
+  const before = JSON.stringify([BPARTS.mb.items, BPARTS.storage.items, BPARTS.psu.items]);
+  BPARTS.mb.items = mb; BPARTS.storage.items = ssd; BPARTS.psu.items = psu;
+  if (JSON.stringify([mb, ssd, psu]) === before) return;
+  // 選んでいたパーツと自動保存の構成を残したまま描き直す
+  let ids = Object.values(bSelected).map(v => v.id);
+  if (!ids.length) { try { ids = (JSON.parse(localStorage.getItem('benchcore_build') || 'null') || {}).ids || []; } catch (e) { ids = []; } }
+  brenderParts();
+  bapplyIds(ids);
+  renderPresets();
 }
 // ビルダーのCPU・GPUの価格とスコアを、ランキングと同じデータに合わせる
 function bsyncPrices() {
@@ -2537,7 +2571,7 @@ function bapplyIds(ids) {
 function loadPresetToBuilder(presetId) {
   const preset = PRESET_BUILDS.find(p=>p.id===presetId);
   if (!preset) return;
-  bapplyIds(Object.values(preset.builderIds));
+  bapplyIds(presetIds(preset));
   goPage('builder');
   showToast(`「${preset.title}」をビルダーに読み込みました`);
 }
@@ -2636,13 +2670,7 @@ const BPARTS = {
     {id:'bgc',name:'RX 7600',           spec:'8GB · 165W',   price:32000, score:11000,vram:8},
   ]},
   mb:{ label:'マザーボード', icon:'MB', color:'#2b7a52', items:[
-    {id:'bm1',name:'ASUS ROG Strix X670E-E',   spec:'AM5 · DDR5 · ATX',     price:59800,socket:'AM5'},
-    {id:'bm2',name:'MSI MAG X670E Tomahawk',   spec:'AM5 · DDR5 · ATX',     price:38800,socket:'AM5'},
-    {id:'bm3',name:'ASRock B650E Steel Legend', spec:'AM5 · DDR5 · ATX',     price:24800,socket:'AM5'},
-    {id:'bm4',name:'ASUS ROG Maximus Z790',     spec:'LGA1700 · DDR5 · ATX', price:89800,socket:'LGA1700'},
-    {id:'bm5',name:'MSI MAG Z790 Tomahawk',     spec:'LGA1700 · DDR5 · ATX', price:32800,socket:'LGA1700'},
-    {id:'bm6',name:'ASUS Prime Z790-P',         spec:'LGA1700 · DDR5 · ATX', price:21800,socket:'LGA1700'},
-    {id:'bm7',name:'MSI PRO B760M-A',           spec:'LGA1700 · DDR5 · mATX',price:14800,socket:'LGA1700'},
+    // 毎日の価格ファイル（規格 × メーカーの最安値）から作る。bloadPartsFromData() を参照
   ]},
   ram:{ label:'メモリ (RAM)', icon:'RAM', color:'#55698f', items:[
     {id:'br1',name:'DDR5-6000 64GB（32GB×2）', spec:'規格ごとの最安値', price:34800,gb:64},
@@ -2651,18 +2679,10 @@ const BPARTS = {
     {id:'br4',name:'DDR5-5600 16GB（8GB×2）',  spec:'規格ごとの最安値', price:8800, gb:16},
   ]},
   storage:{ label:'SSD', icon:'SSD', color:'#8c6200', items:[
-    {id:'bs1',name:'Samsung 990 Pro 2TB',  spec:'NVMe Gen4 · 7450MB/s', price:22800},
-    {id:'bs2',name:'WD Black SN850X 2TB',  spec:'NVMe Gen4 · 7300MB/s', price:21800},
-    {id:'bs3',name:'Samsung 990 Pro 1TB',  spec:'NVMe Gen4 · 7450MB/s', price:13800},
-    {id:'bs4',name:'Crucial T500 1TB',     spec:'NVMe Gen4 · 7400MB/s', price:9800},
-    {id:'bs5',name:'WD Blue SN580 1TB',    spec:'NVMe Gen4 · 4150MB/s', price:6800},
+    // 毎日の価格ファイル（規格 × メーカーの最安値）から作る。bloadPartsFromData() を参照
   ]},
   psu:{ label:'電源 (PSU)', icon:'PSU', color:'#8c6200', items:[
-    {id:'bp1',name:'Seasonic Prime TX-1000W',    spec:'1000W · 80+ Titanium', price:39800,watts:1000},
-    {id:'bp2',name:'Corsair RM1000x',            spec:'1000W · 80+ Gold',     price:24800,watts:1000},
-    {id:'bp3',name:'be quiet! Dark Power 850W',  spec:'850W · 80+ Platinum',  price:22800,watts:850},
-    {id:'bp4',name:'Seasonic Focus GX-750',      spec:'750W · 80+ Gold',      price:14800,watts:750},
-    {id:'bp5',name:'Corsair CX650M',             spec:'650W · 80+ Bronze',    price:8800, watts:650},
+    // 毎日の価格ファイル（規格 × メーカーの最安値）から作る。bloadPartsFromData() を参照
   ]},
   case:{ label:'ケース', icon:'CASE', color:'#1d5fa8', items:[
     {id:'bk1',name:'Fractal Design Torrent',  spec:'ATX · 最高エアフロー', price:24800},
@@ -2704,11 +2724,13 @@ function brenderParts(){
         <span class="bpart-chevron">▼</span>
       </div>
       <div class="bpart-list" id="blist-${cat}">
+        ${cat==='mb'?'<div class="bpart-note" id="bnote-mb" style="font-size:12px;color:var(--text2);padding:8px 14px;display:none"></div>':''}
+        ${!data.items.length&&['mb','storage','psu'].includes(cat)?'<div style="font-size:12px;color:var(--text3);padding:12px 14px">毎日の最安値を読み込み中です（取得できていないときは表示されません）</div>':''}
         ${data.items.map(item=>`
-          <div class="bpart-item" id="bitem-${item.id}" onclick="bselect('${cat}','${item.id}')">
+          <div class="bpart-item" id="bitem-${item.id}"${item.socket?` data-socket="${item.socket}"`:''} onclick="bselect('${cat}','${item.id}')">
             <div class="bpart-check" id="bcheck-${item.id}">✓</div>
-            <div class="bpart-item-name"><strong>${item.name}</strong><small>${item.spec}</small></div>
-            <div class="bpart-item-right"><div class="bpart-item-price">¥${item.price.toLocaleString()}</div>${item.score?`<div class="bpart-item-score">score: ${item.score.toLocaleString()}</div>`:''}</div>
+            <div class="bpart-item-name"><strong>${esc(item.name)}</strong><small>${esc(item.spec)}</small></div>
+            <div class="bpart-item-right"><div class="bpart-item-price">¥${item.price.toLocaleString()}</div>${item.score?`<div class="bpart-item-score">score: ${item.score.toLocaleString()}</div>`:''}${item.url?`<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()" style="font-size:11px">店で見る</a>`:''}</div>
           </div>`).join('')}
       </div>
     </div>`).join('');
@@ -2738,8 +2760,24 @@ function bupdateCart(){
   try { localStorage.setItem('benchcore_build', JSON.stringify({ids:items.map(([,v])=>v.id), os:!!document.getElementById('b-os-check')?.checked})); } catch(e) {}
   const listEl=document.getElementById('bcart-list');
   listEl.innerHTML=items.length?items.map(([cat,item])=>`<div class="bcart-item"><div class="bcart-item-cat">${BPARTS[cat].icon}</div><div class="bcart-item-name">${item.name}</div><div class="bcart-item-price">¥${item.price.toLocaleString()}</div><div class="bcart-item-del" onclick="bremove('${cat}','${item.id}')">✕</div></div>`).join(''):'<div class="bcart-empty">← パーツを選んでください</div>';
+  try { bfilterMb(); } catch (e) {}
   if(bSelected.cpu&&bSelected.gpu)banalyze();
   else document.getElementById('bgame-result').innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:12px;margin-top:12px">CPU と GPU を選ぶと<br>ゲーム性能が自動で表示されます</div>';
+}
+// CPUを選んでいるときは、そのソケットに合うマザーボードだけを見せる（選択済みの板は隠さない）
+function bfilterMb() {
+  const cpu = bSelected.cpu;
+  const note = document.getElementById('bnote-mb');
+  let hidden = 0;
+  document.querySelectorAll('#blist-mb .bpart-item').forEach(el => {
+    const off = cpu && cpu.socket && el.dataset.socket && el.dataset.socket !== cpu.socket && bSelected.mb?.id !== el.id.replace('bitem-', '');
+    el.style.display = off ? 'none' : '';
+    if (off) hidden++;
+  });
+  if (note) {
+    note.style.display = cpu && cpu.socket ? '' : 'none';
+    if (cpu && cpu.socket) note.textContent = `${cpu.name}（${cpu.socket}）に合うマザーボードだけを表示しています` + (cpu.socket === 'LGA1700' ? '。LGA1700はDDR4用とDDR5用があり、選んだメモリの種類に合わせてください' : '');
+  }
 }
 function banalyze(){
   const cpu=bSelected.cpu,gpu=bSelected.gpu;if(!cpu||!gpu)return;
