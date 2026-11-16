@@ -210,11 +210,20 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       itemCode: picked.item.itemCode, itemName: picked.item.itemName,
       shopName: typeof picked.item.shopName === 'string' ? picked.item.shopName : '',
     });
-    // 参考価格があるモデルは、ありえる価格帯に絞って安い順に取る（関連度順だと最安の出品を取りこぼす）
-    const ref = Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0;
+    // 参考価格があるモデルは、ありえる価格帯に絞って安い順に取る（関連度順だと最安の出品を取りこぼす）。
+    // 参考価格は「最近実際に取れた価格」を最優先にする（内蔵の参考価格は古く、相場が上がると範囲から外れて何も見つからない）
+    const last = previous.get(`${model.category}\0${model.modelName}`);
+    const lastPrice = last && last.status === 'ok' && Number.isSafeInteger(last.price) && now - new Date(last.fetchedAt) < 30 * 86400000 ? last.price : 0;
+    const ref = lastPrice || (Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0);
     const range = ref ? {from: Math.max(PRICE_FLOOR[model.category] || 0, Math.round(ref * 0.7)), to: Math.round(ref * 1.8)} : null;
-    const yItems = await yahooItems(spec.keyword, range);
-    const yPicked = yItems && pickItem(spec, notExcluded(yItems), model.referencePrice, model.category);
+    let yItems = await yahooItems(spec.keyword, range);
+    let yPicked = yItems && pickItem(spec, notExcluded(yItems), ref || null, model.category);
+    // 範囲内に見つからないときは、範囲を外して安い順にもう一度探す（相場の中央値から外れた出品は使わない）
+    if (yItems && !(yPicked && yPicked.item) && range) {
+      const wide = await yahooItems(spec.keyword, {from: PRICE_FLOOR[model.category] || 1, to: 0});
+      const widePicked = wide && pickItem(spec, notExcluded(wide), null, model.category);
+      if (widePicked && widePicked.item) { yItems = wide; yPicked = widePicked; }
+    }
     const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
     if (yUrl) offers.push({
       store: 'Yahoo!ショッピング', price: yPicked.item.itemPrice, points: yPicked.item.points || 0, url: yUrl,
