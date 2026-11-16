@@ -350,7 +350,9 @@ test('Yahoo is searched cheapest-first inside a plausible price range when a ref
   const models = [{category: 'gpu', modelName: 'GeForce RTX 5060', referencePrice: 58000}, {category: 'gpu', modelName: 'GeForce RTX 3050', referencePrice: null}];
   await main({YAHOO_CLIENT_ID: 'y'}, async url => { seen.push(Object.fromEntries(url.searchParams)); return {ok: true, json: async () => ({hits: []})}; }, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: []});
   assert.deepEqual([seen[0].sort, seen[0].price_from, seen[0].price_to, seen[0].results], ['+price', '40600', '104400', '50']);
-  assert.equal(seen[1].sort, undefined);
+  // 範囲内で見つからないときは、範囲を外して安い順にもう一度探す
+  assert.deepEqual([seen[1].sort, seen[1].price_from, seen[1].price_to], ['+price', '15000', undefined]);
+  assert.equal(seen[2].sort, undefined);
   const {modelSpec: spec, pickItem: pick} = require('../scripts/lib/match');
   for (const name of ['箱難あり品 Intel CPU Core i7-14700F BOX', 'AMD Ryzen5 5600 企業向けバルク品']) {
     const model = name.includes('14700F') ? 'Core i7-14700F' : 'Ryzen 5 5600';
@@ -616,4 +618,33 @@ test('operator-picked products are read from the sheet and priced only from matc
   for (const t of ['Samsung 990 PRO 1TB NVMe SSD', 'Samsung 990 PRO 1TB/2TB/4TB SSD', 'Samsung 990 EVO Plus 2TB SSD', 'Samsung 990 PRO 2TB 外付け SSD']) assert.equal(listingMatches(ssd, t), false, t);
   const it = (name, price) => ({itemCode: name + price, itemName: name, itemPrice: price, availability: 1});
   assert.equal(pickForProduct(ssd, [it('Samsung 990 PRO 2TB SSD', 30000), it('Samsung 990 PRO 1TB SSD', 15000), it('Samsung 990 PRO 2TB SSD', 28000)]).itemPrice, 28000);
+});
+
+test('a product with only a price gets a page without a nearby-performance table', () => {
+  const {buildData, productPage} = require('../scripts/build-pages');
+  const now = new Date('2026-11-16T00:00:00Z');
+  const rows = [{category: 'gpu', name: 'Radeon RX 9050', maker: 'AMD', score: 0}, {category: 'gpu', name: 'GeForce RTX 5060', maker: 'NVIDIA', score: 15000}];
+  const prices = [{category: 'gpu', modelName: 'Radeon RX 9050', status: 'ok', price: 49800, fetchedAt: '2026-11-15T23:00:00Z', url: 'https://store.shopping.yahoo.co.jp/a/1.html', source: 'Yahoo!ショッピング'}];
+  const data = buildData(rows, prices, null, now);
+  const html = productPage(data.gpu.find(x => x.name === 'Radeon RX 9050'), data.gpu, '2026/11/16');
+  assert.match(html, /¥49,800/);
+  assert.ok(!html.includes('<h2>近い性能'));
+});
+
+test('a stale reference price no longer hides listings: the last fetched price is used, then a wide search', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ref-'));
+  const output = path.join(dir, 'prices.json');
+  const hit = (name, price, code) => ({code, name, price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/' + code + '.html', seller: {name: 's' + code}});
+  const listings = [hit('MSI GeForce RTX 4070 VENTUS 2X 12G グラフィックボード', 128000, 'a'), hit('ASUS DUAL RTX 4070 12GB グラフィックボード', 131000, 'b'),
+    hit('ZOTAC RTX 4070 Twin Edge 12GB', 129800, 'c'), hit('GIGABYTE RTX 4070 WINDFORCE 12G', 133000, 'd'), hit('Palit RTX 4070 Dual 12GB', 127500, 'e')];
+  // 内蔵の参考価格 60,000 円の範囲（42,000〜108,000円）には出品がない
+  const fetchImpl = async url => {
+    const from = Number(url.searchParams.get('price_from') || 0), to = Number(url.searchParams.get('price_to') || 1e9);
+    return {ok: true, json: async () => ({hits: listings.filter(h => h.price >= from && h.price <= to)})};
+  };
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 4070', referencePrice: 60000}];
+  const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  assert.equal(code, 0);
+  const data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.deepEqual(data.products.map(p => [p.modelName, p.price]), [['GeForce RTX 4070', 127500]]);
 });

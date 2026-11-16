@@ -135,10 +135,11 @@ function productPage(item, list, updated) {
   if (item.blender) scores.push([`Blender Benchmark（Blender ${esc(item.blenderVersion || '')}）`, `${num(item.blender.score)}（${item.blenderOf}製品中 ${item.blenderRank} 位・測定 ${Number(item.blender.samples).toLocaleString('ja-JP')} 件${item.blender.computeType ? '・' + esc(item.blender.computeType) : ''}）`]);
 
   // 近い性能の製品（同じ指標で上下3つずつ）
-  const key = item.score > 0 ? 'score' : 'blender';
-  const ranked = list.filter(x => key === 'score' ? x.score > 0 : x.blender).sort((a, b) => key === 'score' ? b.score - a.score : b.blender.score - a.blender.score);
+  // 近い性能の製品は、この製品にスコアがあるときだけ出す（価格だけの製品は比べる基準がない）
+  const key = item.score > 0 ? 'score' : item.blender ? 'blender' : null;
+  const ranked = key ? list.filter(x => key === 'score' ? x.score > 0 : x.blender).sort((a, b) => key === 'score' ? b.score - a.score : b.blender.score - a.blender.score) : [];
   const at = ranked.indexOf(item);
-  const near = ranked.slice(Math.max(0, at - 3), at + 4).filter(x => x !== item);
+  const near = at < 0 ? [] : ranked.slice(Math.max(0, at - 3), at + 4).filter(x => x !== item);
   const nearRows = near.map(x => {
     const v = key === 'score' ? x.score : x.blender.score;
     const mine = key === 'score' ? item.score : item.blender.score;
