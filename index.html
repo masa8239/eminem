@@ -790,6 +790,16 @@ a.affiliate-btn:hover { background: #154e96; }
       <div class="section-sub" id="mb-rank-updated">データ読み込み中...</div>
       <button class="share-btn" onclick="shareUrl('mb-rank')">シェア</button>
     </div>
+    <div class="mb-cpu-pick" style="background:var(--surface2);border:1px solid var(--border);padding:12px 14px;margin-bottom:12px">
+      <label for="mb-cpu" style="display:block;font-size:13px;font-weight:700;margin-bottom:6px">CPUから選ぶ</label>
+      <select id="mb-cpu" onchange="onMbCpuChange()" style="display:block;box-sizing:border-box;width:100%;max-width:360px;padding:6px 8px"><option value="">選ばない（すべて表示）</option></select>
+      <div id="mb-cpu-note" style="font-size:12px;color:var(--text2);margin-top:6px">CPUを選ぶと、そのCPUに合うソケット・メモリのマザーボードだけを表示します。</div>
+    </div>
+    <div class="sort-row">
+      <span class="sort-label">並び替え：</span>
+      <button class="sort-btn active-score" id="mb-sort-tier" onclick="sortPart('mb','tier')" title="同じソケットの中で、機能が多いチップセットから">チップセットの格 <span class="sort-arrow" id="mb-arrow-tier">↓</span></button>
+      <button class="sort-btn" id="mb-sort-price" onclick="sortPart('mb','price')">値段 <span class="sort-arrow" id="mb-arrow-price">↓</span></button>
+    </div>
     <div class="filters" id="mb-filters"><button class="filter-btn active" onclick="filterPart('mb','all',this)">全て</button><button class="filter-btn" onclick="filterPart('mb','AM5',this)">AM5</button><button class="filter-btn" onclick="filterPart('mb','AM4',this)">AM4</button><button class="filter-btn" onclick="filterPart('mb','LGA1851',this)">LGA1851</button><button class="filter-btn" onclick="filterPart('mb','LGA1700',this)">LGA1700</button><button class="filter-btn" onclick="filterPart('mb','ATX',this)">ATX</button><button class="filter-btn" onclick="filterPart('mb','mATX',this)">Micro-ATX</button><button class="filter-btn" onclick="filterPart('mb','ITX',this)">Mini-ITX</button></div>
     <div class="filters" style="margin-top:8px">
       <label style="font-size:13px;display:inline-flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="mb-show-other" onchange="renderPartTable('mb')"> メーカーがわからない安い製品も表示する</label>
@@ -1861,6 +1871,7 @@ async function loadRakutenPrices() {
   populateCpuSelects(); populateGpuSelects(); populateRamSelects();
   try { bsyncPrices(); } catch (error) {}
   try { updateHomeRanking(); } catch (error) {}  // メモリの件数などは価格ファイルを読んだあとに確定する
+  try { populateMbCpu(); } catch (error) {}
 }
 
 // Blender Benchmark のスコア（毎日自動取得: data/blender-scores.json）。サイト同梱版とGitHub上の最新版の新しい方を使う
@@ -2009,22 +2020,66 @@ function boardSpecHTML(x) {
 }
 // 並び替え（SSD・電源）。性能 = SSDは接続（Gen5 > Gen4 > SATA）→容量、電源は80PLUSの等級→容量。
 // コスパ = SSDは1TBあたり、電源は1Wあたりの価格。マザーボードは並び替えなし（規格の順）
-const partSort = {ssd: {key: 'score', dir: -1}, psu: {key: 'score', dir: -1}};
+const partSort = {ssd: {key: 'score', dir: -1}, psu: {key: 'score', dir: -1}, mb: {key: 'tier', dir: -1}};
+// チップセットの格（同じソケットの中で、機能が多い順）。どのメーカーの板でも共通
+const CHIPSET_TIER = {X870E: 6, X870: 5, B850: 4, B650E: 3, B650: 2, A620: 1, X570: 3, B550: 2, A520: 1, Z890: 3, B860: 2, H810: 1, Z790: 3, B760: 2, H610: 1};
+const CHIPSET_NOTE = {
+  X870E: '上位（PCIe 5.0・USB4などが充実）', X870: '上位（USB4などが充実）', B850: '一般的な自作に十分', B650E: '一般的な自作に十分（GPU用もPCIe 5.0）', B650: '一般的な自作に十分', A620: '最低限の機能（CPUのOC不可）',
+  X570: '上位', B550: '一般的な自作に十分', A520: '最低限の機能（CPUのOC不可）',
+  Z890: '上位（CPUのOC可）', B860: '一般的な自作に十分（CPUのOC不可）', H810: '最低限の機能（CPUのOC不可）',
+  Z790: '上位（CPUのOC可）', B760: '一般的な自作に十分（CPUのOC不可）', H610: '最低限の機能（CPUのOC不可）',
+};
+const SOCKET_ORDER = {AM5: 4, LGA1851: 3, LGA1700: 2, AM4: 1};
 const PART_RANK = {
   ssd: x => ({Gen5: 3, Gen4: 2, SATA: 1}[x.spec.type] || 0) * 1e6 + (x.spec.capacity || 0),
   psu: x => ({Titanium: 4, Platinum: 3, Gold: 2, Bronze: 1}[x.spec.rating] || 0) * 1e6 + (x.spec.watts || 0),
+  mb: x => (CHIPSET_TIER[x.spec.chipset] || 0) * 100 + (SOCKET_ORDER[x.spec.socket] || 0) * 10 + ({ATX: 3, mATX: 2, ITX: 1}[x.spec.form] || 0),
 };
 const PART_UNIT = {ssd: x => x.spec.capacity ? x.price / (x.spec.capacity / 1000) : Infinity, psu: x => x.spec.watts ? x.price / x.spec.watts : Infinity};
 function sortPart(kind, key) {
   const st = partSort[kind];
-  if (st.key === key) st.dir *= -1; else { st.key = key; st.dir = key === 'score' ? -1 : 1; }
-  ['score', 'price', 'cospa'].forEach(k => {
+  if (st.key === key) st.dir *= -1; else { st.key = key; st.dir = (key === 'score' || key === 'tier') ? -1 : 1; }
+  ['score', 'tier', 'price', 'cospa'].forEach(k => {
     const btn = document.getElementById(`${kind}-sort-${k}`);
     const arrow = document.getElementById(`${kind}-arrow-${k}`);
-    if (btn) btn.className = 'sort-btn' + (st.key === k ? ' active-' + k : '');
+    if (btn) btn.className = 'sort-btn' + (st.key === k ? ' active-' + (k === 'tier' ? 'score' : k) : '');
     if (arrow) arrow.textContent = st.key === k ? (st.dir === -1 ? '↓' : '↑') : '↓';
   });
   renderPartTable(kind);
+}
+// ---- マザーボード: CPUから選ぶ ----
+// AMD は A620・A520 以外、Intel は Z のチップセットだけ CPU のオーバークロックができる
+function chipsetAllowsOc(chipset) { return /^(X|B)\d/.test(chipset) || /^Z\d/.test(chipset); }
+function cpuNeedsOc(cpu) { return cpu.maker === 'Intel' ? /\d(K|KF|KS)( Plus)?$/i.test(cpu.name) : /^Ryzen/i.test(cpu.name); }
+function selectedMbCpu() {
+  const name = document.getElementById('mb-cpu')?.value;
+  if (!name) return null;
+  return cpuData.concat(cpuExtra).find(c => c.name === name && c.socket) || null;
+}
+function populateMbCpu() {
+  const sel = document.getElementById('mb-cpu');
+  if (!sel) return;
+  const keep = sel.value;
+  const list = dedupeByName(cpuData.concat(cpuExtra).filter(c => c.socket && ['AM5', 'AM4', 'LGA1851', 'LGA1700'].includes(c.socket)));
+  const groups = {};
+  list.forEach(c => { (groups[`${c.maker}（${c.socket}）`] = groups[`${c.maker}（${c.socket}）`] || []).push(c); });
+  const order = ['AMD（AM5）', 'AMD（AM4）', 'Intel（LGA1851）', 'Intel（LGA1700）'];
+  sel.innerHTML = '<option value="">選ばない（すべて表示）</option>' + order.filter(g => groups[g]).map(g =>
+    `<optgroup label="${esc(g)}">${groups[g].sort((a, b) => a.name.localeCompare(b.name, 'en', {numeric: true})).map(c => `<option value="${esc(c.name)}">${esc(c.name)}</option>`).join('')}</optgroup>`).join('');
+  if (keep && list.some(c => c.name === keep)) sel.value = keep;
+}
+function onMbCpuChange() {
+  const cpu = selectedMbCpu();
+  const note = document.getElementById('mb-cpu-note');
+  if (note) {
+    if (!cpu) note.textContent = 'CPUを選ぶと、そのCPUに合うソケット・メモリのマザーボードだけを表示します。';
+    else {
+      const mem = cpu.socket === 'AM4' ? 'DDR4' : cpu.socket === 'LGA1700' ? 'DDR4用とDDR5用（どちらか一方のメモリしか使えません）' : 'DDR5';
+      const oc = cpuNeedsOc(cpu) ? (cpu.maker === 'Intel' ? ' 末尾が K のCPUの性能を引き出す（OC）には、Z のチップセットが必要です。' : ' A620・A520 ではCPUのOCはできません。') : '';
+      note.textContent = `${cpu.name} はソケット ${cpu.socket}。合うマザーボードのメモリは ${mem} です。${oc}`;
+    }
+  }
+  renderPartTable('mb');
 }
 function filterPart(kind, value, el) {
   partFilter[kind] = value;
@@ -2039,7 +2094,8 @@ function renderPartTable(kind) {
   const f = partFilter[kind];
   const order = PART_ORDER[kind];
   const pos = x => Number.isFinite(x.spec.order) ? x.spec.order : (order ? order.indexOf(x.key) : 0);
-  const rows = partsData[kind].filter(x => (showOther || x.maker !== 'その他') && (f === 'all'
+  const cpu = kind === 'mb' ? selectedMbCpu() : null;
+  const rows = partsData[kind].filter(x => (!cpu || x.spec.socket === cpu.socket) && (showOther || x.maker !== 'その他') && (f === 'all'
       || (kind === 'ssd' ? (x.spec.type === f || String(x.spec.capacity) === f)
         : kind === 'psu' ? (String(x.spec.watts) === f || x.spec.rating === f)
         : (x.spec.socket === f || x.spec.form === f))))
@@ -2048,10 +2104,10 @@ function renderPartTable(kind) {
       if (!st) return pos(a) - pos(b) || a.price - b.price;
       if (st.key === 'price') return (a.price - b.price) * st.dir;
       if (st.key === 'cospa') return (PART_UNIT[kind](a) - PART_UNIT[kind](b)) * st.dir || a.price - b.price;
-      return (PART_RANK[kind](a) - PART_RANK[kind](b)) * st.dir || a.price - b.price; // dir -1 = 性能の高い順
+      return (PART_RANK[kind](a) - PART_RANK[kind](b)) * st.dir || pos(a) - pos(b) || a.price - b.price; // dir -1 = 性能（格）の高い順
     });
   // 規格ごとにまとまって並ぶとき（性能順）だけ、規格名を各まとまりの先頭に出す。値段・コスパ順では毎行に出す
-  const grouped = !partSort[kind] || partSort[kind].key === 'score';
+  const grouped = !partSort[kind] || partSort[kind].key === 'score' || partSort[kind].key === 'tier';
   if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text3)">${partsData[kind].length ? '条件に一致する製品がありません' : '価格はまだ取得できていません'}</td></tr>`;
     return;
@@ -2062,7 +2118,8 @@ function renderPartTable(kind) {
     const extra = kind === 'ssd'
       ? (x.spec.capacity ? '¥' + Math.round(x.price / (x.spec.capacity / 1000)).toLocaleString('ja-JP') : '—')
       : kind === 'psu' ? `${x.spec.atx3 ? '対応' : '—'}<div style="font-size:11px;color:var(--text3)">1Wあたり ¥${(x.price / x.spec.watts).toLocaleString('ja-JP', {maximumFractionDigits: 1})}</div>`
-      : esc(`${x.spec.socket || '—'}・${x.spec.memory || '—'}`);
+      : esc(`${x.spec.socket || '—'}・${x.spec.memory || '—'}`) + `<div style="font-size:11px;color:var(--text3);white-space:normal">${esc(CHIPSET_NOTE[x.spec.chipset] || '')}</div>`
+        + (cpu && cpuNeedsOc(cpu) && !chipsetAllowsOc(x.spec.chipset) ? '<div style="font-size:11px;color:var(--accent);white-space:normal">このCPUの性能の引き上げ（OC）はできません</div>' : '');
     return `<tr${first && grouped ? ' class="part-group-first"' : ''}>
       <td>${first ? `<strong>${esc(x.label)}</strong>` : ''}</td>
       <td>${x.maker === 'その他' ? '<span style="color:var(--text3)">メーカー不明</span>' : esc(x.maker)}</td>
