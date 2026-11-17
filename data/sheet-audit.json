@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-14T22:43:12.240Z",
+ "checkedAt": "2026-11-17T02:04:05.979Z",
  "issues": [
   {
    "category": "cpu",
@@ -112,12 +112,6 @@
   {
    "category": "cpu",
    "modelName": "Core i5-13600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-14600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -268,12 +262,6 @@
   {
    "category": "cpu",
    "modelName": "Core i9-12900",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-12900KF",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -477,18 +465,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 7 5700X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 5800X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 7 PRO 4750G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -526,12 +502,6 @@
   {
    "category": "cpu",
    "modelName": "Ryzen 9 5900X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 5800X3D",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -640,18 +610,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 4080",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4070 Ti SUPER",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce RTX 4070 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -670,25 +628,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 4070 SUPER",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 7800 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3090",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3080 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -700,25 +640,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3080",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 6900 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6800 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3070 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -737,12 +659,6 @@
   {
    "category": "gpu",
    "modelName": "Arc A770 8GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3060 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -772,12 +688,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3060",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce RTX 2080 SUPER",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -791,12 +701,6 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 7600 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4060",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -827,12 +731,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce GTX 1080 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6600 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -953,12 +851,6 @@
   {
    "category": "gpu",
    "modelName": "Radeon R9 Fury",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3050 6GB",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
