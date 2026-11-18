@@ -78,10 +78,10 @@ async function loadModels(fetchImpl) {
       JSON.parse(run(`JSON.stringify(__rows.map(${parser}).filter(r=>r&&r.name&&isStandalone('${category}',r.name)))`)).forEach(item => {
         const key = `${category}\0${item.name}`;
         const price = Number.isSafeInteger(item.price) && item.price > 0 ? item.price : null;
-        sheetRows.push({category, sheetName: item.sheetName || item.name, modelName: item.name, priceValid: price !== null});
+        sheetRows.push({category, sheetName: item.sheetName || item.name, modelName: item.name, priceValid: price !== null, discontinued: Boolean(item.discontinued)});
         if (models.get(key)?.fromSheet) return; // 同名の行は最初（シート上で上）の1件を使う
         const builtin = models.get(key)?.referencePrice ?? null;
-        models.set(key, {category, modelName: item.name, referencePrice: price ?? builtin, fromSheet: true, sheetPriceValid: price !== null});
+        models.set(key, {category, modelName: item.name, referencePrice: price ?? builtin, fromSheet: true, sheetPriceValid: price !== null, discontinued: Boolean(item.discontinued)});
       });
     } catch {
       console.log(`${category}: スプレッドシートを取得できなかったため内蔵データのモデル名を使います`);
@@ -169,6 +169,8 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   let apiErrors = 0, attempted = 0, first = true;
   log(`使うストア: ${[rakuten.configured && '楽天市場', yahoo.appid && 'Yahoo!ショッピング'].filter(Boolean).join('・') || 'なし'}`);
   for (const model of auditOnly ? [] : models) {
+    // シートで「販売終了」にした製品は価格を探さない
+    if (model.discontinued) { unmatched.push({category: model.category, modelName: model.modelName, reason: '販売終了（シートで指定）'}); continue; }
     const spec = modelSpec(model.category, model.modelName, byCategory(model.category));
     if (!spec) { unmatched.push({category: model.category, modelName: model.modelName, reason: '型番を判定できないモデル名'}); continue; }
     let items = rakuten.on ? (searchCache.get(spec.keyword) || null) : [];
@@ -232,11 +234,12 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     });
     // シート（または内蔵）の参考価格の2倍を超える価格は、在庫処分・転売の高値として採用しない。
     // 相場が本当に上がった製品は、シートの「価格(円)」を今の値段に直せば採用される
-    const staticRef = Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0;
+    // 上限の基準は、運営者がシートに入れた価格だけ（内蔵の参考価格は古く、正しい価格まで弾いてしまうため）
+    const staticRef = model.sheetPriceValid && Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0;
     let tooHigh = false;
     if (staticRef) for (let k = offers.length - 1; k >= 0; k--) if (offers[k].price > staticRef * 2) { offers.splice(k, 1); tooHigh = true; }
     if (!offers.length) {
-      if (tooHigh) { unmatched.push({category: model.category, modelName: model.modelName, reason: '参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）'}); continue; }
+      if (tooHigh) { unmatched.push({category: model.category, modelName: model.modelName, reason: 'シートの価格の2倍を超える出品しかない（在庫処分・転売の可能性）'}); continue; }
       // ストア側の失敗で取れなかったときは、前回の価格を数日間は引き継ぐ
       const kept = previous.get(`${model.category}\0${model.modelName}`);
       const storeFailed = rakutenError || (rakuten.configured && !rakuten.on) || (yahoo.appid && !yItems);
@@ -448,7 +451,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     const key = `${row.category}\0${row.modelName}`;
     if (seenNames.has(key)) issues.push({category: row.category, modelName: row.sheetName, type: 'duplicate', issue: `「${row.modelName}」と重複しています（サイトでは1件だけ表示）`});
     seenNames.add(key);
-    if (!row.priceValid && !priced.has(key)) {
+    if (!row.priceValid && !priced.has(key) && !row.discontinued) {
       issues.push({category: row.category, modelName: row.sheetName, type: 'price', issue: '価格が未入力または不正で、楽天からも取得できていません'});
     }
   }
