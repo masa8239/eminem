@@ -1257,7 +1257,7 @@ function renderCpuTableBody() {
   document.getElementById('cpu-single-body').innerHTML = singleBase.map((c,i) => {
     const cospaVal = costPerformance(c)?.toFixed(2) ?? '—';
     return `<tr>
-      <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
+      <td>${c.single?`<span class="rank-num ${rankColor(i)}">${i+1}</span>`:'<span class="rank-num" title="シングルスレッドのスコアが未登録">—</span>'}</td>
       <td><div class="chip-name">${nameLink('cpu',c.name)}${endedBadge(c)}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div></td>
       <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent4)">${c.single?c.single.toLocaleString():'—'}</div><div class="score-bar-bg"><div class="score-bar" style="width:${c.single?Math.round(c.single/maxSingle*100):0}%;background:var(--accent4)"></div></div></div></td>
       <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(c)}</td>
