@@ -699,3 +699,20 @@ test('products marked 販売終了 in the sheet are flagged for the site and get
   const data = buildData(parsed.map(c => ({...c, category: 'cpu'})), [], null, new Date());
   assert.deepEqual(data.cpu.map(x => x.name), ['Core i5-14400F']);
 });
+
+test('a sheet row with no price in the last 5 fetch days is reported, a discontinued one is not', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stock-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const days = ['2026-11-13', '2026-11-14', '2026-11-15', '2026-11-16', '2026-11-17'];
+  fs.writeFileSync(path.join(dir, 'price-history.json'), JSON.stringify({series: {'gpu|GeForce RTX 5060': days.map(d => [d, 50000]), 'gpu|GeForce GTX 1080': [['2026-11-01', 30000]]}}));
+  const models = [{category: 'gpu', modelName: 'GeForce GTX 1080', fromSheet: true}, {category: 'gpu', modelName: 'GeForce GTX 1070', fromSheet: true, discontinued: true}];
+  models.sheetRows = [
+    {category: 'gpu', sheetName: 'GeForce GTX 1080', modelName: 'GeForce GTX 1080', priceValid: true},
+    {category: 'gpu', sheetName: 'GeForce GTX 1070', modelName: 'GeForce GTX 1070', priceValid: true, discontinued: true},
+    {category: 'gpu', sheetName: 'GeForce RTX 5060', modelName: 'GeForce RTX 5060', priceValid: true},
+  ];
+  await main({YAHOO_CLIENT_ID: 'y'}, async () => ({ok: true, json: async () => ({hits: []})}), {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true,
+    corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, now: new Date('2026-11-17T20:00:00Z')});
+  const audit = JSON.parse(fs.readFileSync(path.join(dir, 'sheet-audit.json'), 'utf8'));
+  assert.deepEqual(audit.issues.filter(i => i.type === 'stock').map(i => i.modelName), ['GeForce GTX 1080']);
+});
