@@ -1,33 +1,9 @@
 {
- "checkedAt": "2026-11-18T01:17:55.920Z",
+ "checkedAt": "2026-11-18T09:42:40.196Z",
  "issues": [
   {
    "category": "cpu",
-   "modelName": "Core i3-13100",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i5-10400",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-10600",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-10600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-10600KF",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -465,6 +441,12 @@
   },
   {
    "category": "cpu",
+   "modelName": "Ryzen 7 5700X",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
    "modelName": "Ryzen 7 PRO 4750G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -501,85 +483,13 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 9 5900X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 5700G",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 5700",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 5600X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 5600GT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 5500",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core Ultra 7 265",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core Ultra 5 245",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-14700",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i5-14600",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13600KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-12900F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-12700F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i3-13100F",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -605,6 +515,12 @@
   {
    "category": "gpu",
    "modelName": "GeForce RTX 4080 SUPER",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4080",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -641,6 +557,12 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6900 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1171,6 +1093,1068 @@
    "modelName": "Radeon R9 370",
    "type": "spec",
    "issue": "仕様が出典と違います: 消費電力 110W → 出典 150W（Wikipedia）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i3-12100F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i3-13100",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10400",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11400",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11400F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11500",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11600K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-11600KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12400",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12400F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12500",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-12600KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13400",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13400F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13500",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13600K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-11700KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-12700T",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-13700T",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-8700T",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-9700KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10850K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10900K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-10900KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-11900K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900KS",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900T",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900K",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900KF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900KS",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-13900T",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900KS",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-9900T",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 3100",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 3300X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 4100",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 3 4300G",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 2600",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 2600X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600 AF",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3600XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4500",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4600G",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600G",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600X3D",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 PRO 4650G",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 PRO 4650GE",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 1700X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 1800X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 3700X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 3800XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 4700G",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5700X3D",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 4750G",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 4750GE",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 PRO 5750G",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 3900X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 9 3900XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 7400F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 5600GT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core Ultra 5 245",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-14600",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900F",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7900 XTX",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4080 SUPER",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7900 GRE",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3090 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7800 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 12GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6900 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6750 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A770 8GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4060 Ti 16GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN V",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6700 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A750",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2080 SUPER",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6700",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7600 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN Xp",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A580",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "NVIDIA TITAN X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3050",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5700 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2070",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1080",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5700",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2060 12GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2060 6GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 8GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 64",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5600",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1070 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX Vega 56",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1070",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 980 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Fury X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6500 XT 4GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Fury",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5500 XT 8GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 5500 XT 4GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 590",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 Nano",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 SUPER",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN Z",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A380",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 980",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 390X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1060 6GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 480",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1060 3GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 570",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 GDDR6",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 470",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 970",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6400",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1650 GDDR5",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 780 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Arc A310",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 380X",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX TITAN",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 780",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 270",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 960",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 770",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 680",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 950",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1050",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 560",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 460",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 760",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon R9 370",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 750 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 550",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GT 1030",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 650 Ti",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9060 XT 8GB",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7700 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7900 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6950 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6650 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   }
  ]
 }
