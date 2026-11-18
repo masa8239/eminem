@@ -78,7 +78,8 @@ function benchcoreRun_(dryRun) {
   // 内蔵グラフィックスや Apple M シリーズなど、単体で売っていない製品（価格が入らないのが正常）
   var unpriceable = {};
   (priceData.unmatched || []).forEach(function (item) {
-    if (item.reason === '型番を判定できないモデル名') unpriceable[item.category + '|' + item.modelName] = true;
+    // 単体で売っていない製品と、運営者が「販売終了」にした製品は、価格が空でも赤くしない
+    if (item.reason === '型番を判定できないモデル名' || String(item.reason).indexOf('販売終了') === 0) unpriceable[item.category + '|' + item.modelName] = true;
   });
   var nameIssues = {}, nameFixes = {}, specIssues = {};
   (auditData.issues || []).forEach(function (issue) {

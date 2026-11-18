@@ -80,7 +80,7 @@ function buildData(rows, prices, blender, now) {
   const out = {cpu: [], gpu: []};
   const seen = new Set();
   for (const row of rows) {
-    if (!out[row.category] || seen.has(`${row.category}\0${row.name}`)) continue;
+    if (!out[row.category] || row.discontinued || seen.has(`${row.category}\0${row.name}`)) continue; // 販売終了の製品はページを作らない
     seen.add(`${row.category}\0${row.name}`);
     const b = blender && blender[row.category] && blender[row.category].scores && blender[row.category].scores[row.name];
     const item = {...row, slug: slug(row.name), offer: fresh.get(`${row.category}\0${row.name}`) || null,

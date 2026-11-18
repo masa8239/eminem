@@ -662,14 +662,40 @@ test('inflated leftovers are not shown: over 2x the reference, or only one shop 
     const from = Number(url.searchParams.get('price_from') || 0), to = Number(url.searchParams.get('price_to') || 1e9);
     return {ok: true, json: async () => ({hits: (byQuery[url.searchParams.get('query')] || []).filter(h => h.price >= from && h.price <= to)})};
   };
-  const models = [{category: 'gpu', modelName: 'GeForce RTX 3090', referencePrice: 80000}, {category: 'gpu', modelName: 'GeForce RTX 3070', referencePrice: 50000},
-    {category: 'gpu', modelName: 'Radeon RX 9070 GRE', referencePrice: 90000}];
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 3090', referencePrice: 80000, sheetPriceValid: true}, {category: 'gpu', modelName: 'GeForce RTX 3070', referencePrice: 50000},
+    {category: 'gpu', modelName: 'Radeon RX 9070 GRE', referencePrice: 90000}, {category: 'gpu', modelName: 'GeForce GTX 1080', referencePrice: 30000, discontinued: true}];
   await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
   const data = JSON.parse(fs.readFileSync(output, 'utf8'));
   assert.deepEqual(data.products, []);
   assert.deepEqual(data.unmatched.map(u => [u.modelName, u.reason]), [
-    ['GeForce RTX 3090', '参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）'],
+    ['GeForce RTX 3090', 'シートの価格の2倍を超える出品しかない（在庫処分・転売の可能性）'],
     ['GeForce RTX 3070', '同じ価格帯で売っている店が少ない（在庫処分・転売の可能性）'],
     ['Radeon RX 9070 GRE', '一致する新品単品の出品なし'],
+    ['GeForce GTX 1080', '販売終了（シートで指定）'],
   ]);
+  // 内蔵の参考価格だけの製品は上限に使わない（相場が上がった製品の正しい価格を弾かないため）
+  const out2 = path.join(dir, 'p2.json');
+  const shops = ['A', 'B', 'C', 'D', 'E'];
+  const f2 = async url => ({ok: true, json: async () => ({hits: shops.map((sh, i) => hit('Intel Core i5-13400F BOX', 27800 + i * 300, 'z' + i, sh))
+    .filter(h => h.price >= Number(url.searchParams.get('price_from') || 0) && h.price <= Number(url.searchParams.get('price_to') || 1e9))})});
+  await main({YAHOO_CLIENT_ID: 'y'}, f2, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX,
+    models: [{category: 'cpu', modelName: 'Core i5-13400F', referencePrice: 12800}], output: out2, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  assert.deepEqual(JSON.parse(fs.readFileSync(out2, 'utf8')).products.map(p => [p.modelName, p.price]), [['Core i5-13400F', 27800]]);
+});
+
+test('products marked 販売終了 in the sheet are flagged for the site and get no product page', () => {
+  const vm = require('node:vm');
+  const html = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+  const document = {addEventListener() {}, getElementById() { return {value: '', innerHTML: '', textContent: '', style: {}}; }};
+  const context = vm.createContext({document, window: {addEventListener() {}}, localStorage: {getItem() { return null; }}, URL, URLSearchParams, console});
+  vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].split('// ===== INIT =====')[0], context);
+  const parsed = JSON.parse(vm.runInContext(`JSON.stringify([{'CPU名':'Core i7-8700','PassMarkスコア':12789,'販売終了':true},{'CPU名':'Core i5-14400F','PassMarkスコア':25705,'販売終了':''},{'CPU名':'Ryzen 5 3600','PassMarkスコア':17719,'販売終了':'TRUE'}].map(parseCpuRow))`, context));
+  assert.deepEqual(parsed.map(c => [c.name, c.discontinued]), [['Core i7-8700', true], ['Core i5-14400F', false], ['Ryzen 5 3600', true]]);
+  context.__list = parsed;
+  assert.deepEqual(JSON.parse(vm.runInContext(`JSON.stringify(visibleList('cpu', __list).map(c => c.name))`, context)), ['Core i5-14400F']);
+  vm.runInContext(`showEnded.cpu = true`, context);
+  assert.equal(JSON.parse(vm.runInContext(`JSON.stringify(visibleList('cpu', __list).length)`, context)), 3);
+  const {buildData} = require('../scripts/build-pages');
+  const data = buildData(parsed.map(c => ({...c, category: 'cpu'})), [], null, new Date());
+  assert.deepEqual(data.cpu.map(x => x.name), ['Core i5-14400F']);
 });
