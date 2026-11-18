@@ -17,7 +17,7 @@ const EXCLUDE_WORDS = [
   // 互換品・交換部品・並行輸入・中古扱いの「未使用品」
   '互換', '交換用', '並行輸入', '平行輸入', '未使用', 'バッテリー', '電池', 'オートバイ', 'ネジ', '冷却ファン',
   // 箱つぶれ品・バルク品は通常の新品（BOX）と条件が違うので比較に入れない
-  '箱難', '箱潰', '箱つぶれ', '外箱', 'バルク',
+  '箱難', '箱潰', '箱つぶれ', '外箱', 'バルク', 'アウトレット',
 ].map(normalize);
 
 const GPU_SUFFIXES = ['TI SUPER', 'SUPER', 'TI', 'XTX', 'XT', 'GRE'];
@@ -109,7 +109,8 @@ function median(values) {
 // 本体として明らかに安すぎる価格（部品やアクセサリー）
 const PRICE_FLOOR = {cpu: 8000, gpu: 15000};
 
-function pickItem(spec, items, referencePrice, category) {
+// options.minShops: 採用する価格帯の出品が、この数以上の店で見つかったときだけ採用する（1店だけの高値・在庫処分を避ける）
+function pickItem(spec, items, referencePrice, category, options = {}) {
   const candidates = items.filter(item => item && typeof item.itemName === 'string'
     && Number.isSafeInteger(item.itemPrice) && item.itemPrice > 0 && item.availability === 1
     && typeof item.itemCode === 'string'
@@ -132,6 +133,11 @@ function pickItem(spec, items, referencePrice, category) {
   }
   const accepted = candidates.filter(inBand).sort((a, b) => a.itemPrice - b.itemPrice);
   if (!accepted.length) return {reason: '価格が相場から外れている'};
+  if (options.minShops) {
+    const near = accepted.filter(item => item.itemPrice <= accepted[0].itemPrice * 1.15);
+    const shops = new Set(near.map(item => item.shopName || item.itemCode));
+    if (shops.size < options.minShops) return {reason: '同じ価格帯で売っている店が少ない（在庫処分・転売の可能性）'};
+  }
   return {item: accepted[0]};
 }
 
