@@ -29,6 +29,7 @@ var BENCHCORE_PRICE_COLUMN = '価格(円)';
 var BENCHCORE_BEST_COLUMN = '最安値(円)';
 var BENCHCORE_COLOR_PRICE = '#f4cccc';
 var BENCHCORE_COLOR_NAME = '#fff2cc';
+var BENCHCORE_COLOR_STOCK = '#fce5cd'; // 新品が見つからない製品の「販売終了」セル（オレンジ）
 var BENCHCORE_FIX_NAMES = true;
 var BENCHCORE_ADD_NEW = true;
 var BENCHCORE_SCORE_COLUMNS = {cpu: 'PassMarkスコア', gpu: '3DMark Time Spy'};
@@ -81,13 +82,15 @@ function benchcoreRun_(dryRun) {
     // 単体で売っていない製品と、運営者が「販売終了」にした製品は、価格が空でも赤くしない
     if (item.reason === '型番を判定できないモデル名' || String(item.reason).indexOf('販売終了') === 0) unpriceable[item.category + '|' + item.modelName] = true;
   });
-  var nameIssues = {}, nameFixes = {}, specIssues = {};
+  var nameIssues = {}, nameFixes = {}, specIssues = {}, stockIssues = {};
   (auditData.issues || []).forEach(function (issue) {
     var issueKey = issue.category + '|' + issue.modelName;
     if (issue.type === 'name') { nameIssues[issueKey] = issue.issue; if (issue.fix) nameFixes[issueKey] = issue.fix; }
     if (issue.type === 'duplicate' && !nameIssues[issueKey]) nameIssues[issueKey] = issue.issue;
     // 仕様（コア数・クロック・VRAM など）が出典の照合表と違う行。名前の指摘がない行だけ、同じ黄色で知らせる
     if (issue.type === 'spec') specIssues[issueKey] = issue.issue;
+    // 新品の出品が続けて見つからない製品。「販売終了」のセルをオレンジにして知らせる
+    if (issue.type === 'stock') stockIssues[issueKey] = issue.issue;
   });
 
   var log = [];
@@ -130,6 +133,10 @@ function benchcoreRun_(dryRun) {
     var bestRange = bestIndex >= 0 ? sheet.getRange(2, bestIndex + 1, rows, 1) : null;
     var bestValues = bestRange ? bestRange.getValues() : names.map(function () { return ['']; });
     var nameFormulas = nameRange.getFormulas();
+    var endedIndex = header.indexOf('販売終了');
+    var endedRange = endedIndex >= 0 ? sheet.getRange(2, endedIndex + 1, rows, 1) : null;
+    var endedValues = endedRange ? endedRange.getValues() : [];
+    var endedBackgrounds = endedRange ? endedRange.getBackgrounds() : [];
     var existing = {};
     names.forEach(function (row) { var n = String(row[0]).trim(); if (n) existing[n] = (existing[n] || 0) + 1; });
 
@@ -164,6 +171,17 @@ function benchcoreRun_(dryRun) {
           }
         }
         if (ok && !dryRun && priceBackgrounds[i][0] === BENCHCORE_COLOR_PRICE) { priceCell.setBackground(null); priceCell.clearNote(); }
+      }
+
+      if (endedRange) {
+        var ended = endedValues[i][0] === true || String(endedValues[i][0]).toUpperCase() === 'TRUE';
+        var warn = !ended && stockIssues[key];
+        var endedCell = endedRange.getCell(i + 1, 1);
+        if (warn && endedBackgrounds[i][0] !== BENCHCORE_COLOR_STOCK) {
+          log.push(sheet.getName() + ' / ' + name + ': 新品が見つからない（販売終了か確認）');
+          if (!dryRun) endedCell.setBackground(BENCHCORE_COLOR_STOCK).setNote(stockIssues[key]);
+        }
+        if (!warn && endedBackgrounds[i][0] === BENCHCORE_COLOR_STOCK && !dryRun) { endedCell.setBackground(null); endedCell.clearNote(); }
       }
 
       var issue = nameIssues[key];

@@ -251,3 +251,17 @@ test('operator-picked motherboards and SSDs get the fetched cheapest price, othe
   assert.equal(mb.grid[2][4] ?? '', '');                                   // 価格が取れていない製品は空
   assert.equal(mb.grid[2][5], 'https://www.google.com/search?q=' + encodeURIComponent('ASUS TUF GAMING B650-PLUS 仕様'));
 });
+
+test('rows with no new listing lately get an orange 販売終了 cell, which clears once ticked', () => {
+  const sheet = makeSheet('GPU', [['GPU名', 'スコア', '価格(円)', '販売終了'], ['GeForce GTX 1080', 8900, 30000, false], ['GeForce RTX 4060', 13200, 44000, false]]);
+  const f = files();
+  f['sheet-audit.json'].issues.push({category: 'gpu', modelName: 'GeForce GTX 1080', type: 'stock', issue: '直近5回の価格取得で、新品の出品が見つかりませんでした'});
+  run([sheet], f, 'benchcoreSync');
+  assert.equal(sheet.backgrounds['1,3'], '#fce5cd');
+  assert.match(sheet.notes['1,3'], /新品の出品が見つかりませんでした/);
+  assert.equal(sheet.backgrounds['2,3'], undefined);
+  sheet.grid[1][3] = true;                              // 運営者が販売終了にした
+  run([sheet], f, 'benchcoreSync');
+  assert.equal(sheet.backgrounds['1,3'], undefined);
+  assert.equal(sheet.notes['1,3'], undefined);
+});

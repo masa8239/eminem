@@ -27,6 +27,7 @@ const BLENDER_OUTPUT = path.join(ROOT, 'data', 'blender-scores.json');
 const MB_SPECS_OUTPUT = path.join(ROOT, 'data', 'mb-specs.json');
 const SHEET_PARTS_OUTPUT = path.join(ROOT, 'data', 'sheet-parts.json');
 const HISTORY_DAYS = 180;
+const STOCK_WARN_DAYS = 5; // この回数続けて新品が見つからない製品に注意を付ける
 
 function readSheetsConfig() {
   try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'config', 'sheets.json'), 'utf8')); } catch { return {}; }
@@ -457,12 +458,32 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   }
   // 仕様（コア数・クロック・VRAM など）を照合表と比べる
   issues.push(...checkSpecs(models.specRows || [], options.specReference));
+  // 新品の出品が続けて見つからない製品（中古しか売っていない可能性）。最近の取得日のどれにも価格がない行を知らせる
+  if (!auditOnly) {
+    try {
+      const historyFile = options.historyOutput || (options.output ? output.replace(/[^/\\]+$/, 'price-history.json') : HISTORY_OUTPUT);
+      const history = JSON.parse(fs.readFileSync(historyFile, 'utf8'));
+      const days = [...new Set(Object.values(history.series || {}).flat().map(point => point[0]))].sort();
+      const recent = new Set(days.slice(-STOCK_WARN_DAYS));
+      if (days.length >= STOCK_WARN_DAYS) {
+        const seenRows = new Set();
+        for (const row of rows) {
+          const key = `${row.category}|${row.modelName}`;
+          if (row.discontinued || seenRows.has(key)) continue;
+          seenRows.add(key);
+          if (!(history.series[key] || []).some(point => recent.has(point[0]))) {
+            issues.push({category: row.category, modelName: row.sheetName, type: 'stock', issue: `直近${STOCK_WARN_DAYS}回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください`});
+          }
+        }
+      }
+    } catch { /* 推移がまだないときは知らせない */ }
+  }
   const auditFile = options.auditOutput || (options.output ? output.replace(/[^/\\]+$/, 'sheet-audit.json') : AUDIT_OUTPUT);
   // 内容が変わったときだけ書き換える（毎日の無意味な更新を避ける）
   let unchanged = false;
   try { unchanged = JSON.stringify(JSON.parse(fs.readFileSync(auditFile, 'utf8')).issues) === JSON.stringify(issues); } catch { /* 初回 */ }
   if (!unchanged) fs.writeFileSync(auditFile, JSON.stringify({checkedAt: fetchedAt, issues}, null, 1) + '\n');
-  log(`スプレッドシートの要確認: モデル名 ${issues.filter(i => i.type === 'name').length} 件 / 重複 ${issues.filter(i => i.type === 'duplicate').length} 件 / 価格 ${issues.filter(i => i.type === 'price').length} 件 / 仕様 ${issues.filter(i => i.type === 'spec').length} 件`);
+  log(`スプレッドシートの要確認: モデル名 ${issues.filter(i => i.type === 'name').length} 件 / 重複 ${issues.filter(i => i.type === 'duplicate').length} 件 / 価格 ${issues.filter(i => i.type === 'price').length} 件 / 仕様 ${issues.filter(i => i.type === 'spec').length} 件 / 新品なし ${issues.filter(i => i.type === 'stock').length} 件`);
   return 0;
 }
 
