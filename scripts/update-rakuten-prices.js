@@ -217,24 +217,31 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     const ref = lastPrice || (Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0);
     const range = ref ? {from: Math.max(PRICE_FLOOR[model.category] || 0, Math.round(ref * 0.7)), to: Math.round(ref * 1.8)} : null;
     let yItems = await yahooItems(spec.keyword, range);
-    let yPicked = yItems && pickItem(spec, notExcluded(yItems), ref || null, model.category);
+    let yPicked = yItems && pickItem(spec, notExcluded(yItems), ref || null, model.category, ref ? {} : {minShops: 2});
     // 範囲内に見つからないときは、範囲を外して安い順にもう一度探す（相場の中央値から外れた出品は使わない）
     if (yItems && !(yPicked && yPicked.item) && range) {
       const wide = await yahooItems(spec.keyword, {from: PRICE_FLOOR[model.category] || 1, to: 0});
-      const widePicked = wide && pickItem(spec, notExcluded(wide), null, model.category);
-      if (widePicked && widePicked.item) { yItems = wide; yPicked = widePicked; }
+      const widePicked = wide && pickItem(spec, notExcluded(wide), null, model.category, {minShops: 2});
+      // 範囲を外した検索で見つかった候補があるときは、その結果（と見送った理由）を使う
+      if (widePicked && (widePicked.item || widePicked.reason !== '一致する新品単品の出品なし')) { yItems = wide; yPicked = widePicked; }
     }
     const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
     if (yUrl) offers.push({
       store: 'Yahoo!ショッピング', price: yPicked.item.itemPrice, points: yPicked.item.points || 0, url: yUrl,
       itemCode: yPicked.item.itemCode, itemName: yPicked.item.itemName, shopName: yPicked.item.shopName || '',
     });
+    // シート（または内蔵）の参考価格の2倍を超える価格は、在庫処分・転売の高値として採用しない。
+    // 相場が本当に上がった製品は、シートの「価格(円)」を今の値段に直せば採用される
+    const staticRef = Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0;
+    let tooHigh = false;
+    if (staticRef) for (let k = offers.length - 1; k >= 0; k--) if (offers[k].price > staticRef * 2) { offers.splice(k, 1); tooHigh = true; }
     if (!offers.length) {
+      if (tooHigh) { unmatched.push({category: model.category, modelName: model.modelName, reason: '参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）'}); continue; }
       // ストア側の失敗で取れなかったときは、前回の価格を数日間は引き継ぐ
       const kept = previous.get(`${model.category}\0${model.modelName}`);
       const storeFailed = rakutenError || (rakuten.configured && !rakuten.on) || (yahoo.appid && !yItems);
       if (storeFailed && kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) products.push(kept);
-      else unmatched.push({category: model.category, modelName: model.modelName, reason: rakutenError || (yItems || rakuten.on ? picked.reason : null) || '一致する新品単品の出品なし'});
+      else unmatched.push({category: model.category, modelName: model.modelName, reason: rakutenError || (yPicked && yPicked.reason) || (rakuten.on ? picked.reason : null) || '一致する新品単品の出品なし'});
       continue;
     }
     // 表示価格は一番安いストア。他ストアの価格も offers に残す

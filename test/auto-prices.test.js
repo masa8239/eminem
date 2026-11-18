@@ -637,14 +637,39 @@ test('a stale reference price no longer hides listings: the last fetched price i
   const hit = (name, price, code) => ({code, name, price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/' + code + '.html', seller: {name: 's' + code}});
   const listings = [hit('MSI GeForce RTX 4070 VENTUS 2X 12G グラフィックボード', 128000, 'a'), hit('ASUS DUAL RTX 4070 12GB グラフィックボード', 131000, 'b'),
     hit('ZOTAC RTX 4070 Twin Edge 12GB', 129800, 'c'), hit('GIGABYTE RTX 4070 WINDFORCE 12G', 133000, 'd'), hit('Palit RTX 4070 Dual 12GB', 127500, 'e')];
-  // 内蔵の参考価格 60,000 円の範囲（42,000〜108,000円）には出品がない
+  // 内蔵の参考価格 70,000 円の範囲（49,000〜126,000円）には出品がない
   const fetchImpl = async url => {
     const from = Number(url.searchParams.get('price_from') || 0), to = Number(url.searchParams.get('price_to') || 1e9);
     return {ok: true, json: async () => ({hits: listings.filter(h => h.price >= from && h.price <= to)})};
   };
-  const models = [{category: 'gpu', modelName: 'GeForce RTX 4070', referencePrice: 60000}];
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 4070', referencePrice: 70000}];
   const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
   assert.equal(code, 0);
   const data = JSON.parse(fs.readFileSync(output, 'utf8'));
   assert.deepEqual(data.products.map(p => [p.modelName, p.price]), [['GeForce RTX 4070', 127500]]);
+});
+
+test('inflated leftovers are not shown: over 2x the reference, or only one shop at that price', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cap-'));
+  const output = path.join(dir, 'prices.json');
+  const hit = (name, price, code, shop) => ({code, name, price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/' + code + '.html', seller: {name: shop}});
+  const byQuery = {
+    'RTX 3090': ['A', 'B', 'C', 'D', 'E'].map((shop, i) => hit('MSI GeForce RTX 3090 SUPRIM X 24G', 556980 + i * 1000, 'a' + i, shop)),
+    'RTX 3070': [0, 1, 2, 3, 4].map(i => hit('MSI RTX 3070 VENTUS 2X 8G', 98780 + i * 500, 'd' + i, 'A')),
+    'RX 9070 GRE': [hit('【アウトレット特価・新品】SAPPHIRE PULSE Radeon RX 9070 GRE 12GB', 89800, 'g', 'A')],
+  };
+  const fetchImpl = async url => {
+    const from = Number(url.searchParams.get('price_from') || 0), to = Number(url.searchParams.get('price_to') || 1e9);
+    return {ok: true, json: async () => ({hits: (byQuery[url.searchParams.get('query')] || []).filter(h => h.price >= from && h.price <= to)})};
+  };
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 3090', referencePrice: 80000}, {category: 'gpu', modelName: 'GeForce RTX 3070', referencePrice: 50000},
+    {category: 'gpu', modelName: 'Radeon RX 9070 GRE', referencePrice: 90000}];
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  const data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.deepEqual(data.products, []);
+  assert.deepEqual(data.unmatched.map(u => [u.modelName, u.reason]), [
+    ['GeForce RTX 3090', '参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）'],
+    ['GeForce RTX 3070', '同じ価格帯で売っている店が少ない（在庫処分・転売の可能性）'],
+    ['Radeon RX 9070 GRE', '一致する新品単品の出品なし'],
+  ]);
 });

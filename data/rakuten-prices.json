@@ -426,69 +426,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 7 5800X3D",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 65300,
-   "points": 593,
-   "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic643351.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:dospara-y_ic643351",
-   "itemName": "AMD Ryzen 7 5800X3D 10th Anniversary Edition",
-   "shopName": "ドスパラYahoo!店",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 65300,
-     "points": 593,
-     "url": "https://store.shopping.yahoo.co.jp/dospara-y/ic643351.html"
-    }
-   ]
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 5800X",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 77254,
-   "points": 702,
-   "url": "https://store.shopping.yahoo.co.jp/steady-store/pccm-7.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:steady-store_pccm-7",
-   "itemName": "AMD Ryzen 7 5800X CPU 3.8GHz 8コア 65W",
-   "shopName": "HOTgadget",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 77254,
-     "points": 702,
-     "url": "https://store.shopping.yahoo.co.jp/steady-store/pccm-7.html"
-    }
-   ]
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 5700X",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 29500,
-   "points": 268,
-   "url": "https://store.shopping.yahoo.co.jp/nbfixer/cpu8327n.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:nbfixer_cpu8327n",
-   "itemName": "AMD エーエムディー Ryzen 7 5700X AM4 8コア 16スレッド 1年保証 新品 CPU",
-   "shopName": "NB FIXER@ゲーミングPC Yahoo!店",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 29500,
-     "points": 268,
-     "url": "https://store.shopping.yahoo.co.jp/nbfixer/cpu8327n.html"
-    }
-   ]
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 5 5600",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -867,27 +804,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 5090",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 1188000,
-   "points": 10800,
-   "url": "https://store.shopping.yahoo.co.jp/suncityjp/palit-rtx5090-gamerock.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:suncityjp_palit-rtx5090-gamerock",
-   "itemName": "【新品】【即納】【代引き不可】Palit-RTX5090-GAMEROCK NVIDIA GeForce RTX 5090 グラフィックボード 32GB PCパーツ",
-   "shopName": "パソコン専門店ECJP ヤフー店",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 1188000,
-     "points": 10800,
-     "url": "https://store.shopping.yahoo.co.jp/suncityjp/palit-rtx5090-gamerock.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce RTX 5080",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -993,90 +909,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 4090",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 1023980,
-   "points": 9308,
-   "url": "https://store.shopping.yahoo.co.jp/americanstreet/ayhbx2rkj2.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:americanstreet_ayhbx2rkj2",
-   "itemName": "PNY ピーエヌワイ GeForce RTX4090 24GB VERTO LED 3FAN グラフィックスボード",
-   "shopName": "アメリカンストリート",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 1023980,
-     "points": 9308,
-     "url": "https://store.shopping.yahoo.co.jp/americanstreet/ayhbx2rkj2.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4080",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 607900,
-   "points": 5526,
-   "url": "https://store.shopping.yahoo.co.jp/techno-launcher/new-b0bl61tng1.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:techno-launcher_new-b0bl61tng1",
-   "itemName": "MSI Gaming GeForce RTX 4080 16GB GDRR6X 256ビット HDMI/DP Nvlink Tri-Frozr 3 Ada Lovelaceアーキテクチャグラフィックスカード(RTX 4080 16GB Ventus 3X)。",
-   "shopName": "テクノランチャー",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 607900,
-     "points": 5526,
-     "url": "https://store.shopping.yahoo.co.jp/techno-launcher/new-b0bl61tng1.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4070 Ti SUPER",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 278900,
-   "points": 2535,
-   "url": "https://store.shopping.yahoo.co.jp/techno-launcher/new-b0cqtpbf6s.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:techno-launcher_new-b0cqtpbf6s",
-   "itemName": "Gigabyte GeForce RTX 4070 Ti SUPER GAMING OCグラフィックスカード - 2655MHzコア、16GB GDDR6X 21000MHz 256ビットメモリ、PCI-E 4.0、3x DP 1.4、HDMI 2.1a",
-   "shopName": "テクノランチャー",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 278900,
-     "points": 2535,
-     "url": "https://store.shopping.yahoo.co.jp/techno-launcher/new-b0cqtpbf6s.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4070 SUPER",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 289980,
-   "points": 2636,
-   "url": "https://store.shopping.yahoo.co.jp/americantreasure/ays7d4rkbn.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:americantreasure_ays7d4rkbn",
-   "itemName": "MSI Gaming RTX 4070 Super 12G X Slim Graphics Card グラフィックボード 映像カード",
-   "shopName": "アメリカントレジャー",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 289980,
-     "points": 2636,
-     "url": "https://store.shopping.yahoo.co.jp/americantreasure/ays7d4rkbn.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce RTX 4060 Ti",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -1119,153 +951,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3090",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 556980,
-   "points": 5063,
-   "url": "https://store.shopping.yahoo.co.jp/americanstreet/aynnp3rkhv.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:americanstreet_aynnp3rkhv",
-   "itemName": "MSI GeForce RTX 3090 SUPRIM X 24G グラフィックスボード VD7346",
-   "shopName": "アメリカンストリート",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 556980,
-     "points": 5063,
-     "url": "https://store.shopping.yahoo.co.jp/americanstreet/aynnp3rkhv.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3080 Ti",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 210000,
-   "points": 1909,
-   "url": "https://store.shopping.yahoo.co.jp/pcpartsshop/vd7695.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:pcpartsshop_vd7695",
-   "itemName": "ZOTAC GAMING GEFORCE RTX 3080 Ti Trinity OC 正規代理店保証付 (vd7695)",
-   "shopName": "PCパーツ屋さん",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 210000,
-     "points": 1909,
-     "url": "https://store.shopping.yahoo.co.jp/pcpartsshop/vd7695.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3080",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 197200,
-   "points": 1792,
-   "url": "https://store.shopping.yahoo.co.jp/upvillage0410/20240209181813-03179.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:upvillage0410_20240209181813-03179",
-   "itemName": "GAINWARD GeForce RTX 3080 PHANTOM 10G V1 LHR グラフィックスボード NED3080U19IA-1",
-   "shopName": "upvillage",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 197200,
-     "points": 1792,
-     "url": "https://store.shopping.yahoo.co.jp/upvillage0410/20240209181813-03179.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3070 Ti",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 143000,
-   "points": 1300,
-   "url": "https://store.shopping.yahoo.co.jp/pcpartsshop/vd7701.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:pcpartsshop_vd7701",
-   "itemName": "MSI GeForce RTX 3070 Ti VENTUS 3X 8G OC 正規代理店保証付 (vd7701)",
-   "shopName": "PCパーツ屋さん",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 143000,
-     "points": 1300,
-     "url": "https://store.shopping.yahoo.co.jp/pcpartsshop/vd7701.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3070",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 98780,
-   "points": 898,
-   "url": "https://store.shopping.yahoo.co.jp/good-item-005/s-b09ms27fnc-20260909.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:good-item-005_s-b09ms27fnc-20260909",
-   "itemName": "GAINWARD GeForce RTX3070 Phantom+ グラフィックスボード NE63070019P2-1040M-G VD7914 ブラ",
-   "shopName": "Good-Item 5号店",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 98780,
-     "points": 898,
-     "url": "https://store.shopping.yahoo.co.jp/good-item-005/s-b09ms27fnc-20260909.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3060 Ti",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 131500,
-   "points": 1195,
-   "url": "https://store.shopping.yahoo.co.jp/techno-launcher/new-b08p3v572b.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:techno-launcher_new-b08p3v572b",
-   "itemName": "ZOTAC Gaming GeForce RTX 3060 Ti Twin Edge OC 8GB GDDR6 256-bit 14 Gbps PCIE 4.0 ゲーミンググラフィックスカード IceStorm 2.0 高度な冷却 アクティブファ",
-   "shopName": "テクノランチャー",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 131500,
-     "points": 1195,
-     "url": "https://store.shopping.yahoo.co.jp/techno-launcher/new-b08p3v572b.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3060",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 73474,
-   "points": 667,
-   "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4988755078283.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:tsukumo-y_4988755078283",
-   "itemName": "RTX 3060 Battle AX DUO 12GB-V",
-   "shopName": "ツクモ パソコン Yahoo!店",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 73474,
-     "points": 667,
-     "url": "https://store.shopping.yahoo.co.jp/tsukumo-y/4988755078283.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 9070 XT",
    "status": "ok",
    "source": "Yahoo!ショッピング",
@@ -1303,48 +988,6 @@
      "price": 136600,
      "points": 3725,
      "url": "https://store.shopping.yahoo.co.jp/excellar-plus/1000033930.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6800 XT",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 121830,
-   "points": 1107,
-   "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000747068.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:d-rise2_p000000747068",
-   "itemName": "★MSI Radeon RX 6800 XT GAMING X TRIO 16G [PCIExp 16GB]【グラフィックボード・ビデオカード】【送料無料】",
-   "shopName": "ディーライズ2号",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 121830,
-     "points": 1107,
-     "url": "https://store.shopping.yahoo.co.jp/d-rise2/p000000747068.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6600 XT",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 73590,
-   "points": 669,
-   "url": "https://store.shopping.yahoo.co.jp/jiatentusa/20230703114540-00340.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:jiatentusa_20230703114540-00340",
-   "itemName": "MSI Radeon RX 6600 XT MECH 2X 8G OC グラフィックスボード VD7841 ブラック",
-   "shopName": "ワイズスリーワン31",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 73590,
-     "points": 669,
-     "url": "https://store.shopping.yahoo.co.jp/jiatentusa/20230703114540-00340.html"
     }
    ]
   },
@@ -1996,27 +1639,6 @@
      "price": 70270,
      "points": 638,
      "url": "https://store.shopping.yahoo.co.jp/maxzen/4988755076920.html"
-    }
-   ]
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 9070 GRE",
-   "status": "ok",
-   "source": "Yahoo!ショッピング",
-   "price": 89800,
-   "points": 816,
-   "url": "https://store.shopping.yahoo.co.jp/itempost/1-pc4u-98486.html",
-   "fetchedAt": "2026-11-18T01:17:55.920Z",
-   "itemCode": "yahoo:itempost_1-pc4u-98486",
-   "itemName": "【アウトレット特価・新品】SAPPHIRE PULSE Radeon RX 9070 GRE GAMING OC 12GB GDDR6 グラフィックボード｜11354-01-20G",
-   "shopName": "shopooo by GMO",
-   "offers": [
-    {
-     "store": "Yahoo!ショッピング",
-     "price": 89800,
-     "points": 816,
-     "url": "https://store.shopping.yahoo.co.jp/itempost/1-pc4u-98486.html"
     }
    ]
   },
@@ -7852,6 +7474,96 @@
    "category": "ssdp",
    "modelName": "Crucial T500 1TB",
    "reason": "製品名と仕様が一致する新品の出品なし"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5800X3D",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5800X",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 7 5700X",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 5090",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4090",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4080",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 Ti SUPER",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4070 SUPER",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3090",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080 Ti",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3080",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070 Ti",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 Ti",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6800 XT",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6600 XT",
+   "reason": "参考価格の2倍を超える出品しかない（在庫処分・転売の可能性）"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 9070 GRE",
+   "reason": "一致する新品単品の出品なし"
   }
  ]
 }
