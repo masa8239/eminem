@@ -2320,23 +2320,34 @@ function calcBottleneck() {
   const cpuBarW = Math.round(cpuNorm / (cpuNorm+gpuNorm) * 100);
   const gpuBarW = 100 - cpuBarW;
 
-  let icon, title, titleColor, desc, advice;
-  if (ratio < 0.6) {
-    icon='注意'; title='CPUボトルネック'; titleColor='var(--accent)';
-    desc=`CPUがGPUのパフォーマンスを約${Math.round(bottleneckPct)}%引き下げている可能性があります。特にAAAゲームやマルチシーンで影響が出やすいです。`;
-    advice='CPUのアップグレードを検討するか、ゲームのフレームレートキャップを使うことで改善できます。';
-  } else if (ratio > 1.6) {
-    icon='注意'; title='GPUボトルネック'; titleColor='var(--accent)';
-    desc=`GPUがCPUのパフォーマンスを約${Math.round(bottleneckPct)}%引き下げている可能性があります。高解像度・高品質設定で顕著になります。`;
-    advice='GPUのアップグレード、またはゲーム設定を下げることで改善できます。';
-  } else if (bottleneckPct < 15) {
-    icon='良好'; title='完璧なバランス！'; titleColor='var(--accent3)';
-    desc=`CPU・GPUのバランスが非常に良好です。どちらかが足を引っ張ることなく、最大のパフォーマンスを発揮できます。`;
-    advice='このまま使用するのがベストです。将来的には同時アップグレードを検討してください。';
+  // 判定は「性能の差」（bottleneckPct）と、どちらが弱いかで決める（表示する数字と言葉を食い違わせない）。
+  // ゲームではGPU側が上限になるのが普通なので、GPUが弱い側のときは差が大きくなるまで注意を出さない。
+  //   CPUが弱い: 15%未満 良好 / 15〜30% やや弱め / 30%以上 CPUボトルネック
+  //   GPUが弱い: 40%未満 良好 / 40〜60% CPUに余裕 / 60%以上 CPUが過剰
+  const pct = Math.round(bottleneckPct);
+  let icon, title, titleColor, desc, advice, balance;
+  if (ratio < 1 && bottleneckPct >= 30) {
+    icon='注意'; title='CPUボトルネック'; titleColor='var(--accent)'; balance= bottleneckPct >= 50 ? '✕ 悪' : '△ 差が大きい';
+    desc=`CPUとGPUの性能の差は約${pct}%で、CPUが弱めです。GPUの性能を出し切れず、フレームレートが伸びにくい可能性があります。`;
+    advice='CPUのアップグレードを検討してください。予算が同じなら、GPUを一段下げてCPUに回すとバランスが良くなります。';
+  } else if (ratio < 1 && bottleneckPct >= 15) {
+    icon='やや差あり'; title='CPUがやや弱め'; titleColor='var(--accent2)'; balance='○ 普通';
+    desc=`CPUとGPUの性能の差は約${pct}%で、CPUが少し弱めです。多くのゲームでは大きな問題にはなりませんが、高いフレームレートを狙う場面では差が出ることがあります。`;
+    advice='フレームレートを重視するなら、CPUを一段上にすると伸びしろがあります。';
+  } else if (ratio >= 1 && bottleneckPct >= 60) {
+    icon='注意'; title='CPUが過剰'; titleColor='var(--accent)'; balance='△ 差が大きい';
+    desc=`CPUとGPUの性能の差は約${pct}%で、GPUに比べてCPUがかなり高性能です。ゲームではGPUが上限になり、CPUの性能の多くが使われません。`;
+    advice='ゲームが目的なら、CPUを一段下げてGPUに予算を回すと、同じ金額でより快適になります。';
+  } else if (ratio >= 1 && bottleneckPct >= 40) {
+    icon='良好'; title='CPUに余裕あり'; titleColor='var(--accent2)'; balance='○ 普通';
+    desc=`CPUとGPUの性能の差は約${pct}%で、CPUに余裕がある組み合わせです。ゲームではGPUが上限になりますが、これは普通のことです。`;
+    advice='GPUを一段上にすると、CPUの性能をより活かせます。配信や動画編集もするなら、このままで問題ありません。';
   } else {
-    icon='良好'; title='ほぼバランス良好'; titleColor='var(--accent2)';
-    desc=`若干の差はありますが、実際のゲームではほとんど影響ありません。${ratio<1?'CPU':'GPU'}が少し余裕があります。`;
-    advice='現状で問題なく使用できます。';
+    icon='良好'; title='バランス良好'; titleColor='var(--accent3)'; balance='◎ 良';
+    desc= ratio >= 1 && bottleneckPct >= 15
+      ? `CPUとGPUの性能の差は約${pct}%で、CPUが少し上です。ゲームではGPUが上限になるのが普通なので、良いバランスです。`
+      : `CPUとGPUの性能の差は約${pct}%で、どちらかが大きく足を引っ張ることのない組み合わせです。`;
+    advice='このままの組み合わせで問題ありません。';
   }
 
   // CPUとGPUの情報
@@ -2347,7 +2358,7 @@ function calcBottleneck() {
     <div class="bn-verdict">
       <div class="bn-verdict-icon">${icon}</div>
       <div class="bn-verdict-title" style="color:${titleColor}">${title}</div>
-      <div class="bn-verdict-desc">${desc}<br><br><small style="color:var(--text3)">${advice}</small></div>
+      <div class="bn-verdict-desc">${desc}<br><br><small style="color:var(--text3)">${advice}</small><br><small style="color:var(--text3)">※ PassMark と 3DMark Time Spy のスコアから計算した目安です。ゲームの種類・解像度・設定で実際の結果は変わります。</small></div>
     </div>
     <div class="bn-meter">
       <div class="bn-meter-label"><span style="color:var(--accent2)">CPU: ${esc(cpu.name)}</span><span style="color:var(--accent)">GPU: ${esc(gpu.name)}</span></div>
@@ -2359,11 +2370,11 @@ function calcBottleneck() {
     </div>
     <div class="bn-stats-grid">
       <div class="bn-stat"><div class="bn-stat-val" style="color:var(--accent2)">${cpu.score.toLocaleString()}</div><div class="bn-stat-label">CPU PassMark</div></div>
-      <div class="bn-stat"><div class="bn-stat-val" style="color:${titleColor}">${bottleneckPct.toFixed(0)}%</div><div class="bn-stat-label">ボトルネック推定</div></div>
+      <div class="bn-stat"><div class="bn-stat-val" style="color:${titleColor}">${bottleneckPct.toFixed(0)}%</div><div class="bn-stat-label">性能の差（目安）</div></div>
       <div class="bn-stat"><div class="bn-stat-val" style="color:var(--accent)">${gpu.score.toLocaleString()}</div><div class="bn-stat-label">GPU Time Spy</div></div>
       <div class="bn-stat"><div class="bn-stat-val" style="color:var(--gold)">${fmtPrice(validPrice(cpu.price)&&validPrice(gpu.price)?cpu.price+gpu.price:null)}</div><div class="bn-stat-label">CPU+GPU合計</div></div>
       <div class="bn-stat"><div class="bn-stat-val">${Math.ceil(((cpu.tdp||0)+(gpu.tdp||0)+150)/50)*50}W</div><div class="bn-stat-label">推奨電源容量（目安）</div></div>
-      <div class="bn-stat"><div class="bn-stat-val" style="color:var(--accent3)">${ratio>=0.6&&ratio<=1.6?'◎ 良':ratio<0.4||ratio>2.5?'✕ 悪':'△ 普通'}</div><div class="bn-stat-label">バランス評価</div></div>
+      <div class="bn-stat"><div class="bn-stat-val" style="color:var(--accent3)">${balance}</div><div class="bn-stat-label">バランス評価</div></div>
     </div>`;
 }
 
