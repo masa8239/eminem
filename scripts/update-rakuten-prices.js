@@ -8,7 +8,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {searchItems, responseItems, SITE_ORIGIN, PriceError} = require('../api/rakuten-prices')._test;
-const {modelSpec, pickItem, discoverNewModels, PRICE_FLOOR} = require('./lib/match');
+const {modelSpec, pickItem, discoverNewModels, PRICE_FLOOR, median} = require('./lib/match');
 const {searchYahoo, rakutenPoints} = require('./lib/stores');
 const {nameIssue} = require('./lib/audit');
 const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
@@ -131,6 +131,14 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const notExcluded = items => (items || []).filter(item => !corrections.exclude.has(item.itemCode));
   const byCategory = category => models.filter(model => model.category === category).map(model => model.modelName);
   const previous = new Map(readPrevious(output).map(product => [`${product.category}\0${product.modelName}`, product]));
+  // 自動の参考価格: 直近14日の価格の推移（毎日採用した価格）の中央値。3日分以上あるときだけ使う
+  let priceHistory = {series: {}};
+  try { priceHistory = JSON.parse(fs.readFileSync(options.historyOutput || (options.output ? output.replace(/[^/\\]+$/, 'price-history.json') : HISTORY_OUTPUT), 'utf8')); } catch { /* 初回 */ }
+  const autoReference = (category, modelName) => {
+    const since = new Date(now.getTime() - 14 * 86400000).toISOString().slice(0, 10);
+    const prices = ((priceHistory.series || {})[`${category}|${modelName}`] || []).filter(p => p[0] >= since && Number.isSafeInteger(p[1])).map(p => p[1]);
+    return prices.length >= 3 ? Math.round(median(prices)) : 0;
+  };
   const fetchedAt = now.toISOString();
   const origins = [credentials.origin, ...FALLBACK_ORIGINS.filter(origin => origin !== credentials.origin)];
 
@@ -236,11 +244,13 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     // シート（または内蔵）の参考価格の2倍を超える価格は、在庫処分・転売の高値として採用しない。
     // 相場が本当に上がった製品は、シートの「価格(円)」を今の値段に直せば採用される
     // 上限の基準は、運営者がシートに入れた価格だけ（内蔵の参考価格は古く、正しい価格まで弾いてしまうため）
-    const staticRef = model.sheetPriceValid && Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0;
+    // シートの価格がない製品は、直近の価格の中央値（自動の参考価格）を使う
+    const staticRef = (model.sheetPriceValid && Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0)
+      || autoReference(model.category, model.modelName);
     let tooHigh = false;
     if (staticRef) for (let k = offers.length - 1; k >= 0; k--) if (offers[k].price > staticRef * 2) { offers.splice(k, 1); tooHigh = true; }
     if (!offers.length) {
-      if (tooHigh) { unmatched.push({category: model.category, modelName: model.modelName, reason: 'シートの価格の2倍を超える出品しかない（在庫処分・転売の可能性）'}); continue; }
+      if (tooHigh) { unmatched.push({category: model.category, modelName: model.modelName, reason: '参考価格（シートの価格か直近の中央値）の2倍を超える出品しかない（在庫処分・転売の可能性）'}); continue; }
       // ストア側の失敗で取れなかったときは、前回の価格を数日間は引き継ぐ
       const kept = previous.get(`${model.category}\0${model.modelName}`);
       const storeFailed = rakutenError || (rakuten.configured && !rakuten.on) || (yahoo.appid && !yItems);

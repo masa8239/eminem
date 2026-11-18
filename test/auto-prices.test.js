@@ -668,7 +668,7 @@ test('inflated leftovers are not shown: over 2x the reference, or only one shop 
   const data = JSON.parse(fs.readFileSync(output, 'utf8'));
   assert.deepEqual(data.products, []);
   assert.deepEqual(data.unmatched.map(u => [u.modelName, u.reason]), [
-    ['GeForce RTX 3090', 'シートの価格の2倍を超える出品しかない（在庫処分・転売の可能性）'],
+    ['GeForce RTX 3090', '参考価格（シートの価格か直近の中央値）の2倍を超える出品しかない（在庫処分・転売の可能性）'],
     ['GeForce RTX 3070', '同じ価格帯で売っている店が少ない（在庫処分・転売の可能性）'],
     ['Radeon RX 9070 GRE', '一致する新品単品の出品なし'],
     ['GeForce GTX 1080', '販売終了（シートで指定）'],
@@ -715,4 +715,18 @@ test('a sheet row with no price in the last 5 fetch days is reported, a disconti
     corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, now: new Date('2026-11-17T20:00:00Z')});
   const audit = JSON.parse(fs.readFileSync(path.join(dir, 'sheet-audit.json'), 'utf8'));
   assert.deepEqual(audit.issues.filter(i => i.type === 'stock').map(i => i.modelName), ['GeForce GTX 1080']);
+});
+
+test('without a sheet price, the median of recent fetched prices caps leftover-stock prices', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-'));
+  const output = path.join(dir, 'prices.json');
+  fs.writeFileSync(path.join(dir, 'price-history.json'), JSON.stringify({series: {'gpu|GeForce RTX 4070 SUPER': [['2026-11-15', 98000], ['2026-11-16', 99800], ['2026-11-17', 101000]]}}));
+  const hit = (price, shop) => ({code: shop + price, name: 'MSI RTX 4070 SUPER 12G VENTUS', price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/' + shop + '/1.html', seller: {name: shop}});
+  const fetchImpl = async url => ({ok: true, json: async () => ({hits: ['a', 'b', 'c', 'd', 'e'].map((s, i) => hit(289980 + i * 1000, s))
+    .filter(h => h.price >= Number(url.searchParams.get('price_from') || 0) && h.price <= Number(url.searchParams.get('price_to') || 1e9))})});
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX,
+    models: [{category: 'gpu', modelName: 'GeForce RTX 4070 SUPER', referencePrice: null}], output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, now: new Date('2026-11-18T00:00:00Z')});
+  const data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.deepEqual(data.products, []);
+  assert.match(data.unmatched[0].reason, /直近の中央値/);
 });
