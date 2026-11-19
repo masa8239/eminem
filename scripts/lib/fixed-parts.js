@@ -31,6 +31,22 @@ const FIXED_PARTS = [
   {category: 'case', id: 'bk4', name: 'Cooler Master HAF 500', query: 'Cooler Master HAF 500', must: [/COOLER\s*MASTER|クーラーマスター/i, /HAF\s*500(?![0-9])/i], not: /HAF\s*500\s*\d/i, floor: 10000},
 ];
 
+// 入れ替え候補（サイトには出さない）。毎日の取得で2店以上で売られているかを確かめてから FIXED_PARTS に移す
+const ARCTIC = /ARCTIC|アークティック/i;
+const CANDIDATE_PARTS = [
+  {category: 'cooler', id: 'cand-dr5', name: 'be quiet! Dark Rock 5', query: 'be quiet! Dark Rock 5', must: [BEQUIET, /DARK\s*ROCK\s*5(?![0-9])/i], not: /PRO|ELITE|SLIM|TF/i, floor: 6000, maxTdp: null},
+  {category: 'cooler', id: 'cand-ps120se', name: 'Thermalright Phantom Spirit 120 SE', query: 'Thermalright Phantom Spirit 120 SE', must: [THERMALRIGHT, /PHANTOM\s*SPIRIT\s*120\s*SE/i], not: /EVO|DIGITAL|デジタル/i, floor: 3000, maxTdp: null},
+  {category: 'cooler', id: 'cand-lf3p240', name: 'ARCTIC Liquid Freezer III Pro 240', query: 'ARCTIC Liquid Freezer III Pro 240', must: [ARCTIC, /LIQUID\s*FREEZER\s*(III|3)\s*PRO\s*240/i], not: /280|360|420/, floor: 6000, maxTdp: null},
+  {category: 'cooler', id: 'cand-lf3p360', name: 'ARCTIC Liquid Freezer III Pro 360', query: 'ARCTIC Liquid Freezer III Pro 360', must: [ARCTIC, /LIQUID\s*FREEZER\s*(III|3)\s*PRO\s*360/i], not: /240|280|420/, floor: 8000, maxTdp: null},
+  {category: 'cooler', id: 'cand-kraken240', name: 'NZXT Kraken 240', query: 'NZXT Kraken 240', must: [/NZXT/i, /KRAKEN\s*240(?![0-9])/i], not: /ELITE|PLUS|RGB|(?<![A-Z])[XZ]\d/i, floor: 10000, maxTdp: null},
+  {category: 'cooler', id: 'cand-kraken360', name: 'NZXT Kraken 360', query: 'NZXT Kraken 360', must: [/NZXT/i, /KRAKEN\s*360(?![0-9])/i], not: /ELITE|PLUS|RGB|(?<![A-Z])[XZ]\d/i, floor: 12000, maxTdp: null},
+  {category: 'cooler', id: 'cand-aqua240', name: 'Thermalright Aqua Elite 240', query: 'Thermalright Aqua Elite 240', must: [THERMALRIGHT, /AQUA\s*ELITE\s*240/i], not: /360|280/, floor: 4000, maxTdp: null},
+  {category: 'cooler', id: 'cand-titan360', name: 'CORSAIR iCUE LINK TITAN 360 RX', query: 'CORSAIR TITAN 360 RX', must: [/CORSAIR|コルセア/i, /TITAN\s*360\s*RX/i], not: /LCD/i, floor: 15000, maxTdp: null},
+  {category: 'case', id: 'cand-h5flow', name: 'NZXT H5 Flow', query: 'NZXT H5 Flow', must: [/NZXT/i, /H5\s*FLOW/i], not: /RGB|ELITE/i, floor: 8000},
+  {category: 'case', id: 'cand-north', name: 'Fractal Design North', query: 'Fractal Design North', must: [/FRACTAL|フラクタル/i, /NORTH|ノース/i], not: /(?<![A-Z])XL(?![A-Z])/i, floor: 15000},
+  {category: 'case', id: 'cand-lancool216', name: 'LIAN LI LANCOOL 216', query: 'LIAN LI LANCOOL 216', must: [LIANLI, /LANCOOL\s*216/i], not: /RGB/i, floor: 10000},
+];
+
 function listingMatches(part, itemName) {
   const t = normalizeTitle(itemName);
   if (COMMON_EXCLUDE.test(t) || ACCESSORY.test(t)) return false;
@@ -51,4 +67,4 @@ function pickFixedPart(part, items) {
   return best && shops.size >= 2 ? {item: best, shops: shops.size} : null;
 }
 
-module.exports = {FIXED_PARTS, listingMatches, pickFixedPart, ACCESSORY};
+module.exports = {FIXED_PARTS, CANDIDATE_PARTS, listingMatches, pickFixedPart, ACCESSORY};

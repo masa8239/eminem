@@ -17,7 +17,7 @@ const {fetchBlenderScores} = require('./lib/blender');
 const {PSU_SPECS, SSD_SPECS, MB_SPECS, pickByMaker} = require('./lib/parts');
 const {loadCorrections} = require('./lib/corrections');
 const {loadSheetParts, pickForProduct} = require('./lib/sheet-parts');
-const {FIXED_PARTS, pickFixedPart} = require('./lib/fixed-parts');
+const {FIXED_PARTS, CANDIDATE_PARTS, pickFixedPart} = require('./lib/fixed-parts');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -338,7 +338,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
 
   // ビルダーの CPUクーラー・ケース（決まった製品）: 製品名で検索して、2店以上で売られている新品の最安値を取る
   let fixedFound = 0;
-  for (const part of auditOnly || options.skipFixedParts ? [] : (options.fixedParts || FIXED_PARTS)) {
+  for (const part of auditOnly || options.skipFixedParts ? [] : (options.fixedParts || [...FIXED_PARTS, ...CANDIDATE_PARTS])) {
     const found = await yahooItems(part.query, {from: part.floor, to: 0});
     const pick = found && pickFixedPart(part, notExcluded(found));
     const url = pick && safeUrl(pick.item);
