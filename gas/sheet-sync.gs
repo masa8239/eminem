@@ -37,7 +37,7 @@ var BENCHCORE_SCORE_SITE = {cpu: 'PassMark', gpu: '3DMark Time Spy'};
 // 単体のパーツとして売っていない製品。シートから行ごと削除する
 var BENCHCORE_PARTS_SHEET = 'パーツ最安値';
 var BENCHCORE_FIX_SHEET = 'パーツの修正';
-var BENCHCORE_PART_KINDS = {ram: 'メモリ', ssd: 'SSD', psu: '電源', mb: 'マザーボード'};
+var BENCHCORE_PART_KINDS = {ram: 'メモリ', ssd: 'SSD', psu: '電源', mb: 'マザーボード', cooler: 'CPUクーラー', case: 'ケース'};
 var BENCHCORE_PARTS_HEADER = ['種類', '規格', 'メーカー', '最安値(円)', '店', '商品名', '商品ページ', '商品コード', '取得日時', '除外する', '正しいメーカー'];
 var BENCHCORE_FIX_HEADER = ['商品コード', '種類', '商品名', '除外する', '正しいメーカー', '登録日', 'メモ'];
 var BENCHCORE_NOT_STANDALONE = {
