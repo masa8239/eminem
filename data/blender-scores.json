@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-19T05:22:34.312Z",
+ "checkedAt": "2026-11-19T12:17:02.267Z",
  "source": "https://opendata.blender.org/",
  "note": "Blender Open Data（公開データ・利用制限なし）の中央値。測定数3件以上のみ。GPUは一番速い計算方式の値",
  "cpu": {
@@ -336,8 +336,8 @@
     "deviceName": "Intel Core i9-10900K CPU @ 3.70GHz"
    },
    "Core i7-12700F": {
-    "score": 236.15,
-    "samples": 26,
+    "score": 231.84,
+    "samples": 27,
     "deviceName": "Intel Core i7-12700F"
    },
    "Core i9-11900K": {
@@ -855,8 +855,8 @@
     "deviceName": "AMD Radeon RX 7900 GRE"
    },
    "GeForce RTX 5050": {
-    "score": 2863.34,
-    "samples": 59,
+    "score": 2863.06,
+    "samples": 60,
     "computeType": "OPTIX",
     "deviceName": "NVIDIA GeForce RTX 5050"
    },
@@ -921,8 +921,8 @@
     "deviceName": "Intel Arc A750 Graphics"
    },
    "GeForce RTX 3060": {
-    "score": 2155.05,
-    "samples": 632,
+    "score": 2154.86,
+    "samples": 633,
     "computeType": "OPTIX",
     "deviceName": "NVIDIA GeForce RTX 3060"
    },
