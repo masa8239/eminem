@@ -926,7 +926,7 @@ a.affiliate-btn:hover { background: #154e96; }
   <div class="bmobile-bar"><div><span>総合計</span><strong id="bmobile-total">¥15,000</strong></div><button onclick="document.querySelector('.builder-right').scrollIntoView({behavior:'smooth'})">構成と診断を見る ↓</button></div>
   <div class="builder-layout">
     <div class="builder-left">
-      <div class="builder-hero"><h2>構成ビルダー</h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><p style="font-size:12px;opacity:.8;margin-top:4px">CPU・GPU・メモリの価格はランキングと同じ価格（ストアから取得できたものは最安値）です。CPUクーラー・マザーボード・SSD・電源・ケースの価格は自動取得しておらず、目安の参考価格です。</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
+      <div class="builder-hero"><h2>構成ビルダー</h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><p style="font-size:12px;opacity:.8;margin-top:4px">CPU・GPU・メモリの価格はランキングと同じ価格（ストアから取得できたものは最安値）です。マザーボード・SSD・電源・CPUクーラー・ケースも毎日取得した最安値です。その日に取得できなかったパーツは「参考価格」と表示します。</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">
@@ -1865,6 +1865,13 @@ async function loadRakutenPrices() {
   try { applyPartProducts(newest ? newest.products : [], PRICE_FILE_MAX_AGE_MS); } catch (e) {}
   try { bloadPartsFromData(); } catch (e) {}
   try {
+    fixedPartPrices = {};
+    (newest ? newest.products : []).forEach(p => {
+      if (p && (p.category === 'cooler' || p.category === 'case') && p.status === 'ok' && validPrice(p.price) && p.spec && typeof p.spec.id === 'string'
+        && Date.now() - new Date(p.fetchedAt).getTime() < PRICE_FILE_MAX_AGE_MS) fixedPartPrices[p.spec.id] = p;
+    });
+  } catch (e) {}
+  try {
     sheetPartPrices = {};
     (newest ? newest.products : []).forEach(p => {
       if (p && (p.category === 'mbp' || p.category === 'ssdp') && p.status === 'ok' && validPrice(p.price) && Date.now() - new Date(p.fetchedAt).getTime() < PRICE_FILE_MAX_AGE_MS) sheetPartPrices[p.category + '|' + p.modelName] = p;
@@ -1945,6 +1952,7 @@ let partsData = {ssd: [], psu: [], mb: []};
 const SHOW_SHEET_PICKS = false;
 let sheetParts = {mb: [], ssd: []};
 let sheetPartPrices = {};
+let fixedPartPrices = {}; // CPUクーラー・ケースの毎日の最安値（ビルダーの id → 価格データ）
 async function loadSheetParts() {
   try {
     const data = await (await fetch('data/sheet-parts.json', {signal: AbortSignal.timeout(8000)})).json();
@@ -2402,7 +2410,7 @@ const PRESET_BUILDS = [
     desc:'Cyberpunk 2077・Alan Wake 2 などの最新タイトルを4K Ultra・レイトレ全開でプレイするハイエンドビルド。',
     parts:[
       {cat:'CPU', name:'Ryzen 9 9950X3D',    price:99800},
-      {cat:'Cooler', name:'LIAN LI Galahad II 360 RGB', price:14800},
+      {cat:'Cooler', name:'LIAN LI GALAHAD II TRINITY 360', price:14800},
       {cat:'GPU', name:'RTX 5090',            price:595000},
       {cat:'MB',  name:'ASUS ROG Strix X670E-E', price:59800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
@@ -2418,13 +2426,13 @@ const PRESET_BUILDS = [
     desc:'4K動画編集・OBS配信・After Effects など。コア数とRAMが重要。GPUはNVENC/AMFエンコーダーとして活躍。',
     parts:[
       {cat:'CPU', name:'Core i9-14900K',      price:58800},
-      {cat:'Cooler', name:'CORSAIR iCUE H150i Elite XT', price:24800},
+      {cat:'Cooler', name:'CORSAIR iCUE H150i ELITE CAPELLIX XT', price:24800},
       {cat:'GPU', name:'RTX 4070 Ti SUPER',   price:130000},
       {cat:'MB',  name:'ASUS ROG Maximus Z790',price:89800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
       {cat:'SSD', name:'WD Black SN850X 2TB', price:21800},
       {cat:'PSU', name:'Corsair RM1000x',     price:24800},
-      {cat:'Case',name:'Lian Li PC-O11 Dynamic',price:18800},
+      {cat:'Case',name:'LIAN LI O11 Dynamic EVO',price:18800},
     ],
     builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bg5',mb:'spec:Z790 ATX DDR5',ram:'br1',storage:'spec:Gen4 2TB',psu:'spec:1000W Gold',case:'bk2'}
   },
@@ -2536,6 +2544,15 @@ function bsyncPrices() {
   sync(BPARTS.cpu.items, cpuData.concat(cpuExtra), (a, b) => a === b, cpuFromSheet);
   sync(BPARTS.gpu.items, gpuData.concat(gpuExtra), (a, b) => a === b || a === 'GeForce ' + b || a === 'Radeon ' + b, gpuFromSheet);
   sync(BPARTS.ram.items, ramData, (a, b) => a === b);
+  // CPUクーラー・ケース: 毎日の最安値が取れた製品はその価格、取れなかった製品は参考価格（表示で分かるようにする）
+  ['cpucooler', 'case'].forEach(cat => BPARTS[cat].items.forEach(item => {
+    if (item.refPrice === undefined) item.refPrice = item.price;
+    const p = fixedPartPrices[item.id];
+    const url = p ? safeRakutenUrl(p.url) : '';
+    const price = p && url ? p.price : item.refPrice;
+    const ref = !(p && url);
+    if (price !== item.price || url !== (item.url || '') || ref !== Boolean(item.ref)) { item.price = price; item.url = url; item.ref = ref; changed = true; }
+  }));
   if (!changed) return;
   const ids = Object.values(bSelected).map(v => v.id);
   brenderParts();
@@ -2577,7 +2594,7 @@ function bmark(cat, item) {
   document.getElementById('bitem-'+item.id)?.classList.add('bselected');
   document.getElementById('bsec-'+cat)?.classList.add('has-selection');
   const si = document.getElementById('bsel-info-'+cat);
-  if (si) { si.style.display='block'; document.getElementById('bsel-name-'+cat).textContent=item.name; document.getElementById('bsel-price-'+cat).textContent='¥'+item.price.toLocaleString(); }
+  if (si) { si.style.display='block'; document.getElementById('bsel-name-'+cat).textContent=item.name; document.getElementById('bsel-price-'+cat).textContent='¥'+item.price.toLocaleString()+(item.ref?'（参考価格）':''); }
 }
 // パーツID配列から構成を復元（プリセット・シェアURL・自動保存の共通処理）
 function bapplyIds(ids) {
@@ -2667,15 +2684,16 @@ const BPARTS = {
     {id:'bc9',name:'Ryzen 5 7600',     spec:'6C · 5.1GHz · AM5',      price:18800, score:18200,socket:'AM5',    tdp:65},
   ]},
   cpucooler:{ label:'CPUクーラー', icon:'FAN', color:'#1d5fa8', items:[
-    {id:'bco1',name:'Noctua NH-D15 Gen2',          spec:'デュアルタワー空冷',  price:16800, maxTdp:250},
-    {id:'bco2',name:'DeepCool AK620',               spec:'デュアルタワー空冷',  price:5800,  maxTdp:260},
-    {id:'bco3',name:'Thermalright Peerless Assassin 120 SE', spec:'デュアルタワー空冷', price:4500, maxTdp:220},
-    {id:'bco4',name:'be quiet! Dark Rock 4',        spec:'シングルタワー空冷', price:8800,  maxTdp:200},
-    {id:'bco5',name:'DeepCool AK400',               spec:'シングルタワー空冷', price:2800,  maxTdp:180},
-    {id:'bco6',name:'CORSAIR iCUE H150i Elite XT',  spec:'360mm AIO水冷',     price:24800, maxTdp:350},
-    {id:'bco7',name:'LIAN LI Galahad II 360 RGB',   spec:'360mm AIO水冷',     price:14800, maxTdp:350},
-    {id:'bco8',name:'be quiet! Pure Loop 2 FX 240', spec:'240mm AIO水冷',     price:12800, maxTdp:300},
-    {id:'bco9',name:'Thermalright Frozen Prism 240', spec:'240mm AIO水冷',    price:6800,  maxTdp:280},
+    // price は毎日の価格が取れなかったときの参考価格。maxTdp はメーカーが公表している冷却能力（公表していない製品は null）
+    {id:'bco1',name:'Noctua NH-D15 G2',             spec:'デュアルタワー空冷',  price:16800, maxTdp:null},
+    {id:'bco2',name:'DeepCool AK620',               spec:'デュアルタワー空冷 · 冷却能力260W（メーカー公表）', price:5800, maxTdp:260},
+    {id:'bco3',name:'Thermalright Peerless Assassin 120 SE', spec:'デュアルタワー空冷', price:4500, maxTdp:null},
+    {id:'bco4',name:'be quiet! Dark Rock 4',        spec:'シングルタワー空冷 · 冷却能力200W（メーカー公表）', price:8800, maxTdp:200},
+    {id:'bco5',name:'DeepCool AK400',               spec:'シングルタワー空冷 · 冷却能力220W（メーカー公表）', price:2800, maxTdp:220},
+    {id:'bco6',name:'CORSAIR iCUE H150i ELITE CAPELLIX XT', spec:'360mm AIO水冷', price:24800, maxTdp:null},
+    {id:'bco7',name:'LIAN LI GALAHAD II TRINITY 360', spec:'360mm AIO水冷',   price:14800, maxTdp:null},
+    {id:'bco8',name:'be quiet! Pure Loop 2 FX 240', spec:'240mm AIO水冷',     price:12800, maxTdp:null},
+    {id:'bco9',name:'Thermalright Frozen Prism 240', spec:'240mm AIO水冷',    price:6800,  maxTdp:null},
   ]},
   gpu:{ label:'GPU', icon:'GPU', color:'#a4572f', items:[
     {id:'bg1',name:'RTX 5090',          spec:'32GB · 575W',  price:595000,score:47487,vram:32},
@@ -2708,7 +2726,7 @@ const BPARTS = {
   ]},
   case:{ label:'ケース', icon:'CASE', color:'#1d5fa8', items:[
     {id:'bk1',name:'Fractal Design Torrent',  spec:'ATX · 最高エアフロー', price:24800},
-    {id:'bk2',name:'Lian Li PC-O11 Dynamic',  spec:'ATX · フルガラス',     price:18800},
+    {id:'bk2',name:'LIAN LI O11 Dynamic EVO', spec:'ATX · フルガラス',     price:18800},
     {id:'bk3',name:'NZXT H7 Flow',            spec:'ATX · ミドルタワー',   price:16800},
     {id:'bk4',name:'Cooler Master HAF 500',   spec:'ATX · 大型ファン',     price:12800},
   ]},
@@ -2752,7 +2770,7 @@ function brenderParts(){
           <div class="bpart-item" id="bitem-${item.id}"${item.socket?` data-socket="${item.socket}"`:''} onclick="bselect('${cat}','${item.id}')">
             <div class="bpart-check" id="bcheck-${item.id}">✓</div>
             <div class="bpart-item-name"><strong>${esc(item.name)}</strong><small>${esc(item.spec)}</small></div>
-            <div class="bpart-item-right"><div class="bpart-item-price">¥${item.price.toLocaleString()}</div>${item.score?`<div class="bpart-item-score">score: ${item.score.toLocaleString()}</div>`:''}${item.url?`<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()" style="font-size:11px">店で見る</a>`:''}</div>
+            <div class="bpart-item-right"><div class="bpart-item-price">¥${item.price.toLocaleString()}${item.ref?'<small style="display:block;font-size:10px;font-weight:400;color:var(--text3)">参考価格</small>':''}</div>${item.score?`<div class="bpart-item-score">score: ${item.score.toLocaleString()}</div>`:''}${item.url?`<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()" style="font-size:11px">店で見る</a>`:''}</div>
           </div>`).join('')}
       </div>
     </div>`).join('');
@@ -2764,7 +2782,7 @@ function bselect(cat,id){
   if(prev){document.getElementById('bitem-'+prev.id)?.classList.remove('bselected');document.getElementById('bsec-'+cat)?.classList.remove('has-selection');}
   const item=BPARTS[cat].items.find(i=>i.id===id);
   if(prev&&prev.id===id){delete bSelected[cat];document.getElementById('bsel-info-'+cat).style.display='none';}
-  else{bSelected[cat]=item;document.getElementById('bitem-'+id).classList.add('bselected');document.getElementById('bsec-'+cat).classList.add('has-selection');document.getElementById('bsel-info-'+cat).style.display='block';document.getElementById('bsel-name-'+cat).textContent=item.name;document.getElementById('bsel-price-'+cat).textContent='¥'+item.price.toLocaleString();}
+  else{bSelected[cat]=item;document.getElementById('bitem-'+id).classList.add('bselected');document.getElementById('bsec-'+cat).classList.add('has-selection');document.getElementById('bsel-info-'+cat).style.display='block';document.getElementById('bsel-name-'+cat).textContent=item.name;document.getElementById('bsel-price-'+cat).textContent='¥'+item.price.toLocaleString()+(item.ref?'（参考価格）':'');}
   bupdateCart();
 }
 function bremove(cat,id){document.getElementById('bitem-'+id)?.classList.remove('bselected');document.getElementById('bsec-'+cat)?.classList.remove('has-selection');document.getElementById('bsel-info-'+cat).style.display='none';delete bSelected[cat];bupdateCart();}
@@ -2815,7 +2833,7 @@ function banalyze(){
   let warns='';
   if(ratio<0.6)warns+=`<div class="bwarn bwarn-yellow">CPUがGPUに対して弱め。ボトルネックになる可能性があります。</div>`;
   else if(ratio>1.6)warns+=`<div class="bwarn bwarn-yellow">GPUがCPUに対して弱め。CPUを活かしきれない場面があります。</div>`;
-  if(bSelected.cpucooler&&cpu.tdp&&bSelected.cpucooler.maxTdp<cpu.tdp)warns+=`<div class="bwarn bwarn-red">✗ クーラー(冷却能力${bSelected.cpucooler.maxTdp}W)がCPU TDP(${cpu.tdp}W)に対して不足しています！</div>`;
+  if(bSelected.cpucooler&&cpu.tdp&&bSelected.cpucooler.maxTdp&&bSelected.cpucooler.maxTdp<cpu.tdp)warns+=`<div class="bwarn bwarn-red">✗ クーラー(冷却能力${bSelected.cpucooler.maxTdp}W)がCPU TDP(${cpu.tdp}W)に対して不足しています！</div>`;
   if(bSelected.mb?.socket&&cpu.socket&&bSelected.mb.socket!==cpu.socket)warns+=`<div class="bwarn bwarn-red">✕ マザボ(${bSelected.mb.socket})とCPU(${cpu.socket})のソケットが非対応です！</div>`;
   if(bSelected.psu){const need=(cpu.tdp||150)+(gs>25000?420:gs>15000?290:200)+100;if(bSelected.psu.watts<need*0.9)warns+=`<div class="bwarn bwarn-yellow">電源容量が不足の可能性。推奨: ${Math.ceil(need/50)*50}W以上。</div>`;}
   const tiers=['low','mid','high','ultra'];

@@ -17,6 +17,7 @@ const {fetchBlenderScores} = require('./lib/blender');
 const {PSU_SPECS, SSD_SPECS, MB_SPECS, pickByMaker} = require('./lib/parts');
 const {loadCorrections} = require('./lib/corrections');
 const {loadSheetParts, pickForProduct} = require('./lib/sheet-parts');
+const {FIXED_PARTS, pickFixedPart} = require('./lib/fixed-parts');
 
 const ROOT = path.join(__dirname, '..');
 const OUTPUT = path.join(ROOT, 'data', 'rakuten-prices.json');
@@ -335,6 +336,24 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   }
   if (!auditOnly && !options.skipParts) log(`電源・SSD・マザーボード: ${partsFound} 件（規格×メーカー）`);
 
+  // ビルダーの CPUクーラー・ケース（決まった製品）: 製品名で検索して、2店以上で売られている新品の最安値を取る
+  let fixedFound = 0;
+  for (const part of auditOnly || options.skipFixedParts ? [] : (options.fixedParts || FIXED_PARTS)) {
+    const found = await yahooItems(part.query, {from: part.floor, to: 0});
+    const pick = found && pickFixedPart(part, notExcluded(found));
+    const url = pick && safeUrl(pick.item);
+    if (!url) {
+      const kept = previous.get(`${part.category}\0${part.name}`);
+      if (!found && kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) products.push(kept);
+      else unmatched.push({category: part.category, modelName: part.name, reason: found ? '製品名が一致する新品を2店以上で確認できませんでした' : 'Yahoo!ショッピングに接続できませんでした'});
+      continue;
+    }
+    fixedFound++;
+    products.push({category: part.category, modelName: part.name, status: 'ok', source: 'Yahoo!ショッピング', price: pick.item.itemPrice, points: pick.item.points || 0, url, fetchedAt,
+      itemCode: pick.item.itemCode, itemName: pick.item.itemName, shopName: pick.item.shopName || '', spec: {id: part.id, shops: pick.shops, maxTdp: part.maxTdp ?? null}});
+  }
+  if (!auditOnly && !options.skipFixedParts) log(`CPUクーラー・ケース: ${(options.fixedParts || FIXED_PARTS).length} 製品のうち ${fixedFound} 製品の最安値を取得`);
+
   // 運営者がシートで管理する「おすすめ製品」（マザーボード・SSD）。製品名で検索して、その製品の最安値を取る
   let sheetFound = 0;
   const sheetParts = options.sheetParts || (auditOnly || options.skipSheetParts ? {ok: false, mb: [], ssd: []} : await loadSheetParts(readSheetsConfig().correctionsSpreadsheetId, fetchImpl));
@@ -368,7 +387,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     log(`シートのおすすめ製品: マザーボード ${sheetParts.mb.length} / SSD ${sheetParts.ssd.length}（価格を取れた ${sheetFound} 件）`);
   }
 
-  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length - ramFound - partsFound - sheetFound} / 未取得 ${unmatched.filter(u => u.category !== 'ram').length} / API失敗 ${apiErrors}`);
+  if (!auditOnly) log(`対象 ${models.length} モデル / 取得 ${products.length - ramFound - partsFound - sheetFound - fixedFound} / 未取得 ${unmatched.filter(u => !['ram', 'cooler', 'case'].includes(u.category)).length} / API失敗 ${apiErrors}`);
   if (!auditOnly && !options.skipRam) log(`メモリ: ${(options.ramSpecs || RAM_SPECS).length} 規格のうち ${ramFound} 規格の最安値を取得`);
   // 1件も取れず、どのストアにも接続できなかった回だけは、前回のファイルを壊さない（途中まで取れた分は保存する）
   const rakutenUp = rakuten.configured && rakuten.on, yahooUp = Boolean(yahoo.appid) && yahoo.successes > 0;
