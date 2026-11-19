@@ -3,6 +3,7 @@
 // 検索エンジンから見つけてもらうための、製品ごとの静的ページを作る（GitHub Actions で毎日実行）。
 //   p/<製品>.html … 1製品の最安値・スコア・仕様・近い性能の製品
 //   p/cpu.html, p/gpu.html … 製品ページの一覧
+//   p/<A>-vs-<B>.html, p/cpu-vs.html, p/gpu-vs.html … 2製品の比較ページと、その一覧
 //   sitemap.xml, robots.txt, data/pages.json（サイトから製品ページへリンクするための一覧）
 // 値はサイトと同じ（スプレッドシート・価格ファイル・Blender のファイル）。新しく推測した値は載せない。
 
@@ -132,6 +133,7 @@ function productPage(item, list, updated) {
 
   const scores = [];
   if (item.score > 0) scores.push([scoreName, `${num(item.score)}（${item.rankOf}製品中 ${item.rank} 位）`]);
+  if (item.category === 'cpu' && item.single > 0) scores.push(['PassMark（シングルスレッド）', num(item.single)]);
   if (item.blender) scores.push([`Blender Benchmark（Blender ${esc(item.blenderVersion || '')}）`, `${num(item.blender.score)}（${item.blenderOf}製品中 ${item.blenderRank} 位・測定 ${Number(item.blender.samples).toLocaleString('ja-JP')} 件${item.blender.computeType ? '・' + esc(item.blender.computeType) : ''}）`]);
 
   // 近い性能の製品（同じ指標で上下3つずつ）
@@ -156,8 +158,121 @@ ${scores.length ? `<table>${scores.map(([k, v]) => `<tr><th>${k}</th><td>${v}</t
 <table>${specRows(item).filter(([, v]) => v).map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</table>
 ${near.length ? `<h2>近い性能の${cat}（${key === 'score' ? (item.category === 'cpu' ? 'PassMark' : '3DMark') : 'Blender'}）</h2>
 <table class="list"><tr><th>製品</th><th>スコア（${esc(item.name)}との差）</th><th>最安値</th></tr>${nearRows}</table>` : ''}
+${(item.pairs || []).length ? `<h2>${esc(item.name)} とほかの${cat}の比較</h2><ul>${item.pairs.map(([p, q]) => `<li><a href="/p/${pairSlug(p, q)}.html">${esc(p.name)} vs ${esc(q.name)}</a></li>`).join('')}</ul>` : ''}
 <p style="margin-top:24px"><a href="/?page=${item.category}-rank">${cat}ランキングをすべて見る</a> ・ <a href="/?page=${item.category}-compare">${cat}を2つ選んで比較する</a></p>`;
   return layout({title, description, canonical, body});
+}
+
+// ---- 2製品の比較ページ（p/<A>-vs-<B>.html） ----
+// 比べる組み合わせは、スコアと今の価格がある製品のうち
+//   ・スコアが近い製品（上下2つずつ）
+//   ・メーカー違いでいちばんスコアが近い製品（Intel と AMD、NVIDIA と AMD など）
+//   ・前の世代の同じ位置づけの製品
+// 文章は数字から機械的に作る（推測や主観の評価は書かない）
+const PAIR_NEIGHBORS = 2;
+const pairSlug = (a, b) => `${a.slug}-vs-${b.slug}`;
+
+function comparePairs(list) {
+  const ranked = list.filter(x => x.score > 0 && x.offer).sort((a, b) => b.score - a.score);
+  const pairs = new Map();
+  const add = (a, b) => {
+    if (!a || !b || a === b) return;
+    const [x, y] = a.slug < b.slug ? [a, b] : [b, a];
+    pairs.set(pairSlug(x, y), [x, y]);
+  };
+  ranked.forEach((item, i) => {
+    for (let k = 1; k <= PAIR_NEIGHBORS; k++) add(item, ranked[i + k]);
+    const rival = ranked.filter(x => x.maker && item.maker && x.maker !== item.maker)
+      .sort((a, b) => Math.abs(a.score - item.score) - Math.abs(b.score - item.score))[0];
+    add(item, rival);
+    // 前の世代の同じ位置づけの製品（RTX 5060 と 4060、Ryzen 7 9800X3D と 7800X3D、Core i5-14600K と 13600K など）
+    const m = item.name.match(/^(.*?)(\d)(\d{3,4})(.*)$/);
+    if (m) {
+      for (const back of [1, 2]) {
+        const g = Number(m[2]) - back;
+        if (g < 1) break;
+        const prev = ranked.find(x => x.name === `${m[1]}${g}${m[3]}${m[4]}`);
+        if (prev) { add(item, prev); break; }
+      }
+    }
+  });
+  return [...pairs.values()];
+}
+
+const pct = (a, b) => Math.round((a / b - 1) * 100);
+
+function compareSummary(a, b, metric) {
+  const lines = [];
+  const [hi, lo] = a.score >= b.score ? [a, b] : [b, a];
+  const dd = pct(hi.score, lo.score);
+  lines.push(dd < 3 ? `${metric}のスコアはほぼ同じです（差は ${dd}%）。` : `${metric}のスコアは ${hi.name} の方が ${dd}% 高い結果です。`);
+  const pa = a.offer.price, pb = b.offer.price;
+  const [cheap, dear] = pa <= pb ? [a, b] : [b, a];
+  if (pa === pb) lines.push('最安値は同じです。');
+  else lines.push(`最安値は ${cheap.name} の方が ${yen(Math.abs(pa - pb))} 安くなっています。`);
+  const va = a.score / pa, vb = b.score / pb;
+  const [better] = va >= vb ? [a, b] : [b, a];
+  if (Math.abs(pct(va, vb)) >= 3) lines.push(`価格あたりのスコア（1万円あたり）は ${better.name} の方が ${Math.abs(pct(va, vb))}% 高く、コスパでは ${better.name} が上です。`);
+  else lines.push('価格あたりのスコア（1万円あたり）はほぼ同じです。');
+  if (dd >= 3 && hi === cheap && pa !== pb) lines.push(`${hi.name} は、スコアが高く値段も安いので、この2つでは ${hi.name} を選ぶ理由が多い組み合わせです。`);
+  return lines;
+}
+
+function comparePage(a, b, category, updated, pairsOf) {
+  const cat = category === 'cpu' ? 'CPU' : 'GPU';
+  const metric = category === 'cpu' ? 'PassMark（マルチスレッド）' : '3DMark Time Spy（グラフィックスコア）';
+  const short = category === 'cpu' ? 'PassMark' : '3DMark';
+  const title = `${a.name} と ${b.name} の比較（性能・最安値・コスパ）| BENCHCORE`;
+  // 差は「高い方が低い方より何%高いか」で、結論の文と同じ数字にする
+  const d = pct(Math.max(a.score, b.score), Math.min(a.score, b.score));
+  const description = `${a.name} と ${b.name} を${short}のスコアと最安値で比較。スコアの差は ${d}%、最安値は ${yen(a.offer.price)} と ${yen(b.offer.price)}（${updated}更新）。`;
+  const canonical = `${SITE}/p/${pairSlug(a, b)}.html`;
+  const perMan = x => num(Math.round(x.score / x.offer.price * 10000));
+  const cell = (x, v) => `<td>${v}</td>`;
+  const row = (label, va, vb) => `<tr><th>${esc(label)}</th>${cell(a, va)}${cell(b, vb)}</tr>`;
+  const offerCell = x => {
+    const url = safeHttps(x.offer.url);
+    return `${yen(x.offer.price)}${url ? `<br><a href="${esc(url)}" rel="sponsored noopener" target="_blank">${esc(x.offer.source || 'ストア')}で見る</a>` : ''}`;
+  };
+  const rows = [
+    row(metric, `${num(a.score)}（${a.rank}位）`, `${num(b.score)}（${b.rank}位）`),
+    ...(category === 'cpu' && a.single > 0 && b.single > 0 ? [row('PassMark（シングルスレッド）', num(a.single), num(b.single))] : []),
+    row('最安値', offerCell(a), offerCell(b)),
+    row('1万円あたりのスコア', perMan(a), perMan(b)),
+  ];
+  // Blender は測り方（CUDA・OptiX・HIP など）が製品で違うことがあるので、必ず一緒に書く
+  const bl = x => `${num(x.blender.score)}${x.blender.computeType ? `<br><span class="meta">${esc(x.blender.computeType)}</span>` : ''}`;
+  if (a.blender && b.blender) rows.push(row(`Blender Benchmark（${a.blenderVersion || ''}）`, bl(a), bl(b)));
+  const specA = new Map(specRows(a)), specB = new Map(specRows(b));
+  for (const [label] of specRows(a)) {
+    const va = specA.get(label), vb = specB.get(label);
+    if (va || vb) rows.push(row(label, esc(va || '—'), esc(vb || '—')));
+  }
+  const related = x => (pairsOf.get(x.slug) || []).filter(([p, q]) => !(p === a && q === b) && !(p === b && q === a)).slice(0, 6)
+    .map(([p, q]) => `<li><a href="/p/${pairSlug(p, q)}.html">${esc(p.name)} vs ${esc(q.name)}</a></li>`).join('');
+  const relA = related(a), relB = related(b);
+  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${category}.html">${cat}一覧</a> › 比較</div>
+<h1>${esc(a.name)} と ${esc(b.name)} の比較</h1>
+<p class="note">${updated}更新。スコアは公開されているベンチマークの値、最安値は毎日自動で取得した価格です。</p>
+<h2>結論（数字から）</h2>
+<ul>${compareSummary(a, b, metric).map(l => `<li>${esc(l)}</li>`).join('')}</ul>
+<h2>性能・価格・仕様の比較</h2>
+<div style="overflow-x:auto"><table class="list"><tr><th></th><th><a href="/p/${a.slug}.html">${esc(a.name)}</a></th><th><a href="/p/${b.slug}.html">${esc(b.name)}</a></th></tr>${rows.join('')}</table></div>
+<p class="note">ベンチマークのスコアは測定環境で変わります。ゲームでの差は、タイトルや解像度によってスコアの差より大きくも小さくもなります。</p>
+${relA || relB ? `<h2>ほかの比較</h2><ul>${relA}${relB}</ul>` : ''}
+<p style="margin-top:24px"><a href="/?page=${category}-compare">好きな${cat}を2つ選んで比較する</a> ・ <a href="/p/${category}-vs.html">${cat}の比較ページ一覧</a></p>`;
+  return layout({title, description, canonical, body});
+}
+
+function compareIndexPage(category, pairs, updated) {
+  const cat = category === 'cpu' ? 'CPU' : 'GPU';
+  const items = [...pairs].sort((p, q) => Math.max(q[0].score, q[1].score) - Math.max(p[0].score, p[1].score))
+    .map(([a, b]) => `<li><a href="/p/${pairSlug(a, b)}.html">${esc(a.name)} vs ${esc(b.name)}</a></li>`).join('');
+  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${category}.html">${cat}一覧</a> › 比較ページ一覧</div>
+<h1>${cat}の比較ページ一覧（${pairs.length}組）</h1>
+<p class="note">${updated}更新。性能が近い${cat}と、メーカー違いのライバル製品の組み合わせです。</p>
+<ul>${items}</ul>`;
+  return layout({title: `${cat}の比較ページ一覧 | BENCHCORE`, description: `性能が近い${cat}同士を、スコア・最安値・コスパで比べたページの一覧（${pairs.length}組）。毎日更新。`, canonical: `${SITE}/p/${category}-vs.html`, body});
 }
 
 function indexPage(category, list, updated) {
@@ -166,7 +281,7 @@ function indexPage(category, list, updated) {
   const rows = sorted.map(x => `<tr><td><a href="/p/${x.slug}.html">${esc(x.name)}</a></td><td>${x.score > 0 ? num(x.score) : '—'}</td><td>${x.blender ? num(x.blender.score) : '—'}</td><td>${x.offer ? yen(x.offer.price) : '—'}</td></tr>`).join('');
   const body = `<div class="crumb"><a href="/">BENCHCORE</a> › ${cat}一覧</div>
 <h1>${cat}の性能と最安値の一覧（${sorted.length}製品）</h1>
-<p class="note">${updated}更新。製品名を選ぶと、仕様と近い性能の製品との比較を見られます。</p>
+<p class="note">${updated}更新。製品名を選ぶと、仕様と近い性能の製品との比較を見られます。 <a href="/p/${category}-vs.html">2製品の比較ページ一覧</a></p>
 <table class="list"><tr><th>製品</th><th>${category === 'cpu' ? 'PassMark' : '3DMark'}</th><th>Blender</th><th>最安値</th></tr>${rows}</table>`;
   return layout({title: `${cat}の性能と最安値の一覧 | BENCHCORE`, description: `${cat} ${sorted.length}製品のベンチマークスコア（${category === 'cpu' ? 'PassMark' : '3DMark Time Spy'}・Blender）と最安値の一覧。毎日更新。`, canonical: `${SITE}/p/${category}.html`, body});
 }
@@ -184,24 +299,32 @@ async function main(options = {}) {
   fs.mkdirSync(outDir, {recursive: true});
   const written = new Set();
   const write = (file, html) => { fs.writeFileSync(path.join(outDir, file), html); written.add(file); };
+  const pairs = {};
   for (const category of ['cpu', 'gpu']) {
+    pairs[category] = comparePairs(data[category]);
+    const pairsOf = new Map();
+    for (const pair of pairs[category]) for (const x of pair) { if (!pairsOf.has(x.slug)) pairsOf.set(x.slug, []); pairsOf.get(x.slug).push(pair); }
+    for (const item of data[category]) item.pairs = pairsOf.get(item.slug) || [];
     for (const item of data[category]) write(`${item.slug}.html`, productPage(item, data[category], updated));
     write(`${category}.html`, indexPage(category, data[category], updated));
+    for (const [a, b] of pairs[category]) write(`${pairSlug(a, b)}.html`, comparePage(a, b, category, updated, pairsOf));
+    write(`${category}-vs.html`, compareIndexPage(category, pairs[category], updated));
   }
   // シートから消えた製品のページは消す
   for (const file of fs.readdirSync(outDir)) if (file.endsWith('.html') && !written.has(file)) fs.unlinkSync(path.join(outDir, file));
 
   const day = now.toISOString().slice(0, 10);
   const urls = ['/', '/?page=cpu-rank', '/?page=gpu-rank', '/?page=ram-rank', '/?page=ssd-rank', '/?page=psu-rank', '/?page=mb-rank', '/p/cpu.html', '/p/gpu.html',
-    ...data.cpu.map(x => `/p/${x.slug}.html`), ...data.gpu.map(x => `/p/${x.slug}.html`)];
+    ...data.cpu.map(x => `/p/${x.slug}.html`), ...data.gpu.map(x => `/p/${x.slug}.html`),
+    '/p/cpu-vs.html', '/p/gpu-vs.html', ...pairs.cpu.map(([a, b]) => `/p/${pairSlug(a, b)}.html`), ...pairs.gpu.map(([a, b]) => `/p/${pairSlug(a, b)}.html`)];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `<url><loc>${esc(SITE + u)}</loc><lastmod>${day}</lastmod></url>`).join('\n')}\n</urlset>\n`;
   fs.writeFileSync(options.sitemapFile || path.join(ROOT, 'sitemap.xml'), sitemap);
   fs.writeFileSync(options.robotsFile || path.join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE}/sitemap.xml\n`);
   const pages = {cpu: Object.fromEntries(data.cpu.map(x => [x.name, x.slug])), gpu: Object.fromEntries(data.gpu.map(x => [x.name, x.slug]))};
   fs.writeFileSync(options.pagesFile || path.join(ROOT, 'data', 'pages.json'), JSON.stringify(pages) + '\n');
-  console.log(`製品ページ: CPU ${data.cpu.length} / GPU ${data.gpu.length}`);
+  console.log(`製品ページ: CPU ${data.cpu.length} / GPU ${data.gpu.length}、比較ページ: CPU ${pairs.cpu.length} / GPU ${pairs.gpu.length}`);
   return 0;
 }
 
 if (require.main === module) main().then(code => { process.exitCode = code; }).catch(error => { console.error('製品ページの作成に失敗しました', error && error.message); process.exitCode = 1; });
-module.exports = {main, buildData, productPage, slug};
+module.exports = {main, buildData, productPage, comparePairs, comparePage, compareSummary, slug};
