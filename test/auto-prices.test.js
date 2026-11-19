@@ -782,3 +782,24 @@ test('the daily run writes cooler and case prices with the builder id', async ()
   assert.deepEqual([cooler.modelName, cooler.price, cooler.spec.id, cooler.spec.maxTdp, cooler.spec.shops], ['DeepCool AK400', 3980, 'bco5', 220, 2]);
   assert.ok(data.unmatched.some(u => u.category === 'case' && u.modelName === 'Cooler Master HAF 500'));
 });
+
+test('comparison pages pair close, rival and previous-generation products and state only the numbers', () => {
+  const {comparePairs, compareSummary, comparePage} = require('../scripts/build-pages');
+  const offer = price => ({price, url: 'https://store.shopping.yahoo.co.jp/s/1.html', source: 'Yahoo!ショッピング', fetchedAt: new Date().toISOString()});
+  const g = (name, maker, score, price) => ({name, maker, score, category: 'gpu', slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), offer: offer(price)});
+  const list = [g('GeForce RTX 5070', 'NVIDIA', 22000, 90000), g('GeForce RTX 5060', 'NVIDIA', 13600, 50000), g('Radeon RX 9060 XT', 'AMD', 16400, 60000),
+    g('GeForce RTX 4060', 'NVIDIA', 10500, 40000), {...g('GeForce RTX 3050', 'NVIDIA', 6000, 1), offer: null}];
+  list.forEach((x, i) => { x.rank = i + 1; });
+  const names = comparePairs(list).map(([a, b]) => a.name + ' | ' + b.name);
+  assert.ok(names.includes('GeForce RTX 5060 | Radeon RX 9060 XT'), 'ライバル');
+  assert.ok(names.includes('GeForce RTX 4060 | GeForce RTX 5060'), '前の世代');
+  assert.ok(!names.some(n => n.includes('3050')), '価格のない製品は比較ページにしない');
+  assert.equal(new Set(names).size, names.length);
+  const [a, b] = [list[1], list[2]];
+  const lines = compareSummary(a, b, '3DMark');
+  assert.match(lines[0], /Radeon RX 9060 XT の方が 21% 高い/);
+  assert.match(lines[1], /GeForce RTX 5060 の方が ¥10,000 安く/);
+  const html = comparePage(a, b, 'gpu', '2026/11/19', new Map());
+  assert.match(html, /スコアの差は 21%/);
+  assert.match(html, /rel="canonical" href="https:\/\/eminem-steel\.vercel\.app\/p\/geforce-rtx-5060-vs-radeon-rx-9060-xt\.html"/);
+});
