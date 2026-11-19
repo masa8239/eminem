@@ -1,21 +1,21 @@
 {
- "checkedAt": "2026-11-18T09:42:40.196Z",
+ "checkedAt": "2026-11-19T00:43:12.150Z",
  "issues": [
   {
    "category": "cpu",
-   "modelName": "Core i5-10400",
+   "modelName": "Core i3-13100",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-11400",
+   "modelName": "Core i5-10600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-11400F",
+   "modelName": "Core i5-10600KF",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -28,66 +28,6 @@
   {
    "category": "cpu",
    "modelName": "Core i5-11600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-11600KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12400F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12500",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13400",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13400F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13500",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -303,54 +243,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 3 3100",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 3300X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 4100",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 4300G",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 2600",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 2600X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 3500",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 3500X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 5 3600",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -474,37 +366,6 @@
    "modelName": "Ryzen 9 3900XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 7400F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core Ultra 5 245",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-14600",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 8600G",
-   "type": "name",
-   "issue": "等級が違います（正しくは Ryzen 5 8600G）",
-   "fix": "Ryzen 5 8600G"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 7 8600G",
-   "type": "duplicate",
-   "issue": "「Ryzen 5 8600G」と重複しています（サイトでは1件だけ表示）"
   },
   {
    "category": "gpu",
@@ -1041,12 +902,6 @@
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
-   "category": "cpu",
-   "modelName": "Ryzen 7 8600G",
-   "type": "spec",
-   "issue": "仕様の照合表にない型番です。型番が正しいか確認してください"
-  },
-  {
    "category": "gpu",
    "modelName": "GeForce RTX 3060",
    "type": "spec",
@@ -1108,12 +963,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-10400",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i5-10600K",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1126,18 +975,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-11400",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-11400F",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i5-11500",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1145,48 +982,6 @@
   {
    "category": "cpu",
    "modelName": "Core i5-11600K",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-11600KF",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12400",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12400F",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12500",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600K",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-12600KF",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1205,12 +1000,6 @@
   {
    "category": "cpu",
    "modelName": "Core i5-13500",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-13600K",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1438,48 +1227,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 3 3100",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 3300X",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 4100",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 3 4300G",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 2600",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 2600X",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 3500",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 5 3500X",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1612,19 +1359,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 7400F",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 5 5600GT",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core Ultra 5 245",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
