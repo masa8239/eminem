@@ -2410,7 +2410,7 @@ const PRESET_BUILDS = [
     desc:'Cyberpunk 2077・Alan Wake 2 などの最新タイトルを4K Ultra・レイトレ全開でプレイするハイエンドビルド。',
     parts:[
       {cat:'CPU', name:'Ryzen 9 9950X3D',    price:99800},
-      {cat:'Cooler', name:'LIAN LI GALAHAD II TRINITY 360', price:14800},
+      {cat:'Cooler', name:'ARCTIC Liquid Freezer III Pro 360', price:16101},
       {cat:'GPU', name:'RTX 5090',            price:595000},
       {cat:'MB',  name:'ASUS ROG Strix X670E-E', price:59800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
@@ -2426,13 +2426,13 @@ const PRESET_BUILDS = [
     desc:'4K動画編集・OBS配信・After Effects など。コア数とRAMが重要。GPUはNVENC/AMFエンコーダーとして活躍。',
     parts:[
       {cat:'CPU', name:'Core i9-14900K',      price:58800},
-      {cat:'Cooler', name:'CORSAIR iCUE H150i ELITE CAPELLIX XT', price:24800},
+      {cat:'Cooler', name:'CORSAIR iCUE LINK TITAN 360 RX', price:18980},
       {cat:'GPU', name:'RTX 4070 Ti SUPER',   price:130000},
       {cat:'MB',  name:'ASUS ROG Maximus Z790',price:89800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
       {cat:'SSD', name:'WD Black SN850X 2TB', price:21800},
       {cat:'PSU', name:'Corsair RM1000x',     price:24800},
-      {cat:'Case',name:'LIAN LI O11 Dynamic EVO',price:18800},
+      {cat:'Case',name:'Fractal Design North',price:22990},
     ],
     builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bg5',mb:'spec:Z790 ATX DDR5',ram:'br1',storage:'spec:Gen4 2TB',psu:'spec:1000W Gold',case:'bk2'}
   },
@@ -2448,9 +2448,9 @@ const PRESET_BUILDS = [
       {cat:'RAM', name:'DDR5-5200 16GB',      price:8800},
       {cat:'SSD', name:'Samsung 990 Pro 1TB', price:13800},
       {cat:'PSU', name:'Seasonic Focus GX-750',price:14800},
-      {cat:'Case',name:'Cooler Master HAF 500',price:12800},
+      {cat:'Case',name:'NZXT H5 Flow',price:11975},
     ],
-    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bg8',mb:'spec:B650 ATX',ram:'br4',storage:'spec:Gen4 1TB',psu:'spec:750W Gold',case:'bk4'}
+    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bg8',mb:'spec:B650 ATX',ram:'br4',storage:'spec:Gen4 1TB',psu:'spec:750W Gold',case:'bk5'}
   },
   {
     id:'streaming', icon:'配信', color:'var(--accent)', title:'ゲーム配信・マルチタスク',
@@ -2458,7 +2458,7 @@ const PRESET_BUILDS = [
     desc:'ゲームしながら配信・録画・Discord・Chromeを同時に動かせる構成。コア数多めのCPUが活きる。',
     parts:[
       {cat:'CPU', name:'Ryzen 7 7800X3D',     price:49800},
-      {cat:'Cooler', name:'be quiet! Pure Loop 2 FX 240', price:12800},
+      {cat:'Cooler', name:'ARCTIC Liquid Freezer III Pro 240', price:13720},
       {cat:'GPU', name:'RTX 4080 SUPER',      price:165000},
       {cat:'MB',  name:'MSI MAG X670E Tomahawk',price:38800},
       {cat:'RAM', name:'DDR5-6000 32GB',      price:18800},
@@ -2480,9 +2480,9 @@ const PRESET_BUILDS = [
       {cat:'RAM', name:'DDR5-5200 16GB',      price:8800},
       {cat:'SSD', name:'Crucial T500 1TB',    price:9800},
       {cat:'PSU', name:'Corsair CX650M',      price:8800},
-      {cat:'Case',name:'Cooler Master HAF 500',price:12800},
+      {cat:'Case',name:'NZXT H5 Flow',price:11975},
     ],
-    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bgc',mb:'spec:B650 mATX',ram:'br4',storage:'spec:Gen4 1TB',psu:'spec:650W Bronze',case:'bk4'}
+    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bgc',mb:'spec:B650 mATX',ram:'br4',storage:'spec:Gen4 1TB',psu:'spec:650W Bronze',case:'bk5'}
   },
 ];
 
@@ -2684,16 +2684,15 @@ const BPARTS = {
     {id:'bc9',name:'Ryzen 5 7600',     spec:'6C · 5.1GHz · AM5',      price:18800, score:18200,socket:'AM5',    tdp:65},
   ]},
   cpucooler:{ label:'CPUクーラー', icon:'FAN', color:'#1d5fa8', items:[
-    // price は毎日の価格が取れなかったときの参考価格。maxTdp はメーカーが公表している冷却能力（公表していない製品は null）
-    {id:'bco1',name:'Noctua NH-D15 G2',             spec:'デュアルタワー空冷',  price:16800, maxTdp:null},
-    {id:'bco2',name:'DeepCool AK620',               spec:'デュアルタワー空冷 · 冷却能力260W（メーカー公表）', price:5800, maxTdp:260},
-    {id:'bco3',name:'Thermalright Peerless Assassin 120 SE', spec:'デュアルタワー空冷', price:4500, maxTdp:null},
-    {id:'bco4',name:'be quiet! Dark Rock 4',        spec:'シングルタワー空冷 · 冷却能力200W（メーカー公表）', price:8800, maxTdp:200},
-    {id:'bco5',name:'DeepCool AK400',               spec:'シングルタワー空冷 · 冷却能力220W（メーカー公表）', price:2800, maxTdp:220},
-    {id:'bco6',name:'CORSAIR iCUE H150i ELITE CAPELLIX XT', spec:'360mm AIO水冷', price:24800, maxTdp:null},
-    {id:'bco7',name:'LIAN LI GALAHAD II TRINITY 360', spec:'360mm AIO水冷',   price:14800, maxTdp:null},
-    {id:'bco8',name:'be quiet! Pure Loop 2 FX 240', spec:'240mm AIO水冷',     price:12800, maxTdp:null},
-    {id:'bco9',name:'Thermalright Frozen Prism 240', spec:'240mm AIO水冷',    price:6800,  maxTdp:null},
+    // price は毎日の価格が取れなかったときの参考価格（2026-11-19 に取得した最安値）。maxTdp はメーカーが公表している冷却能力（公表していない製品は null）
+    {id:'bco1',name:'Noctua NH-D15 G2',             spec:'デュアルタワー空冷',  price:23200, maxTdp:null},
+    {id:'bco2',name:'DeepCool AK620',               spec:'デュアルタワー空冷 · 冷却能力260W（メーカー公表）', price:8440, maxTdp:260},
+    {id:'bco3',name:'Thermalright Peerless Assassin 120 SE', spec:'デュアルタワー空冷', price:8833, maxTdp:null},
+    {id:'bco5',name:'DeepCool AK400',               spec:'シングルタワー空冷 · 冷却能力220W（メーカー公表）', price:3320, maxTdp:220},
+    {id:'bco6',name:'CORSAIR iCUE LINK TITAN 360 RX', spec:'360mm AIO水冷',   price:18980, maxTdp:null},
+    {id:'bco7',name:'ARCTIC Liquid Freezer III Pro 360', spec:'360mm AIO水冷', price:16101, maxTdp:null},
+    {id:'bco8',name:'ARCTIC Liquid Freezer III Pro 240', spec:'240mm AIO水冷', price:13720, maxTdp:null},
+    {id:'bco9',name:'Thermalright Aqua Elite 240',  spec:'240mm AIO水冷',     price:8145,  maxTdp:null},
   ]},
   gpu:{ label:'GPU', icon:'GPU', color:'#a4572f', items:[
     {id:'bg1',name:'RTX 5090',          spec:'32GB · 575W',  price:595000,score:47487,vram:32},
@@ -2725,10 +2724,11 @@ const BPARTS = {
     // 毎日の価格ファイル（規格 × メーカーの最安値）から作る。bloadPartsFromData() を参照
   ]},
   case:{ label:'ケース', icon:'CASE', color:'#1d5fa8', items:[
-    {id:'bk1',name:'Fractal Design Torrent',  spec:'ATX · 最高エアフロー', price:24800},
-    {id:'bk2',name:'LIAN LI O11 Dynamic EVO', spec:'ATX · フルガラス',     price:18800},
-    {id:'bk3',name:'NZXT H7 Flow',            spec:'ATX · ミドルタワー',   price:16800},
-    {id:'bk4',name:'Cooler Master HAF 500',   spec:'ATX · 大型ファン',     price:12800},
+    {id:'bk1',name:'Fractal Design Torrent',  spec:'ATX · 最高エアフロー', price:33454},
+    {id:'bk2',name:'Fractal Design North',    spec:'ATX · 木製フロント',   price:22990},
+    {id:'bk3',name:'NZXT H7 Flow',            spec:'ATX · ミドルタワー',   price:17980},
+    {id:'bk4',name:'Cooler Master HAF 500',   spec:'ATX · 大型ファン',     price:21139},
+    {id:'bk5',name:'NZXT H5 Flow',            spec:'ATX · コンパクト',     price:11975},
   ]},
 };
 const BGAMES=[
