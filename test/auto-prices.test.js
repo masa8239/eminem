@@ -739,10 +739,12 @@ test('cooler and case prices use only exact new listings sold by two or more sho
   assert.equal(listingMatches(ak400, 'DEEPCOOL AK400 DIGITAL CPUクーラー'), false);
   assert.equal(listingMatches(ak400, 'DEEPCOOL AK400 中古'), false);
   assert.equal(listingMatches(ak400, 'DEEPCOOL AK400 交換用ファン'), false);
-  assert.equal(listingMatches(part('bco7'), 'LIAN LI GALAHAD II TRINITY PERFORMANCE 360'), false);
-  assert.equal(listingMatches(part('bco7'), 'LIAN LI GALAHAD II TRINITY 360 ブラック 水冷'), true);
+  assert.equal(listingMatches(part('bco7'), 'ARCTIC Liquid Freezer III Pro 360 A-RGB Black 水冷CPUクーラー'), true);
+  assert.equal(listingMatches(part('bco7'), 'ARCTIC Liquid Freezer III Pro 240 A-RGB'), false);
+  assert.equal(listingMatches(part('bco7'), '【平行輸入品】ARCTIC Liquid Freezer III Pro 360'), false);
   assert.equal(listingMatches(part('bk1'), 'Fractal Design Torrent Compact Black'), false);
-  assert.equal(listingMatches(part('bk2'), 'LIAN LI O11 Dynamic EVO XL'), false);
+  assert.equal(listingMatches(part('bk2'), 'Fractal Design North XL Charcoal Black'), false);
+  assert.equal(listingMatches(part('bk5'), 'NZXT H5 Flow (2024) White CC-H52FW-01'), true);
   const item = (price, shop, name = 'DEEPCOOL AK400 CPUクーラー') => ({itemName: name, itemPrice: price, shopName: shop, itemCode: shop + price, availability: 1});
   assert.equal(pickFixedPart(ak400, [item(3980, 'A')]), null, '1店だけなら使わない');
   const pick = pickFixedPart(ak400, [item(4280, 'B'), item(3980, 'A'), item(980, 'C'), item(3500, 'D', 'DEEPCOOL AK400 DIGITAL')]);
@@ -750,7 +752,7 @@ test('cooler and case prices use only exact new listings sold by two or more sho
   assert.equal(pick.shops, 2);
   // 公表されていない冷却能力は数字を入れない
   assert.equal(part('bco1').maxTdp, null);
-  assert.deepEqual(FIXED_PARTS.filter(p => p.maxTdp).map(p => [p.id, p.maxTdp]), [['bco2', 260], ['bco4', 200], ['bco5', 220]]);
+  assert.deepEqual(FIXED_PARTS.filter(p => p.maxTdp).map(p => [p.id, p.maxTdp]), [['bco2', 260], ['bco5', 220]]);
 });
 
 test('builder cooler and case ids match the fixed price list', () => {
