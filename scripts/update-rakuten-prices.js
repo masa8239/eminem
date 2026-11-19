@@ -345,7 +345,9 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     if (!url) {
       const kept = previous.get(`${part.category}\0${part.name}`);
       if (!found && kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) products.push(kept);
-      else unmatched.push({category: part.category, modelName: part.name, reason: found ? '製品名が一致する新品を2店以上で確認できませんでした' : 'Yahoo!ショッピングに接続できませんでした'});
+      // 見つからなかった理由を後から確かめられるように、検索で出てきた出品を少しだけ残す（安い順・最大8件）
+      else unmatched.push({category: part.category, modelName: part.name, reason: found ? '製品名が一致する新品を2店以上で確認できませんでした' : 'Yahoo!ショッピングに接続できませんでした',
+        ...(found ? {seen: [...found].sort((x, y) => x.itemPrice - y.itemPrice).slice(0, 8).map(x => ({price: x.itemPrice, shop: x.shopName || '', name: String(x.itemName || '').slice(0, 100), inStock: x.availability !== 0}))} : {})});
       continue;
     }
     fixedFound++;
