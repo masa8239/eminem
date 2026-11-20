@@ -803,3 +803,35 @@ test('comparison pages pair close, rival and previous-generation products and st
   assert.match(html, /スコアの差は 21%/);
   assert.match(html, /rel="canonical" href="https:\/\/eminem-steel\.vercel\.app\/p\/geforce-rtx-5060-vs-radeon-rx-9060-xt\.html"/);
 });
+
+test('budget builds stay within budget, use compatible parts and a balanced CPU', () => {
+  const B = require('../scripts/lib/budget');
+  const at = new Date().toISOString();
+  const offer = price => ({price, url: 'https://store.shopping.yahoo.co.jp/s/1.html', fetchedAt: at});
+  const cpu = (name, socket, score, price, tdp = 65) => ({name, socket, score, tdp, offer: offer(price), slug: name});
+  const gpu = (name, score, price, tdp = 150) => ({name, score, tdp, offer: offer(price), slug: name});
+  const P = (category, price, spec) => ({category, status: 'ok', price, fetchedAt: at, url: 'https://store.shopping.yahoo.co.jp/s/2.html', modelName: category, spec});
+  const prices = [
+    P('mb', 9000, {maker: 'MSI', chipset: 'B550', form: 'mATX', socket: 'AM4', memory: 'DDR4'}),
+    P('mb', 5000, {maker: 'MSI', chipset: 'A520', form: 'mATX', socket: 'AM4', memory: 'DDR4'}),
+    P('mb', 20000, {maker: 'MSI', chipset: 'B650', form: 'ATX', socket: 'AM5', memory: 'DDR5'}),
+    P('ram', 20000, {type: 'DDR4', capacity: 16}), P('ram', 40000, {type: 'DDR4', capacity: 32}), P('ram', 70000, {type: 'DDR5', capacity: 32}),
+    P('ssd', 25000, {maker: 'WD', type: 'Gen4', capacity: 1000}), P('ssd', 45000, {maker: 'WD', type: 'Gen4', capacity: 2000}),
+    P('psu', 6000, {maker: 'MSI', watts: 650, rating: 'Bronze'}), P('psu', 9000, {maker: 'MSI', watts: 750, rating: 'Gold'}),
+    P('cooler', 3000, {id: 'bco5'}), P('cooler', 8000, {id: 'bco2'}), P('case', 12000, {id: 'bk5'}),
+  ];
+  const parts = B.partsFromPrices(prices, Date.now(), 864e5);
+  assert.ok(parts.mb.every(m => m.spec.chipset !== 'A520'), '下位チップセットは使わない');
+  const cpus = [cpu('Ryzen 5 5600', 'AM4', 21500, 20000), cpu('Ryzen 5 5500', 'AM4', 19000, 15000), cpu('Ryzen 7 9800X3D', 'AM5', 40000, 63000, 120), cpu('Ryzen 5 3600', 'AM4', 17700, 9000)];
+  const gpus = [gpu('RX 9050', 9100, 50000), gpu('RTX 5070', 22000, 150000, 250), gpu('RTX 4090', 36000, 1000000, 450)];
+  for (const b of B.buildAll(cpus, gpus, parts)) {
+    assert.ok(b.total <= b.budget, `${b.budget}: 予算内`);
+    assert.equal(b.mb.spec.socket, b.cpu.socket);
+    assert.equal(b.ram.spec.type, b.mb.spec.memory);
+    assert.ok(B.balanced(b.balance), 'CPUとGPUのバランスが取れている');
+    assert.notEqual(b.cpu.name, 'Ryzen 5 3600', 'AM4 は Ryzen 5000 だけ');
+  }
+  const b30 = B.buildFor(300000, cpus, gpus, parts);
+  assert.equal(b30.gpu.name, 'RTX 5070');
+  assert.ok(b30.psu.spec.rating === 'Gold', '25万円以上は Gold 以上');
+});
