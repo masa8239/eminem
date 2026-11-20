@@ -4,12 +4,14 @@
 //   p/<製品>.html … 1製品の最安値・スコア・仕様・近い性能の製品
 //   p/cpu.html, p/gpu.html … 製品ページの一覧
 //   p/<A>-vs-<B>.html, p/cpu-vs.html, p/gpu-vs.html … 2製品の比較ページと、その一覧
+//   p/gaming-pc-<N>man.html, p/gaming-pc.html … 予算ごとのゲーミングPC構成と、その一覧
 //   sitemap.xml, robots.txt, data/pages.json（サイトから製品ページへリンクするための一覧）
 // 値はサイトと同じ（スプレッドシート・価格ファイル・Blender のファイル）。新しく推測した値は載せない。
 
 const fs = require('node:fs');
 const path = require('node:path');
 const {loadModels} = require('./update-rakuten-prices');
+const budget = require('./lib/budget');
 
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://eminem-steel.vercel.app';
@@ -66,7 +68,7 @@ ${body}
 <footer>
 <p>価格は毎日自動で取得した参考価格です。購入前にリンク先で商品と価格を確認してください。購入リンクにはアフィリエイト広告が含まれます。</p>
 <p>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値、Blender のスコアは <a href="https://opendata.blender.org/">Blender Open Data</a> の中央値です。仕様は AMD 公式の仕様一覧と Wikipedia の各世代の仕様表を基にしています。</p>
-<p><a href="/?page=about">運営者情報・利用規約・プライバシーポリシー</a></p>
+<p><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a> ・ <a href="/p/gpu-vs.html">GPUの比較</a> ・ <a href="/p/cpu-vs.html">CPUの比較</a> ・ <a href="/?page=about">運営者情報・利用規約・プライバシーポリシー</a></p>
 </footer>
 </body>
 </html>
@@ -275,6 +277,64 @@ function compareIndexPage(category, pairs, updated) {
   return layout({title: `${cat}の比較ページ一覧 | BENCHCORE`, description: `性能が近い${cat}同士を、スコア・最安値・コスパで比べたページの一覧（${pairs.length}組）。毎日更新。`, canonical: `${SITE}/p/${category}-vs.html`, body});
 }
 
+// ---- 予算ごとのゲーミングPC構成（p/gaming-pc-<N>man.html） ----
+const man = yenValue => `${Math.round(yenValue / 10000)}万円`;
+const budgetSlug = b => `gaming-pc-${Math.round(b.budget / 10000)}man`;
+
+function budgetRows(b) {
+  const link = (url, label) => { const u = safeHttps(url); return u ? `<a href="${esc(u)}" rel="sponsored noopener" target="_blank">${esc(label)}</a>` : ''; };
+  const part = (kind, name, price, url, source, detail) => ({kind, name, price, url, source, detail});
+  const fromPrice = (kind, p, name) => part(kind, name, p.price, p.url, p.source, p.itemName);
+  return [
+    part('CPU', `<a href="/p/${b.cpu.slug}.html">${esc(b.cpu.name)}</a>`, b.cpu.offer.price, b.cpu.offer.url, b.cpu.offer.source, ''),
+    fromPrice('CPUクーラー', b.cooler, esc(b.cooler.modelName)),
+    part('GPU', `<a href="/p/${b.gpu.slug}.html">${esc(b.gpu.name)}</a>`, b.gpu.offer.price, b.gpu.offer.url, b.gpu.offer.source, ''),
+    fromPrice('マザーボード', b.mb, `${esc(b.mb.spec.label)}（${esc(b.mb.spec.maker)}）`),
+    fromPrice('メモリ', b.ram, esc(b.ram.modelName)),
+    fromPrice('SSD', b.ssd, `${esc(b.ssd.spec.label)}（${esc(b.ssd.spec.maker)}）`),
+    fromPrice('電源', b.psu, `${esc(b.psu.spec.label)}（${esc(b.psu.spec.maker)}）`),
+    fromPrice('ケース', b.case, esc(b.case.modelName)),
+  ].map(x => `<tr><td>${x.kind}</td><td>${x.name}${x.detail ? `<br><span class="meta">${esc(String(x.detail).slice(0, 60))}</span>` : ''}</td><td>${yen(x.price)}<br>${link(x.url, (x.source || 'ストア') + 'で見る')}</td></tr>`).join('');
+}
+
+function budgetPage(b, all, updated) {
+  const title = `予算${man(b.budget)}のゲーミングPC構成（${b.gpu.name}・${b.cpu.name}）| BENCHCORE`;
+  const description = `予算${man(b.budget)}で組めるゲーミングPCの構成例。${b.gpu.name} と ${b.cpu.name} で合計 ${yen(b.total)}。毎日の最安値から自動で計算しています（${updated}更新）。`;
+  const canonical = `${SITE}/p/${budgetSlug(b)}.html`;
+  const bal = b.balance;
+  const balText = bal.cpuWeaker ? `CPUとGPUの性能の差は約${Math.round(bal.pct)}%で、バランスは良好です。` : bal.pct < 40 ? `CPUとGPUの性能の差は約${Math.round(bal.pct)}%で、バランスは良好です。` : `CPUの性能に余裕があります（差は約${Math.round(bal.pct)}%）。将来GPUだけ交換するときにも使いやすい組み合わせです。`;
+  const others = all.filter(x => x !== b).map(x => `<li><a href="/p/${budgetSlug(x)}.html">予算${man(x.budget)}</a>（${esc(x.gpu.name)}・合計 ${yen(x.total)}）</li>`).join('');
+  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a> › 予算${man(b.budget)}</div>
+<h1>予算${man(b.budget)}のゲーミングPC構成</h1>
+<div class="price"><div class="meta">${updated}の最安値で計算（OSは含みません）</div>
+<strong>${yen(b.total)}</strong> <span class="meta">予算まで残り ${yen(b.budget - b.total)}</span>
+<div>GPU: <a href="/p/${b.gpu.slug}.html">${esc(b.gpu.name)}</a>（3DMark ${num(b.gpu.score)}）・CPU: <a href="/p/${b.cpu.slug}.html">${esc(b.cpu.name)}</a>（PassMark ${num(b.cpu.score)}）</div></div>
+<h2>パーツ一覧</h2>
+<div style="overflow-x:auto"><table class="list"><tr><th>パーツ</th><th>製品</th><th>最安値</th></tr>${budgetRows(b)}</table></div>
+<h2>CPUとGPUのバランス</h2>
+<p>${esc(balText)}<a href="/?page=bottleneck">ボトルネック診断</a>と同じ計算です。</p>
+<h2>この構成の決め方</h2>
+<ul>
+<li>予算内で、GPUのスコア（3DMark Time Spy）がいちばん高くなる組み合わせを選んでいます。CPUは、GPUとのバランスが取れるもののうち、予算内でいちばんスコアの高いものです。</li>
+<li>マザーボードはCPUのソケットに合うBシリーズ以上の最安値、メモリは${b.budget <= 150000 ? '16GB' : '32GB'}、SSDはNVMe Gen4の${b.budget >= 300000 ? '2TB' : '1TB'}です。</li>
+<li>電源は、CPUとGPUの消費電力の合計 × 1.3 + 100W 以上（この構成では${b.psuNeed}W以上）${b.budget >= 250000 ? 'で、80PLUS Gold 以上' : ''}の最安値です。</li>
+<li>マザーボード・メモリ・SSD・電源は「規格ごとの最安値」の製品です。商品名を確認してから購入してください。</li>
+</ul>
+<p class="note">価格は毎日変わるため、構成も毎日変わることがあります。マザーボードは、新しいCPUを使うときにBIOSの更新が必要な場合があります。購入前に、メーカーの対応CPU一覧を確認してください。</p>
+<p><a href="/?page=builder">構成ビルダーでパーツを入れ替えて試す</a></p>
+${others ? `<h2>ほかの予算の構成</h2><ul>${others}</ul>` : ''}`;
+  return layout({title, description, canonical, body});
+}
+
+function budgetIndexPage(builds, updated) {
+  const rows = builds.map(b => `<tr><td><a href="/p/${budgetSlug(b)}.html">予算${man(b.budget)}</a></td><td>${esc(b.gpu.name)}</td><td>${esc(b.cpu.name)}</td><td>${yen(b.total)}</td></tr>`).join('');
+  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › 予算別のゲーミングPC構成</div>
+<h1>予算別のゲーミングPC構成</h1>
+<p class="note">${updated}更新。毎日の最安値から、予算内でいちばんゲーム性能が高くなる構成を自動で計算しています。予算を上げても同じ構成になる場合は、低い方の予算だけを載せています。</p>
+<div style="overflow-x:auto"><table class="list"><tr><th>予算</th><th>GPU</th><th>CPU</th><th>合計</th></tr>${rows}</table></div>`;
+  return layout({title: '予算別のゲーミングPC構成（毎日の最安値で自動計算）| BENCHCORE', description: `予算${builds.map(b => man(b.budget)).join('・')}のゲーミングPC構成例。毎日の最安値から自動で計算（${updated}更新）。`, canonical: `${SITE}/p/gaming-pc.html`, body});
+}
+
 function indexPage(category, list, updated) {
   const cat = category === 'cpu' ? 'CPU' : 'GPU';
   const sorted = [...list].sort((a, b) => (b.score || 0) - (a.score || 0) || (b.blender?.score || 0) - (a.blender?.score || 0));
@@ -310,21 +370,25 @@ async function main(options = {}) {
     for (const [a, b] of pairs[category]) write(`${pairSlug(a, b)}.html`, comparePage(a, b, category, updated, pairsOf));
     write(`${category}-vs.html`, compareIndexPage(category, pairs[category], updated));
   }
+  const builds = budget.buildAll(data.cpu, data.gpu, budget.partsFromPrices(prices, now, PRICE_MAX_AGE_MS));
+  for (const b of builds) write(`${budgetSlug(b)}.html`, budgetPage(b, builds, updated));
+  if (builds.length) write('gaming-pc.html', budgetIndexPage(builds, updated));
   // シートから消えた製品のページは消す
   for (const file of fs.readdirSync(outDir)) if (file.endsWith('.html') && !written.has(file)) fs.unlinkSync(path.join(outDir, file));
 
   const day = now.toISOString().slice(0, 10);
   const urls = ['/', '/?page=cpu-rank', '/?page=gpu-rank', '/?page=ram-rank', '/?page=ssd-rank', '/?page=psu-rank', '/?page=mb-rank', '/p/cpu.html', '/p/gpu.html',
     ...data.cpu.map(x => `/p/${x.slug}.html`), ...data.gpu.map(x => `/p/${x.slug}.html`),
+    ...(builds.length ? ['/p/gaming-pc.html', ...builds.map(b => `/p/${budgetSlug(b)}.html`)] : []),
     '/p/cpu-vs.html', '/p/gpu-vs.html', ...pairs.cpu.map(([a, b]) => `/p/${pairSlug(a, b)}.html`), ...pairs.gpu.map(([a, b]) => `/p/${pairSlug(a, b)}.html`)];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `<url><loc>${esc(SITE + u)}</loc><lastmod>${day}</lastmod></url>`).join('\n')}\n</urlset>\n`;
   fs.writeFileSync(options.sitemapFile || path.join(ROOT, 'sitemap.xml'), sitemap);
   fs.writeFileSync(options.robotsFile || path.join(ROOT, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE}/sitemap.xml\n`);
   const pages = {cpu: Object.fromEntries(data.cpu.map(x => [x.name, x.slug])), gpu: Object.fromEntries(data.gpu.map(x => [x.name, x.slug]))};
   fs.writeFileSync(options.pagesFile || path.join(ROOT, 'data', 'pages.json'), JSON.stringify(pages) + '\n');
-  console.log(`製品ページ: CPU ${data.cpu.length} / GPU ${data.gpu.length}、比較ページ: CPU ${pairs.cpu.length} / GPU ${pairs.gpu.length}`);
+  console.log(`製品ページ: CPU ${data.cpu.length} / GPU ${data.gpu.length}、比較ページ: CPU ${pairs.cpu.length} / GPU ${pairs.gpu.length}、予算別構成: ${builds.length}`);
   return 0;
 }
 
 if (require.main === module) main().then(code => { process.exitCode = code; }).catch(error => { console.error('製品ページの作成に失敗しました', error && error.message); process.exitCode = 1; });
-module.exports = {main, buildData, productPage, comparePairs, comparePage, compareSummary, slug};
+module.exports = {main, budgetPage, buildData, productPage, comparePairs, comparePage, compareSummary, slug};
