@@ -59,6 +59,7 @@ function layout({title, description, canonical, body}) {
 <meta property="og:type" content="article">
 <meta property="og:url" content="${esc(canonical)}">
 <style>${STYLE}</style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <header><a class="logo" href="/">BENCH<span>CORE</span></a><span class="meta">PCパーツの性能と最安値を比較</span></header>
