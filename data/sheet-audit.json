@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-21T00:10:55.151Z",
+ "checkedAt": "2026-11-21T13:58:40.925Z",
  "issues": [
   {
    "category": "cpu",
@@ -862,12 +862,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce RTX 4070",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 9060 XT 8GB",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1852,12 +1846,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce RTX 4070",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 9060 XT 8GB",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
