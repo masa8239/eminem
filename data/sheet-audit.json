@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-20T00:54:03.725Z",
+ "checkedAt": "2026-11-21T00:10:55.151Z",
  "issues": [
   {
    "category": "cpu",
@@ -333,12 +333,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 7 5700X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 7 PRO 4750G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -484,6 +478,12 @@
   {
    "category": "gpu",
    "modelName": "NVIDIA TITAN Xp",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 7600",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },

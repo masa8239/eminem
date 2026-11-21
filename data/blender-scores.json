@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-20T01:10:23.743Z",
+ "checkedAt": "2026-11-21T00:10:55.151Z",
  "source": "https://opendata.blender.org/",
  "note": "Blender Open Data（公開データ・利用制限なし）の中央値。測定数3件以上のみ。GPUは一番速い計算方式の値",
  "cpu": {
@@ -759,8 +759,8 @@
     "deviceName": "NVIDIA GeForce RTX 4070 Ti"
    },
    "GeForce RTX 4070 SUPER": {
-    "score": 6249.54,
-    "samples": 469,
+    "score": 6251.07,
+    "samples": 470,
     "computeType": "OPTIX",
     "deviceName": "NVIDIA GeForce RTX 4070 SUPER"
    },
