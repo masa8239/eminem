@@ -1,0 +1,248 @@
+# BENCHCORE 引き継ぎ書
+
+最終更新: 2026-11-23。前のセッションの作業をそのまま続けられるよう、仕組み・決まりごと・残っている作業をまとめたもの。
+まず「0. 最初に読むこと」と「2. 守ること」を読み、作業に入る前に「9. 残っている作業」を確認する。
+
+---
+
+## 0. 最初に読むこと（要点）
+
+- サイト: https://eminem-steel.vercel.app/ （PCパーツの性能と最安値を比べる日本語サイト。運営者はこのリポジトリの持ち主）
+- リポジトリ: `masa8239/eminem`（公開）。main に入ったものが Vercel で本番に出る。
+- 運営者は技術者ではない。説明は日本語で、専門用語を避け、手順は番号付きで短く。スマホで見ていることが多い。
+- **正確さが最優先**（運営者の言葉:「ミスはゆるされない」）。数字は出典のある値だけを使い、推測した値を本番に出さない。
+- 価格は毎朝 GitHub Actions が Yahoo!ショッピングから取得し、製品ページなどの静的ページも同じ実行で作り直す。
+- データの元は Google スプレッドシート2つ（CPU用・GPU用）。サイトは Apps Script の JSON 経由で読む。
+- 変更の出し方: 作業ブランチで変更 → `npm test` → push → PR を作る → マージ（運営者はこの流れでの本番反映を了承済み）。
+- 手動で価格更新を動かしたいときは `.github/run-prices.txt` を書き換えて main に入れる（Actions の手動実行は権限がなく 403 になる）。
+
+---
+
+## 1. サイトの全体像
+
+### 1-1. ページ
+
+| 種類 | 場所 | 中身 |
+|---|---|---|
+| サイト本体（1ファイルのSPA） | `index.html` | ホーム、CPU/GPU/メモリ/SSD/電源/マザーボードのランキング、2製品比較、ボトルネック診断、おすすめ構成、構成ビルダー、このサイトについて。`?page=cpu-rank` などで切り替え（`PAGE_IDS`） |
+| 製品ページ | `p/<製品>.html` | 1製品の最安値・スコア・仕様・近い性能の製品・比較ページへのリンク |
+| 一覧 | `p/cpu.html`, `p/gpu.html` | 製品ページの一覧 |
+| 比較ページ | `p/<A>-vs-<B>.html`, `p/cpu-vs.html`, `p/gpu-vs.html` | 2製品の比較（スコア・最安値・1万円あたりのスコア・Blender・仕様・数字から作る結論文） |
+| 予算別構成 | `p/gaming-pc-<N>man.html`, `p/gaming-pc.html` | 予算ごとのゲーミングPC構成（毎日の最安値から自動計算） |
+| その他 | `sitemap.xml`, `robots.txt`, `google98e0aa91404d5eb2.html`（Search Console の所有確認） | |
+
+`p/`・`sitemap.xml`・`robots.txt` は `scripts/build-pages.js` が毎日作り直す。**手で編集しない**（次の実行で消える）。
+
+### 1-2. データの流れ
+
+```
+Google スプレッドシート（CPU用・GPU用）
+   │ Apps Script の Web アプリ（doGet）が JSON で配信 … CPU_GAS_URL / GPU_GAS_URL（index.html）
+   ▼
+index.html がブラウザで読み込んで表示 ─────────────┐
+   ▲                                              │
+GitHub Actions（毎日 03:37 JST）                    │
+   1. scripts/update-rakuten-prices.js            │
+      シートの製品一覧（index.html の解析関数で読む）  │
+      → Yahoo!ショッピング API で最安値を探す         │
+      → data/*.json に保存                        │
+   2. scripts/build-pages.js → p/, sitemap.xml    │
+   3. 変更をコミットして main に push ─────────────┘（サイトは data/rakuten-prices.json を読む）
+   ▼
+スプレッドシートの Apps Script（毎朝5時台）
+   gas/loader.gs が GitHub の gas/sheet-sync.gs を読んで実行
+   → 最安値(円)列・色・メモ・「パーツ最安値」タブなどをシートに書き戻す
+```
+
+### 1-3. 外部サービス
+
+| サービス | 用途 | 状態 |
+|---|---|---|
+| Vercel | 配信（main を自動デプロイ）。Web Analytics を有効化済み（Cookie なし、`/_vercel/insights/script.js` を全ページに入れてある） | 稼働中 |
+| GitHub Actions | 毎日の価格取得とページ生成 | 稼働中 |
+| Yahoo!ショッピング 商品検索API v3 | 価格の取得元（唯一） | Secrets `YAHOO_CLIENT_ID` 登録済み |
+| 楽天市場 API | コードは残っているが Secrets 未登録のため使っていない | 停止 |
+| バリューコマース | Yahoo!ショッピングのアフィリエイト。プログラムID 2025875 と提携済み。`config/affiliate.json` に sid/pid 入りのリンク基部を設定済み（2026-11-21） | 稼働中 |
+| Amazon アソシエイト | `index.html` の `AMAZON_TAG` は空。未申請 | 未 |
+| Google Search Console | 所有確認済み・sitemap.xml 送信済み（2026-11-19） | 稼働中 |
+| Google Apps Script | シートの JSON 配信（doGet、コードはリポジトリ外）と、毎朝のシート自動メンテ（loader.gs） | 稼働中 |
+| Blender Open Data | Blender Benchmark の中央値（`data/blender-scores.json`、Blender 4.5.0） | 取得済み |
+
+---
+
+## 2. 守ること（運営者との約束と、これまでに決めた方針）
+
+### 正確さ
+- **出典のない数字を本番に出さない。** スコアは PassMark（CPU）、3DMark Time Spy グラフィックスコア（GPU）、Blender Open Data。推測値・内蔵の仮の値は表示しない。
+- 文章は数字から機械的に作る（比較ページの結論など）。主観の評価や「おすすめ」は書かない。
+- 冷却能力（TDP）などのメーカー値は、**メーカーが公表しているものだけ**（公表なしは null にして使わない）。
+- 価格の採用ルール（下の 4-3）をゆるめない。迷う出品は使わない。
+
+### スプレッドシートを書き換えるとき
+- **書き込む前に必ず行を読み直し、製品名で行番号を確かめる**（以前、行番号の数え違いで別の行を書き換えた事故があった）。
+- 値を変えたセルには、メモに「旧値→新値、日付、出典」を残す。例: `13,873→12,544に修正（2026-11-19）。出典: PassMark cpubenchmark.net CPU一覧`
+- 書き込み後に読み直して確認する。
+- 運営者が自分で直している最中のことがある。大きく変える前に聞く。
+
+### 変更の出し方
+- 作業ブランチに commit → `npm test`（全件通す）→ push → PR → マージ。
+- コミットメッセージやPRにモデル名（Claude のモデル識別子）を書かない。
+- 秘密情報（APIキーなど）をチャット・コード・ログに出さない。キーは GitHub Secrets に運営者が入れる。
+- 運営者のメールアドレスは「このサイトについて」の連絡先として載っている以外、どこにも出さない。
+
+### 運営者への説明
+- 日本語。短く。専門用語は言い換える（例: インデックス → Googleに登録）。
+- 運営者に作業してもらうときは、画面のどこを押すかを番号付きで書く。
+- 終わったことは結果を先に言い、確認していないことは確認していないと書く。
+
+---
+
+## 3. スプレッドシート
+
+### 3-1. CPU用スプレッドシート
+- タイトルは「無題のスプレッドシート」、タブは `シート1`（sheetId 0）。ID は公開リポジトリには書かない（運営者に聞くか、Google Drive で探す）。
+- 列: `CPU名, PassMarkスコア, コア数, スレッド数, TDP, クロック, キャッシュ, 価格(円), コスパ指数, 最安値(円), 販売終了, シングル`
+  - `PassMarkスコア` = PassMark マルチスレッド。2026-11-19 に PassMark の一覧と照合済み（Intel 98・AMD 70 製品）。差が大きかった7製品は修正済み。
+  - `シングル`（L列） = PassMark シングルスレッド。2026-11-19 に119製品を入力。**残り50製品は未入力**（9-2 参照）。
+  - `価格(円)` = 人が入れる基準価格（任意）。空なら自動の基準（最近14日の取得価格の中央値）を使う。
+  - `最安値(円)` = 毎朝 Apps Script が書く。人は触らない。
+  - `販売終了` = TRUE の製品はサイトで既定では隠す（「販売終了も表示」で出る）。新品が5日以上見つからない製品はこのセルがオレンジになる（目安）。
+  - `コスパ指数` はサイトでは使っていない（サイトが自分で計算する）。
+- 「Ryzen 5 3600 AF」は PassMark に無い。13,000 は 2600 相当として妥当と判断して残してある。
+
+### 3-2. GPU用スプレッドシート（ID は `config/sheets.json` の `correctionsSpreadsheetId`）
+| タブ | 中身 |
+|---|---|
+| `gpuベンチマーク` | `GPU名, 3DMark Time Spy, TDP, VRAM, 帯域幅, コスパ, ワットパフォーマンス, 価格(円), 最安値(円), 販売終了`。スコアは ComputerBase などと照合済み（117中90製品）。RX 9050 = 9,107 は 2026-11-19 にエルミタージュ秋葉原のレビュー1件から換算（メモあり。追加の検証が出たら見直す） |
+| `パーツ最安値` | 毎朝 Apps Script が書き直す。メモリ・SSD・電源・マザーボード・CPUクーラー・ケースの最安値の一覧。「除外する」にチェック・「正しいメーカー」を書くと翌朝「パーツの修正」に保存される |
+| `パーツの修正` | 人が入れた除外・メーカー修正。価格取得が gviz CSV で読む（「リンクを知っている人が閲覧可」が必要）。今は空 |
+| `マザーボード` | 運営者が管理する個別製品リスト（製品名・メーカー・チップセット・サイズ・M.2・SATA・背面USB・LAN・Wi-Fi・PCIe5.0・最安値(円)・メモ・商品ページ・仕様を調べる）。最安値・商品ページ・仕様を調べる は自動。**サイトには出していない**（`SHOW_SHEET_PICKS = false`）。仕様の列は、自動の一覧（規格別）の板の仕様表示に使う（`data/mb-specs.json`） |
+| `SSD` | 同上（製品名・メーカー・接続・容量・読み書き・保証・TBW・最安値(円)・メモ・商品ページ・仕様を調べる）。サイトには出していない |
+
+### 3-3. Apps Script
+- 各スプレッドシートに `gas/loader.gs` だけを貼ってある。実行のたびに GitHub main の `gas/sheet-sync.gs` を読むので、**`gas/sheet-sync.gs` を main に入れればシート側の作業は不要**（main のコードが毎朝シートの中で動く点に注意）。
+- 毎朝5時台に `benchcoreSync`。`benchcorePreview` はシートを変えずにログだけ出す。
+- シートの JSON 配信（doGet）のコードはリポジトリに無い（運営者のシート側にある）。
+
+---
+
+## 4. 価格の取得（scripts/update-rakuten-prices.js）
+
+名前に rakuten とあるが、今は Yahoo!ショッピングだけで動いている。
+
+### 4-1. 取るもの
+| 対象 | どう探すか | 主なファイル |
+|---|---|---|
+| CPU・GPU | シートの全製品をモデル名で検索。型番・等級・VRAM が完全一致する新品だけ | `scripts/lib/match.js` |
+| メモリ | 規格（DDR世代・速度・容量・枚数）ごとに最安キット。13規格 | `scripts/lib/ram.js` |
+| 電源 15規格・SSD 10規格・マザーボード 30規格 | 規格 × メーカーごとの最安値 | `scripts/lib/parts.js` |
+| CPUクーラー 8製品・ケース 5製品 | 決まった製品を製品名で検索（ビルダーの製品と同じ） | `scripts/lib/fixed-parts.js` |
+| シートの個別製品（マザーボード・SSD タブ） | 製品名で検索（カテゴリ `mbp`・`ssdp`） | `scripts/lib/sheet-parts.js` |
+| Blender スコア | Blender Open Data | `scripts/lib/blender.js` |
+
+### 4-2. 書き出すファイル（data/）
+| ファイル | 中身 |
+|---|---|
+| `rakuten-prices.json` | 全製品の価格（`products`）と取れなかったもの（`unmatched`、理由つき。クーラー・ケースは検索で見えた出品 `seen` も残す） |
+| `price-history.json` | 1日1点の価格推移（最大180日）。自動の基準価格（14日中央値）にも使う |
+| `sheet-audit.json` | シートの要確認リスト（型番の誤り、価格なし、新品が続けて見つからない `stock` など） |
+| `new-products.json` | ストアにあってシートに無い新製品の候補 |
+| `sheet-parts.json`, `mb-specs.json` | シートの個別製品と、板の仕様 |
+| `pages.json` | 製品名 → 製品ページの対応（サイトからリンクするため） |
+| `spec-reference.json` | 仕様の照合用（`tools/spec-reference/build.sh` で作り直す） |
+| `blender-scores.json` | Blender スコア |
+
+### 4-3. 価格の採用ルール（ゆるめない）
+- 新品・在庫あり・中古/再生品/アウトレット/並行輸入/セット品/PC本体/付属品の語を含まない。
+- **2店以上**で売られているものだけ（1店だけの出品は相場とずれていても気づけないため）。
+- CPU/GPU は基準価格の2倍を超える出品を使わない。基準 = シートの `価格(円)`、無ければ最近14日の取得価格の中央値（3日分以上あるとき）。
+- 取れなかった日は、店側の失敗なら前回の値を数日引き継ぐ。7日を過ぎた価格は使わない。
+- シートで `販売終了` = TRUE の製品は検索しない（理由「販売終了（シートで指定）」）。
+- アフィリエイト: `config/affiliate.json` の `yahooValueCommerceId` を API に `affiliate_type=vc` で渡すと、返る商品URLがバリューコマースのリンクになる（http は https に直す）。
+
+### 4-4. 手動で動かす
+`.github/run-prices.txt` の中身（「最終依頼」の行など）を書き換えて main に入れる → Actions が1回動く（15〜20分）。結果は `https://raw.githubusercontent.com/masa8239/eminem/main/data/rakuten-prices.json` の `checkedAt` で確認できる。
+（Actions の workflow_dispatch は Claude の GitHub 連携の権限では 403 になる。運営者は GitHub の画面の「Run workflow」で動かせる）
+
+---
+
+## 5. 自動で作るページ（scripts/build-pages.js）
+
+- 製品ページ: スコアか価格がある製品だけ作る（中身のないページは作らない）。販売終了の製品は作らない。
+- 比較ページ: スコアと今の価格がある製品のうち、①スコアが近い上下2つ ②メーカー違いでいちばん近い製品 ③前の世代の同じ位置づけ（名前の数字の先頭を1〜2下げた製品）。2026-11-20 時点で CPU 188組・GPU 65組。
+  - 差の%は「高い方が低い方より何%高いか」で、説明文と本文で同じ数字にする。
+  - Blender は測り方（CUDA/OptiX/HIP）を必ず併記する。
+- 予算別構成（`scripts/lib/budget.js`）: 予算 12・15・20・25・30・40・50万円。
+  - 予算内で GPU のスコアが最大の組み合わせ。CPU はサイトのボトルネック診断（`calcBottleneck` と同じ計算）で「CPU が弱い側なら差15%未満、GPU が弱い側なら差60%未満」のもののうち、予算内でスコア最大。
+  - マザーボードは B 以上（A520/A620/H610/H810 は使わない）、ITX は使わない。AM4 は Ryzen 5000 だけ。メモリは15万円以下16GB・それより上32GB。SSD は NVMe Gen4（30万円以上は2TB）。電源は (CPU+GPU の消費電力)×1.3+100W 以上、25万円以上は Gold 以上。クーラーは TDP 105W 以下 AK400・それより上 AK620。ケースは最安。メーカー「その他」は使わない。
+  - 予算を上げても同じ構成なら作らない。OS（Windows）は含めない（運営者了承済み）。
+- 全ページのフッターに、予算別構成・比較一覧へのリンクがある。
+
+---
+
+## 6. サイト本体（index.html）の主な部分
+
+| 部分 | 場所の目印 |
+|---|---|
+| シートの読み込み | `CPU_GAS_URL`, `GPU_GAS_URL`, `parseCpuRow`, `parseGpuRow`, `isDiscontinued` |
+| 価格ファイルの読み込み | `PRICE_FILE_URLS`, `loadRakutenPrices`, `applyRakutenProducts`, `applyPartProducts`, `fixedPartPrices` |
+| 販売終了の表示切り替え | `showEnded`, `toggleEnded`, `visibleList`, `endedBadge` |
+| シングルスレッドのタブ | `syncSingleThreadTab`（値が1つも無いとタブを隠す）。値の無い製品は順位の代わりに「—」 |
+| パーツのランキング | `partsData`, `renderPartTable`, `PART_RANK`, `PART_UNIT`, `sortPart` |
+| マザーボードの CPU から選ぶ | `populateMbCpu`, `onMbCpuChange`, `chipsetAllowsOc`, `CHIPSET_TIER`, `CHIPSET_NOTE`, `SOCKET_ORDER` |
+| ボトルネック診断 | `calcBottleneck`（CPU が弱い: 15%未満 良好 / 15〜30% やや弱め / 30%以上 ボトルネック。GPU が弱い: 40%未満 良好 / 40〜60% CPUに余裕 / 60%以上 CPUが過剰） |
+| 構成ビルダー | `BPARTS`（CPUクーラー・ケースは id 固定 bco1〜9（bco4 は欠番）・bk1〜5、`price` は取れなかった日の参考価格）、`bloadPartsFromData`（マザーボード・SSD・電源は毎日のデータから作る）、`bsyncPrices`（CPU/GPU/メモリ/クーラー/ケースの価格合わせ。取れなかったものは「参考価格」表示） |
+| おすすめ構成 | `PRESET_BUILDS`（パーツ名と価格は表示時にビルダーの同じ id のものに置き換わる。`spec:B850 ATX` のような規格指定もある） |
+| アクセス解析 | `<head>` の `/_vercel/insights/script.js` |
+
+---
+
+## 7. テスト
+
+- `npm test`（`node --test`、外部通信なし）。2026-11-20 時点で 72件すべて通る。
+- 主なテスト: `test/auto-prices.test.js`（価格の照合・2店ルール・クーラー/ケース・比較ページ・予算別構成）、`test/gas-sync.test.js`（Apps Script の動作をモックで確認）。
+- 価格取得の `main()` をテストで呼ぶときは `skipParts`, `skipFixedParts`, `skipRam`, `skipBlender`, `skipBoardSpecs`, `skipSheetParts` などで外部取得を止める。
+- 画面の確認は Playwright（環境に入っている）で、幅390pxのスマホ表示で横にはみ出さないか（`document.documentElement.scrollWidth === 390`）を見る。
+
+---
+
+## 8. 環境と作業手順のメモ（クラウドのセッション向け）
+
+- GitHub の操作は GitHub MCP ツール（`mcp__github__*`）。PR の作成とマージは可。Actions の手動実行は不可（4-4 の方法を使う）。
+- push は作業ブランチ（セッションごとに指定されるブランチ名）に。main は PR のマージで更新する。
+- main は Actions の自動コミット（`chore: 価格データ・製品ページ・要確認リストを自動更新`）で頻繁に進む。作業前に `git fetch origin main` して main から作業ブランチを作り直す。
+- Google スプレッドシートは Google Sheets コネクタ（`mcp__Google_Sheets__*`）で読み書きできる（運営者のアカウント）。
+- Yahoo!ショッピングの検索ページは直接開けない（500）。出品を確かめたいときは価格取得を動かして `unmatched[].seen` を見る。
+- 本番の反映確認: `curl -s https://eminem-steel.vercel.app/<ページ>`。データは `https://raw.githubusercontent.com/masa8239/eminem/main/data/...`。
+
+---
+
+## 9. 残っている作業
+
+### 9-1. 運営者の作業待ち・判断待ち
+1. **比較ページを絞るか**（提案済み・返事待ち）: 古い世代同士の組み合わせを減らし、今売れている製品中心に 100〜150組にする案。Google の「大量生成の薄いページ」対策。あわせて Search Console の「セキュリティと手動による対策」→「手動による対策」が「問題は検出されませんでした」か見てもらう。
+2. **Amazon アソシエイト**: 未申請。通ったら `AMAZON_TAG` を入れる。
+3. **独自ドメイン**: 提案のみ（例: benchcore.jp）。取ったら Vercel の設定・`SITE`（build-pages.js）・サイトマップ・Search Console の更新が要る。
+4. **スキル・プラグイン**: Design / frontend-design / ralph-loop / Small Business を有効化済み。`anything-frontend-art-direction` スキルも追加された。Marketing・rampstack-seo・Social Media Skills を提案済み（入れたかは未確認）。
+
+### 9-2. こちらでできる作業（運営者の依頼があれば）
+1. **シングルスレッドの残り50製品**: 運営者は「あとで」と言っている。PassMark の https://www.cpubenchmark.net/single-thread/ の2〜8ページを運営者がコピーして送ってくれたら、名前で照合して CPU シートの L列（シングル）に入れる。照合ではモデル名の `AMD `/`Intel ` と `@ x.xxGHz`、`N-Core Processor`、`with Radeon ...` を取り除いて比べる。残りは Core 8〜11世代、Ryzen 1000〜4000、Ryzen 5 5500/5500GT、Ryzen 7 5700X3D など。
+2. **X（旧Twitter）の投稿文**: 比較ページ・予算別構成・値下がりを題材にした下書き。運営者が投稿する。
+3. **Search Console の見直し**（2〜4週間後）: 「ページ」の登録済みの数、「登録されていません」の理由、「検索パフォーマンス」のクエリ。2026-11-22 時点で登録2・表示2・平均順位7。サイトマップは 294 ページ検出（比較ページ追加前の版を読んだ）。
+4. **Vercel Analytics の見直し**: 訪問者数・よく見られるページ・参照元。2026-11-21 から計測開始。
+5. **README の更新**: 楽天中心の古い説明が残っている（今は Yahoo!ショッピングのみ）。
+6. **デザインの見直し**: `anything-frontend-art-direction` スキルで配色・文字・スマホ表示・アクセシビリティを見直す案（提案のみ）。
+7. **価格の気になる点**:
+   - Thermalright Peerless Assassin 120 SE と ARCTIC Liquid Freezer III Pro 360 は2店ぎりぎりで、日によって価格が取れない（取れない日はビルダーで「参考価格」表示）。PA120 SE は Yahoo!ショッピングでは相場（5,000〜6,000円）より高い ¥8,833 程度。入れ替えも検討の余地あり。
+   - 予算別構成は DeepCool AK400 / AK620 の価格が取れないと、その日は作れない（ページが消える）。取れない日が出たら、前回値の引き継ぎや代わりのクーラーを考える。
+   - GPU の最安値にときどき不自然な値がある（例: GTX 1660 SUPER が RTX 5060 より高い）。表示のルールは守っているが、気づいたら運営者に知らせる。
+8. **RX 9050 のスコア**: レビュー1件からの換算値。ほかの検証が出たら見直す。
+
+### 9-3. これまでに終わった主な作業（2026-11 時点）
+- CPU/GPU のスコア照合と修正、重複行の整理、販売終了の切り替え、販売終了の目安（オレンジ）。
+- メモリ・SSD・電源・マザーボードの規格別最安値ページ、並べ替え、CPU からマザーボードを選ぶ機能。
+- 構成ビルダーのパーツを毎日の最安値に置き換え。CPUクーラー・ケースも毎日取得（日本で売られていない6製品を入れ替え済み）。
+- 価格の安全策（自動の基準価格、2倍上限、2店ルール、アウトレット除外）。
+- 製品ページ・比較ページ・予算別構成ページの自動生成とサイトマップ。
+- バリューコマース（Yahoo!ショッピング）のアフィリエイトリンク、Vercel Web Analytics、プライバシーポリシーの追記。
+- `.github/run-prices.txt` による手動実行の仕組み。
