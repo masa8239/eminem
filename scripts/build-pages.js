@@ -27,22 +27,66 @@ function safeHttps(url) {
   try { const u = new URL(url); return u.protocol === 'https:' ? u.href : ''; } catch { return ''; }
 }
 
-const STYLE = `
-:root{--bg:#fff;--surface:#f5f6f8;--border:#dde1e6;--text:#1f2933;--text2:#4d5967;--accent:#1d5fa8;--good:#2b7a52}
-@media (prefers-color-scheme:dark){:root{--bg:#14181d;--surface:#1d232a;--border:#323a44;--text:#e6e9ed;--text2:#a7b0bb;--accent:#7fb2ec;--good:#6cc79a}}
-*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans JP',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
-a{color:var(--accent)}header,main,footer{max-width:860px;margin:0 auto;padding:0 16px}
-header{display:flex;align-items:center;gap:12px;padding-top:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.logo{font-weight:800;letter-spacing:.04em;text-decoration:none;color:var(--text)}.logo span{color:var(--accent)}
-.crumb{font-size:12px;color:var(--text2);margin:14px 0 4px}h1{font-size:24px;margin:4px 0 10px;line-height:1.35}
-h2{font-size:17px;margin:28px 0 10px;border-left:4px solid var(--accent);padding-left:10px}
-.price{background:var(--surface);border:1px solid var(--border);padding:14px 16px;border-radius:6px}
-.price strong{font-size:26px}.meta{font-size:12px;color:var(--text2)}
-.btn{display:inline-block;margin-top:10px;padding:8px 16px;background:var(--accent);color:#fff;text-decoration:none;border-radius:4px;font-weight:700}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
-th{width:38%;color:var(--text2);font-weight:500}.list td{width:auto}.list th{width:auto}
-.note{font-size:12px;color:var(--text2)}footer{margin-top:40px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--border);font-size:12px;color:var(--text2)}
-@media (max-width:600px){h1{font-size:20px}th{width:44%}}
+// 色・書体などの決まりはサイト本体（index.html の :root）と同じものを読み込んで使う（決まりを1か所にまとめるため）
+function siteTokens() {
+  try {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const m = html.match(/:root \{\n  --header-h[\s\S]*?\n\}\n@media \(prefers-color-scheme: dark\) \{[\s\S]*?\n  \}\n\}\n/);
+    if (m) return m[0];
+  } catch {}
+  return ':root{--bg:#fff;--sunk:#f3f5f7;--line:#dfe3e8;--line-strong:#c3cad2;--ink:#17212b;--ink2:#47525e;--ink3:#5f6b78;--head:#13293f;--cpu:#1a5fb4;--fill:#1a5fb4;--fill-hover:#154e96;--good:#1e7a46;--hover:#eef3f9;--radius:4px;--radius-lg:8px;--f-body:sans-serif;--f-num:monospace}\n';
+}
+// パーツの絵（index.html の #ill-sprite）も同じものを使う
+function siteSprite() {
+  try {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const m = html.match(/<svg id="ill-sprite"[\s\S]*?<\/svg>/);
+    if (m) return m[0];
+  } catch {}
+  return '';
+}
+const SPRITE = siteSprite();
+// ページで使う絵だけを入れる（全ページに全部の絵を入れると重くなるため）
+function spriteFor(html) {
+  if (!SPRITE) return '';
+  const used = new Set([...html.matchAll(/href="#ill-([a-z]+)"/g)].map(m => m[1]));
+  const symbols = [...SPRITE.matchAll(/<symbol id="ill-([a-z]+)"[\s\S]*?<\/symbol>/g)].filter(m => used.has(m[1])).map(m => m[0]).join('');
+  return symbols ? `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">${symbols}</svg>` : '';
+}
+const ill = (name, cls) => SPRITE ? `<svg class="${cls}" aria-hidden="true" focusable="false"><use href="#ill-${name}"/></svg>` : '';
+const STYLE = siteTokens() + `
+*{box-sizing:border-box}body{margin:0;font-family:var(--f-body);background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px;-webkit-text-size-adjust:100%}
+a{color:var(--cpu)}a:focus-visible{outline:2px solid var(--cpu);outline-offset:2px}
+.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top-in{max-width:860px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:12px}
+.logo{display:inline-flex;align-items:center;font-family:var(--f-disp);font-stretch:125%;font-weight:800;font-size:18px;text-decoration:none;color:var(--ink)}.logo span{color:var(--cpu)}
+.logo-mark{width:22px;height:22px;margin-right:8px;transform:rotate(-8deg);--ill:var(--cpu);--ill-soft:var(--cpu-soft);--ill-ink:var(--ink)}
+.top nav{margin-left:auto;display:flex;gap:4px;font-size:13px}.top nav a{color:var(--ink2);text-decoration:none;font-weight:700;padding:6px 10px;border-radius:999px}.top nav a:hover{background:var(--sunk);color:var(--ink)}
+main,footer{max-width:860px;margin:0 auto;padding:0 16px}
+.c-cpu{--ill:var(--cpu);--ill-soft:var(--cpu-soft);--solid:#1f4fd6}.c-gpu{--ill:var(--gpu);--ill-soft:var(--gpu-soft);--solid:#a3470f}.c-misc{--ill:var(--misc);--ill-soft:var(--misc-soft);--solid:#0c6b77}
+.hero{position:relative;overflow:hidden;margin:16px 0 14px;padding:18px 110px 18px 20px;border-radius:var(--radius-lg);background:var(--solid,#1f4fd6);color:#fff}
+.hero .crumb{color:rgba(255,255,255,.85);margin:0 0 4px}.hero .crumb a{color:#fff}
+.hero h1{margin:0;color:#fff}
+.band-ill{position:absolute;right:-6px;bottom:-14px;width:112px;height:112px;transform:rotate(-12deg);--ill:#fff;--ill-soft:rgba(0,0,0,.26);--ill-ink:#0b0d10;pointer-events:none}
+.crumb{font-size:12px;color:var(--ink3);margin:16px 0 4px}.crumb a{color:var(--ink2)}
+h1{font-size:24px;font-weight:900;margin:4px 0 12px;line-height:1.35;text-wrap:balance;word-break:auto-phrase}h2{word-break:auto-phrase}.top nav a{white-space:nowrap}
+h2{font-size:18px;font-weight:900;margin:32px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.num,.price strong,td.n{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.price{background:var(--sunk);padding:16px 18px;border-radius:var(--radius-lg)}
+.price strong{font-family:var(--f-disp);font-stretch:125%;font-size:28px;font-weight:800}.meta{font-size:12px;color:var(--ink3)}
+.btn{display:inline-block;margin-top:10px;padding:10px 20px;background:var(--fill);color:#fff;text-decoration:none;border-radius:999px;font-weight:700;font-size:14px}.btn:hover{background:var(--fill-hover)}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{width:38%;color:var(--ink2);font-weight:500}.list td{width:auto}.list th{width:auto;background:var(--sunk);font-size:12px;font-weight:700;white-space:nowrap}
+.list tr:hover td{background:var(--hover)}
+ul{padding-left:1.3em}li{margin-bottom:4px}
+.note{font-size:12px;color:var(--ink3)}footer{margin-top:48px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
+@media (max-width:600px){h1{font-size:20px}th{width:44%}.list td:first-child{min-width:8.5em}.list th,.list td{padding:8px 6px}.list th{white-space:normal}
+ .hero{padding:16px 92px 16px 16px}.band-ill{width:92px;height:92px}.top nav a{padding:6px 7px;font-size:12px}.logo{font-size:16px}
+ table.parts,table.parts tbody{display:block}table.parts tr:first-child{display:none}
+ table.parts tr{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+ table.parts td{border:none;padding:0}table.parts td:first-child{grid-column:1/-1;font-size:12px;color:var(--ink3)}
+ table.parts td:last-child{text-align:right;white-space:nowrap}
+ table.parts tr:hover td{background:none}}
 `;
 
 function layout({title, description, canonical, body}) {
@@ -58,11 +102,15 @@ function layout({title, description, canonical, body}) {
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="${esc(canonical)}">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@400;500;700;900&family=Archivo:wdth,wght@125,700;125,800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>${STYLE}</style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<header><a class="logo" href="/">BENCH<span>CORE</span></a><span class="meta">PCパーツの性能と最安値を比較</span></header>
+${spriteFor(body + ill('cpu', 'logo-mark'))}
+<header class="top"><div class="top-in"><a class="logo" href="/" aria-label="BENCHCORE トップ">${ill('cpu', 'logo-mark')}BENCH<span>CORE</span></a><nav aria-label="サイト内"><a href="/?page=cpu-rank">CPU</a><a href="/?page=gpu-rank">GPU</a><a href="/p/gaming-pc.html">予算別構成</a></nav></div></header>
 <main>
 ${body}
 </main>
@@ -152,8 +200,8 @@ function productPage(item, list, updated) {
     return `<tr><td><a href="/p/${x.slug}.html">${esc(x.name)}</a></td><td>${num(v)}（${diff > 0 ? '+' : ''}${diff}%）</td><td>${x.offer ? yen(x.offer.price) : '—'}</td></tr>`;
   }).join('');
 
-  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${item.category}.html">${cat}一覧</a> › ${esc(item.name)}</div>
-<h1>${esc(item.name)} の最安値と性能</h1>
+  const body = `<div class="hero c-${item.category}">${ill(item.category, 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${item.category}.html">${cat}一覧</a> › ${esc(item.name)}</div>
+<h1>${esc(item.name)} の最安値と性能</h1></div>
 ${price}
 <h2>ベンチマークスコア</h2>
 ${scores.length ? `<table>${scores.map(([k, v]) => `<tr><th>${k}</th><td>${v}</td></tr>`).join('')}</table>` : '<p class="note">スコアはまだありません。</p>'}
@@ -254,8 +302,8 @@ function comparePage(a, b, category, updated, pairsOf) {
   const related = x => (pairsOf.get(x.slug) || []).filter(([p, q]) => !(p === a && q === b) && !(p === b && q === a)).slice(0, 6)
     .map(([p, q]) => `<li><a href="/p/${pairSlug(p, q)}.html">${esc(p.name)} vs ${esc(q.name)}</a></li>`).join('');
   const relA = related(a), relB = related(b);
-  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${category}.html">${cat}一覧</a> › 比較</div>
-<h1>${esc(a.name)} と ${esc(b.name)} の比較</h1>
+  const body = `<div class="hero c-${category}">${ill(category, 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${category}.html">${cat}一覧</a> › 比較</div>
+<h1>${esc(a.name)} と ${esc(b.name)} の比較</h1></div>
 <p class="note">${updated}更新。スコアは公開されているベンチマークの値、最安値は毎日自動で取得した価格です。</p>
 <h2>結論（数字から）</h2>
 <ul>${compareSummary(a, b, metric).map(l => `<li>${esc(l)}</li>`).join('')}</ul>
@@ -295,7 +343,7 @@ function budgetRows(b) {
     fromPrice('SSD', b.ssd, `${esc(b.ssd.spec.label)}（${esc(b.ssd.spec.maker)}）`),
     fromPrice('電源', b.psu, `${esc(b.psu.spec.label)}（${esc(b.psu.spec.maker)}）`),
     fromPrice('ケース', b.case, esc(b.case.modelName)),
-  ].map(x => `<tr><td>${x.kind}</td><td>${x.name}${x.detail ? `<br><span class="meta">${esc(String(x.detail).slice(0, 60))}</span>` : ''}</td><td>${yen(x.price)}<br>${link(x.url, (x.source || 'ストア') + 'で見る')}</td></tr>`).join('');
+  ].map(x => `<tr><td>${x.kind}</td><td>${x.name}${x.detail ? `<br><span class="meta">${esc(String(x.detail).slice(0, 60))}</span>` : ''}</td><td><span class="num">${yen(x.price)}</span><br>${link(x.url, (x.source || 'ストア') + 'で見る')}</td></tr>`).join('');
 }
 
 function budgetPage(b, all, updated) {
@@ -305,13 +353,13 @@ function budgetPage(b, all, updated) {
   const bal = b.balance;
   const balText = bal.cpuWeaker ? `CPUとGPUの性能の差は約${Math.round(bal.pct)}%で、バランスは良好です。` : bal.pct < 40 ? `CPUとGPUの性能の差は約${Math.round(bal.pct)}%で、バランスは良好です。` : `CPUの性能に余裕があります（差は約${Math.round(bal.pct)}%）。将来GPUだけ交換するときにも使いやすい組み合わせです。`;
   const others = all.filter(x => x !== b).map(x => `<li><a href="/p/${budgetSlug(x)}.html">予算${man(x.budget)}</a>（${esc(x.gpu.name)}・合計 ${yen(x.total)}）</li>`).join('');
-  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a> › 予算${man(b.budget)}</div>
-<h1>予算${man(b.budget)}のゲーミングPC構成</h1>
+  const body = `<div class="hero c-misc">${ill('case', 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a> › 予算${man(b.budget)}</div>
+<h1>予算${man(b.budget)}のゲーミングPC構成</h1></div>
 <div class="price"><div class="meta">${updated}の最安値で計算（OSは含みません）</div>
 <strong>${yen(b.total)}</strong> <span class="meta">予算まで残り ${yen(b.budget - b.total)}</span>
 <div>GPU: <a href="/p/${b.gpu.slug}.html">${esc(b.gpu.name)}</a>（3DMark ${num(b.gpu.score)}）・CPU: <a href="/p/${b.cpu.slug}.html">${esc(b.cpu.name)}</a>（PassMark ${num(b.cpu.score)}）</div></div>
 <h2>パーツ一覧</h2>
-<div style="overflow-x:auto"><table class="list"><tr><th>パーツ</th><th>製品</th><th>最安値</th></tr>${budgetRows(b)}</table></div>
+<table class="list parts"><tr><th>パーツ</th><th>製品</th><th>最安値</th></tr>${budgetRows(b)}</table>
 <h2>CPUとGPUのバランス</h2>
 <p>${esc(balText)}<a href="/?page=bottleneck">ボトルネック診断</a>と同じ計算です。</p>
 <h2>この構成の決め方</h2>

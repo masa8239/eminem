@@ -9,349 +9,482 @@
 <meta property="og:title" content="BENCHCORE — PCパーツ性能比較">
 <meta property="og:description" content="CPU・GPU・メモリのベンチマークを数値で比較。ボトルネック診断・PC構成ビルダー付き。">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#13293f">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%231d5fa8'/><text x='50' y='70' font-size='62' font-weight='700' font-family='sans-serif' text-anchor='middle' fill='white'>B</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@400;500;700;900&family=Archivo:wdth,wght@125,700;125,800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   BENCHCORE デザインの決まり（scripts/build-pages.js の静的ページも同じ値を読み込んで使う）
+   方向: 「スペックシート」— 新製品の発表ページのような明るい地と大きな文字に、自作PCを組む楽しさを少し足す。
+   眺める場所（ホーム・見出し）はゆったり、パーツの絵と色の帯を使う。比べる場所（ランキング）は1行1製品で詰める。
+   絵はオリジナルの SVG（#ill-sprite）を使い回す。写真は使わない（軽さのため）。
+   色は役割だけ: CPU=青 / GPU=銅 / メモリ=紫 / その他のパーツ=青緑 / 良い値=緑 / 注意=黄 / 失敗=赤。
+   書体: 文字 M PLUS 2、ロゴと大きな数字 Archivo（幅広）、表の数字 IBM Plex Mono。
+   文字の大きさは 11 / 12 / 13 / 15 / 18 / 24 / 34px。角は 10px（部品）と 18px（面）、操作は丸い形。
+   ============================================================ */
 :root {
-  --header-h: 92px;
+  --header-h: 108px;
+  /* 地と線 */
   --bg: #ffffff;
-  --surface: #ffffff;
-  --surface2: #f5f6f8;
-  --surface3: #e5e8ec;
-  --border: #dde1e6;
-  --border2: #c2c9d1;
-  --navy: #16304b;
-  --accent: #a34a12;
-  --accent2: #1a5fb4;
-  --accent3: #1e7a46;
-  --accent4: #5b5f97;
-  --text: #1f2933;
-  --text2: #4d5967;
-  --text3: #687482;
-  --gold: #1f2933;
-  --silver: #687482;
-  --bronze: #8a5a2b;
+  --sunk: #f4f6f9;
+  --sunk2: #e9edf2;
+  --line: #e4e8ed;
+  --line-strong: #cdd4dc;
+  --hover: #f1f5fe;
+  /* 文字 */
+  --ink: #0b0d10;
+  --ink2: #444c56;
+  --ink3: #646d78;
+  --on-dark: #ffffff;
+  --head: #0b0d10;
+  /* 役割の色（-soft は淡い地、--fill は白い文字を載せる面） */
+  --cpu: #1f4fd6;
+  --cpu-strong: #1a42b3;
+  --cpu-soft: #e8eefe;
+  --fill: #1f4fd6;
+  --fill-hover: #1a42b3;
+  --gpu: #b8531a;
+  --gpu-soft: #fdeee3;
+  --gpu-fill: #b8531a;
+  --ram: #6b3fd4;
+  --ram-soft: #f0ebfd;
+  --misc: #0f7c8a;
+  --misc-soft: #dff3f5;
+  --good: #0d7444;
+  --good-soft: #e3f5ec;
   --warn: #8a5a00;
-  --danger: #b42318;
-  --radius: 4px;
+  --warn-soft: #fbf2dc;
+  --warn-line: #ecd9a0;
+  --bad: #b42318;
+  --bad-soft: #fbe9e7;
+  --bad-line: #f2b8b5;
+  /* 書体 */
+  --f-body: 'M PLUS 2', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+  --f-disp: 'Archivo', 'M PLUS 2', 'Hiragino Sans', sans-serif;
+  --f-num: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  /* 角丸・影 */
+  --radius: 10px;
+  --radius-lg: 18px;
+  --shadow: 0 10px 30px rgba(15, 25, 45, 0.12);
+  /* パーツの絵の色（使う場所で上書きする） */
+  --ill: var(--cpu);
+  --ill-soft: var(--cpu-soft);
+  --ill-ink: var(--ink);
+
+  /* 以前の名前（JS やインラインの style が使っている）。新しい値に読み替える */
+  --surface: var(--bg);
+  --surface2: var(--sunk);
+  --surface3: var(--sunk2);
+  --border: var(--line);
+  --border2: var(--line-strong);
+  --navy: var(--head);
+  --text: var(--ink);
+  --text2: var(--ink2);
+  --text3: var(--ink3);
+  --accent: var(--gpu);
+  --accent2: var(--cpu);
+  --accent3: var(--good);
+  --accent4: var(--cpu);
+  --gold: var(--ink);
+  --danger: var(--bad);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101419; --sunk: #181e25; --sunk2: #232b34; --line: #29323c; --line-strong: #3a4552; --hover: #1a2230;
+    --ink: #eef1f5; --ink2: #b8c1cc; --ink3: #95a0ad; --head: #eef1f5;
+    --cpu: #86a6ff; --cpu-strong: #a3bcff; --cpu-soft: #1c2747; --fill: #3b63e0; --fill-hover: #4c72ea;
+    --gpu: #f39a62; --gpu-soft: #3a2416; --gpu-fill: #b8531a; --ram: #b49bff; --ram-soft: #2a2145; --misc: #5fc9d6; --misc-soft: #133238;
+    --good: #5cc28a; --good-soft: #15291f; --warn: #e0b354; --warn-soft: #2a2312; --warn-line: #5a4a20;
+    --bad: #f08a80; --bad-soft: #2e1816; --bad-line: #5e2b27; --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-padding-top: var(--header-h); }
-body { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; line-height: 1.6; font-variant-numeric: tabular-nums; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-button, input, select { font-family: inherit; }
-button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, .nav-link:focus-visible, .logo:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+html { scroll-padding-top: var(--header-h); -webkit-text-size-adjust: 100%; }
+body { font-family: var(--f-body); font-size: 15px; line-height: 1.6; background: var(--bg); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+button, input, select { font-family: inherit; font-size: inherit; color: inherit; }
+/* 日本語の見出しは文節で折り返す（「ゲ／ーミング」のような切れ方をしない） */
+h1, h2, h3, .section-title, .card-title { word-break: auto-phrase; }
+a { color: var(--cpu); }
+.num, .score-val, .rank-num, .mini-rank-pos, .mini-rank-score, .price-cell > div:first-child, .per-val, .bgrand-val, .preset-total-val, .bn-stat-val, .bpart-item-price, .bcart-item-price, .btotal-val, #bmobile-total { font-family: var(--f-num); font-variant-numeric: tabular-nums; }
+button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--cpu); outline-offset: 2px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes pop { 0%{transform:scale(1)} 40%{transform:scale(1.3)} 100%{transform:scale(1)} }
 @keyframes bslideIn { from { opacity:0; } to { opacity:1; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 
-/* ── ヘッダー ── */
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border2); }
-.brand-row { background: var(--navy); color: #fff; height: 48px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.logo { font-weight: 700; font-size: 19px; letter-spacing: 0.08em; color: #fff; cursor: pointer; }
-.logo span { font-weight: 400; opacity: 0.85; }
-.brand-tag { font-size: 12px; color: rgba(255,255,255,0.78); white-space: nowrap; }
-.nav-links { display: flex; align-items: stretch; height: 44px; padding: 0 16px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+/* ── ヘッダー（PC: 全項目を横に / スマホ: よく使う4つ＋メニュー） ── */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: color-mix(in srgb, var(--bg) 92%, transparent); -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); }
+.brand-row { height: 56px; padding: 0 24px; display: flex; align-items: center; gap: 16px; }
+.logo { font-family: var(--f-disp); font-stretch: 125%; font-weight: 800; font-size: 19px; letter-spacing: 0.01em; color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; }
+.logo span { font-weight: 800; color: var(--cpu); }
+.logo-mark { width: 22px; height: 22px; margin-right: 8px; --ill: var(--cpu); --ill-soft: var(--cpu-soft); --ill-ink: var(--ink); transform: rotate(-8deg); }
+.brand-tag { font-size: 12px; color: var(--ink3); white-space: nowrap; margin-left: auto; }
+.menu-btn { display: none; margin-left: auto; background: var(--ink); color: var(--bg); border: none; border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
+.nav-links { display: flex; align-items: center; height: 48px; padding: 0 20px; gap: 2px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .nav-links::-webkit-scrollbar { display: none; }
-.nav-group { display: flex; align-items: center; padding: 0 6px 0 16px; margin-left: 8px; border-left: 1px solid var(--border); font-size: 11px; color: var(--text3); white-space: nowrap; }
-.nav-link { display: flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 3px solid transparent; border-top: 3px solid transparent; white-space: nowrap; transition: color 0.15s; }
-.nav-link:hover { color: var(--accent2); }
-.nav-link.active { color: var(--accent2); border-bottom-color: var(--accent2); font-weight: 700; }
+.nav-group { display: flex; align-items: center; padding: 0 6px 0 14px; margin-left: 8px; border-left: 1px solid var(--line); font-size: 11px; color: var(--ink3); white-space: nowrap; }
+.nav-link { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 13px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--ink2); cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s; }
+.nav-link:hover { background: var(--sunk); color: var(--ink); }
+.nav-link.active { background: var(--ink); color: var(--bg); font-weight: 700; }
+.nav-quick { display: none; }
+.nav-ill { width: 20px; height: 20px; flex-shrink: 0; }
 .nav-badge { display: none; }
+
+/* ── パーツの絵（#ill-sprite を <use> で使う） ── */
+.ill { display: block; width: 100%; height: 100%; overflow: visible; }
+.c-cpu { --ill: var(--cpu); --ill-soft: var(--cpu-soft); --tint: var(--cpu-soft); --solid: #1f4fd6; }
+.c-gpu { --ill: var(--gpu); --ill-soft: var(--gpu-soft); --tint: var(--gpu-soft); --solid: #a3470f; }
+.c-ram { --ill: var(--ram); --ill-soft: var(--ram-soft); --tint: var(--ram-soft); --solid: #6b3fd4; }
+.c-misc { --ill: var(--misc); --ill-soft: var(--misc-soft); --tint: var(--misc-soft); --solid: #0c6b77; }
+/* 各ページの最初の見出し: パーツの色の帯に、白い絵をステッカーのように貼る */
+.section-header.band { position: relative; overflow: hidden; background: var(--solid, #1f4fd6); color: #fff; border: none; border-radius: var(--radius-lg); padding: 20px 120px 18px 22px; margin-bottom: 18px; min-height: 96px; align-content: center; }
+.section-header.band .section-title { font-size: 24px; font-weight: 900; white-space: normal; }
+.section-header.band .section-sub { color: #fff; flex-basis: 100%; order: 3; }
+.section-header.band .share-btn { position: relative; z-index: 1; background: rgba(0,0,0,0.22); border-color: transparent; color: #fff; }
+.section-header.band .share-btn:hover { background: rgba(0,0,0,0.34); color: #fff; }
+.section-header.band p { flex-basis: 100%; color: rgba(255,255,255,0.88) !important; position: relative; z-index: 1; }
+.section-header.band > :not(.band-ill) { position: relative; z-index: 1; }
+.band-ill { position: absolute; right: -6px; bottom: -14px; width: 116px; height: 116px; transform: rotate(-12deg); --ill: #ffffff; --ill-soft: rgba(0,0,0,0.26); --ill-ink: #0b0d10; pointer-events: none; }
+.section-header.band .share-btn { margin-left: 0; order: 2; }
 
 /* ── ページ共通 ── */
 .page { display: none; padding-top: var(--header-h); min-height: 100vh; }
 .page.active { display: block; }
 .section { padding: 28px 24px; max-width: 1320px; margin: 0 auto; }
-.section-header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--navy); }
-.section-title { font-size: 19px; font-weight: 700; white-space: nowrap; }
-.section-sub { font-size: 12px; color: var(--text3); }
+.section-header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.section-title { font-size: 18px; font-weight: 900; white-space: nowrap; }
+.section-sub { font-size: 12px; color: var(--ink3); }
 .divider { display: none; }
-.footer-band { background: var(--surface2); border-top: 1px solid var(--border); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-top: 40px; }
-.footer-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--text2); }
+.footer-band { background: var(--sunk); border-top: 1px solid var(--line); padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-top: 40px; }
+.footer-logo { font-family: var(--f-disp); font-stretch: 125%; font-size: 13px; font-weight: 800; color: var(--ink2); }
 .footer-logo span { font-weight: 400; }
-.footer-note { font-size: 11px; color: var(--text3); }
-.footer-link { font-size: 12px; color: var(--accent2); cursor: pointer; margin-left: auto; }
+.footer-note { font-size: 11px; color: var(--ink3); }
+.footer-link { font-size: 12px; color: var(--cpu); cursor: pointer; margin-left: auto; }
 .footer-link:hover { text-decoration: underline; }
 .prose { max-width: 860px; }
-.prose h3 { font-size: 15px; font-weight: 700; margin: 22px 0 6px; padding-left: 10px; border-left: 4px solid var(--navy); }
-.prose p, .prose li { font-size: 14px; color: var(--text2); line-height: 1.8; }
+.prose h3 { font-size: 15px; font-weight: 900; margin: 22px 0 6px; }
+.prose p, .prose li { font-size: 15px; color: var(--ink2); line-height: 1.8; }
 .prose ul { padding-left: 1.3em; }
 .prose li { margin-bottom: 4px; }
-.btn { white-space: nowrap; padding: 9px 20px; border-radius: var(--radius); font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid transparent; transition: background 0.15s, border-color 0.15s; }
-.btn-primary { background: var(--accent2); color: #fff; }
-.btn-primary:hover { background: #154e96; }
-.btn-secondary { background: var(--surface); border-color: var(--border2); color: var(--text); }
-.btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }
+.btn { white-space: nowrap; padding: 11px 22px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid transparent; transition: background 0.15s, border-color 0.15s; }
+.btn-primary { background: var(--fill); color: #fff; }
+.btn-primary:hover { background: var(--fill-hover); }
+.btn-secondary { background: var(--bg); border-color: var(--line-strong); color: var(--ink); }
+.btn-secondary:hover { border-color: var(--cpu); color: var(--cpu); }
 .badge { display: inline-block; padding: 1px 6px; border-radius: 2px; font-size: 11px; font-weight: 700; white-space: nowrap; vertical-align: 1px; }
-.badge-green { background: #e6f4ec; color: var(--accent3); }
-.badge-blue { background: #e6eef9; color: var(--accent2); }
-.badge-orange { background: #f9ece2; color: var(--accent); }
-.badge-purple { background: #ececf5; color: var(--accent4); }
-tr.part-group-first td { border-top: 2px solid var(--border2); }
-.plink { color: inherit; text-decoration: underline; text-decoration-color: var(--border2); text-underline-offset: 3px; }
+.badge-green { background: var(--good-soft); color: var(--good); }
+.badge-blue { background: var(--cpu-soft); color: var(--cpu); }
+.badge-orange { background: var(--gpu-soft); color: var(--gpu); }
+.badge-purple { background: var(--sunk2); color: var(--ink2); }
+tr.part-group-first td { border-top: 2px solid var(--line-strong); }
+.plink { color: inherit; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
 .plink:hover { text-decoration-color: currentColor; }
-.notice { padding: 9px 14px; background: var(--surface2); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text2); }
-.notice::before { content: '※ '; color: var(--text3); }
-.share-btn { white-space: nowrap; margin-left: auto; padding: 5px 14px; border-radius: var(--radius); font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: var(--surface); color: var(--text2); }
-.share-btn:hover { border-color: var(--accent2); color: var(--accent2); }
-.share-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--navy); color: #fff; padding: 10px 22px; border-radius: var(--radius); font-size: 13px; font-weight: 500; z-index: 9999; opacity: 0; transition: all 0.25s; pointer-events: none; box-shadow: 0 4px 16px rgba(22,48,75,0.25); }
+.notice { padding: 9px 14px; background: var(--sunk); border-bottom: 1px solid var(--line); font-size: 12px; color: var(--ink2); }
+.notice::before { content: '※ '; color: var(--ink3); }
+.share-btn { white-space: nowrap; margin-left: auto; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink2); }
+.share-btn:hover { border-color: var(--cpu); color: var(--cpu); }
+.share-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--head); color: #fff; padding: 10px 22px; border-radius: var(--radius); font-size: 13px; font-weight: 500; z-index: 9999; opacity: 0; transition: all 0.25s; pointer-events: none; box-shadow: var(--shadow); }
 .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ── トップページ ── */
-.home-intro { background: var(--surface2); border-bottom: 1px solid var(--border); }
-.home-intro-inner { max-width: 1320px; margin: 0 auto; padding: 32px 24px; display: grid; grid-template-columns: 1fr 360px; gap: 40px; align-items: start; }
-.home-intro h1 { text-wrap: balance; font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
-.home-intro p { font-size: 14px; color: var(--text2); max-width: 620px; margin-bottom: 20px; }
-.home-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.home-facts { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; }
-.home-facts div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 14px; border-bottom: 1px solid var(--border); }
-.home-facts div:last-child { border-bottom: none; }
-.home-facts dt { color: var(--text2); white-space: nowrap; }
-.home-facts dd { font-weight: 700; text-align: right; }
+/* ── トップページ（眺める場所: 遊び心多め。「何がしたいですか？」から選ぶ） ── */
+/* 地は基板の穴あきのような点の並び */
+.home-intro { background-color: var(--bg); background-image: radial-gradient(var(--line-strong) 1.1px, transparent 1.3px); background-size: 18px 18px; border-bottom: 1px solid var(--line); }
+.home-intro-inner { max-width: 1180px; margin: 0 auto; padding: 36px 24px 40px; }
+.eyebrow { font-size: 12px; font-weight: 700; color: var(--cpu); letter-spacing: 0.04em; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px; background: var(--bg); border: 1px solid var(--line); padding: 4px 12px 4px 6px; border-radius: 999px; }
+.eyebrow-ill { width: 20px; height: 20px; transform: rotate(-10deg); }
+.home-intro h1 { font-size: 44px; font-weight: 900; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+.home-lead { font-size: 15px; color: var(--ink2); max-width: 560px; margin-bottom: 24px; background: color-mix(in srgb, var(--bg) 80%, transparent); }
+.intents { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.intent { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 4px; min-height: 168px; padding: 18px 18px 56px; border-radius: 22px; background: var(--tint); color: var(--ink); text-decoration: none; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s; }
+.intent.wide, .intent.wide-d { grid-column: span 2; }
+.intent:hover { transform: translateY(-3px) rotate(-0.4deg); box-shadow: var(--shadow); }
+.intent:active { transform: scale(0.98); }
+.intent-ill { position: absolute; right: -8px; top: -6px; width: 104px; height: 104px; transform: rotate(-10deg); transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.intent-ill.duo { display: block; }
+.intent-ill.duo > * { position: absolute; width: 62%; height: 62%; display: block; }
+.intent-ill.duo > :first-child { left: 0; top: 0; transform: rotate(-8deg); }
+.intent-ill.duo > :last-child { right: 0; bottom: 0; transform: rotate(10deg); }
+.intent-ill.duo .ill { width: 100%; height: 100%; }
+.intent.wide .intent-ill { width: 132px; height: 132px; right: 8px; top: 8px; }
+.intent:hover .intent-ill { transform: rotate(4deg) scale(1.08); }
+.intent-q { position: relative; font-size: 20px; font-weight: 900; line-height: 1.35; padding-right: 84px; word-break: auto-phrase; }
+.intent.wide .intent-q { font-size: 24px; padding-right: 140px; }
+.intent-a { position: relative; font-size: 12px; color: var(--ink2); font-weight: 700; }
+.intent-a b { font-size: 13px; color: var(--ink); }
+.intent-top { position: relative; align-self: flex-start; margin-top: 6px; font-size: 12px; color: var(--ink2); background: var(--bg); border-radius: 999px; padding: 3px 10px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.intent-top b { color: var(--ink); }
+.intent-go { position: absolute; left: 18px; bottom: 16px; width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-size: 15px; font-weight: 700; transition: transform 0.2s; }
+.intent:hover .intent-go { transform: translateX(4px); }
+@media (prefers-reduced-motion: no-preference) {
+  .intent-ill { animation: wobble 5s ease-in-out infinite; }
+  .intent:nth-child(2) .intent-ill { animation-delay: -1s; } .intent:nth-child(3) .intent-ill { animation-delay: -2s; } .intent:nth-child(4) .intent-ill { animation-delay: -3s; }
+  .intent:nth-child(5) .intent-ill { animation-delay: -1.5s; } .intent:nth-child(6) .intent-ill { animation-delay: -2.5s; } .intent:nth-child(7) .intent-ill { animation-delay: -3.5s; }
+  .intent:hover .intent-ill { animation-play-state: paused; }
+}
+@keyframes wobble { 50% { translate: 0 -5px; } }
 .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
 .home-grid > div { min-width: 0; }
-.mini-rank { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.mini-rank-item { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border-bottom: 1px solid var(--border); cursor: pointer; background: var(--surface); }
+.mini-rank { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+.mini-rank-item { display: grid; grid-template-columns: 28px minmax(0, 1fr) 72px 64px; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); cursor: pointer; background: var(--bg); }
 .mini-rank-item:last-child { border-bottom: none; }
-.mini-rank-item:nth-child(even) { background: #fafbfc; }
-.mini-rank-item:hover { background: #eef4fb; }
-.mini-rank-pos { font-size: 13px; font-weight: 700; min-width: 28px; color: var(--text3); }
-.pos-1, .pos-2, .pos-3 { color: var(--text); }
-.mini-rank-name { flex: 1; min-width: 0; font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mini-rank-bar { width: 90px; height: 6px; background: var(--surface3); overflow: hidden; }
-.mini-rank-bar-fill { height: 100%; }
-.mini-rank-score { font-size: 14px; font-weight: 700; color: var(--accent2); min-width: 60px; text-align: right; }
-.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.card { position: relative; padding: 14px 40px 14px 16px; cursor: pointer; background: var(--surface); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 0 -1px -1px 0; }
-.card:hover { background: #eef4fb; }
+.mini-rank-item:hover { background: var(--hover); }
+.mini-rank-pos { font-size: 13px; font-weight: 600; color: var(--ink3); text-align: center; }
+.pos-1, .pos-2, .pos-3 { color: var(--bg); background: var(--ink); border-radius: 999px; line-height: 22px; width: 22px; }
+.mini-rank-name { min-width: 0; font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini-rank-bar { height: 8px; background: var(--sunk2); border-radius: 99px; overflow: hidden; }
+.mini-rank-bar-fill { height: 100%; border-radius: 99px; }
+.mini-rank-score { font-size: 13px; font-weight: 600; text-align: right; }
+/* できること: パーツの絵つきのタイル。絵は右上からはみ出させる */
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.card { position: relative; overflow: hidden; padding: 18px 96px 18px 18px; min-height: 116px; cursor: pointer; background: var(--tint, var(--sunk)); border-radius: var(--radius-lg); transition: transform 0.2s; }
+.card:hover { transform: translateY(-2px); }
 .card-label { display: none; }
-.card-title { font-size: 14px; font-weight: 700; color: var(--accent2); margin-bottom: 2px; }
-.card-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
-.card-arrow { position: absolute; top: 50%; right: 14px; transform: translateY(-50%); color: var(--text3); font-size: 14px; }
-.home-notes { font-size: 13px; color: var(--text2); padding-left: 1.2em; }
+.card-title { font-size: 15px; font-weight: 900; color: var(--ink); margin-bottom: 4px; }
+.card-desc { font-size: 12px; color: var(--ink2); line-height: 1.6; }
+.card-arrow { display: none; }
+.card-ill { position: absolute; right: -10px; top: -6px; width: 96px; height: 96px; transform: rotate(-10deg); transition: transform 0.3s; }
+.card:hover .card-ill { transform: rotate(-2deg) scale(1.05); }
+.home-notes { font-size: 13px; color: var(--ink2); padding-left: 1.2em; }
 .home-notes li { margin-bottom: 4px; }
 
-/* ── 一覧の操作 ── */
-.filters { display: flex; flex-wrap: wrap; margin-bottom: 12px; }
-.filter-btn { padding: 6px 16px; font-size: 13px; cursor: pointer; border: 1px solid var(--border2); background: var(--surface); color: var(--text2); margin-right: -1px; }
-.filter-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
-.filter-btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
-.filter-btn:hover { color: var(--accent2); }
-.filter-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; font-weight: 700; position: relative; }
+/* ── 一覧の操作（絞り込み・検索・並び替え） ── */
+.filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.filter-btn { padding: 5px 14px; font-size: 13px; cursor: pointer; border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink2); border-radius: 999px; }
+.filter-btn:hover { color: var(--cpu); border-color: var(--cpu); }
+.filter-btn.active { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 700; }
 .search-budget-row { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; align-items: flex-end; }
 .search-box { position: relative; flex: 1; min-width: 220px; }
-.search-box input { width: 100%; padding: 8px 12px 8px 34px; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); color: var(--text); font-size: 13px; outline: none; }
-.search-box input:focus { border-color: var(--accent2); }
-.search-box input::placeholder { color: var(--text3); }
-.search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text3); display: flex; pointer-events: none; }
-.budget-box { display: flex; flex-direction: column; gap: 6px; min-width: 220px; }
-.budget-label { font-size: 12px; color: var(--text2); display: flex; justify-content: space-between; }
-.budget-label span { color: var(--text); font-weight: 700; }
-input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; background: var(--surface3); border-radius: 2px; outline-offset: 4px; cursor: pointer; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent2); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--accent2); cursor: pointer; }
-input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent2); border: 2px solid #fff; cursor: pointer; }
-.result-count { font-size: 12px; color: var(--text2); align-self: flex-end; padding-bottom: 8px; white-space: nowrap; }
-.sort-row { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
-.sort-label { font-size: 12px; color: var(--text2); margin-right: 8px; }
-.sort-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: var(--surface); color: var(--text2); margin-right: -1px; user-select: none; }
-.sort-btn:hover { color: var(--accent2); }
-.sort-btn.active-score, .sort-btn.active-price, .sort-btn.active-cospa { background: #e6eef9; border-color: var(--accent2); color: var(--accent2); font-weight: 700; position: relative; }
-.sort-arrow { font-size: 10px; }
-.fav-btn { color: var(--text3); background: none; border: none; cursor: pointer; font-size: 17px; padding: 2px 6px; border-radius: var(--radius); line-height: 1; }
-.fav-btn:hover { color: var(--danger); }
-.fav-btn.active { color: var(--danger); animation: pop 0.3s; }
-.fav-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--surface2); border: 1px solid var(--border); border-bottom: none; font-size: 12px; color: var(--text2); }
-.fav-bar-label { font-size: 12px; color: var(--text2); white-space: nowrap; }
-.fav-chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; background: var(--surface); border: 1px solid var(--border2); border-radius: 2px; font-size: 12px; }
-.fav-chip-del { color: var(--text3); font-size: 10px; cursor: pointer; }
-.fav-chip-del:hover { color: var(--danger); }
-.fav-clear { margin-left: auto; font-size: 12px; color: var(--text2); cursor: pointer; padding: 2px 10px; border: 1px solid var(--border2); border-radius: var(--radius); background: var(--surface); }
-.fav-clear:hover { border-color: var(--danger); color: var(--danger); }
+.search-box input { width: 100%; padding: 9px 12px 9px 34px; background: var(--bg); border: 1px solid var(--line-strong); border-radius: var(--radius); color: var(--ink); font-size: 15px; outline: none; }
+.search-box input:focus { border-color: var(--cpu); }
+.search-box input::placeholder { color: var(--ink3); }
+.search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--ink3); display: flex; pointer-events: none; }
+/* 予算上限: 大きなつまみと、大きな金額の表示 */
+.budget-box { display: flex; flex-direction: column; gap: 10px; min-width: 260px; background: var(--sunk); border-radius: var(--radius-lg); padding: 12px 16px 16px; }
+.budget-label { font-size: 13px; font-weight: 700; color: var(--ink2); display: flex; justify-content: space-between; align-items: baseline; }
+.budget-label span { color: var(--ink); font-family: var(--f-disp); font-stretch: 125%; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 12px; background: linear-gradient(90deg, var(--cpu) var(--fill-pct, 100%), var(--sunk2) var(--fill-pct, 100%)); border-radius: 99px; outline-offset: 6px; cursor: pointer; margin: 6px 0; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 32px; height: 32px; border-radius: 50%; background: var(--bg); border: 3px solid var(--cpu); box-shadow: 0 2px 8px rgba(15, 25, 45, 0.25); cursor: grab; }
+input[type=range]::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: var(--bg); border: 3px solid var(--cpu); box-shadow: 0 2px 8px rgba(15, 25, 45, 0.25); cursor: grab; }
+input[type=range]:active::-webkit-slider-thumb { cursor: grabbing; transform: scale(1.08); }
+#gpu-budget { --cpu: var(--gpu); }
+#ram-budget { --cpu: var(--ram); }
+.result-count { font-size: 12px; color: var(--ink2); align-self: flex-end; padding-bottom: 8px; white-space: nowrap; }
+.sort-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.sort-label { font-size: 12px; color: var(--ink2); margin-right: 2px; }
+.sort-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--line-strong); background: var(--bg); color: var(--ink2); border-radius: 999px; user-select: none; }
+.sort-btn:hover { color: var(--cpu); border-color: var(--cpu); }
+.sort-btn.active-score, .sort-btn.active-price, .sort-btn.active-cospa, .sort-btn.active-tier { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 700; }
+.sort-arrow { font-size: 11px; }
+.fav-btn { color: var(--ink3); background: none; border: none; cursor: pointer; font-size: 18px; padding: 2px 6px; border-radius: var(--radius); line-height: 1; }
+.fav-btn:hover { color: var(--bad); }
+.fav-btn.active { color: var(--bad); animation: pop 0.3s; }
+.fav-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--sunk); border: 1px solid var(--line); border-bottom: none; font-size: 12px; color: var(--ink2); }
+.fav-bar-label { font-size: 12px; color: var(--ink2); white-space: nowrap; }
+.fav-chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; background: var(--bg); border: 1px solid var(--line-strong); border-radius: 999px; font-size: 12px; }
+.fav-chip-del { color: var(--ink3); font-size: 11px; cursor: pointer; }
+.fav-chip-del:hover { color: var(--bad); }
+.fav-clear { margin-left: auto; font-size: 12px; color: var(--ink2); cursor: pointer; padding: 2px 10px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--bg); }
+.fav-clear:hover { border-color: var(--bad); color: var(--bad); }
+.ad-note { font-size: 11px; color: var(--ink3); margin: 0 0 8px; }
 
-/* ── 表 ── */
-.table-wrap { background: var(--surface); border: 1px solid var(--border); }
-.tabs { display: flex; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border2); background: var(--surface2); padding: 6px 8px 0; gap: 2px; }
-.tab { white-space: nowrap; padding: 8px 18px; font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; border: 1px solid transparent; border-bottom: none; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: -1px; }
-.tab:hover { color: var(--accent2); }
-.tab.active { color: var(--text); font-weight: 700; background: var(--surface); border-color: var(--border2); }
+/* ── ランキングの表（PC: 表 / スマホ: 1行 = 1製品、押すと詳しく開く） ── */
+.table-wrap { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); }
+.tabs { display: flex; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); background: var(--sunk); padding: 6px; gap: 4px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.tab { white-space: nowrap; padding: 7px 16px; font-size: 13px; font-weight: 700; color: var(--ink2); cursor: pointer; border-radius: 999px; }
+.tab:hover { color: var(--cpu); }
+.tab.active { color: var(--ink); background: var(--bg); box-shadow: 0 1px 4px rgba(15,25,45,0.12); }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 .rank-table { width: 100%; border-collapse: collapse; }
-.rank-table th { position: sticky; top: var(--header-h); z-index: 2; text-align: left; padding: 8px 8px; font-size: 12px; font-weight: 700; color: var(--text2); background: #eef0f3; border-bottom: 1px solid var(--border2); white-space: nowrap; }
-.rank-table td { padding: 8px 8px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+.rank-table th { position: sticky; top: var(--header-h); z-index: 2; text-align: left; padding: 8px; font-size: 12px; font-weight: 700; color: var(--ink2); background: var(--sunk); border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+.rank-table td { padding: 8px; border-bottom: 1px solid var(--line); font-size: 13px; vertical-align: middle; }
 .rank-table tr:last-child td { border-bottom: none; }
-.rank-table tbody tr:nth-child(even) { background: #fafbfc; }
-.rank-table tbody tr:hover { background: #eef4fb; }
-.rank-num { font-size: 14px; font-weight: 700; color: var(--text3); }
-.rank-1, .rank-2, .rank-3 { color: var(--text); }
+.rank-table tbody tr:hover { background: var(--hover); }
+.rank-num { display: inline-block; min-width: 24px; text-align: center; font-size: 13px; font-weight: 600; color: var(--ink3); }
+/* 1〜3位は丸いメダル */
+.rank-1, .rank-2, .rank-3 { color: var(--bg); background: var(--ink); border-radius: 999px; line-height: 24px; height: 24px; }
 .chip-name { font-weight: 700; font-size: 13px; line-height: 1.4; white-space: nowrap; }
-.chip-sub { font-size: 11px; color: var(--text3); }
-.score-bar-wrap { min-width: 96px; }
-.score-val { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-.score-bar-bg { height: 5px; background: var(--surface3); overflow: hidden; }
-.score-bar { height: 100%; background: var(--accent2); }
-.score-bar.gpu { background: var(--accent); }
-.price-cell { font-size: 13px; color: var(--text); white-space: nowrap; }
-.price-meta { margin-top: 3px; color: var(--text3); font-size: 11px; line-height: 1.5; white-space: normal; min-width: 150px; }
-.price-meta a { color: var(--accent2); text-decoration: none; }
+.chip-sub { font-size: 11px; color: var(--ink3); }
+.score-bar-wrap { min-width: 150px; display: grid; grid-template-columns: 6.2ch minmax(0, 1fr); align-items: center; gap: 8px; }
+.score-val { font-size: 13px; font-weight: 600; text-align: right; }
+.score-bar-bg { height: 10px; background: var(--cpu-soft); border-radius: 99px; overflow: hidden; }
+.score-bar { height: 100%; background: var(--cpu); border-radius: 99px; transform-origin: left center; }
+/* 最初に表を出したときだけ、ベンチマークを走らせたように棒が伸びる */
+@media (prefers-reduced-motion: no-preference) {
+  tbody.mrows:not(.settled) .score-bar { animation: charge 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  tbody.mrows:not(.settled) tr:nth-child(2) .score-bar { animation-delay: 0.04s; } tbody.mrows:not(.settled) tr:nth-child(3) .score-bar { animation-delay: 0.08s; }
+  tbody.mrows:not(.settled) tr:nth-child(4) .score-bar { animation-delay: 0.12s; } tbody.mrows:not(.settled) tr:nth-child(n+5) .score-bar { animation-delay: 0.16s; }
+}
+@keyframes charge { from { transform: scaleX(0); } }
+.score-bar.gpu { background: var(--gpu); }
+.gpu-rows .score-bar-bg { background: var(--gpu-soft); }
+#ram-table-body .score-bar-bg { background: var(--ram-soft); }
+.per-val { font-size: 13px; color: var(--ink2); white-space: nowrap; }
+.per-val.best { color: var(--good); font-weight: 600; }
+.per-val small { font-family: var(--f-body); font-size: 11px; color: var(--ink3); font-weight: 400; margin-left: 1px; }
+.price-cell { font-size: 13px; color: var(--ink); white-space: nowrap; }
+.price-cell > div:first-child { font-weight: 600; }
+.price-meta { margin-top: 3px; color: var(--ink3); font-size: 11px; line-height: 1.5; white-space: normal; min-width: 150px; }
+.price-meta a { color: var(--cpu); text-decoration: none; }
 .price-meta a:hover { text-decoration: underline; }
-.price-error { color: var(--danger); }
-.affiliate-btn { display: inline-flex; align-items: center; justify-content: center; padding: 4px 12px; border-radius: var(--radius); font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: var(--surface); color: var(--accent2); white-space: nowrap; }
-a.affiliate-btn { text-decoration: none; background: var(--accent2); border-color: var(--accent2); color: #fff; }
-.affiliate-btn:hover { border-color: var(--accent2); background: #e6eef9; }
-a.affiliate-btn:hover { background: #154e96; }
+.price-error { color: var(--bad); }
+.affiliate-btn { display: inline-flex; align-items: center; justify-content: center; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--line-strong); background: var(--bg); color: var(--cpu); white-space: nowrap; }
+a.affiliate-btn { text-decoration: none; background: var(--fill); border-color: var(--fill); color: #fff; font-weight: 700; }
+.affiliate-btn:hover { border-color: var(--cpu); background: var(--cpu-soft); }
+a.affiliate-btn:hover { background: var(--fill-hover); }
+.m-src, .row-more { display: none; }
+.ref-tag { font-family: var(--f-body); font-size: 11px; font-weight: 700; color: var(--warn); border: 1px solid var(--warn-line); background: var(--warn-soft); border-radius: 2px; padding: 0 4px; margin-left: 4px; vertical-align: 1px; }
 
 /* ── 比較 ── */
 .compare-select-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-.select-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
-.select-box label { font-size: 12px; font-weight: 700; color: var(--text2); display: block; margin-bottom: 6px; }
-.select-box select, .bn-select-card select { width: 100%; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); color: var(--text); padding: 8px 10px; font-size: 14px; cursor: pointer; }
+.select-box { background: var(--sunk); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 12px 14px; }
+.select-box label { font-size: 12px; font-weight: 700; color: var(--ink2); display: block; margin-bottom: 6px; }
+.select-box select, .bn-select-card select, #mb-cpu { width: 100%; background: var(--bg); border: 1px solid var(--line-strong); border-radius: var(--radius); color: var(--ink); padding: 8px 10px; font-size: 15px; cursor: pointer; }
 .compare-table { width: 100%; border-collapse: collapse; }
-.compare-table th { padding: 10px 16px; text-align: center; background: #eef0f3; border: 1px solid var(--border); font-size: 13px; font-weight: 700; }
-.compare-table th.label-col { text-align: left; font-size: 12px; color: var(--text2); width: 180px; }
-.compare-table td { padding: 9px 16px; border: 1px solid var(--border); text-align: center; font-size: 13px; }
-.compare-table td.label-col { text-align: left; font-size: 12px; color: var(--text2); background: var(--surface2); font-weight: 500; }
-.best-val { color: var(--accent3); font-weight: 700; background: #f0f8f3; }
-.compare-note { font-size: 12px; color: var(--text3); margin-top: 10px; }
-.history-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-top: 16px; max-width: 760px; }
+.compare-table th { padding: 10px 16px; text-align: center; background: var(--sunk); border: 1px solid var(--line); font-size: 13px; font-weight: 700; }
+.compare-table th.label-col { text-align: left; font-size: 12px; color: var(--ink2); width: 180px; }
+.compare-table td { padding: 9px 16px; border: 1px solid var(--line); text-align: center; font-size: 13px; font-variant-numeric: tabular-nums; }
+.compare-table td.label-col { text-align: left; font-size: 12px; color: var(--ink2); background: var(--sunk); font-weight: 500; }
+.best-val { color: var(--good); font-weight: 700; background: var(--good-soft); }
+.compare-note { font-size: 12px; color: var(--ink3); margin-top: 10px; }
+.history-card { border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 14px 16px; margin-top: 16px; max-width: 760px; }
 .history-card svg { width: 100%; height: auto; display: block; }
-.history-empty { font-size: 12px; color: var(--text3); }
-.history-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--text2); margin-top: 6px; }
+.history-empty { font-size: 12px; color: var(--ink3); }
+.history-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--ink2); margin-top: 6px; }
 .history-legend i { display: inline-block; width: 12px; height: 3px; vertical-align: middle; margin-right: 6px; }
-.ad-note { font-size: 11px; color: var(--text3); margin: 0 0 8px; }
 .perf-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-.perf-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
-.perf-card-title { font-size: 12px; font-weight: 700; color: var(--text2); margin-bottom: 12px; }
+.perf-card { border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 16px; }
+.perf-card-title { font-size: 12px; font-weight: 700; color: var(--ink2); margin-bottom: 12px; }
 .perf-bars { display: flex; flex-direction: column; gap: 10px; }
 .perf-bar-row { display: flex; align-items: center; gap: 12px; }
-.perf-bar-label { font-size: 12px; font-weight: 500; width: 110px; text-align: right; flex-shrink: 0; }
-.perf-bar-track { flex: 1; height: 10px; background: var(--surface3); overflow: hidden; }
+.perf-bar-label { font-size: 12px; font-weight: 700; width: 110px; text-align: right; flex-shrink: 0; }
+.perf-bar-track { flex: 1; height: 10px; background: var(--sunk2); overflow: hidden; border-radius: 1px; }
 .perf-bar-fill { height: 100%; }
-.perf-bar-pct { font-size: 12px; color: var(--text); width: 60px; text-align: right; flex-shrink: 0; }
+.perf-bar-pct { font-size: 12px; color: var(--ink); width: 60px; text-align: right; flex-shrink: 0; font-family: var(--f-num); }
 
 /* ── ボトルネック ── */
 .bn-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.bn-select-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
-.bn-select-card label { font-size: 12px; font-weight: 700; color: var(--text2); display: block; margin-bottom: 6px; }
+.bn-select-card { background: var(--sunk); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 12px 14px; }
+.bn-select-card label { font-size: 12px; font-weight: 700; color: var(--ink2); display: block; margin-bottom: 6px; }
 .bn-select-card select { margin-bottom: 8px; }
-.bn-result { border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.bn-result { border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px; }
 .bn-verdict { text-align: center; padding: 8px 0 16px; }
-.bn-verdict-icon { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 12px; border: 1px solid var(--border2); border-radius: 2px; color: var(--text2); margin-bottom: 8px; }
-.bn-verdict-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-.bn-verdict-desc { text-wrap: balance; font-size: 13px; color: var(--text2); line-height: 1.8; max-width: 520px; margin: 0 auto; }
+.bn-verdict-icon { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 12px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink2); margin-bottom: 8px; }
+.bn-verdict-title { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
+.bn-verdict-desc { text-wrap: balance; font-size: 13px; color: var(--ink2); line-height: 1.8; max-width: 520px; margin: 0 auto; }
 .bn-meter { margin: 16px 0; }
-.bn-meter-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 5px; }
-.bn-bar-track { height: 22px; background: var(--surface3); overflow: hidden; display: flex; }
-.bn-bar-cpu, .bn-bar-gpu { height: 100%; transition: width 0.4s ease; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
-.bn-bar-cpu { background: var(--accent2); }
-.bn-bar-gpu { background: var(--accent); }
-.bn-stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; margin-top: 16px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.bn-stat { padding: 12px; text-align: center; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 0 -1px -1px 0; }
-.bn-stat-val { font-size: 19px; font-weight: 700; }
-.bn-stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.bn-meter-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink2); margin-bottom: 5px; }
+.bn-bar-track { height: 22px; background: var(--sunk2); overflow: hidden; display: flex; border-radius: 2px; }
+.bn-bar-cpu, .bn-bar-gpu { height: 100%; transition: width 0.4s ease; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; font-family: var(--f-num); }
+.bn-bar-cpu { background: var(--fill); }
+.bn-bar-gpu { background: var(--gpu-fill); }
+.bn-stats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; margin-top: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+.bn-stat { padding: 12px; text-align: center; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 -1px -1px 0; }
+.bn-stat-val { font-size: 18px; font-weight: 600; }
+.bn-stat-label { font-size: 11px; color: var(--ink3); margin-top: 2px; }
 
 /* ── おすすめ構成 ── */
 .preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); gap: 16px; }
-.preset-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.preset-header { padding: 12px 16px; display: flex; align-items: center; gap: 12px; background: var(--surface2); border-bottom: 1px solid var(--border); }
-.preset-icon { background: var(--surface) !important; border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.preset-card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+.preset-header { padding: 12px 16px; display: flex; align-items: center; gap: 12px; background: var(--sunk); border-bottom: 1px solid var(--line); }
+.preset-icon { background: var(--bg) !important; color: var(--ink2) !important; border: 1px solid var(--line-strong); width: 40px; height: 40px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
 .preset-title { font-size: 15px; font-weight: 700; }
-.preset-budget { font-size: 12px; color: var(--text3); }
+.preset-budget { font-size: 12px; color: var(--ink3); }
 .preset-body { padding: 14px 16px 16px; }
-.preset-desc { font-size: 12px; color: var(--text2); line-height: 1.7; margin-bottom: 12px; }
+.preset-desc { font-size: 12px; color: var(--ink2); line-height: 1.7; margin-bottom: 12px; }
 .preset-parts { display: flex; flex-direction: column; }
-.preset-part { display: flex; align-items: center; gap: 10px; font-size: 12px; padding: 4px 0; border-bottom: 1px dotted var(--border); }
-.preset-part-cat { font-size: 11px; color: var(--text3); width: 46px; flex-shrink: 0; }
-.preset-part-name { flex: 1; color: var(--text); }
-.preset-part-price { color: var(--text); font-size: 12px; }
+.preset-part { display: flex; align-items: center; gap: 10px; font-size: 12px; padding: 5px 0; border-bottom: 1px dotted var(--line); }
+.preset-part-cat { font-size: 11px; color: var(--ink3); width: 46px; flex-shrink: 0; }
+.preset-part-name { flex: 1; color: var(--ink); min-width: 0; }
+.preset-part-price { color: var(--ink); font-size: 12px; font-family: var(--f-num); white-space: nowrap; }
 .preset-total-row { margin-top: 10px; display: flex; justify-content: space-between; align-items: baseline; }
-.preset-total-label { font-size: 12px; color: var(--text2); }
-.preset-total-val { font-size: 19px; font-weight: 700; }
-.preset-load-btn { margin-top: 12px; width: 100%; padding: 8px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--accent2); color: var(--accent2); font-size: 13px; font-weight: 700; cursor: pointer; }
-.preset-load-btn:hover { background: #e6eef9; }
+.preset-total-label { font-size: 12px; color: var(--ink2); }
+.preset-total-val { font-size: 18px; font-weight: 600; }
+.preset-load-btn { margin-top: 12px; width: 100%; padding: 9px; border-radius: var(--radius); background: var(--bg); border: 1px solid var(--cpu); color: var(--cpu); font-size: 13px; font-weight: 700; cursor: pointer; }
+.preset-load-btn:hover { background: var(--cpu-soft); }
 
 /* ── 構成ビルダー ── */
 .builder-layout { display: grid; grid-template-columns: 1fr 380px; min-height: calc(100vh - var(--header-h)); max-width: 1440px; margin: 0 auto; }
 .builder-left { padding: 24px; }
-.builder-right { background: var(--surface2); border-left: 1px solid var(--border); display: flex; flex-direction: column; position: sticky; top: var(--header-h); height: calc(100vh - var(--header-h)); overflow: hidden; }
-.builder-hero { padding-bottom: 12px; border-bottom: 2px solid var(--navy); margin-bottom: 16px; }
-.builder-hero h2 { font-size: 19px; font-weight: 700; margin-bottom: 2px; }
+.builder-right { background: var(--sunk); border-left: 1px solid var(--line); display: flex; flex-direction: column; position: sticky; top: var(--header-h); height: calc(100vh - var(--header-h)); overflow: hidden; }
+.builder-hero { padding-bottom: 12px; margin-bottom: 16px; }
+.builder-hero h2 { font-size: 24px; font-weight: 900; margin-bottom: 2px; }
 .builder-hero h2 span { color: inherit; }
-.builder-hero p { font-size: 12px; color: var(--text2); }
-.bpart-section { margin-bottom: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.bpart-section.has-selection { border-color: var(--border2); }
-.bpart-header { display: flex; align-items: center; gap: 12px; padding: 9px 14px; cursor: pointer; background: var(--surface2); user-select: none; }
-.bpart-header:hover { background: #eef0f3; }
-.bpart-icon { background: var(--surface) !important; border: 1px solid var(--border2); width: 44px; height: 26px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+.builder-hero p { font-size: 12px; color: var(--ink2); }
+.bpart-section { margin-bottom: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+.bpart-section.has-selection { border-color: var(--line-strong); }
+.bpart-header { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; background: var(--sunk); user-select: none; }
+.bpart-header:hover { background: var(--hover); }
+.bpart-icon { width: 40px; height: 40px; flex-shrink: 0; background: var(--bg); border-radius: var(--radius); padding: 4px; }
 .bpart-cat-label { display: none; }
-.bpart-cat-name { font-size: 14px; font-weight: 700; }
-.bpart-sel-info { margin-left: auto; text-align: right; }
-.bpart-sel-name { font-size: 12px; font-weight: 500; color: var(--accent2); line-height: 1.3; }
-.bpart-sel-price { font-size: 12px; color: var(--text); }
-.bpart-chevron { color: var(--text3); font-size: 10px; margin-left: 8px; transition: transform 0.2s; }
+.bpart-cat-name { font-size: 15px; font-weight: 700; }
+.bpart-sel-info { margin-left: auto; text-align: right; min-width: 0; }
+.bpart-sel-name { font-size: 12px; font-weight: 700; color: var(--cpu); line-height: 1.3; }
+.bpart-sel-price { font-size: 12px; color: var(--ink); font-family: var(--f-num); }
+.bpart-chevron { color: var(--ink3); font-size: 11px; margin-left: 8px; transition: transform 0.2s; }
+.bpart-section:not(.has-selection) .bpart-chevron { margin-left: auto; }
 .bpart-section.bopen .bpart-chevron { transform: rotate(180deg); }
 .bpart-list { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
 .bpart-section.bopen .bpart-list { max-height: 1200px; }
-.bpart-item { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-top: 1px solid var(--border); cursor: pointer; position: relative; }
-.bpart-item:hover { background: #eef4fb; }
-.bpart-item.bselected { background: #e6eef9; }
-.bpart-item.bselected::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent2); }
-.bpart-check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; color: transparent; background: var(--surface); }
-.bpart-item.bselected .bpart-check { background: var(--accent2); border-color: var(--accent2); color: #fff; }
-.bpart-item-name { flex: 1; }
-.bpart-item-name strong { font-size: 13px; font-weight: 500; display: block; }
-.bpart-item-name small { font-size: 11px; color: var(--text3); }
+.bpart-item { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border-top: 1px solid var(--line); cursor: pointer; position: relative; }
+.bpart-item:hover { background: var(--hover); }
+.bpart-item.bselected { background: var(--cpu-soft); }
+.bpart-item.bselected::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--cpu); }
+.bpart-check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line-strong); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; color: transparent; background: var(--bg); }
+.bpart-item.bselected .bpart-check { background: var(--fill); border-color: var(--fill); color: #fff; }
+.bpart-item-name { flex: 1; min-width: 0; }
+.bpart-item-name strong { font-size: 13px; font-weight: 700; display: block; }
+.bpart-item-name small { font-size: 11px; color: var(--ink3); }
 .bpart-item-right { text-align: right; flex-shrink: 0; }
-.bpart-item-price { font-size: 13px; font-weight: 700; }
-.bpart-item-score { font-size: 11px; color: var(--text3); }
-.bcart-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; background: var(--surface); }
-.bcart-title { font-size: 14px; font-weight: 700; }
-.bcart-count { font-size: 11px; color: var(--text3); }
-.bclear-btn { background: var(--surface); border: 1px solid var(--border2); color: var(--text2); border-radius: var(--radius); padding: 4px 10px; font-size: 12px; cursor: pointer; }
-.bclear-btn:hover { border-color: var(--danger); color: var(--danger); }
-.bcart-list { flex: 0 0 auto; padding: 8px 12px; border-bottom: 1px solid var(--border); max-height: 250px; overflow-y: auto; background: var(--surface); }
-.bcart-empty { text-align: center; padding: 16px; color: var(--text3); font-size: 12px; }
-.bcart-item { display: flex; align-items: center; gap: 8px; padding: 5px 4px; border-bottom: 1px dotted var(--border); animation: bslideIn 0.2s ease; }
+.bpart-item-price { font-size: 13px; font-weight: 600; }
+.bpart-item-score { font-size: 11px; color: var(--ink3); font-family: var(--f-num); }
+.bcart-header { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; background: var(--bg); }
+.bcart-title { font-size: 15px; font-weight: 700; }
+.bcart-count { font-size: 11px; color: var(--ink3); }
+.bclear-btn { background: var(--bg); border: 1px solid var(--line-strong); color: var(--ink2); border-radius: var(--radius); padding: 4px 10px; font-size: 12px; cursor: pointer; }
+.bclear-btn:hover { border-color: var(--bad); color: var(--bad); }
+.bcart-list { flex: 0 0 auto; padding: 8px 12px; border-bottom: 1px solid var(--line); max-height: 250px; overflow-y: auto; background: var(--bg); }
+.bcart-empty { text-align: center; padding: 16px; color: var(--ink3); font-size: 12px; }
+.bcart-item { display: flex; align-items: center; gap: 8px; padding: 5px 4px; border-bottom: 1px dotted var(--line); animation: bslideIn 0.2s ease; }
 .bcart-item:last-child { border-bottom: none; }
-.bcart-item-cat { font-size: 10px; font-weight: 700; color: var(--text3); width: 32px; flex-shrink: 0; }
-.bcart-item-name { flex: 1; font-size: 12px; line-height: 1.4; }
+.bcart-item-cat { font-size: 11px; font-weight: 700; color: var(--ink3); width: 36px; flex-shrink: 0; font-family: var(--f-num); }
+.bcart-item-name { flex: 1; font-size: 12px; line-height: 1.4; min-width: 0; }
 .bcart-item-price { font-size: 12px; flex-shrink: 0; }
-.bcart-item-del { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text3); font-size: 10px; flex-shrink: 0; }
-.bcart-item-del:hover { color: var(--danger); }
-.bcart-total { padding: 12px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; background: var(--surface); }
+.bcart-item-del { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--ink3); font-size: 11px; flex-shrink: 0; }
+.bcart-item-del:hover { color: var(--bad); }
+.bcart-total { padding: 12px 16px; border-bottom: 1px solid var(--line); flex-shrink: 0; background: var(--bg); }
 .btotal-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
-.btotal-label { font-size: 12px; color: var(--text2); }
+.btotal-label { font-size: 12px; color: var(--ink2); }
 .btotal-val { font-size: 12px; }
 .bgrand-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px; }
 .bgrand-label { font-size: 13px; font-weight: 700; }
-.bgrand-val { font-size: 22px; font-weight: 700; }
-.bcheck-btn { margin: 12px 16px 0; width: calc(100% - 32px); padding: 10px; border-radius: var(--radius); background: var(--accent2); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; border: none; flex-shrink: 0; }
-.bcheck-btn:hover { background: #154e96; }
+.bgrand-val { font-size: 24px; font-weight: 600; }
+.bcheck-btn { margin: 12px 16px 0; width: calc(100% - 32px); padding: 10px; border-radius: var(--radius); background: var(--fill); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; border: none; flex-shrink: 0; }
+.bcheck-btn:hover { background: var(--fill-hover); }
 .bgame-result { flex: 1; overflow-y: auto; padding: 14px 16px; }
-.bresult-title { font-size: 12px; font-weight: 700; color: var(--text2); margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
-.bresult-summary { padding: 10px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; }
+.bresult-title { font-size: 12px; font-weight: 700; color: var(--ink2); margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+.bresult-summary { padding: 10px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 10px; }
 .bresult-tier { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-.bresult-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+.bresult-desc { font-size: 12px; color: var(--ink2); line-height: 1.6; }
 .btier-bar { display: flex; gap: 2px; margin-bottom: 3px; }
-.btier-seg { flex: 1; height: 6px; background: var(--surface3); }
-.btier-seg.alow, .btier-seg.amid, .btier-seg.ahigh, .btier-seg.aultra { background: var(--accent2); }
+.btier-seg { flex: 1; height: 6px; background: var(--sunk2); }
+.btier-seg.alow, .btier-seg.amid, .btier-seg.ahigh, .btier-seg.aultra { background: var(--cpu); }
 .btier-labels { display: flex; justify-content: space-between; margin-bottom: 10px; }
-.btier-label-sm { font-size: 10px; color: var(--text3); }
+.btier-label-sm { font-size: 11px; color: var(--ink3); }
 .bwarn { padding: 7px 10px; border-radius: var(--radius); font-size: 12px; margin-bottom: 6px; line-height: 1.5; border: 1px solid; }
-.bwarn-yellow { background: #fdf6e3; border-color: #ecd9a0; color: var(--warn); }
-.bwarn-red { background: #fdecea; border-color: #f2b8b5; color: var(--danger); }
+.bwarn-yellow { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+.bwarn-red { background: var(--bad-soft); border-color: var(--bad-line); color: var(--bad); }
 .btier-group { margin-bottom: 10px; }
-.btier-group-label { font-size: 11px; font-weight: 700; color: var(--text2); margin-bottom: 5px; }
+.btier-group-label { font-size: 11px; font-weight: 700; color: var(--ink2); margin-bottom: 5px; }
 .blabel-ultra, .blabel-high, .blabel-mid, .blabel-low { background: none; border: none; }
 .bgame-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-.bgame-chip { padding: 3px 8px; border-radius: 2px; font-size: 11px; background: var(--surface); border: 1px solid var(--border); line-height: 1.4; }
-.bgame-chip small { display: block; font-size: 10px; color: var(--text3); }
+.bgame-chip { padding: 3px 8px; border-radius: 2px; font-size: 11px; background: var(--bg); border: 1px solid var(--line); line-height: 1.4; }
+.bgame-chip small { display: block; font-size: 11px; color: var(--ink3); }
 .bmobile-bar { display: none; }
 
-/* ── スマホ ── */
+/* ── 幅が狭いとき ── */
 @media (max-width: 1340px) {
   .table-wrap { overflow-x: auto; }
   .rank-table th { position: static; }
@@ -360,44 +493,99 @@ a.affiliate-btn:hover { background: #154e96; }
   .cards { grid-template-columns: repeat(2, 1fr); }
   .home-intro-inner { grid-template-columns: 1fr; gap: 20px; }
   .builder-layout { grid-template-columns: 1fr; }
-  .builder-right { position: relative; top: 0; height: auto; border-left: none; border-top: 1px solid var(--border); }
+  .builder-right { position: relative; top: 0; height: auto; border-left: none; border-top: 1px solid var(--line); }
 }
 @media (max-width: 768px) {
-  :root { --header-h: 84px; }
-  .brand-row { height: 44px; padding: 0 16px; }
+  :root { --header-h: 104px; }
+  .brand-row { height: 52px; padding: 0 16px; }
   .brand-tag { display: none; }
-  .nav-links { height: 40px; padding: 0 28px 0 4px; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); }
-  .nav-group { padding: 0 2px 0 10px; margin-left: 4px; }
-  .nav-link { padding: 0 10px; }
-  .section { padding: 20px 16px; }
-  .home-intro-inner { padding: 20px 16px; }
-  .home-intro h1 { font-size: 21px; }
+  .menu-btn { display: block; }
+  /* スマホ: よく使う4つを常に表示し、残りはメニューの中 */
+  .nav-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; height: 52px; padding: 0 10px 8px; }
+  .nav-quick .nav-link { justify-content: center; height: 44px; padding: 0 4px; font-size: 12px; font-weight: 700; border-radius: 14px; background: var(--sunk); }
+  .nav-quick .nav-link.active { background: var(--ink); }
+  .nav-quick .nav-link.active .nav-ill { --ill: var(--bg); --ill-soft: color-mix(in srgb, var(--bg) 35%, transparent); --ill-ink: var(--bg); }
+  .nav-links { display: none; position: fixed; top: var(--header-h); left: 0; right: 0; bottom: 0; height: auto; padding: 8px 16px 24px; background: var(--bg); overflow-y: auto; flex-direction: column; align-items: stretch; border-top: 1px solid var(--line); }
+  nav.menu-open .nav-links { display: flex; }
+  .nav-links .nav-group { border-left: none; margin: 14px 0 2px; padding: 0; font-size: 12px; font-weight: 700; color: var(--ink3); }
+  .nav-links .nav-link { height: auto; padding: 11px 14px; font-size: 15px; border-radius: 12px; }
+  .nav-links .nav-link.active { background: var(--ink); color: var(--bg); }
+  .section { padding: 18px 16px; }
+  .home-intro-inner { padding: 22px 16px 24px; }
+  .home-intro h1 { font-size: 34px; }
+  .home-lead { font-size: 13px; margin-bottom: 18px; }
+  .intents { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .intent { min-height: 150px; padding: 76px 14px 50px; border-radius: 20px; }
+  .intent-ill { width: 76px; height: 76px; right: -6px; top: -4px; }
+  .intent-ill.duo { width: 96px; height: 84px; right: -4px; top: -2px; }
+  .intent-q { font-size: 15px; padding-right: 0; }
+  .intent-a { font-size: 11px; }
+  .intent-go { left: 14px; bottom: 12px; width: 28px; height: 28px; font-size: 13px; }
+  .intent.wide-d { grid-column: span 1; }
+  .intent.wide { padding: 18px 16px 52px; min-height: 140px; }
+  .intent.wide .intent-ill { width: 104px; height: 104px; right: 4px; top: 10px; }
+  .intent.wide .intent-q { font-size: 20px; padding-right: 108px; }
+  .intent.wide .intent-top { max-width: calc(100% - 108px); }
+  .intent:not(.wide) .intent-top { white-space: normal; line-height: 1.4; border-radius: 10px; }
   .home-grid { grid-template-columns: 1fr; }
-  .cards { grid-template-columns: 1fr; }
-  .mini-rank-bar { width: 60px; }
+  .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card { padding: 72px 14px 14px; min-height: 0; }
+  .card-ill { width: 76px; height: 76px; right: -8px; top: -8px; }
+  .card-desc { font-size: 11px; }
+  .section-header.band { padding: 16px 96px 14px 16px; min-height: 84px; }
+  .section-header.band .section-title { font-size: 18px; }
+  .band-ill { width: 92px; height: 92px; }
+  .mini-rank-item { grid-template-columns: 24px minmax(0, 1fr) 48px 56px; gap: 8px; padding: 10px 12px; }
   .section-sub { order: 3; flex-basis: 100%; }
-  .search-budget-row { flex-direction: column; align-items: stretch; }
+  .search-budget-row { flex-direction: column; align-items: stretch; gap: 10px; }
   .search-box { flex: none; width: 100%; }
   .budget-box { min-width: auto; width: 100%; }
   .result-count { align-self: flex-start; padding-bottom: 0; }
-  .table-wrap { overflow-x: auto; }
-  .table-wrap { overflow-x: visible; }
+  .filters, .sort-row { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .filters::-webkit-scrollbar, .sort-row::-webkit-scrollbar { display: none; }
+  .filter-btn, .sort-btn { flex-shrink: 0; }
+  .table-wrap { overflow-x: visible; border-radius: var(--radius-lg); }
   .rank-table, .rank-table tbody { display: block; min-width: 0; }
   .rank-table thead { display: none; }
-  .rank-table tr { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px 14px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
-  .rank-table tbody tr:nth-child(even) { background: var(--surface); }
+  /* 規格別の最安値（SSD・電源・マザーボード）: 見出しつきの2列 */
+  .rank-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
   .rank-table td { display: block; padding: 0; border: none; min-width: 0; }
   .rank-table td[colspan] { grid-column: 1 / -1; }
-  .rank-table td[data-label]:not([data-label=""])::before { content: attr(data-label); display: block; font-size: 10px; color: var(--text3); margin-bottom: 1px; }
-  .rank-table td.m-hide { display: none; }
-  .rank-table td.m-rank { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 8px; }
-  .rank-table td.m-rank::before { display: none !important; }
-  .rank-table td.m-name { grid-column: 1 / -1; margin-top: -6px; }
-  .rank-table td.m-name::before { display: none !important; }
-  .rank-table td.m-name .chip-name { white-space: normal; font-size: 15px; }
-  .rank-table td.m-act { align-self: end; }
-  .score-bar-wrap { min-width: 0; }
-  .price-meta { min-width: 0; }
+  .rank-table td[data-label]:not([data-label=""])::before { content: attr(data-label); display: block; font-size: 11px; color: var(--ink3); margin-bottom: 1px; }
+  /* CPU・GPU・メモリのランキング: 1行目「順位・名前・最安値」、2行目「スコアの棒・1万円あたり」 */
+  .rank-table tbody.mrows tr { grid-template-columns: 26px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 3px; padding: 9px 12px; align-items: center; cursor: pointer; }
+  .rank-table tbody.mrows tr:hover { background: transparent; }
+  .rank-table tbody.mrows td { display: none; font-size: 13px; }
+  .rank-table tbody.mrows td[data-label]::before { display: none; }
+  .rank-table tbody.mrows td[colspan] { display: block; cursor: default; }
+  .rank-table tbody.mrows td.m-rank { display: block; grid-column: 1; grid-row: 1 / span 2; align-self: start; padding-top: 2px; }
+  .rank-table tbody.mrows td.m-name { display: flex; align-items: center; gap: 2px; grid-column: 2; grid-row: 1; }
+  .rank-table tbody.mrows td.m-name .chip-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 15px; min-width: 0; }
+  .rank-table tbody.mrows td.m-name .chip-sub { display: none; }
+  /* メモリは名前の後ろ（枚数）で区別するので折り返して全部見せる */
+  #ram-table-body td.m-name .chip-name { white-space: normal; font-size: 13px; line-height: 1.4; }
+  .rank-table tbody.mrows td.m-price { display: block; grid-column: 3; grid-row: 1; text-align: right; }
+  .rank-table tbody.mrows td.m-price > div:first-child { font-size: 15px; }
+  .rank-table tbody.mrows td.m-price .price-meta { display: none; }
+  .rank-table tbody.mrows td.m-score { display: block; grid-column: 2; grid-row: 2; }
+  .rank-table tbody.mrows td.m-per { display: block; grid-column: 3; grid-row: 2; text-align: right; }
+  .rank-table tbody.mrows td.m-per .per-val { font-size: 12px; }
+  .score-bar-wrap { min-width: 0; grid-template-columns: 5.6ch minmax(0, 1fr); }
+  .score-val { font-size: 12px; text-align: left; }
+  .row-more { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; width: 24px; height: 24px; border: none; background: none; color: var(--ink3); font-size: 11px; cursor: pointer; transition: transform 0.2s; }
+  /* 押したとき: 仕様・取得元・購入ボタンを開く */
+  .rank-table tbody.mrows tr.open { background: var(--sunk); }
+  .rank-table tbody.mrows tr.open .row-more { transform: rotate(180deg); }
+  .rank-table tbody.mrows tr.open td.m-spec { display: flex; justify-content: space-between; gap: 12px; grid-column: 2 / -1; font-size: 12px; padding-top: 2px; white-space: normal; }
+  .rank-table tbody.mrows tr.open td.m-spec::before { display: block; content: attr(data-label); color: var(--ink3); font-size: 12px; margin: 0; }
+  .rank-table tbody.mrows tr.open td.m-src { display: block; order: 1; grid-column: 2 / -1; padding-top: 4px; }
+  .rank-table tbody.mrows tr.open td.m-src .price-meta { min-width: 0; font-size: 12px; margin: 0; }
+  .rank-table tbody.mrows tr.open td.m-act { display: flex; order: 2; flex-wrap: wrap; align-items: center; gap: 6px; grid-column: 2; padding-top: 6px; }
+  /* お気に入りは購入ボタンと同じ段の右端に置く */
+  .rank-table tbody.mrows tr.open { grid-auto-flow: row dense; }
+  .rank-table tbody.mrows tr.open td.m-fav { display: block; order: 2; grid-column: 3; justify-self: end; align-self: center; padding-top: 6px; }
+  .rank-table tbody.mrows tr.open td.m-fav .fav-btn { font-size: 22px; padding: 6px 8px; }
+  .rank-table tbody.mrows tr.open td.m-act .affiliate-btn { margin: 0 !important; padding: 8px 14px; font-size: 13px; }
   .compare-select-wrap, .perf-visual, .bn-layout { grid-template-columns: 1fr; }
   .compare-table th, .compare-table td { padding: 8px 10px; }
   .compare-table th.label-col { width: 110px; }
@@ -407,19 +595,82 @@ a.affiliate-btn:hover { background: #154e96; }
   .builder-left { padding: 16px; }
   .builder-layout { padding-bottom: 64px; }
   .footer-band { padding: 14px 16px; }
-  .bmobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; background: var(--surface); border-top: 1px solid var(--border2); box-shadow: 0 -2px 8px rgba(22,48,75,0.08); }
-  .bmobile-bar span { display: block; font-size: 10px; color: var(--text2); }
-  .bmobile-bar strong { font-size: 19px; line-height: 1.2; }
-  .bmobile-bar button { padding: 8px 14px; border-radius: var(--radius); border: 1px solid var(--accent2); background: var(--surface); color: var(--accent2); font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .bmobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px)); background: var(--bg); border-top: 1px solid var(--line-strong); box-shadow: var(--shadow); }
+  .bmobile-bar span { display: block; font-size: 11px; color: var(--ink2); }
+  .bmobile-bar strong { font-size: 18px; line-height: 1.2; font-weight: 600; }
+  .bmobile-bar button { padding: 8px 14px; border-radius: var(--radius); border: 1px solid var(--cpu); background: var(--bg); color: var(--cpu); font-size: 13px; font-weight: 700; white-space: nowrap; }
 }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+<svg id="ill-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+<!-- パーツの絵（オリジナル）。色は使う場所の --ill（主色）・--ill-soft（淡色）・--ill-ink（線）で決まる -->
+<symbol id="ill-cpu" viewBox="0 0 64 64">
+  <g opacity=".55" style="fill:var(--ill-ink)"><rect x="15" y="4" width="3" height="7" rx="1"/><rect x="23" y="4" width="3" height="7" rx="1"/><rect x="31" y="4" width="3" height="7" rx="1"/><rect x="39" y="4" width="3" height="7" rx="1"/><rect x="47" y="4" width="3" height="7" rx="1"/><rect x="15" y="53" width="3" height="7" rx="1"/><rect x="23" y="53" width="3" height="7" rx="1"/><rect x="31" y="53" width="3" height="7" rx="1"/><rect x="39" y="53" width="3" height="7" rx="1"/><rect x="47" y="53" width="3" height="7" rx="1"/><rect x="4" y="15" width="7" height="3" rx="1"/><rect x="4" y="23" width="7" height="3" rx="1"/><rect x="4" y="31" width="7" height="3" rx="1"/><rect x="4" y="39" width="7" height="3" rx="1"/><rect x="4" y="47" width="7" height="3" rx="1"/><rect x="53" y="15" width="7" height="3" rx="1"/><rect x="53" y="23" width="7" height="3" rx="1"/><rect x="53" y="31" width="7" height="3" rx="1"/><rect x="53" y="39" width="7" height="3" rx="1"/><rect x="53" y="47" width="7" height="3" rx="1"/></g>
+  <rect x="9" y="9" width="46" height="46" rx="8" style="fill:var(--ill-soft)"/>
+  <rect x="19" y="19" width="26" height="26" rx="5" style="fill:var(--ill)"/>
+  <path d="M24 26h16M24 32h16M24 38h10" stroke-width="2.4" stroke-linecap="round" opacity=".7" style="stroke:var(--ill-soft)"/>
+  <path d="M12 52h6l-6-6z" style="fill:var(--ill)"/>
+</symbol>
+<symbol id="ill-gpu" viewBox="0 0 64 64">
+  <rect x="3" y="16" width="4" height="30" rx="1.5" opacity=".55" style="fill:var(--ill-ink)"/>
+  <rect x="7" y="14" width="54" height="32" rx="7" style="fill:var(--ill)"/>
+  <rect x="16" y="46" width="30" height="5" rx="1.5" opacity=".45" style="fill:var(--ill-ink)"/>
+  <circle cx="22" cy="30" r="11" style="fill:var(--ill-soft)"/><circle cx="46" cy="30" r="11" style="fill:var(--ill-soft)"/>
+  <g stroke-width="2.6" stroke-linecap="round" style="stroke:var(--ill)"><path d="M22 30l0-8M22 30l7 4M22 30l-7 4"/><path d="M46 30l0-8M46 30l7 4M46 30l-7 4"/></g>
+  <circle cx="22" cy="30" r="2.6" style="fill:var(--ill)"/><circle cx="46" cy="30" r="2.6" style="fill:var(--ill)"/>
+</symbol>
+<symbol id="ill-ram" viewBox="0 0 64 64">
+  <rect x="4" y="20" width="56" height="22" rx="4" style="fill:var(--ill)"/>
+  <rect x="9" y="24" width="9" height="11" rx="2" style="fill:var(--ill-soft)"/><rect x="21" y="24" width="9" height="11" rx="2" style="fill:var(--ill-soft)"/><rect x="34" y="24" width="9" height="11" rx="2" style="fill:var(--ill-soft)"/><rect x="46" y="24" width="9" height="11" rx="2" style="fill:var(--ill-soft)"/>
+  <g opacity=".5" style="fill:var(--ill-ink)"><rect x="7" y="42" width="22" height="5" rx="1"/><rect x="34" y="42" width="23" height="5" rx="1"/></g>
+  <path d="M29 42h5v-3h-5z" style="fill:var(--ill-soft)"/>
+</symbol>
+<symbol id="ill-ssd" viewBox="0 0 64 64">
+  <rect x="4" y="22" width="52" height="20" rx="4" style="fill:var(--ill)"/>
+  <path d="M56 26h2a4 4 0 010 8h-2" fill="none" stroke-width="2.4" opacity=".55" style="stroke:var(--ill-ink)"/>
+  <rect x="11" y="26" width="16" height="12" rx="2.5" style="fill:var(--ill-soft)"/>
+  <rect x="31" y="26" width="18" height="12" rx="2.5" opacity=".7" style="fill:var(--ill-soft)"/>
+  <g opacity=".5" style="fill:var(--ill-ink)"><rect x="0" y="25" width="4" height="3" rx="1"/><rect x="0" y="30" width="4" height="3" rx="1"/><rect x="0" y="35" width="4" height="3" rx="1"/></g>
+</symbol>
+<symbol id="ill-psu" viewBox="0 0 64 64">
+  <rect x="6" y="12" width="52" height="40" rx="7" style="fill:var(--ill-soft)"/>
+  <circle cx="30" cy="32" r="15" style="fill:var(--ill)"/>
+  <g fill="none" stroke-width="2.2" opacity=".85" style="stroke:var(--ill-soft)"><circle cx="30" cy="32" r="10"/><circle cx="30" cy="32" r="5"/><path d="M15 32h30M30 17v30"/></g>
+  <rect x="49" y="20" width="5" height="9" rx="1.5" opacity=".55" style="fill:var(--ill-ink)"/>
+  <rect x="49" y="35" width="5" height="9" rx="1.5" style="fill:var(--ill)"/>
+</symbol>
+<symbol id="ill-mb" viewBox="0 0 64 64">
+  <rect x="6" y="6" width="52" height="52" rx="7" style="fill:var(--ill-soft)"/>
+  <rect x="13" y="13" width="18" height="18" rx="3" style="fill:var(--ill)"/>
+  <g opacity=".5" style="fill:var(--ill-ink)"><rect x="37" y="12" width="4" height="22" rx="1.5"/><rect x="44" y="12" width="4" height="22" rx="1.5"/></g>
+  <rect x="12" y="40" width="40" height="5" rx="2" style="fill:var(--ill)"/>
+  <rect x="12" y="49" width="26" height="4" rx="2" opacity=".55" style="fill:var(--ill)"/>
+</symbol>
+<symbol id="ill-cooler" viewBox="0 0 64 64">
+  <g style="fill:var(--ill-soft)"><rect x="10" y="8" width="44" height="5" rx="2"/><rect x="10" y="16" width="44" height="5" rx="2"/><rect x="10" y="24" width="44" height="5" rx="2"/><rect x="10" y="32" width="44" height="5" rx="2"/><rect x="10" y="40" width="44" height="5" rx="2"/></g>
+  <g stroke-width="2.4" opacity=".5" style="stroke:var(--ill-ink)"><path d="M22 46v12M42 46v12"/></g>
+  <circle cx="32" cy="27" r="15" style="fill:var(--ill)"/>
+  <g stroke-width="2.6" stroke-linecap="round" style="stroke:var(--ill-soft)"><path d="M32 27v-9M32 27l8 5M32 27l-8 5"/></g>
+</symbol>
+<symbol id="ill-case" viewBox="0 0 64 64">
+  <rect x="14" y="4" width="36" height="56" rx="6" style="fill:var(--ill-soft)"/>
+  <rect x="19" y="9" width="26" height="40" rx="3.5" opacity=".9" style="fill:var(--ill)"/>
+  <circle cx="32" cy="20" r="6" fill="none" stroke-width="2.4" style="stroke:var(--ill-soft)"/><circle cx="32" cy="37" r="6" fill="none" stroke-width="2.4" style="stroke:var(--ill-soft)"/>
+  <circle cx="32" cy="54" r="2" style="fill:var(--ill)"/>
+</symbol>
+</svg>
 
 <nav>
-  <div class="brand-row"><div class="logo" role="link" tabindex="0" onclick="goPage('home')">BENCH<span>CORE</span></div><div class="brand-tag">PCパーツのベンチマークと価格の比較</div></div>
-  <div class="nav-links">
+  <div class="brand-row"><div class="logo" role="link" tabindex="0" onclick="goPage('home')" aria-label="BENCHCORE トップ"><svg class="logo-mark" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg>BENCH<span>CORE</span></div><div class="brand-tag">PCパーツのベンチマークと価格の比較</div><button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav-links" onclick="toggleMenu()">メニュー</button></div>
+  <div class="nav-quick">
+    <div role="link" tabindex="0" class="nav-link c-cpu" data-page="cpu-rank" onclick="showPage('cpu-rank',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg>CPU</div>
+    <div role="link" tabindex="0" class="nav-link c-gpu" data-page="gpu-rank" onclick="showPage('gpu-rank',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg>GPU</div>
+    <div role="link" tabindex="0" class="nav-link c-ram" data-page="ram-rank" onclick="showPage('ram-rank',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-ram"/></svg>メモリ</div>
+    <div role="link" tabindex="0" class="nav-link c-misc" data-page="builder" onclick="showPage('builder',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg>ビルダー</div>
+  </div>
+  <div class="nav-links" id="nav-links">
     <div role="link" tabindex="0" class="nav-link active" data-page="home" onclick="showPage('home',this)">トップ</div>
     <span class="nav-group">ランキング</span>
     <div role="link" tabindex="0" class="nav-link" aria-label="CPUランキング" data-page="cpu-rank" onclick="showPage('cpu-rank',this)">CPU</div>
@@ -443,22 +694,55 @@ a.affiliate-btn:hover { background: #154e96; }
 <div id="home" class="page active">
   <div class="home-intro">
     <div class="home-intro-inner">
-      <div>
-        <h1>PCパーツの性能と価格を、数値で比較</h1>
-        <p>CPU・GPU・メモリのベンチマークスコア、価格、消費電力を一覧で比べられます。組み合わせの相性診断や、構成の見積もりにも使えます。</p>
-        <div class="home-actions">
-          <button class="btn btn-primary" onclick="goPage('cpu-rank')">CPUランキング</button>
-          <button class="btn btn-secondary" onclick="goPage('gpu-rank')">GPUランキング</button>
-          <button class="btn btn-secondary" onclick="goPage('builder')">構成を見積もる</button>
-        </div>
+      <p class="eyebrow"><svg class="eyebrow-ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg>PCパーツの性能と最安値を、ひと目で。</p>
+      <h1>何がしたいですか？</h1>
+      <p class="home-lead">やりたいことを選ぶと、そのためのページに移ります。スコアは PassMark と 3DMark、価格は毎日取得する最安値です。</p>
+      <div class="intents" role="group" aria-label="やりたいことから選ぶ">
+        <a class="intent c-cpu wide" href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></span>
+          <span class="intent-q">速いCPUを探したい</span>
+          <span class="intent-a">CPUランキング · <b class="num" id="stat-cpu-count">—</b> 製品</span>
+          <span class="intent-top">いま1位 <b id="home-cpu-top">—</b></span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-gpu" href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg></span>
+          <span class="intent-q">ゲームに強いGPUを探したい</span>
+          <span class="intent-a">GPUランキング · <b class="num" id="stat-gpu-count">—</b> 製品</span>
+          <span class="intent-top">いま1位 <b id="home-gpu-top">—</b></span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-misc" href="?page=builder" onclick="goPage('builder');return false">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-mb"/></svg></span>
+          <span class="intent-q">予算からPCを組みたい</span>
+          <span class="intent-a">構成ビルダー</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-misc" href="/p/gaming-pc.html">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg></span>
+          <span class="intent-q">予算ごとの構成例を見たい</span>
+          <span class="intent-a">予算別のゲーミングPC構成</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-cpu" href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">
+          <span class="intent-ill duo"><span><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></span><span><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></span></span>
+          <span class="intent-q">2つの製品を比べたい</span>
+          <span class="intent-a">2製品の比較</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-gpu" href="?page=bottleneck" onclick="goPage('bottleneck');return false">
+          <span class="intent-ill duo"><span class="c-cpu"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></span><span class="c-gpu"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg></span></span>
+          <span class="intent-q">CPUとGPUの相性を見たい</span>
+          <span class="intent-a">ボトルネック診断</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-ram wide-d" href="?page=ram-rank" onclick="goPage('ram-rank');return false">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-ram"/></svg></span>
+          <span class="intent-q">メモリ・SSD・電源を安く買いたい</span>
+          <span class="intent-a">規格ごとの最安値 · メモリ <b class="num" id="stat-ram-count">—</b> 規格</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
       </div>
-      <dl class="home-facts">
-        <div><dt>CPU 掲載数</dt><dd><span id="stat-cpu-count">—</span> 製品</dd></div>
-        <div><dt>GPU 掲載数</dt><dd><span id="stat-gpu-count">—</span> 製品</dd></div>
-        <div><dt>メモリ 掲載数</dt><dd><span id="stat-ram-count">—</span> 規格</dd></div>
-        <div><dt>CPUの指標</dt><dd>PassMark</dd></div>
-        <div><dt>GPUの指標</dt><dd>3DMark Time Spy</dd></div>
-      </dl>
     </div>
   </div>
   <div class="section">
@@ -478,17 +762,6 @@ a.affiliate-btn:hover { background: #154e96; }
     <div class="mini-rank" id="home-new-products"></div>
   </div>
   <div class="section" style="padding-top:0">
-    <div class="section-header"><div class="section-title">できること</div></div>
-    <div class="cards">
-      <div class="card" role="link" tabindex="0" onclick="goPage('cpu-rank')"><div class="card-title">CPU ランキング</div><div class="card-desc">マルチスレッド・シングルスレッド・コスパの3つの順位。コア数、クロック、TDP、価格を一覧できます。</div><div class="card-arrow">›</div></div>
-      <div class="card" role="link" tabindex="0" onclick="goPage('gpu-rank')"><div class="card-title">GPU ランキング</div><div class="card-desc">3DMark Time Spy のスコア順。VRAM、消費電力、レイトレ対応も確認できます。</div><div class="card-arrow">›</div></div>
-      <div class="card" role="link" tabindex="0" onclick="goPage('ram-rank')"><div class="card-title">メモリ ランキング</div><div class="card-desc">DDR4・DDR5 の規格ごとの最安値と、1GBあたりの価格を比較できます。</div><div class="card-arrow">›</div></div>
-      <div class="card" role="link" tabindex="0" onclick="goPage('cpu-compare')"><div class="card-title">2製品の比較</div><div class="card-desc">2つのCPUまたはGPUを並べて、項目ごとに優れている方を表示します。</div><div class="card-arrow">›</div></div>
-      <div class="card" role="link" tabindex="0" onclick="goPage('bottleneck')"><div class="card-title">ボトルネック診断</div><div class="card-desc">CPUとGPUの組み合わせで、どちらかが性能の足を引っ張らないかを診断します。</div><div class="card-arrow">›</div></div>
-      <div class="card" role="link" tabindex="0" onclick="goPage('builder')"><div class="card-title">構成ビルダー</div><div class="card-desc">パーツを選ぶと合計金額と遊べるゲームの目安を表示。ソケットや電源容量の確認もします。</div><div class="card-arrow">›</div></div>
-    </div>
-  </div>
-  <div class="section" style="padding-top:0">
     <div class="section-header"><div class="section-title">データについて</div></div>
     <ul class="home-notes">
       <li>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy の数値です。</li>
@@ -501,9 +774,9 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- CPU RANKING -->
-<div id="cpu-rank" class="page">
+<div id="cpu-rank" class="page c-cpu">
   <div class="section">
-    <div class="section-header">
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg>
       <div class="section-title">CPU ランキング</div>
       <div class="section-sub" id="cpu-rank-updated">データ読み込み中...</div>
       <button class="share-btn" onclick="shareUrl('cpu-rank')">シェア</button>
@@ -521,7 +794,7 @@ a.affiliate-btn:hover { background: #154e96; }
       </div>
       <div class="budget-box">
         <div class="budget-label">予算上限 <span id="cpu-budget-val">制限なし</span></div>
-        <input type="range" id="cpu-budget" min="0" max="130000" step="5000" value="130000" oninput="updateCpuBudgetLabel();renderCpuTable()">
+        <input type="range" id="cpu-budget" aria-label="CPUの予算上限" min="0" max="130000" step="5000" value="130000" oninput="updateCpuBudgetLabel();renderCpuTable()">
       </div>
       <div class="result-count" id="cpu-result-count"></div>
     </div>
@@ -529,7 +802,7 @@ a.affiliate-btn:hover { background: #154e96; }
       <span class="sort-label">並び替え：</span>
       <button class="sort-btn active-score" id="cpu-sort-score" onclick="sortCpu('score',this)">性能 <span class="sort-arrow" id="cpu-arrow-score">↓</span></button>
       <button class="sort-btn" id="cpu-sort-price" onclick="sortCpu('price',this)">値段 <span class="sort-arrow" id="cpu-arrow-price">↓</span></button>
-      <button class="sort-btn" id="cpu-sort-cospa" onclick="sortCpu('cospa',this)">コスパ <span class="sort-arrow" id="cpu-arrow-cospa">↓</span></button>
+      <button class="sort-btn" id="cpu-sort-cospa" onclick="sortCpu('cospa',this)">1万円あたり <span class="sort-arrow" id="cpu-arrow-cospa">↓</span></button>
     </div>
     <div class="fav-bar" id="cpu-fav-bar" style="display:none">
       <span class="fav-bar-label">お気に入り：</span>
@@ -538,30 +811,30 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング・Amazon）が含まれます。</p>
     <div class="table-wrap">
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'cpu-multi')">マルチスレッド</div>
-        <div class="tab" onclick="switchTab(this,'cpu-single')">シングルスレッド</div>
-        <div class="tab" onclick="switchTab(this,'cpu-cospa')">コスパ</div>
-        <div class="tab" onclick="switchTab(this,'cpu-blender')">Blender</div>
+      <div class="tabs" role="tablist">
+        <div class="tab active" role="tab" tabindex="0" onclick="switchTab(this,'cpu-multi')">マルチスレッド</div>
+        <div class="tab" role="tab" tabindex="0" onclick="switchTab(this,'cpu-single')">シングルスレッド</div>
+        <div class="tab" role="tab" tabindex="0" onclick="switchTab(this,'cpu-cospa')">コスパ</div>
+        <div class="tab" role="tab" tabindex="0" onclick="switchTab(this,'cpu-blender')">Blender</div>
       </div>
       <div id="cpu-multi" class="tab-content active">
         <div class="notice">PassMark マルチスレッドスコア。数値が高いほど高性能です。</div>
         <table class="rank-table">
-          <thead><tr><th>順位</th><th>CPU名</th><th>スコア (Multi)</th><th>価格</th><th>コア / スレッド</th><th>クロック Base→Max</th><th>L3キャッシュ</th><th>TDP</th><th>コスパ</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
+          <thead><tr><th>順位</th><th>CPU名</th><th>スコア (Multi)</th><th>最安値</th><th>1万円あたり</th><th>コア / スレッド</th><th>クロック Base→Max</th><th>L3キャッシュ</th><th>TDP</th><th>♡</th><th>購入</th></tr></thead>
           <tbody id="cpu-table-body"><tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent2);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
         </table>
       </div>
       <div id="cpu-single" class="tab-content">
         <div class="notice">PassMark シングルスレッドスコア。ゲーム性能に直結する指標です。</div>
         <table class="rank-table">
-          <thead><tr><th>順位</th><th>CPU名</th><th>スコア (Single)</th><th>価格</th><th>コア / スレッド</th><th>Maxクロック</th><th>TDP</th><th>コスパ</th><th>評価</th><th>購入</th></tr></thead>
+          <thead><tr><th>順位</th><th>CPU名</th><th>スコア (Single)</th><th>最安値</th><th>1万円あたり</th><th>コア / スレッド</th><th>Maxクロック</th><th>TDP</th><th>購入</th></tr></thead>
           <tbody id="cpu-single-body"><tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
         </table>
       </div>
       <div id="cpu-cospa" class="tab-content">
-        <div class="notice">スコア ÷ 価格（円）で算出したコスパランキングです。</div>
+        <div class="notice">PassMark マルチスレッドのスコアを価格で割り、1万円あたりのスコアにした順位です。値段に対して性能が高いほど上に来ます。価格が分かる製品だけを載せています。</div>
         <table class="rank-table">
-          <thead><tr><th>順位</th><th>CPU名</th><th>コスパ指数</th><th>価格</th><th>スコア</th><th>コア / スレッド</th><th>TDP</th><th>評価</th><th>購入</th></tr></thead>
+          <thead><tr><th>順位</th><th>CPU名</th><th>1万円あたりのスコア</th><th>最安値</th><th>マルチスレッドのスコア</th><th>コア / スレッド</th><th>TDP</th><th>購入</th></tr></thead>
           <tbody id="cpu-cospa-body"><tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
         </table>
       </div>
@@ -578,9 +851,9 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- GPU RANKING -->
-<div id="gpu-rank" class="page">
+<div id="gpu-rank" class="page c-gpu">
   <div class="section">
-    <div class="section-header">
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg>
       <div class="section-title">GPU ランキング</div>
       <div class="section-sub" id="gpu-rank-updated">データ読み込み中...</div>
       <button class="share-btn" onclick="shareUrl('gpu-rank')">シェア</button>
@@ -599,7 +872,7 @@ a.affiliate-btn:hover { background: #154e96; }
       </div>
       <div class="budget-box">
         <div class="budget-label">予算上限 <span id="gpu-budget-val">制限なし</span></div>
-        <input type="range" id="gpu-budget" min="0" max="650000" step="10000" value="650000" oninput="updateGpuBudgetLabel();renderGpuTable()">
+        <input type="range" id="gpu-budget" aria-label="GPUの予算上限" min="0" max="650000" step="10000" value="650000" oninput="updateGpuBudgetLabel();renderGpuTable()">
       </div>
       <div class="result-count" id="gpu-result-count"></div>
     </div>
@@ -607,7 +880,7 @@ a.affiliate-btn:hover { background: #154e96; }
       <span class="sort-label">並び替え：</span>
       <button class="sort-btn active-score" id="gpu-sort-score" onclick="sortGpu('score',this)">性能 <span class="sort-arrow" id="gpu-arrow-score">↓</span></button>
       <button class="sort-btn" id="gpu-sort-price" onclick="sortGpu('price',this)">値段 <span class="sort-arrow" id="gpu-arrow-price">↓</span></button>
-      <button class="sort-btn" id="gpu-sort-cospa" onclick="sortGpu('cospa',this)">コスパ <span class="sort-arrow" id="gpu-arrow-cospa">↓</span></button>
+      <button class="sort-btn" id="gpu-sort-cospa" onclick="sortGpu('cospa',this)">1万円あたり <span class="sort-arrow" id="gpu-arrow-cospa">↓</span></button>
     </div>
     <div class="fav-bar" id="gpu-fav-bar" style="display:none">
       <span class="fav-bar-label">お気に入り：</span>
@@ -616,22 +889,22 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング・Amazon）が含まれます。</p>
     <div class="table-wrap">
-      <div class="tabs">
-        <div class="tab active" onclick="switchTab(this,'gpu-3dmark')">3DMark</div>
-        <div class="tab" onclick="switchTab(this,'gpu-blender')">Blender</div>
+      <div class="tabs" role="tablist">
+        <div class="tab active" role="tab" tabindex="0" onclick="switchTab(this,'gpu-3dmark')">3DMark</div>
+        <div class="tab" role="tab" tabindex="0" onclick="switchTab(this,'gpu-blender')">Blender</div>
       </div>
       <div id="gpu-3dmark" class="tab-content active">
       <div class="notice">3DMark Time Spy スコア。数値が高いほどゲーム性能が高いです。レイトレは専用回路の有無、専用アップスケーラーはそのGPUだけで使える機能（DLSS / FSR 4 / XeSS）です。FSR 3 以前は多くのGPUで使えるため、「—」でも使えないという意味ではありません。</div>
       <table class="rank-table">
-        <thead><tr><th>順位</th><th>GPU名</th><th>スコア (Time Spy)</th><th>価格</th><th>VRAM</th><th>メモリ帯域幅</th><th>TDP</th><th>レイトレ</th><th>専用アップスケーラー</th><th>コスパ</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
-        <tbody id="gpu-table-body"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
+        <thead><tr><th>順位</th><th>GPU名</th><th>スコア (Time Spy)</th><th>最安値</th><th>1万円あたり</th><th>VRAM</th><th>メモリ帯域幅</th><th>TDP</th><th>レイトレ</th><th>専用アップスケーラー</th><th>♡</th><th>購入</th></tr></thead>
+        <tbody id="gpu-table-body" class="gpu-rows"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
       </table>
       </div>
       <div id="gpu-blender" class="tab-content">
         <div class="notice">Blender Benchmark（<a href="https://opendata.blender.org/" target="_blank" rel="noopener">Blender Open Data</a>、<span class="blender-version-gpu">—</span>）の中央値スコア。利用者の測定結果のうち、測定数3件以上の製品だけを載せ、毎日自動で更新します。3DMarkのスコアがまだ入っていない新製品も載ります。GPUは一番速い計算方式（OptiX / CUDA / HIP / oneAPI）の値で、VRAM容量違いの版は区別されません。</div>
         <table class="rank-table">
           <thead><tr><th>順位</th><th>GPU名</th><th>Blender スコア</th><th>測定数</th><th>価格</th><th>3DMark</th><th>VRAM</th><th>購入</th></tr></thead>
-          <tbody id="gpu-blender-body"><tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
+          <tbody id="gpu-blender-body" class="gpu-rows"><tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3)">データ読み込み中...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -640,9 +913,9 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- RAM RANKING -->
-<div id="ram-rank" class="page">
+<div id="ram-rank" class="page c-ram">
   <div class="section">
-    <div class="section-header">
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-ram"/></svg>
       <div class="section-title">メモリ ランキング</div>
       <div class="section-sub" id="ram-rank-updated">データ読み込み中...</div>
       <button class="share-btn" onclick="shareUrl('ram-rank')">シェア</button>
@@ -662,7 +935,7 @@ a.affiliate-btn:hover { background: #154e96; }
       </div>
       <div class="budget-box">
         <div class="budget-label">予算上限 <span id="ram-budget-val">制限なし</span></div>
-        <input type="range" id="ram-budget" min="0" max="80000" step="2000" value="80000" oninput="updateRamBudgetLabel();renderRamTable()">
+        <input type="range" id="ram-budget" aria-label="メモリの予算上限" min="0" max="80000" step="2000" value="80000" oninput="updateRamBudgetLabel();renderRamTable()">
       </div>
       <div class="result-count" id="ram-result-count"></div>
     </div>
@@ -681,7 +954,7 @@ a.affiliate-btn:hover { background: #154e96; }
     <div class="table-wrap">
       <div class="notice">規格（世代・速度・容量・枚数）ごとに、Yahoo!ショッピングで在庫のある新品のデスクトップ用キットの最安値を毎日自動で取得しています。CLは最安の商品の値で、同じ規格でも製品によって異なります。帯域幅 = 速度 × 8バイト / 1000（理論値・1枚あたり）。</div>
       <table class="rank-table">
-        <thead><tr><th>順位</th><th>製品名</th><th>タイプ</th><th>速度</th><th>CL（最安品）</th><th>容量 / 構成</th><th>帯域幅(理論)</th><th>価格</th><th>コスパ/GB</th><th>評価</th><th>♡</th><th>購入</th></tr></thead>
+        <thead><tr><th>順位</th><th>製品名</th><th>タイプ</th><th>速度</th><th>CL（最安品）</th><th>容量 / 構成</th><th>帯域幅(理論)</th><th>最安値</th><th>1GBあたり</th><th>♡</th><th>購入</th></tr></thead>
         <tbody id="ram-table-body"><tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)"><div style="display:inline-flex;align-items:center;gap:10px"><div style="width:16px;height:16px;border:2px solid var(--accent2);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite"></div>データ読み込み中...</div></td></tr></tbody>
       </table>
     </div>
@@ -690,12 +963,12 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- CPU COMPARE -->
-<div id="cpu-compare" class="page">
+<div id="cpu-compare" class="page c-cpu">
   <div class="section">
-    <div class="section-header"><div class="section-title">CPU 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg><div class="section-title">CPU 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
     <div class="compare-select-wrap">
-      <div class="select-box"><label>CPU A</label><select id="cpu-a-select" onchange="updateCompare()"></select></div>
-      <div class="select-box"><label>CPU B</label><select id="cpu-b-select" onchange="updateCompare()"></select></div>
+      <div class="select-box"><label for="cpu-a-select">CPU A</label><select id="cpu-a-select" onchange="updateCompare()"></select></div>
+      <div class="select-box"><label for="cpu-b-select">CPU B</label><select id="cpu-b-select" onchange="updateCompare()"></select></div>
     </div>
     <div class="perf-visual" id="cpu-perf-bars"></div>
     <div class="table-wrap"><table class="compare-table" id="cpu-compare-table"></table></div>
@@ -705,12 +978,12 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- GPU COMPARE -->
-<div id="gpu-compare" class="page">
+<div id="gpu-compare" class="page c-gpu">
   <div class="section">
-    <div class="section-header"><div class="section-title">GPU 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg><div class="section-title">GPU 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
     <div class="compare-select-wrap">
-      <div class="select-box"><label>GPU A</label><select id="gpu-a-select" onchange="updateGpuCompare()"></select></div>
-      <div class="select-box"><label>GPU B</label><select id="gpu-b-select" onchange="updateGpuCompare()"></select></div>
+      <div class="select-box"><label for="gpu-a-select">GPU A</label><select id="gpu-a-select" onchange="updateGpuCompare()"></select></div>
+      <div class="select-box"><label for="gpu-b-select">GPU B</label><select id="gpu-b-select" onchange="updateGpuCompare()"></select></div>
     </div>
     <div class="table-wrap"><table class="compare-table" id="gpu-compare-table"></table></div>
     <div id="gpu-price-history"></div>
@@ -719,9 +992,9 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- RAM COMPARE -->
-<div id="ssd-rank" class="page">
+<div id="ssd-rank" class="page c-misc">
   <div class="section">
-    <div class="section-header">
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-ssd"/></svg>
       <div class="section-title">SSD メーカー別最安値</div>
       <div class="section-sub" id="ssd-rank-updated">データ読み込み中...</div>
       <button class="share-btn" onclick="shareUrl('ssd-rank')">シェア</button>
@@ -738,9 +1011,9 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング）が含まれます。</p>
     <div class="table-wrap">
-      <div class="tabs">
-        <div class="tab" id="ssd-tab-pick" onclick="switchTab(this,'ssd-picks')" hidden>おすすめ製品</div>
-        <div class="tab active" id="ssd-tab-auto" onclick="switchTab(this,'ssd-auto')">規格別の最安値</div>
+      <div class="tabs" role="tablist">
+        <div class="tab" id="ssd-tab-pick" role="tab" tabindex="0" onclick="switchTab(this,'ssd-picks')" hidden>おすすめ製品</div>
+        <div class="tab active" id="ssd-tab-auto" role="tab" tabindex="0" onclick="switchTab(this,'ssd-auto')">規格別の最安値</div>
       </div>
       <div id="ssd-picks" class="tab-content">
         <div class="notice">運営者が選んで仕様を確認したSSDです。価格は毎朝、製品名で検索して自動で取得しています（上の絞り込みは「規格別の最安値」だけに効きます）。</div>
@@ -759,9 +1032,9 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
   </div>
 </div>
-<div id="psu-rank" class="page">
+<div id="psu-rank" class="page c-misc">
   <div class="section">
-    <div class="section-header">
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-psu"/></svg>
       <div class="section-title">電源ユニット メーカー別最安値</div>
       <div class="section-sub" id="psu-rank-updated">データ読み込み中...</div>
       <button class="share-btn" onclick="shareUrl('psu-rank')">シェア</button>
@@ -786,9 +1059,9 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
   </div>
 </div>
-<div id="mb-rank" class="page">
+<div id="mb-rank" class="page c-misc">
   <div class="section">
-    <div class="section-header">
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-mb"/></svg>
       <div class="section-title">マザーボード メーカー別最安値</div>
       <div class="section-sub" id="mb-rank-updated">データ読み込み中...</div>
       <button class="share-btn" onclick="shareUrl('mb-rank')">シェア</button>
@@ -809,9 +1082,9 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
     <p class="ad-note">このページの購入リンクには、アフィリエイト広告（Yahoo!ショッピング）が含まれます。</p>
     <div class="table-wrap">
-      <div class="tabs">
-        <div class="tab" id="mb-tab-pick" onclick="switchTab(this,'mb-picks')" hidden>おすすめ製品</div>
-        <div class="tab active" id="mb-tab-auto" onclick="switchTab(this,'mb-auto')">規格別の最安値</div>
+      <div class="tabs" role="tablist">
+        <div class="tab" id="mb-tab-pick" role="tab" tabindex="0" onclick="switchTab(this,'mb-picks')" hidden>おすすめ製品</div>
+        <div class="tab active" id="mb-tab-auto" role="tab" tabindex="0" onclick="switchTab(this,'mb-auto')">規格別の最安値</div>
       </div>
       <div id="mb-picks" class="tab-content">
         <div class="notice">運営者が選んで仕様を確認したマザーボードです。価格は毎朝、製品名で検索して自動で取得しています（上の絞り込みは「規格別の最安値」だけに効きます）。</div>
@@ -830,9 +1103,9 @@ a.affiliate-btn:hover { background: #154e96; }
     </div>
   </div>
 </div>
-<div id="ram-compare" class="page">
+<div id="ram-compare" class="page c-ram">
   <div class="section">
-    <div class="section-header"><div class="section-title">メモリ 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-ram"/></svg><div class="section-title">メモリ 詳細比較</div><div class="section-sub">2製品を選択して比較</div></div>
     <div class="compare-select-wrap">
       <div class="select-box"><label for="ram-a-select">メモリ A</label><select id="ram-a-select" onchange="updateRamCompare()"></select></div>
       <div class="select-box"><label for="ram-b-select">メモリ B</label><select id="ram-b-select" onchange="updateRamCompare()"></select></div>
@@ -845,23 +1118,23 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- BOTTLENECK -->
-<div id="bottleneck" class="page">
+<div id="bottleneck" class="page c-cpu">
   <div class="section">
-    <div class="section-header">
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-cooler"/></svg>
       <div class="section-title">ボトルネック診断</div>
       <div class="section-sub">CPU × GPU のバランスを診断</div>
       <button class="share-btn" onclick="shareUrl('bottleneck')">シェア</button>
     </div>
     <div class="bn-layout">
       <div class="bn-select-card">
-        <label>CPU を選択</label>
+        <label for="bn-cpu-sel">CPU を選択</label>
         <select id="bn-cpu-sel" onchange="calcBottleneck()"></select>
-        <div id="bn-cpu-info" style="font-size:12px;color:var(--text2);font-family:'Noto Sans JP',sans-serif"></div>
+        <div id="bn-cpu-info" style="font-size:12px;color:var(--text2);font-family:var(--f-body)"></div>
       </div>
       <div class="bn-select-card">
-        <label>GPU を選択</label>
+        <label for="bn-gpu-sel">GPU を選択</label>
         <select id="bn-gpu-sel" onchange="calcBottleneck()"></select>
-        <div id="bn-gpu-info" style="font-size:12px;color:var(--text2);font-family:'Noto Sans JP',sans-serif"></div>
+        <div id="bn-gpu-info" style="font-size:12px;color:var(--text2);font-family:var(--f-body)"></div>
       </div>
     </div>
     <div class="bn-result" id="bn-result">
@@ -872,9 +1145,9 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- PRESETS -->
-<div id="presets" class="page">
+<div id="presets" class="page c-misc">
   <div class="section">
-    <div class="section-header">
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg>
       <div class="section-title">用途別おすすめ構成</div>
       <div class="section-sub">プリセット構成をビルダーに読み込めます。CPU・GPU・メモリ以外のパーツの価格は、自動取得していない目安です</div>
     </div>
@@ -884,9 +1157,9 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- ABOUT -->
-<div id="about" class="page">
+<div id="about" class="page c-misc">
   <div class="section prose">
-    <div class="section-header"><div class="section-title">このサイトについて</div></div>
+    <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-mb"/></svg><div class="section-title">このサイトについて</div></div>
     <h3 id="operator">運営者情報</h3>
     <ul>
       <li>運営者: 田中 将義</li>
@@ -925,11 +1198,11 @@ a.affiliate-btn:hover { background: #154e96; }
 </div>
 
 <!-- BUILDER -->
-<div id="builder" class="page">
-  <div class="bmobile-bar"><div><span>総合計</span><strong id="bmobile-total">¥15,000</strong></div><button onclick="document.querySelector('.builder-right').scrollIntoView({behavior:'smooth'})">構成と診断を見る ↓</button></div>
+<div id="builder" class="page c-misc">
+  <div class="bmobile-bar"><div><span>総合計</span><strong id="bmobile-total">¥0</strong></div><button onclick="document.querySelector('.builder-right').scrollIntoView({behavior:'smooth'})">構成と診断を見る ↓</button></div>
   <div class="builder-layout">
     <div class="builder-left">
-      <div class="builder-hero"><h2>構成ビルダー</h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><p style="font-size:12px;opacity:.8;margin-top:4px">CPU・GPU・メモリの価格はランキングと同じ価格（ストアから取得できたものは最安値）です。マザーボード・SSD・電源・CPUクーラー・ケースも毎日取得した最安値です。その日に取得できなかったパーツは「参考価格」と表示します。</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
+      <div class="builder-hero section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg><h2 class="section-title">構成ビルダー</h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><p style="font-size:12px;margin-top:4px">CPU・GPU・メモリの価格はランキングと同じ価格（ストアから取得できたものは最安値）です。マザーボード・SSD・電源・CPUクーラー・ケースも毎日取得した最安値です。その日に取得できなかったパーツは「参考価格」と表示します。</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">
@@ -937,9 +1210,9 @@ a.affiliate-btn:hover { background: #154e96; }
       <div class="bcart-list" id="bcart-list"><div class="bcart-empty">← パーツを選んでください</div></div>
       <div class="bcart-total">
         <div class="btotal-row"><span class="btotal-label">パーツ合計</span><span class="btotal-val" id="bparts-total">¥0</span></div>
-        <div class="btotal-row"><span class="btotal-label"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:inherit"><input type="checkbox" id="b-os-check" checked onchange="bupdateCart()" style="width:13px;height:13px;accent-color:var(--accent2)">OS (Win11 Home)</label></span><span class="btotal-val" id="bos-val">¥15,000</span></div>
+        <div class="btotal-row"><span class="btotal-label"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:inherit"><input type="checkbox" id="b-os-check" onchange="bupdateCart()" style="width:16px;height:16px;accent-color:var(--cpu)">OS（Windows 11 Home）も入れる</label></span><span class="btotal-val" id="bos-val">¥0</span></div>
         <div style="height:1px;background:var(--border);margin:6px 0"></div>
-        <div class="bgrand-row"><span class="bgrand-label">総合計</span><span class="bgrand-val" id="bgrand-total">¥15,000</span></div>
+        <div class="bgrand-row"><span class="bgrand-label">総合計</span><span class="bgrand-val" id="bgrand-total">¥0</span></div>
       </div>
       <button class="bcheck-btn" onclick="banalyze()">ゲーム性能をチェック</button>
       <div class="bgame-result" id="bgame-result"><div style="text-align:center;padding:24px;color:var(--text3);font-size:12px;margin-top:12px">CPU と GPU を選ぶと<br>ゲーム性能が自動で表示されます</div></div>
@@ -1140,8 +1413,14 @@ function safeRakutenUrl(value) {
   } catch (error) { return ''; }
 }
 function renderPrice(item) {
-  const price = `<div>${fmtPrice(item.price)}</div>`;
   if (!validPrice(item.price)) return '<span style="color:var(--text3)">価格不明</span>';
+  // ストアから取れていない価格は、一覧を縮めたスマホ表示でも分かるように「参考」と付ける
+  const ref = item.rakuten?.status === 'ok' ? '' : '<small class="ref-tag">参考</small>';
+  return `<div>${fmtPrice(item.price)}${ref}</div>${priceMeta(item)}`;
+}
+// 価格の出どころ。ストアから取れた価格は取得元と日時、それ以外は必ず「参考価格」と書く
+function priceMeta(item) {
+  if (!validPrice(item.price)) return '';
   if (item.rakuten?.status === 'ok') {
     const date = new Date(item.rakuten.fetchedAt);
     const fetched = Number.isNaN(date.getTime()) ? '取得日時不明' : date.toLocaleString('ja-JP', {month:'numeric', day:'numeric', hour:'numeric', minute:'2-digit'}) + ' 取得';
@@ -1149,13 +1428,12 @@ function renderPrice(item) {
     const pts = Number.isSafeInteger(r.points) && r.points > 0 ? `<br>＋${r.points.toLocaleString('ja-JP')}ポイント（実質 ¥${(item.price - r.points).toLocaleString('ja-JP')}）` : '';
     const others = (Array.isArray(r.offers) ? r.offers : []).filter(o => o && o.store !== r.source && validPrice(o.price) && safeRakutenUrl(o.url))
       .map(o => `<br><a href="${escapeHtml(safeRakutenUrl(o.url))}" target="_blank" rel="noopener sponsored">${escapeHtml(o.store)} ¥${o.price.toLocaleString('ja-JP')}</a>`).join('');
-    return `${price}<div class="price-meta">取得元: ${escapeHtml(r.source)}（${escapeHtml(fetched)}）${pts}${others}</div>`;
+    return `<div class="price-meta">取得元: ${escapeHtml(r.source)}（${escapeHtml(fetched)}）${pts}${others}</div>`;
   }
   if (item.rakuten?.status === 'error') {
-    return `${price}<div class="price-meta price-error">ストア価格の更新失敗<br>表示額は参考価格（最新扱いではありません）</div>`;
+    return `<div class="price-meta price-error">ストア価格の更新失敗<br>表示額は参考価格（最新扱いではありません）</div>`;
   }
-  if (item.priceBuiltin) return `${price}<div class="price-meta">参考価格（ストアから未取得）</div>`;
-  return price;
+  return `<div class="price-meta">参考価格（ストアから未取得）</div>`;
 }
 function purchaseButton(item) {
   const url = item.rakuten?.status === 'ok' && safeRakutenUrl(item.rakuten.url);
@@ -1200,7 +1478,17 @@ function assignSheetBadges(data, type) {
 function esc(s) { return String(s??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function jsq(s) { return esc(String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")); }
 // 評価の★は並び順ではなく性能（最高値に対する比率）で決める
-function stars(ratio) { const n=ratio>=0.85?5:ratio>=0.6?4:ratio>=0.4?3:2; return `<span class="badge ${n>=5?'badge-purple':n>=4?'badge-blue':'badge-green'}">${'★'.repeat(n)}</span>`; }
+// 1万円あたりのスコア（スコア ÷ 価格 × 10,000）。価格が分からない製品は出さない
+function perMan(item) { const v = costPerformance(item); return v === null ? null : Math.round(v * 10000); }
+// 緑にするのは、性能が一定以上の製品のうち 1万円あたりのスコアが上位 10% のもの（assignSheetBadges と同じ決め方）
+function perCell(item) {
+  const v = perMan(item);
+  return `<td class="price-cell"><span class="per-val${item.badge === 'コスパ最強' ? ' best' : ''}">${v === null ? '—' : v.toLocaleString('ja-JP') + '<small>/万円</small>'}</span></td>`;
+}
+// スマホで行を押したときに開く印（PCでは表示しない）
+const MORE_BTN = '<button class="row-more" type="button" aria-expanded="false" aria-label="仕様と購入先を開く">▼</button>';
+// スマホで行を開いたときに出す価格の取得元（PCでは価格の欄に出ている）
+function srcCell(item) { return `<td class="m-src">${priceMeta(item) || ''}</td>`; }
 function syncSortBtns(p, keys, key, dir) { keys.forEach(k=>{ const b=document.getElementById(p+'-sort-'+k), a=document.getElementById(p+'-arrow-'+k); if(b) b.className='sort-btn'+(key===k?' active-'+(k==='speed'?'score':k):''); if(a) a.textContent=key===k?(dir===-1?'↓':'↑'):'↓'; }); }
 function toNum(v) { return typeof v==='number'?v:parseInt(String(v||'').replace(/[^0-9.]/g,''))||0; }
 
@@ -1231,62 +1519,60 @@ function renderCpuTableBody() {
 
   const maxScore = Math.max(...filtered.map(d=>d.score),1);
   tbody.innerHTML = filtered.map((c,i) => {
-    const cospaVal = costPerformance(c)?.toFixed(2) ?? '—';
     const isFav = cpuFavs.has(c.name);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
       <td>
-        <div class="chip-name">${nameLink('cpu',c.name)}${endedBadge(c)}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div>
-        <div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div>
+        <div class="chip-name">${nameLink('cpu',c.name)}${endedBadge(c)}</div>
+        <div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div>${MORE_BTN}
       </td>
       <td><div class="score-bar-wrap">
-        <div class="score-val" style="${cpuSortKey==='score'?'':'opacity:0.6'}">${c.score.toLocaleString()}</div>
-        <div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(c.score/maxScore*100)}%;${cpuSortKey!=='score'?'opacity:0.4':''}"></div></div>
+        <div class="score-val">${c.score.toLocaleString()}</div>
+        <div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(c.score/maxScore*100)}%"></div></div>
       </div></td>
-      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(c)}</td>
+      <td class="price-cell">${renderPrice(c)}</td>
+      ${perCell(c)}
       <td class="price-cell">${c.cores||'—'}C / ${c.threads||'—'}T</td>
       <td class="price-cell">${fmtClock(c.clockMin,c.clockMax)}</td>
       <td class="price-cell">${c.cache?c.cache+'MB':'—'}</td>
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
-      <td class="price-cell" style="${cpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
-      <td>${stars(c.score/maxCpuScore)}</td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('cpu','${jsq(c.name)}')" title="お気に入り">${isFav?'♥':'♡'}</button></td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('cpu','${jsq(c.name)}')" title="お気に入り" aria-label="お気に入り">${isFav?'♥':'♡'}</button></td>
       <td>${purchaseButton(c)}</td>
+      ${srcCell(c)}
     </tr>`;}).join('');
 
   // Single tab — ソートキーを適用した上でシングルスコアも表示
   const singleBase = [...base].sort((a,b)=>(b.single||0)-(a.single||0));
   const maxSingle = Math.max(...singleBase.map(d=>d.single||0),1);
   document.getElementById('cpu-single-body').innerHTML = singleBase.map((c,i) => {
-    const cospaVal = costPerformance(c)?.toFixed(2) ?? '—';
     return `<tr>
       <td>${c.single?`<span class="rank-num ${rankColor(i)}">${i+1}</span>`:'<span class="rank-num" title="シングルスレッドのスコアが未登録">—</span>'}</td>
-      <td><div class="chip-name">${nameLink('cpu',c.name)}${endedBadge(c)}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div></td>
-      <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent4)">${c.single?c.single.toLocaleString():'—'}</div><div class="score-bar-bg"><div class="score-bar" style="width:${c.single?Math.round(c.single/maxSingle*100):0}%;background:var(--accent4)"></div></div></div></td>
-      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(c)}</td>
+      <td><div class="chip-name">${nameLink('cpu',c.name)}${endedBadge(c)}</div><div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div>${MORE_BTN}</td>
+      <td><div class="score-bar-wrap"><div class="score-val">${c.single?c.single.toLocaleString():'—'}</div><div class="score-bar-bg"><div class="score-bar" style="width:${c.single?Math.round(c.single/maxSingle*100):0}%"></div></div></div></td>
+      <td class="price-cell">${renderPrice(c)}</td>
+      ${perCell(c)}
       <td class="price-cell">${c.cores||'—'}C / ${c.threads||'—'}T</td>
       <td class="price-cell">${c.clockMax?c.clockMax+'GHz':'—'}</td>
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
-      <td class="price-cell" style="${cpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
-      <td>${stars((c.single||0)/maxSingle)}</td>
       <td>${purchaseButton(c)}</td>
+      ${srcCell(c)}
     </tr>`;}).join('');
 
   // Cospa tab — 価格が確認できる製品だけをコスパ順に表示
   const cospaBase = base.filter(c=>costPerformance(c)!==null).sort((a,b)=>costPerformance(b)-costPerformance(a));
-  const maxCospa = Math.max(...cospaBase.map(c=>c.score/c.price),1);
+  const maxCospa = Math.max(...cospaBase.map(c=>perMan(c)),1);
   document.getElementById('cpu-cospa-body').innerHTML = cospaBase.map((c,i) => {
-    const cp = (c.score/c.price).toFixed(3);
+    const pm = perMan(c);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${nameLink('cpu',c.name)}${endedBadge(c)}${c.badge?` <span class="badge ${c.badgeClass}">${c.badge}</span>`:''}</div><div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div></td>
-      <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent3)">${cp}</div><div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(parseFloat(cp)/maxCospa*100)}%;background:var(--accent3)"></div></div></div></td>
-      <td class="price-cell" style="${cpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(c)}</td>
+      <td><div class="chip-name">${nameLink('cpu',c.name)}${endedBadge(c)}</div><div class="chip-sub">${c.maker} · ${esc(c.socket||'—')}</div>${MORE_BTN}</td>
+      <td><div class="score-bar-wrap"><div class="score-val">${pm.toLocaleString('ja-JP')}</div><div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(pm/maxCospa*100)}%;background:var(--good)"></div></div></div></td>
+      <td class="price-cell">${renderPrice(c)}</td>
       <td class="price-cell">${c.score.toLocaleString()}</td>
       <td class="price-cell">${c.cores||'—'}C / ${c.threads||'—'}T</td>
       <td class="price-cell">${c.tdp?c.tdp+'W':'—'}</td>
-      <td>${stars(parseFloat(cp)/maxCospa)}</td>
       <td>${purchaseButton(c)}</td>
+      ${srcCell(c)}
     </tr>`;}).join('');
 }
 
@@ -1309,22 +1595,21 @@ function renderGpuTable() {
   if (!filtered.length) { tbody.innerHTML=`<tr><td colspan="13" style="text-align:center;padding:32px;color:var(--text3)">条件に一致するGPUがありません</td></tr>`; return; }
   const maxScore = Math.max(...filtered.map(d=>d.score),1);
   tbody.innerHTML = filtered.map((g,i) => {
-    const cospaVal = costPerformance(g)?.toFixed(2) ?? '—';
     const isFav = gpuFavs.has(g.name);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${nameLink('gpu',g.name)}${endedBadge(g)}${g.badge?` <span class="badge ${g.badgeClass}">${g.badge}</span>`:''}</div><div class="chip-sub">${g.maker}</div></td>
-      <td><div class="score-bar-wrap"><div class="score-val" style="color:var(--accent);${gpuSortKey!=='score'?'opacity:0.6':''}">${g.score.toLocaleString()}</div><div class="score-bar-bg"><div class="score-bar gpu" style="width:${Math.round(g.score/maxScore*100)}%;${gpuSortKey!=='score'?'opacity:0.4':''}"></div></div></div></td>
-      <td class="price-cell" style="${gpuSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(g)}</td>
+      <td><div class="chip-name">${nameLink('gpu',g.name)}${endedBadge(g)}</div><div class="chip-sub">${g.maker}</div>${MORE_BTN}</td>
+      <td><div class="score-bar-wrap"><div class="score-val">${g.score.toLocaleString()}</div><div class="score-bar-bg"><div class="score-bar gpu" style="width:${Math.round(g.score/maxScore*100)}%"></div></div></div></td>
+      <td class="price-cell">${renderPrice(g)}</td>
+      ${perCell(g)}
       <td class="price-cell">${esc(g.vram||'—')}</td>
       <td class="price-cell">${esc(g.bw||'—')}</td>
       <td class="price-cell">${g.tdp?g.tdp+'W':'—'}</td>
       <td class="price-cell">${esc(g.rt||'—')}</td>
       <td class="price-cell">${esc(g.dlss||'—')}</td>
-      <td class="price-cell" style="${gpuSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
-      <td>${stars(g.score/maxGpuScore)}</td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('gpu','${jsq(g.name)}')" title="お気に入り">${isFav?'♥':'♡'}</button></td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('gpu','${jsq(g.name)}')" title="お気に入り" aria-label="お気に入り">${isFav?'♥':'♡'}</button></td>
       <td>${purchaseButton(g)}</td>
+      ${srcCell(g)}
     </tr>`;}).join('');
 }
 
@@ -1351,17 +1636,17 @@ function renderRamTable() {
     const isFav = ramFavs.has(r.name);
     return `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${esc(r.name)}${r.badge?` <span class="badge ${r.badgeClass}">${r.badge}</span>`:''}</div>${r.itemName?`<div class="chip-sub">最安: ${esc(r.itemName.length>48?r.itemName.slice(0,48)+'…':r.itemName)}</div>`:''}</td>
+      <td><div class="chip-name">${esc(r.name)}</div>${r.itemName?`<div class="chip-sub">最安: ${esc(r.itemName.length>48?r.itemName.slice(0,48)+'…':r.itemName)}</div>`:''}${MORE_BTN}</td>
       <td><span class="badge ${r.type==='DDR5'?'badge-purple':'badge-blue'}">${esc(r.type)}</span></td>
-      <td style="font-weight:700;color:var(--accent2)">${r.speed.toLocaleString()} MT/s</td>
+      <td class="num" style="font-weight:600">${r.speed.toLocaleString()} MT/s</td>
       <td>CL${r.cl||'—'}</td>
       <td>${r.capacity}GB <span style="color:var(--text3);font-size:11px">${esc(r.kit)}</span></td>
       <td style="color:var(--text2)">${bw}</td>
-      <td class="price-cell" style="${ramSortKey==='price'?'color:var(--gold);font-weight:700':''}">${renderPrice(r)}</td>
-      <td class="price-cell" style="${ramSortKey==='cospa'?'color:var(--accent3);font-weight:700':'color:var(--text2)'}">${cospaVal}</td>
-      <td>${stars(r.speed/maxRamSpeed)}</td>
-      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('ram','${jsq(r.name)}')" title="お気に入り">${isFav?'♥':'♡'}</button></td>
+      <td class="price-cell">${renderPrice(r)}</td>
+      <td class="price-cell"><span class="per-val">${cospaVal}</span></td>
+      <td><button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('ram','${jsq(r.name)}')" title="お気に入り" aria-label="お気に入り">${isFav?'♥':'♡'}</button></td>
       <td>${purchaseButton(r)}</td>
+      ${srcCell(r)}
     </tr>`;}).join('');
 }
 
@@ -1450,15 +1735,15 @@ function updateCompare() {
     <div class="perf-card">
       <div class="perf-card-title">マルチスレッドスコア (PassMark)</div>
       <div class="perf-bars">
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#1d5fa8">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.score/maxM*100}%;background:#1d5fa8"></div></div><div class="perf-bar-pct">${a.score.toLocaleString()}</div></div>
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#a4572f">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.score/maxM*100}%;background:#a4572f"></div></div><div class="perf-bar-pct">${b.score.toLocaleString()}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:var(--cpu)">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.score/maxM*100}%;background:var(--cpu)"></div></div><div class="perf-bar-pct">${a.score.toLocaleString()}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:var(--gpu)">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.score/maxM*100}%;background:var(--gpu)"></div></div><div class="perf-bar-pct">${b.score.toLocaleString()}</div></div>
       </div>
     </div>
     <div class="perf-card">
       <div class="perf-card-title">価格比較</div>
       <div class="perf-bars">
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#1d5fa8">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.price/maxP*100}%;background:#1d5fa8"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(a.price)}</div></div>
-        <div class="perf-bar-row"><div class="perf-bar-label" style="color:#a4572f">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.price/maxP*100}%;background:#a4572f"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(b.price)}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:var(--cpu)">${esc(a.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${a.price/maxP*100}%;background:var(--cpu)"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(a.price)}</div></div>
+        <div class="perf-bar-row"><div class="perf-bar-label" style="color:var(--gpu)">${esc(b.name.split(' ').slice(-2).join(' '))}</div><div class="perf-bar-track"><div class="perf-bar-fill" style="width:${b.price/maxP*100}%;background:var(--gpu)"></div></div><div class="perf-bar-pct" style="width:80px">${fmtPrice(b.price)}</div></div>
       </div>
     </div>`;
   const rows = [
@@ -1545,7 +1830,7 @@ async function loadPriceHistory() {
 function priceHistoryHTML(category, aName, bName) {
   const MIN_POINTS = 3;
   const clean = name => (priceHistory[`${category}|${name}`] || []).filter(p => Array.isArray(p) && typeof p[0]==='string' && validPrice(p[1]));
-  const lines = [[aName, clean(aName), '#1a5fb4'], [bName, clean(bName), '#a34a12']].filter(l => l[1].length >= MIN_POINTS);
+  const lines = [[aName, clean(aName), 'var(--cpu)'], [bName, clean(bName), 'var(--gpu)']].filter(l => l[1].length >= MIN_POINTS);
   if (!lines.length) return `<div class="history-card"><div class="perf-card-title">価格の推移</div><p class="history-empty">ストアから取得した価格が${MIN_POINTS}日分たまると、ここに推移を表示します。</p></div>`;
   const days = [...new Set(lines.flatMap(l => l[1].map(p => p[0])))].sort();
   const prices = lines.flatMap(l => l[1].map(p => p[1]));
@@ -1554,16 +1839,16 @@ function priceHistoryHTML(category, aName, bName) {
   const W = 640, H = 200, L = 64, R = 12, T = 12, B = 28;
   const x = d => L + (days.length===1 ? 0 : days.indexOf(d) * (W-L-R) / (days.length-1));
   const y = v => T + (hi - v) * (H-T-B) / (hi - lo);
-  const grid = [lo, (lo+hi)/2, hi].map(v => `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e5e8ec"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="#687482">¥${Math.round(v).toLocaleString('ja-JP')}</text>`).join('');
+  const grid = [lo, (lo+hi)/2, hi].map(v => `<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" font-size="11" style="fill:var(--ink3);font-family:var(--f-num)">¥${Math.round(v).toLocaleString('ja-JP')}</text>`).join('');
   const label = d => d.slice(5).replace('-','/');
-  const axis = [days[0], days[days.length-1]].map((d,i) => `<text x="${x(d)}" y="${H-8}" text-anchor="${i?'end':'start'}" font-size="11" fill="#687482">${label(d)}</text>`).join('');
-  const paths = lines.map(([, pts, color]) => `<polyline fill="none" stroke="${color}" stroke-width="2" points="${pts.map(p => `${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join(' ')}"/>`).join('');
+  const axis = [days[0], days[days.length-1]].map((d,i) => `<text x="${x(d)}" y="${H-8}" text-anchor="${i?'end':'start'}" font-size="11" style="fill:var(--ink3);font-family:var(--f-num)">${label(d)}</text>`).join('');
+  const paths = lines.map(([, pts, color]) => `<polyline fill="none" style="stroke:${color}" stroke-width="2" points="${pts.map(p => `${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join(' ')}"/>`).join('');
   const legend = lines.map(([name, pts, color]) => `<span><i style="background:${color}"></i>${esc(name)}　最新 ${fmtPrice(pts[pts.length-1][1])}・最安 ${fmtPrice(Math.min(...pts.map(p=>p[1])))}</span>`).join('');
   return `<div class="history-card"><div class="perf-card-title">価格の推移（ストアの最安値）</div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="価格の推移">${grid}${axis}${paths}</svg><div class="history-legend">${legend}</div></div>`;
 }
 
 function compareTableHTML(aName, bName, rows) {
-  return `<thead><tr><th class="label-col">項目</th><th style="color:#1d5fa8">${esc(aName)}</th><th style="color:#a4572f">${esc(bName)}</th></tr></thead>
+  return `<thead><tr><th class="label-col">項目</th><th style="color:var(--cpu)">${esc(aName)}</th><th style="color:var(--gpu)">${esc(bName)}</th></tr></thead>
   <tbody>${rows.map(([label,av,bv,mode])=>{
     let aC='',bC='';
     if(mode){const an=parseFloat(String(av).replace(/[^0-9.]/g,'')),bn=parseFloat(String(bv).replace(/[^0-9.]/g,''));
@@ -1581,7 +1866,7 @@ function updateHomeRanking() {
       <div class="mini-rank-item" onclick="goPage('cpu-rank')">
         <div class="mini-rank-pos ${i===0?'pos-1':i===1?'pos-2':i===2?'pos-3':''}">${i+1}</div>
         <div class="mini-rank-name">${esc(c.name)}</div>
-        <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(c.score/maxCpuScore*100)}%;background:#1d5fa8"></div></div>
+        <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(c.score/maxCpuScore*100)}%;background:var(--cpu)"></div></div>
         <div class="mini-rank-score">${c.score.toLocaleString()}</div>
       </div>`).join('');
   }
@@ -1591,10 +1876,14 @@ function updateHomeRanking() {
       <div class="mini-rank-item" onclick="goPage('gpu-rank')">
         <div class="mini-rank-pos ${i===0?'pos-1':i===1?'pos-2':i===2?'pos-3':''}">${i+1}</div>
         <div class="mini-rank-name">${esc(g.name)}</div>
-        <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(g.score/maxGpuScore*100)}%;background:#a4572f"></div></div>
+        <div class="mini-rank-bar"><div class="mini-rank-bar-fill" style="width:${Math.round(g.score/maxGpuScore*100)}%;background:var(--gpu)"></div></div>
         <div class="mini-rank-score" style="color:var(--accent)">${g.score.toLocaleString()}</div>
       </div>`).join('');
   }
+  const topCpu = cpuData.find(c=>!c.discontinued), topGpu = gpuData.find(g=>!g.discontinued);
+  const tc = document.getElementById('home-cpu-top'), tg = document.getElementById('home-gpu-top');
+  if (tc && topCpu) tc.textContent = topCpu.name;
+  if (tg && topGpu) tg.textContent = topGpu.name;
   const ce = document.getElementById('stat-cpu-count');
   const ge = document.getElementById('stat-gpu-count');
   const re = document.getElementById('stat-ram-count');
@@ -1933,13 +2222,14 @@ function renderBlenderTable(cat) {
   const max = Math.max(...items.map(x => x.blender.score), 1);
   tbody.innerHTML = items.map((x, i) => `<tr>
       <td><span class="rank-num ${rankColor(i)}">${i+1}</span></td>
-      <td><div class="chip-name">${nameLink(cat,x.name)}${endedBadge(x)}</div><div class="chip-sub">${esc(x.maker||'')}${x.blender.computeType ? ' · ' + esc(x.blender.computeType) : ''}</div></td>
-      <td><div class="score-bar-wrap"><div class="score-val">${x.blender.score.toLocaleString('ja-JP', {maximumFractionDigits: 1})}</div><div class="score-bar-bg"><div class="score-bar" style="width:${Math.round(x.blender.score/max*100)}%"></div></div></div></td>
+      <td><div class="chip-name">${nameLink(cat,x.name)}${endedBadge(x)}</div><div class="chip-sub">${esc(x.maker||'')}${x.blender.computeType ? ' · ' + esc(x.blender.computeType) : ''}</div>${MORE_BTN}</td>
+      <td><div class="score-bar-wrap"><div class="score-val">${x.blender.score.toLocaleString('ja-JP', {maximumFractionDigits: 1})}</div><div class="score-bar-bg"><div class="score-bar${cat==='gpu'?' gpu':''}" style="width:${Math.round(x.blender.score/max*100)}%"></div></div></div></td>
       <td class="price-cell">${Number(x.blender.samples).toLocaleString('ja-JP')}件</td>
       <td class="price-cell">${renderPrice(x)}</td>
       <td class="price-cell">${x.score > 0 ? x.score.toLocaleString() : '<span style="color:var(--text3)">未入力</span>'}</td>
       <td class="price-cell">${cat === 'cpu' ? `${x.cores||'—'}C / ${x.threads||'—'}T` : esc(x.vram || '—')}</td>
       <td>${purchaseButton(x)}</td>
+      ${srcCell(x)}
     </tr>`).join('');
 }
 function renderBlenderTables() { renderBlenderTable('cpu'); renderBlenderTable('gpu'); }
@@ -2205,16 +2495,21 @@ function clearFavs(type) {
 }
 
 // ===== BUDGET LABELS =====
+// つまみの左側をパーツの色で塗る（どこまで選んでいるかを分かりやすくする）
+function budgetFill(el) { if (el && el.style) el.style.setProperty('--fill-pct', ((el.value - el.min) / (el.max - el.min) * 100) + '%'); }
 function updateCpuBudgetLabel() {
   const v = parseInt(document.getElementById('cpu-budget').value);
+  budgetFill(document.getElementById('cpu-budget'));
   document.getElementById('cpu-budget-val').textContent = v>=130000 ? '制限なし' : `¥${v.toLocaleString()}`;
 }
 function updateGpuBudgetLabel() {
   const v = parseInt(document.getElementById('gpu-budget').value);
+  budgetFill(document.getElementById('gpu-budget'));
   document.getElementById('gpu-budget-val').textContent = v>=650000 ? '制限なし' : `¥${v.toLocaleString()}`;
 }
 function updateRamBudgetLabel() {
   const v = parseInt(document.getElementById('ram-budget').value);
+  budgetFill(document.getElementById('ram-budget'));
   document.getElementById('ram-budget-val').textContent = v>=80000 ? '制限なし' : `¥${v.toLocaleString()}`;
 }
 
@@ -2570,7 +2865,7 @@ function renderPresets() {
     const total = parts.reduce((s,pt)=>s+pt.price,0);
     return `<div class="preset-card">
       <div class="preset-header">
-        <div class="preset-icon" style="background:${p.color}20;color:${p.color}">${p.icon}</div>
+        <div class="preset-icon">${p.icon}</div>
         <div>
           <div class="preset-title">${p.title}</div>
           <div class="preset-budget">目安予算 約¥${Math.floor(total/10000)}万〜</div>
@@ -2622,12 +2917,22 @@ function loadPresetToBuilder(presetId) {
 // ナビのリンクは data-page で探す（並び順に依存しない）
 const PAGE_IDS = ['home','cpu-rank','gpu-rank','ram-rank','ssd-rank','psu-rank','mb-rank','cpu-compare','gpu-compare','ram-compare','bottleneck','presets','builder','about'];
 const PAGE_TITLES = {home:'BENCHCORE — PCパーツ性能比較','ssd-rank':'SSDのメーカー別最安値 — BENCHCORE','psu-rank':'電源ユニットのメーカー別最安値 — BENCHCORE','mb-rank':'マザーボードのメーカー別最安値 — BENCHCORE','cpu-rank':'CPUランキング — BENCHCORE','gpu-rank':'GPUランキング — BENCHCORE','ram-rank':'メモリランキング — BENCHCORE','cpu-compare':'CPU比較 — BENCHCORE','gpu-compare':'GPU比較 — BENCHCORE','ram-compare':'メモリ比較 — BENCHCORE',bottleneck:'ボトルネック診断 — BENCHCORE',presets:'おすすめ構成 — BENCHCORE',builder:'構成ビルダー — BENCHCORE',about:'このサイトについて — BENCHCORE'};
+function toggleMenu(open) {
+  const nav = document.querySelector('nav'), btn = document.getElementById('menu-btn');
+  if (!nav || !btn) return;
+  const next = typeof open === 'boolean' ? open : !nav.classList.contains('menu-open');
+  nav.classList.toggle('menu-open', next);
+  btn.setAttribute('aria-expanded', String(next));
+  btn.textContent = next ? '閉じる' : 'メニュー';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleMenu(false); });
 function goPage(page, skipHistory) { showPage(page, document.querySelector(`.nav-link[data-page="${page}"]`), skipHistory); }
 function showPage(id,clickedEl,skipHistory) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
-  if(clickedEl) clickedEl.classList.add('active');
+  // 同じページへのリンクはスマホの上段とメニューの両方にあるので、両方に印を付ける
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.toggle('active', l.dataset.page===id));
+  toggleMenu(false);
   document.title = PAGE_TITLES[id] || 'BENCHCORE';
   // ブラウザの戻る/進むに対応
   if(!skipHistory && history.state?.page !== id) {
@@ -2644,7 +2949,7 @@ window.addEventListener('popstate', e => {
 // Amazonアソシエイトのトラッキング ID（例: 'xxxx-22'）を入れると全購入リンクに付与されます
 const AMAZON_TAG = '';
 function amz(q) { window.open('https://www.amazon.co.jp/s?k='+encodeURIComponent(q)+(AMAZON_TAG?'&tag='+encodeURIComponent(AMAZON_TAG):''), '_blank', 'noopener'); }
-document.addEventListener('keydown', e => { if ((e.key==='Enter'||e.key===' ') && e.target.matches?.('.nav-link, .logo, .card, .footer-link')) { e.preventDefault(); e.target.click(); } });
+document.addEventListener('keydown', e => { if ((e.key==='Enter'||e.key===' ') && e.target.matches?.('.nav-link, .logo, .card, .footer-link, .tab')) { e.preventDefault(); e.target.click(); } });
 document.addEventListener('click', e => {
   const btn = e.target.closest('button.affiliate-btn');
   if (!btn) return;
@@ -2675,7 +2980,7 @@ function switchTab(el,targetId) {
 
 // ===== BUILDER =====
 const BPARTS = {
-  cpu:{ label:'CPU', icon:'CPU', color:'#1d5fa8', items:[
+  cpu:{ label:'CPU', icon:'CPU', color:'var(--cpu)', items:[
     {id:'bc1',name:'Ryzen 9 9950X3D',  spec:'16C · 5.7GHz · AM5',     price:99800, score:70594,socket:'AM5',    tdp:170},
     {id:'bc2',name:'Ryzen 7 9800X3D',  spec:'8C · 5.2GHz · AM5',      price:74800, score:41712,socket:'AM5',    tdp:120},
     {id:'bc3',name:'Core i9-14900K',   spec:'24C · 6.0GHz · LGA1700', price:58800, score:62300,socket:'LGA1700',tdp:253},
@@ -2686,7 +2991,7 @@ const BPARTS = {
     {id:'bc8',name:'Core i5-14400F',   spec:'10C · 4.7GHz · LGA1700', price:14800, score:16800,socket:'LGA1700',tdp:65},
     {id:'bc9',name:'Ryzen 5 7600',     spec:'6C · 5.1GHz · AM5',      price:18800, score:18200,socket:'AM5',    tdp:65},
   ]},
-  cpucooler:{ label:'CPUクーラー', icon:'FAN', color:'#1d5fa8', items:[
+  cpucooler:{ label:'CPUクーラー', icon:'FAN', color:'var(--cpu)', items:[
     // price は毎日の価格が取れなかったときの参考価格（2026-11-19 に取得した最安値）。maxTdp はメーカーが公表している冷却能力（公表していない製品は null）
     {id:'bco1',name:'Noctua NH-D15 G2',             spec:'デュアルタワー空冷',  price:23200, maxTdp:null},
     {id:'bco2',name:'DeepCool AK620',               spec:'デュアルタワー空冷 · 冷却能力260W（メーカー公表）', price:8440, maxTdp:260},
@@ -2697,7 +3002,7 @@ const BPARTS = {
     {id:'bco8',name:'ARCTIC Liquid Freezer III Pro 240', spec:'240mm AIO水冷', price:13720, maxTdp:null},
     {id:'bco9',name:'Thermalright Aqua Elite 240',  spec:'240mm AIO水冷',     price:8145,  maxTdp:null},
   ]},
-  gpu:{ label:'GPU', icon:'GPU', color:'#a4572f', items:[
+  gpu:{ label:'GPU', icon:'GPU', color:'var(--gpu)', items:[
     {id:'bg1',name:'RTX 5090',          spec:'32GB · 575W',  price:595000,score:47487,vram:32},
     {id:'bg2',name:'RTX 4090',          spec:'24GB · 450W',  price:400000,score:36340,vram:24},
     {id:'bg3',name:'RX 7900 XTX',       spec:'24GB · 355W',  price:88000, score:32000,vram:24},
@@ -2711,22 +3016,22 @@ const BPARTS = {
     {id:'bgb',name:'RTX 4060',          spec:'8GB · 115W',   price:44000, score:13200,vram:8},
     {id:'bgc',name:'RX 7600',           spec:'8GB · 165W',   price:32000, score:11000,vram:8},
   ]},
-  mb:{ label:'マザーボード', icon:'MB', color:'#2b7a52', items:[
+  mb:{ label:'マザーボード', icon:'MB', color:'var(--ink2)', items:[
     // 毎日の価格ファイル（規格 × メーカーの最安値）から作る。bloadPartsFromData() を参照
   ]},
-  ram:{ label:'メモリ (RAM)', icon:'RAM', color:'#55698f', items:[
+  ram:{ label:'メモリ (RAM)', icon:'RAM', color:'var(--ink2)', items:[
     {id:'br1',name:'DDR5-6000 64GB（32GB×2）', spec:'規格ごとの最安値', price:34800,gb:64},
     {id:'br2',name:'DDR5-6000 32GB（16GB×2）', spec:'規格ごとの最安値', price:18800,gb:32},
     {id:'br3',name:'DDR5-5600 32GB（16GB×2）', spec:'規格ごとの最安値', price:12800,gb:32},
     {id:'br4',name:'DDR5-5600 16GB（8GB×2）',  spec:'規格ごとの最安値', price:8800, gb:16},
   ]},
-  storage:{ label:'SSD', icon:'SSD', color:'#8c6200', items:[
+  storage:{ label:'SSD', icon:'SSD', color:'var(--ink2)', items:[
     // 毎日の価格ファイル（規格 × メーカーの最安値）から作る。bloadPartsFromData() を参照
   ]},
-  psu:{ label:'電源 (PSU)', icon:'PSU', color:'#8c6200', items:[
+  psu:{ label:'電源 (PSU)', icon:'PSU', color:'var(--ink2)', items:[
     // 毎日の価格ファイル（規格 × メーカーの最安値）から作る。bloadPartsFromData() を参照
   ]},
-  case:{ label:'ケース', icon:'CASE', color:'#1d5fa8', items:[
+  case:{ label:'ケース', icon:'CASE', color:'var(--cpu)', items:[
     {id:'bk1',name:'Fractal Design Torrent',  spec:'ATX · 最高エアフロー', price:33454},
     {id:'bk2',name:'Fractal Design North',    spec:'ATX · 木製フロント',   price:22990},
     {id:'bk3',name:'NZXT H7 Flow',            spec:'ATX · ミドルタワー',   price:17980},
@@ -2757,11 +3062,14 @@ const BGAMES=[
 ];
 const bSelected={};
 const B_OS=15000;
+// 構成ビルダーのパーツの絵と色（#ill-sprite）
+const BPART_ILL={cpu:'cpu',cpucooler:'cooler',gpu:'gpu',mb:'mb',ram:'ram',storage:'ssd',psu:'psu',case:'case'};
+const BPART_TINT={cpu:'c-cpu',cpucooler:'c-cpu',gpu:'c-gpu',ram:'c-ram'};
 function brenderParts(){
   document.getElementById('bpart-picker').innerHTML=Object.entries(BPARTS).map(([cat,data])=>`
     <div class="bpart-section" id="bsec-${cat}">
       <div class="bpart-header" onclick="btoggle('${cat}')">
-        <div class="bpart-icon" style="background:${data.color}20;color:${data.color}">${data.icon}</div>
+        <svg class="bpart-icon ${BPART_TINT[cat]||'c-misc'}" aria-hidden="true" focusable="false"><use href="#ill-${BPART_ILL[cat]||'case'}"/></svg>
         <div><span class="bpart-cat-label">${cat.toUpperCase()}</span><div class="bpart-cat-name">${data.label}</div></div>
         <div class="bpart-sel-info" id="bsel-info-${cat}" style="display:none"><div class="bpart-sel-name" id="bsel-name-${cat}"></div><div class="bpart-sel-price" id="bsel-price-${cat}"></div></div>
         <span class="bpart-chevron">▼</span>
@@ -2773,7 +3081,7 @@ function brenderParts(){
           <div class="bpart-item" id="bitem-${item.id}"${item.socket?` data-socket="${item.socket}"`:''} onclick="bselect('${cat}','${item.id}')">
             <div class="bpart-check" id="bcheck-${item.id}">✓</div>
             <div class="bpart-item-name"><strong>${esc(item.name)}</strong><small>${esc(item.spec)}</small></div>
-            <div class="bpart-item-right"><div class="bpart-item-price">¥${item.price.toLocaleString()}${item.ref?'<small style="display:block;font-size:10px;font-weight:400;color:var(--text3)">参考価格</small>':''}</div>${item.score?`<div class="bpart-item-score">score: ${item.score.toLocaleString()}</div>`:''}${item.url?`<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()" style="font-size:11px">店で見る</a>`:''}</div>
+            <div class="bpart-item-right"><div class="bpart-item-price">¥${item.price.toLocaleString()}${item.ref?'<small style="display:block;font-size:10px;font-weight:400;color:var(--text3)">参考価格</small>':''}</div>${item.score?`<div class="bpart-item-score">スコア ${item.score.toLocaleString()}</div>`:''}${item.url?`<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()" style="font-size:11px">店で見る</a>`:''}</div>
           </div>`).join('')}
       </div>
     </div>`).join('');
@@ -2855,21 +3163,37 @@ function banalyze(){
     ${playable.low.length?`<div class="btier-group"><div class="btier-group-label blabel-low">LOW（軽量タイトル）</div><div class="bgame-chips">${playable.low.slice(0,5).map(g=>`<div class="bgame-chip">${g.name}<small>${g.tag}</small></div>`).join('')}</div></div>`:''}`;
 }
 
-// ===== スマホ表示: 表の各セルに見出しを付け、カード表示で使う =====
-const MOBILE_HIDE = ['クロック', 'L3キャッシュ', 'メモリ帯域幅', 'レイトレ', '専用アップスケーラー', '帯域幅', '評価', 'Maxクロック', 'コア / スレッド', 'TDP'];
+// ===== スマホ表示: ランキングの表を「1行 = 1製品」にする =====
+// 見出しの名前から、スマホで常に見せる欄（順位・名前・スコア・最安値・1万円あたり）と、行を押したときだけ見せる欄を決める
+const MOBILE_SCORE = ['速度'];
+const MOBILE_PER = ['1万円あたり', '1GBあたり'];
 function labelCells(tbody) {
   if (!tbody || !tbody.querySelectorAll || !tbody.closest) return;
+  tbody.classList.add('mrows');
+  // 棒が伸びる動きは最初に表を出したときだけ（検索や並び替えのたびには動かさない）
+  if (!tbody.dataset.charged) { tbody.dataset.charged = '1'; setTimeout(() => tbody.classList.add('settled'), 1200); }
   const heads = [...(tbody.closest('table')?.querySelectorAll('thead th') || [])].map(th => th.textContent.trim());
   tbody.querySelectorAll('tr').forEach(tr => [...tr.children].forEach((td, i) => {
+    if (td.colSpan > 1 || td.classList.contains('m-src')) return;
     const h = heads[i] || '';
-    if (td.colSpan > 1) return;
-    td.dataset.label = h === '♡' || h === '購入' ? '' : h;
-    td.classList.toggle('m-rank', h === '順位');
-    td.classList.toggle('m-name', /名$/.test(h));
-    td.classList.toggle('m-hide', MOBILE_HIDE.some(word => h.startsWith(word)));
-    td.classList.toggle('m-act', h === '♡' || h === '購入');
+    const role = h === '順位' ? 'm-rank'
+      : /名$/.test(h) ? 'm-name'
+      : td.querySelector('.score-bar-wrap') || MOBILE_SCORE.includes(h) ? 'm-score'
+      : /^(最安値|価格)$/.test(h) ? 'm-price'
+      : MOBILE_PER.includes(h) ? 'm-per'
+      : h === '♡' ? 'm-fav' : h === '購入' ? 'm-act' : 'm-spec';
+    td.dataset.label = role === 'm-act' || role === 'm-fav' ? '' : h;
+    for (const c of ['m-rank', 'm-name', 'm-score', 'm-price', 'm-per', 'm-act', 'm-fav', 'm-spec']) td.classList.toggle(c, c === role);
   }));
 }
+// スマホで行を押すと、仕様・価格の取得元・購入ボタンを開く（リンクやボタンを押したときは開かない）
+document.addEventListener('click', e => {
+  const tr = e.target.closest?.('tbody.mrows tr');
+  if (!tr || !window.matchMedia?.('(max-width: 768px)').matches) return;
+  if (e.target.closest('a, button:not(.row-more), input, select')) return;
+  const open = tr.classList.toggle('open');
+  tr.querySelector('.row-more')?.setAttribute('aria-expanded', String(open));
+});
 function labelAllTables() { ['cpu-table-body','cpu-single-body','cpu-cospa-body','cpu-blender-body','gpu-table-body','gpu-blender-body','ram-table-body'].forEach(id => labelCells(document.getElementById(id))); }
 for (const name of ['renderCpuTable', 'renderGpuTable', 'renderRamTable']) {
   const original = globalThis[name];
