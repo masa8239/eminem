@@ -4,36 +4,147 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GeForce RTX 4070 Ti の最安値と性能（3DMark・Blender）| BENCHCORE</title>
-<meta name="description" content="GeForce RTX 4070 Tiの3DMark Time Spy 24,454、Blender 6,369.3。仕様と、近い性能のGPUとの比較をまとめています（2026/11/23更新）。">
+<meta name="description" content="GeForce RTX 4070 Tiの3DMark Time Spy 24,454、Blender 6,369.3。仕様と、近い性能のGPUとの比較をまとめています（2026/11/24更新）。">
 <link rel="canonical" href="https://eminem-steel.vercel.app/p/geforce-rtx-4070-ti.html">
 <meta property="og:title" content="GeForce RTX 4070 Ti の最安値と性能（3DMark・Blender）| BENCHCORE">
-<meta property="og:description" content="GeForce RTX 4070 Tiの3DMark Time Spy 24,454、Blender 6,369.3。仕様と、近い性能のGPUとの比較をまとめています（2026/11/23更新）。">
+<meta property="og:description" content="GeForce RTX 4070 Tiの3DMark Time Spy 24,454、Blender 6,369.3。仕様と、近い性能のGPUとの比較をまとめています（2026/11/24更新）。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://eminem-steel.vercel.app/p/geforce-rtx-4070-ti.html">
-<style>
-:root{--bg:#fff;--surface:#f5f6f8;--border:#dde1e6;--text:#1f2933;--text2:#4d5967;--accent:#1d5fa8;--good:#2b7a52}
-@media (prefers-color-scheme:dark){:root{--bg:#14181d;--surface:#1d232a;--border:#323a44;--text:#e6e9ed;--text2:#a7b0bb;--accent:#7fb2ec;--good:#6cc79a}}
-*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans JP',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
-a{color:var(--accent)}header,main,footer{max-width:860px;margin:0 auto;padding:0 16px}
-header{display:flex;align-items:center;gap:12px;padding-top:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.logo{font-weight:800;letter-spacing:.04em;text-decoration:none;color:var(--text)}.logo span{color:var(--accent)}
-.crumb{font-size:12px;color:var(--text2);margin:14px 0 4px}h1{font-size:24px;margin:4px 0 10px;line-height:1.35}
-h2{font-size:17px;margin:28px 0 10px;border-left:4px solid var(--accent);padding-left:10px}
-.price{background:var(--surface);border:1px solid var(--border);padding:14px 16px;border-radius:6px}
-.price strong{font-size:26px}.meta{font-size:12px;color:var(--text2)}
-.btn{display:inline-block;margin-top:10px;padding:8px 16px;background:var(--accent);color:#fff;text-decoration:none;border-radius:4px;font-weight:700}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
-th{width:38%;color:var(--text2);font-weight:500}.list td{width:auto}.list th{width:auto}
-.note{font-size:12px;color:var(--text2)}footer{margin-top:40px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--border);font-size:12px;color:var(--text2)}
-@media (max-width:600px){h1{font-size:20px}th{width:44%}}
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@400;500;700;900&family=Archivo:wdth,wght@125,700;125,800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>:root {
+  --header-h: 108px;
+  /* 地と線 */
+  --bg: #ffffff;
+  --sunk: #f4f6f9;
+  --sunk2: #e9edf2;
+  --line: #e4e8ed;
+  --line-strong: #cdd4dc;
+  --hover: #f1f5fe;
+  /* 文字 */
+  --ink: #0b0d10;
+  --ink2: #444c56;
+  --ink3: #646d78;
+  --on-dark: #ffffff;
+  --head: #0b0d10;
+  /* 役割の色（-soft は淡い地、--fill は白い文字を載せる面） */
+  --cpu: #1f4fd6;
+  --cpu-strong: #1a42b3;
+  --cpu-soft: #e8eefe;
+  --fill: #1f4fd6;
+  --fill-hover: #1a42b3;
+  --gpu: #b8531a;
+  --gpu-soft: #fdeee3;
+  --gpu-fill: #b8531a;
+  --ram: #6b3fd4;
+  --ram-soft: #f0ebfd;
+  --misc: #0f7c8a;
+  --misc-soft: #dff3f5;
+  --good: #0d7444;
+  --good-soft: #e3f5ec;
+  --warn: #8a5a00;
+  --warn-soft: #fbf2dc;
+  --warn-line: #ecd9a0;
+  --bad: #b42318;
+  --bad-soft: #fbe9e7;
+  --bad-line: #f2b8b5;
+  /* 書体 */
+  --f-body: 'M PLUS 2', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+  --f-disp: 'Archivo', 'M PLUS 2', 'Hiragino Sans', sans-serif;
+  --f-num: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  /* 角丸・影 */
+  --radius: 10px;
+  --radius-lg: 18px;
+  --shadow: 0 10px 30px rgba(15, 25, 45, 0.12);
+  /* パーツの絵の色（使う場所で上書きする） */
+  --ill: var(--cpu);
+  --ill-soft: var(--cpu-soft);
+  --ill-ink: var(--ink);
+
+  /* 以前の名前（JS やインラインの style が使っている）。新しい値に読み替える */
+  --surface: var(--bg);
+  --surface2: var(--sunk);
+  --surface3: var(--sunk2);
+  --border: var(--line);
+  --border2: var(--line-strong);
+  --navy: var(--head);
+  --text: var(--ink);
+  --text2: var(--ink2);
+  --text3: var(--ink3);
+  --accent: var(--gpu);
+  --accent2: var(--cpu);
+  --accent3: var(--good);
+  --accent4: var(--cpu);
+  --gold: var(--ink);
+  --danger: var(--bad);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101419; --sunk: #181e25; --sunk2: #232b34; --line: #29323c; --line-strong: #3a4552; --hover: #1a2230;
+    --ink: #eef1f5; --ink2: #b8c1cc; --ink3: #95a0ad; --head: #eef1f5;
+    --cpu: #86a6ff; --cpu-strong: #a3bcff; --cpu-soft: #1c2747; --fill: #3b63e0; --fill-hover: #4c72ea;
+    --gpu: #f39a62; --gpu-soft: #3a2416; --gpu-fill: #b8531a; --ram: #b49bff; --ram-soft: #2a2145; --misc: #5fc9d6; --misc-soft: #133238;
+    --good: #5cc28a; --good-soft: #15291f; --warn: #e0b354; --warn-soft: #2a2312; --warn-line: #5a4a20;
+    --bad: #f08a80; --bad-soft: #2e1816; --bad-line: #5e2b27; --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+
+*{box-sizing:border-box}body{margin:0;font-family:var(--f-body);background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px;-webkit-text-size-adjust:100%}
+a{color:var(--cpu)}a:focus-visible{outline:2px solid var(--cpu);outline-offset:2px}
+.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top-in{max-width:860px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:12px}
+.logo{display:inline-flex;align-items:center;font-family:var(--f-disp);font-stretch:125%;font-weight:800;font-size:18px;text-decoration:none;color:var(--ink)}.logo span{color:var(--cpu)}
+.logo-mark{width:22px;height:22px;margin-right:8px;transform:rotate(-8deg);--ill:var(--cpu);--ill-soft:var(--cpu-soft);--ill-ink:var(--ink)}
+.top nav{margin-left:auto;display:flex;gap:4px;font-size:13px}.top nav a{color:var(--ink2);text-decoration:none;font-weight:700;padding:6px 10px;border-radius:999px}.top nav a:hover{background:var(--sunk);color:var(--ink)}
+main,footer{max-width:860px;margin:0 auto;padding:0 16px}
+.c-cpu{--ill:var(--cpu);--ill-soft:var(--cpu-soft);--solid:#1f4fd6}.c-gpu{--ill:var(--gpu);--ill-soft:var(--gpu-soft);--solid:#a3470f}.c-misc{--ill:var(--misc);--ill-soft:var(--misc-soft);--solid:#0c6b77}
+.hero{position:relative;overflow:hidden;margin:16px 0 14px;padding:18px 110px 18px 20px;border-radius:var(--radius-lg);background:var(--solid,#1f4fd6);color:#fff}
+.hero .crumb{color:rgba(255,255,255,.85);margin:0 0 4px}.hero .crumb a{color:#fff}
+.hero h1{margin:0;color:#fff}
+.band-ill{position:absolute;right:-6px;bottom:-14px;width:112px;height:112px;transform:rotate(-12deg);--ill:#fff;--ill-soft:rgba(0,0,0,.26);--ill-ink:#0b0d10;pointer-events:none}
+.crumb{font-size:12px;color:var(--ink3);margin:16px 0 4px}.crumb a{color:var(--ink2)}
+h1{font-size:24px;font-weight:900;margin:4px 0 12px;line-height:1.35;text-wrap:balance;word-break:auto-phrase}h2{word-break:auto-phrase}.top nav a{white-space:nowrap}
+h2{font-size:18px;font-weight:900;margin:32px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.num,.price strong,td.n{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.price{background:var(--sunk);padding:16px 18px;border-radius:var(--radius-lg)}
+.price strong{font-family:var(--f-disp);font-stretch:125%;font-size:28px;font-weight:800}.meta{font-size:12px;color:var(--ink3)}
+.btn{display:inline-block;margin-top:10px;padding:10px 20px;background:var(--fill);color:#fff;text-decoration:none;border-radius:999px;font-weight:700;font-size:14px}.btn:hover{background:var(--fill-hover)}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{width:38%;color:var(--ink2);font-weight:500}.list td{width:auto}.list th{width:auto;background:var(--sunk);font-size:12px;font-weight:700;white-space:nowrap}
+.list tr:hover td{background:var(--hover)}
+ul{padding-left:1.3em}li{margin-bottom:4px}
+.note{font-size:12px;color:var(--ink3)}footer{margin-top:48px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
+@media (max-width:600px){h1{font-size:20px}th{width:44%}.list td:first-child{min-width:8.5em}.list th,.list td{padding:8px 6px}.list th{white-space:normal}
+ .hero{padding:16px 92px 16px 16px}.band-ill{width:92px;height:92px}.top nav a{padding:6px 7px;font-size:12px}.logo{font-size:16px}
+ table.parts,table.parts tbody{display:block}table.parts tr:first-child{display:none}
+ table.parts tr{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+ table.parts td{border:none;padding:0}table.parts td:first-child{grid-column:1/-1;font-size:12px;color:var(--ink3)}
+ table.parts td:last-child{text-align:right;white-space:nowrap}
+ table.parts tr:hover td{background:none}}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<header><a class="logo" href="/">BENCH<span>CORE</span></a><span class="meta">PCパーツの性能と最安値を比較</span></header>
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="ill-cpu" viewBox="0 0 64 64">
+  <g opacity=".55" style="fill:var(--ill-ink)"><rect x="15" y="4" width="3" height="7" rx="1"/><rect x="23" y="4" width="3" height="7" rx="1"/><rect x="31" y="4" width="3" height="7" rx="1"/><rect x="39" y="4" width="3" height="7" rx="1"/><rect x="47" y="4" width="3" height="7" rx="1"/><rect x="15" y="53" width="3" height="7" rx="1"/><rect x="23" y="53" width="3" height="7" rx="1"/><rect x="31" y="53" width="3" height="7" rx="1"/><rect x="39" y="53" width="3" height="7" rx="1"/><rect x="47" y="53" width="3" height="7" rx="1"/><rect x="4" y="15" width="7" height="3" rx="1"/><rect x="4" y="23" width="7" height="3" rx="1"/><rect x="4" y="31" width="7" height="3" rx="1"/><rect x="4" y="39" width="7" height="3" rx="1"/><rect x="4" y="47" width="7" height="3" rx="1"/><rect x="53" y="15" width="7" height="3" rx="1"/><rect x="53" y="23" width="7" height="3" rx="1"/><rect x="53" y="31" width="7" height="3" rx="1"/><rect x="53" y="39" width="7" height="3" rx="1"/><rect x="53" y="47" width="7" height="3" rx="1"/></g>
+  <rect x="9" y="9" width="46" height="46" rx="8" style="fill:var(--ill-soft)"/>
+  <rect x="19" y="19" width="26" height="26" rx="5" style="fill:var(--ill)"/>
+  <path d="M24 26h16M24 32h16M24 38h10" stroke-width="2.4" stroke-linecap="round" opacity=".7" style="stroke:var(--ill-soft)"/>
+  <path d="M12 52h6l-6-6z" style="fill:var(--ill)"/>
+</symbol><symbol id="ill-gpu" viewBox="0 0 64 64">
+  <rect x="3" y="16" width="4" height="30" rx="1.5" opacity=".55" style="fill:var(--ill-ink)"/>
+  <rect x="7" y="14" width="54" height="32" rx="7" style="fill:var(--ill)"/>
+  <rect x="16" y="46" width="30" height="5" rx="1.5" opacity=".45" style="fill:var(--ill-ink)"/>
+  <circle cx="22" cy="30" r="11" style="fill:var(--ill-soft)"/><circle cx="46" cy="30" r="11" style="fill:var(--ill-soft)"/>
+  <g stroke-width="2.6" stroke-linecap="round" style="stroke:var(--ill)"><path d="M22 30l0-8M22 30l7 4M22 30l-7 4"/><path d="M46 30l0-8M46 30l7 4M46 30l-7 4"/></g>
+  <circle cx="22" cy="30" r="2.6" style="fill:var(--ill)"/><circle cx="46" cy="30" r="2.6" style="fill:var(--ill)"/>
+</symbol></svg>
+<header class="top"><div class="top-in"><a class="logo" href="/" aria-label="BENCHCORE トップ"><svg class="logo-mark" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg>BENCH<span>CORE</span></a><nav aria-label="サイト内"><a href="/?page=cpu-rank">CPU</a><a href="/?page=gpu-rank">GPU</a><a href="/p/gaming-pc.html">予算別構成</a></nav></div></header>
 <main>
-<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/gpu.html">GPU一覧</a> › GeForce RTX 4070 Ti</div>
-<h1>GeForce RTX 4070 Ti の最安値と性能</h1>
+<div class="hero c-gpu"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg><div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/gpu.html">GPU一覧</a> › GeForce RTX 4070 Ti</div>
+<h1>GeForce RTX 4070 Ti の最安値と性能</h1></div>
 <div class="price"><div class="meta">ストアの価格はまだ取得できていません。</div></div>
 <h2>ベンチマークスコア</h2>
 <table><tr><th>3DMark Time Spy（グラフィックスコア）</th><td>24,454（118製品中 11 位）</td></tr><tr><th>Blender Benchmark（Blender 4.5.0）</th><td>6,369.3（74製品中 8 位・測定 156 件・OPTIX）</td></tr></table>
