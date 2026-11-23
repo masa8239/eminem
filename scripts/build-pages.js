@@ -27,22 +27,41 @@ function safeHttps(url) {
   try { const u = new URL(url); return u.protocol === 'https:' ? u.href : ''; } catch { return ''; }
 }
 
-const STYLE = `
-:root{--bg:#fff;--surface:#f5f6f8;--border:#dde1e6;--text:#1f2933;--text2:#4d5967;--accent:#1d5fa8;--good:#2b7a52}
-@media (prefers-color-scheme:dark){:root{--bg:#14181d;--surface:#1d232a;--border:#323a44;--text:#e6e9ed;--text2:#a7b0bb;--accent:#7fb2ec;--good:#6cc79a}}
-*{box-sizing:border-box}body{margin:0;font-family:'Noto Sans JP',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
-a{color:var(--accent)}header,main,footer{max-width:860px;margin:0 auto;padding:0 16px}
-header{display:flex;align-items:center;gap:12px;padding-top:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.logo{font-weight:800;letter-spacing:.04em;text-decoration:none;color:var(--text)}.logo span{color:var(--accent)}
-.crumb{font-size:12px;color:var(--text2);margin:14px 0 4px}h1{font-size:24px;margin:4px 0 10px;line-height:1.35}
-h2{font-size:17px;margin:28px 0 10px;border-left:4px solid var(--accent);padding-left:10px}
-.price{background:var(--surface);border:1px solid var(--border);padding:14px 16px;border-radius:6px}
-.price strong{font-size:26px}.meta{font-size:12px;color:var(--text2)}
-.btn{display:inline-block;margin-top:10px;padding:8px 16px;background:var(--accent);color:#fff;text-decoration:none;border-radius:4px;font-weight:700}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
-th{width:38%;color:var(--text2);font-weight:500}.list td{width:auto}.list th{width:auto}
-.note{font-size:12px;color:var(--text2)}footer{margin-top:40px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--border);font-size:12px;color:var(--text2)}
-@media (max-width:600px){h1{font-size:20px}th{width:44%}}
+// 色・書体などの決まりはサイト本体（index.html の :root）と同じものを読み込んで使う（決まりを1か所にまとめるため）
+function siteTokens() {
+  try {
+    const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+    const m = html.match(/:root \{\n  --header-h[\s\S]*?\n\}\n@media \(prefers-color-scheme: dark\) \{[\s\S]*?\n  \}\n\}\n/);
+    if (m) return m[0];
+  } catch {}
+  return ':root{--bg:#fff;--sunk:#f3f5f7;--line:#dfe3e8;--line-strong:#c3cad2;--ink:#17212b;--ink2:#47525e;--ink3:#5f6b78;--head:#13293f;--cpu:#1a5fb4;--fill:#1a5fb4;--fill-hover:#154e96;--good:#1e7a46;--hover:#eef3f9;--radius:4px;--radius-lg:8px;--f-body:sans-serif;--f-num:monospace}\n';
+}
+const STYLE = siteTokens() + `
+*{box-sizing:border-box}body{margin:0;font-family:var(--f-body);background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px;-webkit-text-size-adjust:100%}
+a{color:var(--cpu)}a:focus-visible{outline:2px solid var(--cpu);outline-offset:2px}
+.top{background:var(--head);color:#fff}.top-in{max-width:860px;margin:0 auto;padding:0 16px;height:48px;display:flex;align-items:center;gap:16px}
+.logo{font-weight:900;font-size:17px;letter-spacing:.1em;text-decoration:none;color:#fff}.logo span{font-weight:400;opacity:.8}
+.top nav{margin-left:auto;display:flex;gap:14px;font-size:13px}.top nav a{color:rgba(255,255,255,.88);text-decoration:none}.top nav a:hover{color:#fff;text-decoration:underline}
+main,footer{max-width:860px;margin:0 auto;padding:0 16px}
+.crumb{font-size:12px;color:var(--ink3);margin:16px 0 4px}.crumb a{color:var(--ink2)}
+h1{font-size:24px;margin:4px 0 12px;line-height:1.4;text-wrap:balance}
+h2{font-size:18px;margin:32px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--head)}
+@media (prefers-color-scheme:dark){h2{border-bottom-color:var(--line-strong)}}
+.num,.price strong,td.n{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.price{background:var(--sunk);border:1px solid var(--line);padding:14px 16px;border-radius:var(--radius-lg)}
+.price strong{font-size:24px;font-weight:600}.meta{font-size:12px;color:var(--ink3)}
+.btn{display:inline-block;margin-top:10px;padding:9px 18px;background:var(--fill);color:#fff;text-decoration:none;border-radius:var(--radius);font-weight:700;font-size:14px}.btn:hover{background:var(--fill-hover)}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{width:38%;color:var(--ink2);font-weight:500}.list td{width:auto}.list th{width:auto;background:var(--sunk);font-size:12px;font-weight:700;white-space:nowrap}
+.list tr:hover td{background:var(--hover)}
+ul{padding-left:1.3em}li{margin-bottom:4px}
+.note{font-size:12px;color:var(--ink3)}footer{margin-top:48px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
+@media (max-width:600px){h1{font-size:18px}th{width:44%}.list td:first-child{min-width:8.5em}.list th,.list td{padding:8px 6px}
+ table.parts,table.parts tbody{display:block}table.parts tr:first-child{display:none}
+ table.parts tr{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+ table.parts td{border:none;padding:0}table.parts td:first-child{grid-column:1/-1;font-size:12px;color:var(--ink3)}
+ table.parts td:last-child{text-align:right;white-space:nowrap}
+ table.parts tr:hover td{background:none}}
 `;
 
 function layout({title, description, canonical, body}) {
@@ -58,11 +77,14 @@ function layout({title, description, canonical, body}) {
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="${esc(canonical)}">
+<meta name="theme-color" content="#13293f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>${STYLE}</style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<header><a class="logo" href="/">BENCH<span>CORE</span></a><span class="meta">PCパーツの性能と最安値を比較</span></header>
+<header class="top"><div class="top-in"><a class="logo" href="/">BENCH<span>CORE</span></a><nav aria-label="サイト内"><a href="/?page=cpu-rank">CPU</a><a href="/?page=gpu-rank">GPU</a><a href="/p/gaming-pc.html">予算別構成</a></nav></div></header>
 <main>
 ${body}
 </main>
@@ -295,7 +317,7 @@ function budgetRows(b) {
     fromPrice('SSD', b.ssd, `${esc(b.ssd.spec.label)}（${esc(b.ssd.spec.maker)}）`),
     fromPrice('電源', b.psu, `${esc(b.psu.spec.label)}（${esc(b.psu.spec.maker)}）`),
     fromPrice('ケース', b.case, esc(b.case.modelName)),
-  ].map(x => `<tr><td>${x.kind}</td><td>${x.name}${x.detail ? `<br><span class="meta">${esc(String(x.detail).slice(0, 60))}</span>` : ''}</td><td>${yen(x.price)}<br>${link(x.url, (x.source || 'ストア') + 'で見る')}</td></tr>`).join('');
+  ].map(x => `<tr><td>${x.kind}</td><td>${x.name}${x.detail ? `<br><span class="meta">${esc(String(x.detail).slice(0, 60))}</span>` : ''}</td><td><span class="num">${yen(x.price)}</span><br>${link(x.url, (x.source || 'ストア') + 'で見る')}</td></tr>`).join('');
 }
 
 function budgetPage(b, all, updated) {
@@ -311,7 +333,7 @@ function budgetPage(b, all, updated) {
 <strong>${yen(b.total)}</strong> <span class="meta">予算まで残り ${yen(b.budget - b.total)}</span>
 <div>GPU: <a href="/p/${b.gpu.slug}.html">${esc(b.gpu.name)}</a>（3DMark ${num(b.gpu.score)}）・CPU: <a href="/p/${b.cpu.slug}.html">${esc(b.cpu.name)}</a>（PassMark ${num(b.cpu.score)}）</div></div>
 <h2>パーツ一覧</h2>
-<div style="overflow-x:auto"><table class="list"><tr><th>パーツ</th><th>製品</th><th>最安値</th></tr>${budgetRows(b)}</table></div>
+<table class="list parts"><tr><th>パーツ</th><th>製品</th><th>最安値</th></tr>${budgetRows(b)}</table>
 <h2>CPUとGPUのバランス</h2>
 <p>${esc(balText)}<a href="/?page=bottleneck">ボトルネック診断</a>と同じ計算です。</p>
 <h2>この構成の決め方</h2>
