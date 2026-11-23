@@ -188,34 +188,42 @@ tr.part-group-first td { border-top: 2px solid var(--line-strong); }
 .share-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--head); color: #fff; padding: 10px 22px; border-radius: var(--radius); font-size: 13px; font-weight: 500; z-index: 9999; opacity: 0; transition: all 0.25s; pointer-events: none; box-shadow: var(--shadow); }
 .share-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ── トップページ（眺める場所: ゆったり、絵を大きく） ── */
-.home-intro { background: var(--bg); }
-.home-intro-inner { max-width: 1320px; margin: 0 auto; padding: 40px 24px 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); grid-template-areas: "copy art" "facts art"; gap: 24px 40px; align-items: center; }
-.hero-copy { grid-area: copy; }
-.eyebrow { font-size: 12px; font-weight: 700; color: var(--cpu); letter-spacing: 0.06em; margin-bottom: 8px; display: inline-flex; align-items: center; gap: 6px; background: var(--cpu-soft); padding: 3px 10px; border-radius: 999px; }
-.home-intro h1 { text-wrap: balance; font-size: 34px; font-weight: 900; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 12px; }
-.home-intro h1 em { font-style: normal; color: var(--cpu); }
-.home-intro p { font-size: 15px; color: var(--ink2); max-width: 560px; margin-bottom: 20px; }
-.home-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-/* パーツを組む前に机に並べたような絵（重ならない位置に少しずつ傾けて置く） */
-.hero-art { grid-area: art; position: relative; aspect-ratio: 5 / 4; max-width: 520px; width: 100%; justify-self: center; }
-.hero-art::before { content: ""; position: absolute; inset: 8% 4% 6% 6%; background: var(--sunk); border-radius: 42% 58% 54% 46% / 52% 44% 56% 48%; }
-.hero-art .ha { position: absolute; }
-.hero-art .ha1 { left: 8%; top: 12%; width: 34%; transform: rotate(-10deg); }
-.hero-art .ha2 { right: 4%; top: 6%; width: 46%; transform: rotate(7deg); }
-.hero-art .ha3 { left: 14%; bottom: 8%; width: 40%; transform: rotate(4deg); }
-.hero-art .ha4 { right: 10%; bottom: 10%; width: 30%; transform: rotate(-6deg); }
-.hero-art .ha svg { aspect-ratio: 1; }
+/* ── トップページ（眺める場所: 遊び心多め。「何がしたいですか？」から選ぶ） ── */
+/* 地は基板の穴あきのような点の並び */
+.home-intro { background-color: var(--bg); background-image: radial-gradient(var(--line-strong) 1.1px, transparent 1.3px); background-size: 18px 18px; border-bottom: 1px solid var(--line); }
+.home-intro-inner { max-width: 1180px; margin: 0 auto; padding: 36px 24px 40px; }
+.eyebrow { font-size: 12px; font-weight: 700; color: var(--cpu); letter-spacing: 0.04em; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 6px; background: var(--bg); border: 1px solid var(--line); padding: 4px 12px 4px 6px; border-radius: 999px; }
+.eyebrow-ill { width: 20px; height: 20px; transform: rotate(-10deg); }
+.home-intro h1 { font-size: 44px; font-weight: 900; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
+.home-lead { font-size: 15px; color: var(--ink2); max-width: 560px; margin-bottom: 24px; background: color-mix(in srgb, var(--bg) 80%, transparent); }
+.intents { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.intent { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 4px; min-height: 168px; padding: 18px 18px 56px; border-radius: 22px; background: var(--tint); color: var(--ink); text-decoration: none; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s; }
+.intent.wide, .intent.wide-d { grid-column: span 2; }
+.intent:hover { transform: translateY(-3px) rotate(-0.4deg); box-shadow: var(--shadow); }
+.intent:active { transform: scale(0.98); }
+.intent-ill { position: absolute; right: -8px; top: -6px; width: 104px; height: 104px; transform: rotate(-10deg); transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.intent-ill.duo { display: block; }
+.intent-ill.duo > * { position: absolute; width: 62%; height: 62%; display: block; }
+.intent-ill.duo > :first-child { left: 0; top: 0; transform: rotate(-8deg); }
+.intent-ill.duo > :last-child { right: 0; bottom: 0; transform: rotate(10deg); }
+.intent-ill.duo .ill { width: 100%; height: 100%; }
+.intent.wide .intent-ill { width: 132px; height: 132px; right: 8px; top: 8px; }
+.intent:hover .intent-ill { transform: rotate(4deg) scale(1.08); }
+.intent-q { position: relative; font-size: 20px; font-weight: 900; line-height: 1.35; padding-right: 84px; word-break: auto-phrase; }
+.intent.wide .intent-q { font-size: 24px; padding-right: 140px; }
+.intent-a { position: relative; font-size: 12px; color: var(--ink2); font-weight: 700; }
+.intent-a b { font-size: 13px; color: var(--ink); }
+.intent-top { position: relative; align-self: flex-start; margin-top: 6px; font-size: 12px; color: var(--ink2); background: var(--bg); border-radius: 999px; padding: 3px 10px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.intent-top b { color: var(--ink); }
+.intent-go { position: absolute; left: 18px; bottom: 16px; width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-size: 15px; font-weight: 700; transition: transform 0.2s; }
+.intent:hover .intent-go { transform: translateX(4px); }
 @media (prefers-reduced-motion: no-preference) {
-  .hero-art .ha { animation: float 6s ease-in-out infinite; }
-  .hero-art .ha2 { animation-delay: -1.5s; } .hero-art .ha3 { animation-delay: -3s; } .hero-art .ha4 { animation-delay: -4.5s; }
+  .intent-ill { animation: wobble 5s ease-in-out infinite; }
+  .intent:nth-child(2) .intent-ill { animation-delay: -1s; } .intent:nth-child(3) .intent-ill { animation-delay: -2s; } .intent:nth-child(4) .intent-ill { animation-delay: -3s; }
+  .intent:nth-child(5) .intent-ill { animation-delay: -1.5s; } .intent:nth-child(6) .intent-ill { animation-delay: -2.5s; } .intent:nth-child(7) .intent-ill { animation-delay: -3.5s; }
+  .intent:hover .intent-ill { animation-play-state: paused; }
 }
-@keyframes float { 50% { translate: 0 -6px; } }
-.home-facts { grid-area: facts; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; font-size: 13px; }
-.home-facts div { background: var(--sunk); border-radius: var(--radius); padding: 10px 12px; display: flex; flex-direction: column-reverse; justify-content: flex-end; }
-.home-facts dt { color: var(--ink3); font-size: 11px; }
-.home-facts dd { font-weight: 800; font-size: 15px; }
-.home-facts dd .num { font-family: var(--f-disp); font-stretch: 125%; font-size: 24px; font-weight: 800; letter-spacing: -0.01em; }
+@keyframes wobble { 50% { translate: 0 -5px; } }
 .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
 .home-grid > div { min-width: 0; }
 .mini-rank { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
@@ -252,12 +260,16 @@ tr.part-group-first td { border-top: 2px solid var(--line-strong); }
 .search-box input:focus { border-color: var(--cpu); }
 .search-box input::placeholder { color: var(--ink3); }
 .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--ink3); display: flex; pointer-events: none; }
-.budget-box { display: flex; flex-direction: column; gap: 6px; min-width: 220px; }
-.budget-label { font-size: 12px; color: var(--ink2); display: flex; justify-content: space-between; }
-.budget-label span { color: var(--ink); font-weight: 700; font-family: var(--f-num); }
-input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; background: var(--sunk2); border-radius: 2px; outline-offset: 4px; cursor: pointer; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--cpu); border: 2px solid var(--bg); box-shadow: 0 0 0 1px var(--cpu); cursor: pointer; }
-input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--cpu); border: 2px solid var(--bg); cursor: pointer; }
+/* 予算上限: 大きなつまみと、大きな金額の表示 */
+.budget-box { display: flex; flex-direction: column; gap: 10px; min-width: 260px; background: var(--sunk); border-radius: var(--radius-lg); padding: 12px 16px 16px; }
+.budget-label { font-size: 13px; font-weight: 700; color: var(--ink2); display: flex; justify-content: space-between; align-items: baseline; }
+.budget-label span { color: var(--ink); font-family: var(--f-disp); font-stretch: 125%; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 12px; background: linear-gradient(90deg, var(--cpu) var(--fill-pct, 100%), var(--sunk2) var(--fill-pct, 100%)); border-radius: 99px; outline-offset: 6px; cursor: pointer; margin: 6px 0; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 32px; height: 32px; border-radius: 50%; background: var(--bg); border: 3px solid var(--cpu); box-shadow: 0 2px 8px rgba(15, 25, 45, 0.25); cursor: grab; }
+input[type=range]::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: var(--bg); border: 3px solid var(--cpu); box-shadow: 0 2px 8px rgba(15, 25, 45, 0.25); cursor: grab; }
+input[type=range]:active::-webkit-slider-thumb { cursor: grabbing; transform: scale(1.08); }
+#gpu-budget { --cpu: var(--gpu); }
+#ram-budget { --cpu: var(--ram); }
 .result-count { font-size: 12px; color: var(--ink2); align-self: flex-end; padding-bottom: 8px; white-space: nowrap; }
 .sort-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .sort-label { font-size: 12px; color: var(--ink2); margin-right: 2px; }
@@ -499,12 +511,22 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
   .nav-links .nav-link { height: auto; padding: 11px 14px; font-size: 15px; border-radius: 12px; }
   .nav-links .nav-link.active { background: var(--ink); color: var(--bg); }
   .section { padding: 18px 16px; }
-  .home-intro-inner { padding: 22px 16px 18px; grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "art" "facts"; gap: 14px; }
+  .home-intro-inner { padding: 22px 16px 24px; }
   .home-intro h1 { font-size: 34px; }
-  .home-intro p { font-size: 13px; margin-bottom: 16px; }
-  .hero-art { aspect-ratio: 5 / 2; max-width: 100%; }
-  .hero-art .ha1 { width: 24%; left: 4%; top: 10%; } .hero-art .ha2 { width: 34%; right: 4%; top: 0; } .hero-art .ha3 { width: 30%; left: 30%; bottom: 0; } .hero-art .ha4 { width: 22%; right: 6%; bottom: 4%; }
-  .home-facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .home-lead { font-size: 13px; margin-bottom: 18px; }
+  .intents { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .intent { min-height: 150px; padding: 76px 14px 50px; border-radius: 20px; }
+  .intent-ill { width: 76px; height: 76px; right: -6px; top: -4px; }
+  .intent-ill.duo { width: 96px; height: 84px; right: -4px; top: -2px; }
+  .intent-q { font-size: 15px; padding-right: 0; }
+  .intent-a { font-size: 11px; }
+  .intent-go { left: 14px; bottom: 12px; width: 28px; height: 28px; font-size: 13px; }
+  .intent.wide-d { grid-column: span 1; }
+  .intent.wide { padding: 18px 16px 52px; min-height: 140px; }
+  .intent.wide .intent-ill { width: 104px; height: 104px; right: 4px; top: 10px; }
+  .intent.wide .intent-q { font-size: 20px; padding-right: 108px; }
+  .intent.wide .intent-top { max-width: calc(100% - 108px); }
+  .intent:not(.wide) .intent-top { white-space: normal; line-height: 1.4; border-radius: 10px; }
   .home-grid { grid-template-columns: 1fr; }
   .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
   .card { padding: 72px 14px 14px; min-height: 0; }
@@ -672,27 +694,55 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
 <div id="home" class="page active">
   <div class="home-intro">
     <div class="home-intro-inner">
-      <div class="hero-copy">
-        <p class="eyebrow">CPU・GPU・メモリの性能と価格</p>
-        <h1>性能と最安値を、<br><em>ひと目で。</em></h1>
-        <p>ベンチマークのスコアと、毎日取得する最安値を並べて比べられます。組み合わせの相性診断や、構成の見積もりにも使えます。</p>
-        <div class="home-actions">
-          <button class="btn btn-primary" onclick="goPage('cpu-rank')">CPUランキング</button>
-          <button class="btn btn-secondary" onclick="goPage('gpu-rank')">GPUランキング</button>
-          <button class="btn btn-secondary" onclick="goPage('builder')">構成を見積もる</button>
-        </div>
+      <p class="eyebrow"><svg class="eyebrow-ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg>PCパーツの性能と最安値を、ひと目で。</p>
+      <h1>何がしたいですか？</h1>
+      <p class="home-lead">やりたいことを選ぶと、そのためのページに移ります。スコアは PassMark と 3DMark、価格は毎日取得する最安値です。</p>
+      <div class="intents" role="group" aria-label="やりたいことから選ぶ">
+        <a class="intent c-cpu wide" href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></span>
+          <span class="intent-q">速いCPUを探したい</span>
+          <span class="intent-a">CPUランキング · <b class="num" id="stat-cpu-count">—</b> 製品</span>
+          <span class="intent-top">いま1位 <b id="home-cpu-top">—</b></span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-gpu" href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg></span>
+          <span class="intent-q">ゲームに強いGPUを探したい</span>
+          <span class="intent-a">GPUランキング · <b class="num" id="stat-gpu-count">—</b> 製品</span>
+          <span class="intent-top">いま1位 <b id="home-gpu-top">—</b></span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-misc" href="?page=builder" onclick="goPage('builder');return false">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-mb"/></svg></span>
+          <span class="intent-q">予算からPCを組みたい</span>
+          <span class="intent-a">構成ビルダー</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-misc" href="/p/gaming-pc.html">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg></span>
+          <span class="intent-q">予算ごとの構成例を見たい</span>
+          <span class="intent-a">予算別のゲーミングPC構成</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-cpu" href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">
+          <span class="intent-ill duo"><span><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></span><span><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></span></span>
+          <span class="intent-q">2つの製品を比べたい</span>
+          <span class="intent-a">2製品の比較</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-gpu" href="?page=bottleneck" onclick="goPage('bottleneck');return false">
+          <span class="intent-ill duo"><span class="c-cpu"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></span><span class="c-gpu"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg></span></span>
+          <span class="intent-q">CPUとGPUの相性を見たい</span>
+          <span class="intent-a">ボトルネック診断</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
+        <a class="intent c-ram wide-d" href="?page=ram-rank" onclick="goPage('ram-rank');return false">
+          <span class="intent-ill"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-ram"/></svg></span>
+          <span class="intent-q">メモリ・SSD・電源を安く買いたい</span>
+          <span class="intent-a">規格ごとの最安値 · メモリ <b class="num" id="stat-ram-count">—</b> 規格</span>
+          <span class="intent-go" aria-hidden="true">→</span>
+        </a>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="ha ha1 c-cpu"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg></div>
-        <div class="ha ha2 c-gpu"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg></div>
-        <div class="ha ha3 c-ram"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-ram"/></svg></div>
-        <div class="ha ha4 c-misc"><svg class="ill" aria-hidden="true" focusable="false"><use href="#ill-ssd"/></svg></div>
-      </div>
-      <dl class="home-facts">
-        <div><dt>CPU（PassMark）</dt><dd><span class="num" id="stat-cpu-count">—</span> 製品</dd></div>
-        <div><dt>GPU（3DMark）</dt><dd><span class="num" id="stat-gpu-count">—</span> 製品</dd></div>
-        <div><dt>メモリ</dt><dd><span class="num" id="stat-ram-count">—</span> 規格</dd></div>
-      </dl>
     </div>
   </div>
   <div class="section">
@@ -710,17 +760,6 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
   <div class="section" id="home-new-section" style="display:none;padding-top:0">
     <div class="section-header"><div class="section-title">新着パーツ</div><div class="section-sub">販売を確認済み。ベンチマークスコアは登録待ちです</div></div>
     <div class="mini-rank" id="home-new-products"></div>
-  </div>
-  <div class="section" style="padding-top:0">
-    <div class="section-header"><div class="section-title">できること</div></div>
-    <div class="cards">
-      <div class="card c-cpu" role="link" tabindex="0" onclick="goPage('cpu-rank')"><svg class="card-ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg><div class="card-title">CPU ランキング</div><div class="card-desc">マルチスレッド・シングルスレッド・コスパの3つの順位。コア数、クロック、TDP、価格を一覧できます。</div><div class="card-arrow">›</div></div>
-      <div class="card c-gpu" role="link" tabindex="0" onclick="goPage('gpu-rank')"><svg class="card-ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg><div class="card-title">GPU ランキング</div><div class="card-desc">3DMark Time Spy のスコア順。VRAM、消費電力、レイトレ対応も確認できます。</div><div class="card-arrow">›</div></div>
-      <div class="card c-ram" role="link" tabindex="0" onclick="goPage('ram-rank')"><svg class="card-ill" aria-hidden="true" focusable="false"><use href="#ill-ram"/></svg><div class="card-title">メモリ ランキング</div><div class="card-desc">DDR4・DDR5 の規格ごとの最安値と、1GBあたりの価格を比較できます。</div><div class="card-arrow">›</div></div>
-      <div class="card c-misc" role="link" tabindex="0" onclick="goPage('cpu-compare')"><svg class="card-ill" aria-hidden="true" focusable="false"><use href="#ill-mb"/></svg><div class="card-title">2製品の比較</div><div class="card-desc">2つのCPUまたはGPUを並べて、項目ごとに優れている方を表示します。</div><div class="card-arrow">›</div></div>
-      <div class="card c-cpu" role="link" tabindex="0" onclick="goPage('bottleneck')"><svg class="card-ill" aria-hidden="true" focusable="false"><use href="#ill-cooler"/></svg><div class="card-title">ボトルネック診断</div><div class="card-desc">CPUとGPUの組み合わせで、どちらかが性能の足を引っ張らないかを診断します。</div><div class="card-arrow">›</div></div>
-      <div class="card c-misc" role="link" tabindex="0" onclick="goPage('builder')"><svg class="card-ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg><div class="card-title">構成ビルダー</div><div class="card-desc">パーツを選ぶと合計金額と遊べるゲームの目安を表示。ソケットや電源容量の確認もします。</div><div class="card-arrow">›</div></div>
-    </div>
   </div>
   <div class="section" style="padding-top:0">
     <div class="section-header"><div class="section-title">データについて</div></div>
@@ -1841,6 +1880,10 @@ function updateHomeRanking() {
         <div class="mini-rank-score" style="color:var(--accent)">${g.score.toLocaleString()}</div>
       </div>`).join('');
   }
+  const topCpu = cpuData.find(c=>!c.discontinued), topGpu = gpuData.find(g=>!g.discontinued);
+  const tc = document.getElementById('home-cpu-top'), tg = document.getElementById('home-gpu-top');
+  if (tc && topCpu) tc.textContent = topCpu.name;
+  if (tg && topGpu) tg.textContent = topGpu.name;
   const ce = document.getElementById('stat-cpu-count');
   const ge = document.getElementById('stat-gpu-count');
   const re = document.getElementById('stat-ram-count');
@@ -2452,16 +2495,21 @@ function clearFavs(type) {
 }
 
 // ===== BUDGET LABELS =====
+// つまみの左側をパーツの色で塗る（どこまで選んでいるかを分かりやすくする）
+function budgetFill(el) { if (el && el.style) el.style.setProperty('--fill-pct', ((el.value - el.min) / (el.max - el.min) * 100) + '%'); }
 function updateCpuBudgetLabel() {
   const v = parseInt(document.getElementById('cpu-budget').value);
+  budgetFill(document.getElementById('cpu-budget'));
   document.getElementById('cpu-budget-val').textContent = v>=130000 ? '制限なし' : `¥${v.toLocaleString()}`;
 }
 function updateGpuBudgetLabel() {
   const v = parseInt(document.getElementById('gpu-budget').value);
+  budgetFill(document.getElementById('gpu-budget'));
   document.getElementById('gpu-budget-val').textContent = v>=650000 ? '制限なし' : `¥${v.toLocaleString()}`;
 }
 function updateRamBudgetLabel() {
   const v = parseInt(document.getElementById('ram-budget').value);
+  budgetFill(document.getElementById('ram-budget'));
   document.getElementById('ram-budget-val').textContent = v>=80000 ? '制限なし' : `¥${v.toLocaleString()}`;
 }
 
