@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-21T23:34:28.575Z",
+ "checkedAt": "2026-11-22T23:48:02.293Z",
  "source": "https://opendata.blender.org/",
  "note": "Blender Open Data（公開データ・利用制限なし）の中央値。測定数3件以上のみ。GPUは一番速い計算方式の値",
  "cpu": {
@@ -711,8 +711,8 @@
   "blenderVersion": "4.5.0",
   "scores": {
    "GeForce RTX 5090": {
-    "score": 14965.98,
-    "samples": 1555,
+    "score": 14966.13,
+    "samples": 1556,
     "computeType": "OPTIX",
     "deviceName": "NVIDIA GeForce RTX 5090"
    },

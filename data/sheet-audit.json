@@ -1,9 +1,15 @@
 {
- "checkedAt": "2026-11-21T13:58:40.925Z",
+ "checkedAt": "2026-11-22T23:48:02.293Z",
  "issues": [
   {
    "category": "cpu",
    "modelName": "Core i3-13100",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-10600",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -412,6 +418,12 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6900 XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2080 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1059,12 +1071,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-13700K",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i7-13700KF",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1365,6 +1371,12 @@
   },
   {
    "category": "gpu",
+   "modelName": "GeForce RTX 5090",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
    "modelName": "Radeon RX 7900 XTX",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1372,6 +1384,12 @@
   {
    "category": "gpu",
    "modelName": "GeForce RTX 4080 SUPER",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 4080",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1408,6 +1426,12 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6900 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3070",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
