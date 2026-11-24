@@ -878,3 +878,58 @@ test('Arc, GT and 3-digit GPU model names are read; other models and VRAM sizes 
   assert.equal(ok('GeForce GTX 750 Ti', 'GTX 750 2GB'), false);
   assert.equal(ok('GeForce RTX 4070', 'MSI GeForce RTX 4070 SUPER 12G'), false);
 });
+
+test('the trial pricing run searches by relevance within the learned shop category and only writes a separate file', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'trial-'));
+  const output = path.join(dir, 'prices.json'), trialOutput = path.join(dir, 'price-trial.json');
+  const hit = (name, price, code, shop, genre = 'g1') => ({code, name, price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/' + code + '.html', seller: {name: shop}, genreCategory: {id: genre, name: 'グラフィックボード'}});
+  // RTX 5070: 今の方法でも取れる（売り場を覚える材料）。RTX 4070: 安い順の先頭50件は付属品で埋まるが、関連順なら見つかる
+  const junk = Array.from({length: 50}, (_, i) => hit('RTX 4070 対応 ライザーケーブル ' + i, 16000 + i, 'j' + i, 'J', 'acc'));
+  const byQuery = {
+    'RTX 5070': ['A', 'B', 'C', 'D', 'E'].map((s, i) => hit('MSI GeForce RTX 5070 12G', 98000 + i * 500, 'f' + i, s)),
+    'RTX 5080': ['A', 'B', 'C', 'D', 'E'].map((s, i) => hit('ASUS GeForce RTX 5080 16G', 168000 + i * 500, 'e' + i, s)),
+    'RTX 5090': ['A', 'B', 'C', 'D', 'E'].map((s, i) => hit('ZOTAC GeForce RTX 5090 32G', 498000 + i * 500, 'h' + i, s)),
+    'RTX 4070': [...junk, hit('ASUS GeForce RTX 4070 12GB DUAL', 89800, 'r1', 'A'), hit('MSI GeForce RTX 4070 12G VENTUS', 90500, 'r2', 'B'), hit('玄人志向 RTX 4070 12GB', 91000, 'r3', 'C')],
+  };
+  const calls = [];
+  const fetchImpl = async url => {
+    const q = url.searchParams.get('query'), sort = url.searchParams.get('sort'), genre = url.searchParams.get('genre_category_id');
+    const from = Number(url.searchParams.get('price_from') || 0), to = Number(url.searchParams.get('price_to') || 1e9);
+    calls.push([q, sort, genre]);
+    let hits = (byQuery[q] || []).filter(h => h.price >= from && h.price <= to && (!genre || h.genreCategory.id === genre));
+    hits = sort === '-score' ? hits.slice().reverse() : hits.slice().sort((a, b) => a.price - b.price);
+    const start = Number(url.searchParams.get('start') || 1);
+    return {ok: true, json: async () => ({hits: hits.slice(start - 1, start - 1 + 50)})};
+  };
+  const models = ['GeForce RTX 5070', 'GeForce RTX 5080', 'GeForce RTX 5090', 'GeForce RTX 4070'].map(modelName => ({category: 'gpu', modelName}));
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipFixedParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX,
+    models, output, trial: true, trialOutput, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  const current = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.ok(!current.products.some(p => p.modelName === 'GeForce RTX 4070'), '今の方法では取れない');
+  const trial = JSON.parse(fs.readFileSync(trialOutput, 'utf8'));
+  assert.deepEqual(trial.genre, {id: 'g1', name: 'グラフィックボード'});
+  const r4070 = trial.models.find(m => m.modelName === 'GeForce RTX 4070');
+  assert.equal(r4070.trial.price, 89800);
+  assert.equal(r4070.current, null);
+  assert.equal(trial.summary.onlyTrial, 1);
+  assert.ok(calls.some(([q, sort, genre]) => q === 'RTX 4070' && sort === '-score' && genre === 'g1'));
+  // 試しの結果はサイトが読む価格ファイルには入らない
+  assert.ok(!('trial' in current));
+});
+
+test('if Yahoo fails during the trial, rows say so instead of "no listing", and the main price file is unaffected', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'trial-fail-'));
+  const output = path.join(dir, 'prices.json'), trialOutput = path.join(dir, 'price-trial.json');
+  const hit = (price, code, shop) => ({code, name: 'MSI GeForce RTX 5070 12G', price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/' + code + '.html', seller: {name: shop}, genreCategory: {id: 'g1', name: 'グラフィックボード'}});
+  const fetchImpl = async url => {
+    if (url.searchParams.get('sort') === '-score') return {ok: false, status: 503, text: async () => ''};
+    return {ok: true, json: async () => ({hits: ['A', 'B', 'C', 'D', 'E'].map((s, i) => hit(98000 + i * 500, 'x' + i, s))})};
+  };
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipFixedParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX,
+    models: [{category: 'gpu', modelName: 'GeForce RTX 5070'}, {category: 'gpu', modelName: 'GeForce RTX 5080'}], output, trial: true, trialOutput, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  assert.deepEqual(JSON.parse(fs.readFileSync(output, 'utf8')).products.map(p => [p.modelName, p.price]), [['GeForce RTX 5070', 98000]]);
+  const trial = JSON.parse(fs.readFileSync(trialOutput, 'utf8'));
+  assert.equal(trial.summary.trialOk, 0);
+  assert.match(trial.summary.stopped, /接続できず/);
+  assert.ok(trial.models.every(m => /接続できなかった|未実施/.test(m.trial.reason)));
+});
