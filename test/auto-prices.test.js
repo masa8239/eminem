@@ -872,11 +872,14 @@ test('Arc, GT and 3-digit GPU model names are read; other models and VRAM sizes 
   assert.equal(ok('Arc A750', 'Arc A770 / A750 対応'), false);
   assert.equal(ok('GeForce GT 1030', '玄人志向 GT1030 2GB ロープロファイル'), true);
   assert.equal(ok('GeForce GT 1030', 'GeForce GTX 1030'), false);
-  assert.equal(ok('Radeon RX 590', 'SAPPHIRE NITRO+ RX 590 8GB'), true);
+  assert.equal(ok('Radeon RX 590', 'SAPPHIRE NITRO+ Radeon RX 590 8GB'), true);
   assert.equal(ok('Radeon RX 570', 'RX 570 / RX 580 対応'), false);
-  assert.equal(ok('GeForce GTX 750 Ti', 'GTX 750 Ti 2GB'), true);
-  assert.equal(ok('GeForce GTX 750 Ti', 'GTX 750 2GB'), false);
+  assert.equal(ok('GeForce GTX 750 Ti', 'ELSA GeForce GTX 750 Ti 2GB'), true);
+  assert.equal(ok('GeForce GTX 750 Ti', 'GeForce GTX 750 2GB'), false);
   assert.equal(ok('GeForce RTX 4070', 'MSI GeForce RTX 4070 SUPER 12G'), false);
+  // 3桁の型番は、グラボらしい言葉がない出品（自転車の部品など）を使わない
+  assert.equal(ok('Radeon RX 570', 'SHIMANO WH-RX570-700C TL ディスクブレーキ用フロントホイール'), false);
+  assert.equal(ok('Radeon RX 570', 'SAPPHIRE PULSE Radeon RX 570 8GB'), true);
 });
 
 test('the trial pricing run searches by relevance within the learned shop category and only writes a separate file', async () => {
