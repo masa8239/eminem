@@ -115,6 +115,29 @@ table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:ta
 th{width:38%;color:var(--ink2);font-weight:500}.list td{width:auto}.list th{width:auto;background:var(--sunk);font-size:12px;font-weight:700;white-space:nowrap}
 .list tr:hover td{background:var(--hover)}
 ul{padding-left:1.3em}li{margin-bottom:4px}
+.rows{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.rows li{margin:0;border-bottom:1px solid var(--line)}.rows li:last-child{border-bottom:none}
+.rows a{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:11px 14px;color:var(--ink);text-decoration:none}
+.rows a:hover{background:var(--hover)}
+.rows .rk{grid-row:span 2;align-self:start;text-align:center;font-family:var(--f-num);font-size:13px;color:var(--ink3);line-height:24px}
+.rows li:nth-child(-n+3) .rk.medal{color:var(--bg);background:var(--ink);border-radius:999px;width:24px}
+.rows .nm{font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rows .pr{font-family:var(--f-num);font-weight:600;text-align:right;white-space:nowrap}
+.rows .sub{grid-column:2/-1;font-size:12px;color:var(--ink3);font-family:var(--f-num)}
+.rows .sub b{color:var(--ink2);font-weight:600}
+.rows.plain a{grid-template-columns:minmax(0,1fr) auto}.rows.plain .rk{display:none}.rows.plain .sub{grid-column:1/-1}.rows.plain .nm{white-space:normal}
+.rows .vs{display:inline-block;margin:0 6px;padding:0 7px;border-radius:999px;background:var(--sunk2);font-size:11px;font-weight:700;color:var(--ink2);vertical-align:1px}
+.shop{display:inline-block;margin-top:4px;padding:3px 10px;border-radius:999px;background:var(--fill);color:#fff;font-size:12px;font-weight:700;line-height:1.5;text-decoration:none}.shop:hover{background:var(--fill-hover)}
+.diff{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:700;font-family:var(--f-num)}
+.diff.up{background:var(--good-soft);color:var(--good)}.diff.down{background:var(--sunk2);color:var(--ink2)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;list-style:none;padding:0;margin:0}
+.cards li{margin:0}.cards a{display:block;height:100%;padding:16px 18px;border-radius:var(--radius-lg);background:var(--misc-soft);color:var(--ink);text-decoration:none;transition:transform .2s}
+.cards a:hover{transform:translateY(-2px)}
+.cards .big{font-family:var(--f-disp);font-stretch:125%;font-weight:800;font-size:26px;line-height:1.2}
+.cards .line{font-size:13px;color:var(--ink2);margin-top:6px}.cards .line b{color:var(--ink)}
+.cards .tot{margin-top:10px;font-family:var(--f-num);font-weight:600}
+.foot-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 16px;margin:0 0 14px;padding:0;list-style:none}
+.foot-nav li{margin:0}.foot-nav a{display:block;padding:6px 0;color:var(--ink2);font-weight:700;text-decoration:none;font-size:13px}.foot-nav a:hover{color:var(--cpu)}
 .note{font-size:12px;color:var(--ink3)}footer{margin-top:48px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
 @media (max-width:600px){h1{font-size:20px}th{width:44%}.list td:first-child{min-width:8.5em}.list th,.list td{padding:8px 6px}.list th{white-space:normal}
  .hero{padding:16px 92px 16px 16px}.band-ill{width:92px;height:92px}.top nav a{padding:6px 7px;font-size:12px}.logo{font-size:16px}
@@ -144,14 +167,20 @@ ul{padding-left:1.3em}li{margin-bottom:4px}
 <h2>仕様</h2>
 <table><tr><th>メーカー</th><td>AMD</td></tr><tr><th>ソケット</th><td>AM4</td></tr><tr><th>コア / スレッド</th><td>6 コア / 6 スレッド</td></tr><tr><th>クロック</th><td>3.6 〜 4.1 GHz</td></tr><tr><th>L3キャッシュ</th><td>32 MB</td></tr><tr><th>TDP</th><td>65 W</td></tr></table>
 <h2>近い性能のCPU（PassMark）</h2>
-<table class="list"><tr><th>製品</th><th>スコア（Ryzen 5 3500Xとの差）</th><th>最安値</th></tr><tr><td><a href="/p/core-i5-10600.html">Core i5-10600</a></td><td>13,648（+4%）</td><td>—</td></tr><tr><td><a href="/p/core-i7-8700k.html">Core i7-8700K</a></td><td>13,568（+3%）</td><td>—</td></tr><tr><td><a href="/p/core-i7-9700f.html">Core i7-9700F</a></td><td>13,222（0%）</td><td>—</td></tr><tr><td><a href="/p/core-i9-9900t.html">Core i9-9900T</a></td><td>13,161（0%）</td><td>—</td></tr><tr><td><a href="/p/ryzen-5-3600-af.html">Ryzen 5 3600 AF</a></td><td>13,000（-1%）</td><td>—</td></tr><tr><td><a href="/p/ryzen-5-3500.html">Ryzen 5 3500</a></td><td>12,792（-3%）</td><td>¥20,980</td></tr></table>
+<p class="note">スコアと、Ryzen 5 3500X との差（%）、最安値です。</p>
+<ol class="rows plain"><li><a href="/p/core-i5-10600.html"><span class="rk"></span><span class="nm">Core i5-10600</span><span class="pr">—</span><span class="sub"><b>13,648</b> <span class="diff up">+4%</span></span></a></li><li><a href="/p/core-i7-8700k.html"><span class="rk"></span><span class="nm">Core i7-8700K</span><span class="pr">—</span><span class="sub"><b>13,568</b> <span class="diff up">+3%</span></span></a></li><li><a href="/p/core-i7-9700f.html"><span class="rk"></span><span class="nm">Core i7-9700F</span><span class="pr">—</span><span class="sub"><b>13,222</b> <span class="diff up">0%</span></span></a></li><li><a href="/p/core-i9-9900t.html"><span class="rk"></span><span class="nm">Core i9-9900T</span><span class="pr">—</span><span class="sub"><b>13,161</b> <span class="diff up">0%</span></span></a></li><li><a href="/p/ryzen-5-3600-af.html"><span class="rk"></span><span class="nm">Ryzen 5 3600 AF</span><span class="pr">—</span><span class="sub"><b>13,000</b> <span class="diff down">-1%</span></span></a></li><li><a href="/p/ryzen-5-3500.html"><span class="rk"></span><span class="nm">Ryzen 5 3500</span><span class="pr">¥20,980</span><span class="sub"><b>12,792</b> <span class="diff down">-3%</span></span></a></li></ol>
 
 <p style="margin-top:24px"><a href="/?page=cpu-rank">CPUランキングをすべて見る</a> ・ <a href="/?page=cpu-compare">CPUを2つ選んで比較する</a></p>
 </main>
 <footer>
+<ul class="foot-nav">
+<li><a href="/?page=cpu-rank">CPUランキング</a></li><li><a href="/?page=gpu-rank">GPUランキング</a></li><li><a href="/?page=ram-rank">メモリの最安値</a></li>
+<li><a href="/?page=builder">構成ビルダー</a></li><li><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a></li><li><a href="/?page=bottleneck">ボトルネック診断</a></li>
+<li><a href="/p/cpu.html">CPU一覧</a></li><li><a href="/p/gpu.html">GPU一覧</a></li><li><a href="/p/cpu-vs.html">CPUの比較</a></li><li><a href="/p/gpu-vs.html">GPUの比較</a></li>
+</ul>
 <p>価格は毎日自動で取得した参考価格です。購入前にリンク先で商品と価格を確認してください。購入リンクにはアフィリエイト広告が含まれます。</p>
 <p>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値、Blender のスコアは <a href="https://opendata.blender.org/">Blender Open Data</a> の中央値です。仕様は AMD 公式の仕様一覧と Wikipedia の各世代の仕様表を基にしています。</p>
-<p><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a> ・ <a href="/p/gpu-vs.html">GPUの比較</a> ・ <a href="/p/cpu-vs.html">CPUの比較</a> ・ <a href="/?page=about">運営者情報・利用規約・プライバシーポリシー</a></p>
+<p><a href="/?page=about">運営者情報・利用規約・プライバシーポリシー</a></p>
 </footer>
 </body>
 </html>
