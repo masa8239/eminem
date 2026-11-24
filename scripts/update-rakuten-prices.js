@@ -260,10 +260,17 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     // シートの価格がない製品は、直近の価格の中央値（自動の参考価格）を使う
     const staticRef = (model.sheetPriceValid && Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0)
       || autoReference(model.category, model.modelName);
-    let tooHigh = false;
-    if (staticRef) for (let k = offers.length - 1; k >= 0; k--) if (offers[k].price > staticRef * 2) { offers.splice(k, 1); tooHigh = true; }
+    let tooHigh = false, overCapFrom = 0;
+    if (staticRef) for (let k = offers.length - 1; k >= 0; k--) if (offers[k].price > staticRef * 2) { overCapFrom = overCapFrom ? Math.min(overCapFrom, offers[k].price) : offers[k].price; offers.splice(k, 1); tooHigh = true; }
     if (!offers.length) {
-      if (tooHigh) { unmatched.push({category: model.category, modelName: model.modelName, reason: '参考価格（シートの価格か直近の中央値）の2倍を超える出品しかない（在庫処分・転売の可能性）'}); continue; }
+      // 2倍を超える出品しかないとき、基準がシートの価格なら「シートの価格が古い」可能性がある。
+      // サイトは古いシートの価格を参考価格として出さず「価格を確認中」にし、要確認リストで直してもらう
+      if (tooHigh) {
+        const fromSheet = Boolean(model.sheetPriceValid && Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0);
+        unmatched.push({category: model.category, modelName: model.modelName, reason: '参考価格（シートの価格か直近の中央値）の2倍を超える出品しかない（在庫処分・転売の可能性）',
+          staleReference: true, referenceFrom: fromSheet ? 'sheet' : 'history', reference: staticRef, marketFrom: overCapFrom});
+        continue;
+      }
       // ストア側の失敗で取れなかったときは、前回の価格を数日間は引き継ぐ
       const kept = previous.get(`${model.category}\0${model.modelName}`);
       const storeFailed = rakutenError || (rakuten.configured && !rakuten.on) || (yahoo.appid && !yItems);
@@ -500,6 +507,14 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     if (!row.priceValid && !priced.has(key) && !row.discontinued) {
       issues.push({category: row.category, modelName: row.sheetName, type: 'price', issue: '価格が未入力または不正で、楽天からも取得できていません'});
     }
+  }
+  // シートの価格(円)が今の相場より大幅に低い（ストアの新品がすべてその2倍を超える）製品
+  for (const u of unmatched) {
+    if (!u.staleReference || u.referenceFrom !== 'sheet') continue;
+    const row = rows.find(r => r.category === u.category && r.modelName === u.modelName);
+    if (!row || row.discontinued) continue;
+    issues.push({category: u.category, modelName: row.sheetName, type: 'price',
+      issue: `「価格(円)」の ${u.reference.toLocaleString('ja-JP')} 円が今の相場より大幅に低い可能性があります。ストアの新品はすべて ${u.marketFrom.toLocaleString('ja-JP')} 円以上で、2倍の上限を超えるため採用していません。相場が上がったなら「価格(円)」を今の値段に直してください（サイトでは「価格を確認中」と表示しています）`});
   }
   // 仕様（コア数・クロック・VRAM など）を照合表と比べる
   issues.push(...checkSpecs(models.specRows || [], options.specReference));

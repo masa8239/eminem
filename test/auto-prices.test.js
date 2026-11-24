@@ -936,3 +936,23 @@ test('if Yahoo fails during the trial, rows say so instead of "no listing", and 
   assert.match(trial.summary.stopped, /接続できず/);
   assert.ok(trial.models.every(m => /接続できなかった|未実施/.test(m.trial.reason)));
 });
+
+test('when every new listing is over 2x the sheet price, the sheet price is flagged as out of date (site hides it, check list asks to fix it)', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stale-'));
+  const output = path.join(dir, 'prices.json');
+  const hit = (price, code, shop) => ({code, name: 'ASUS GeForce RTX 5090 32GB ROG', price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/' + code + '.html', seller: {name: shop}});
+  const fetchImpl = async url => {
+    const from = Number(url.searchParams.get('price_from') || 0), to = Number(url.searchParams.get('price_to') || 1e9);
+    return {ok: true, json: async () => ({hits: ['A', 'B', 'C', 'D', 'E'].map((s, i) => hit(1188000 + i * 10000, 'z' + i, s)).filter(h => h.price >= from && h.price <= to)})};
+  };
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipFixedParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX,
+    models: [{category: 'gpu', modelName: 'GeForce RTX 5090', referencePrice: 549800, sheetPriceValid: true, fromSheet: true}], output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  const data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.deepEqual(data.products, []);
+  const u = data.unmatched.find(x => x.modelName === 'GeForce RTX 5090');
+  assert.deepEqual([u.staleReference, u.referenceFrom, u.reference, u.marketFrom], [true, 'sheet', 549800, 1188000]);
+  const audit = JSON.parse(fs.readFileSync(path.join(dir, 'sheet-audit.json'), 'utf8'));
+  const issue = audit.issues.find(i => i.modelName === 'GeForce RTX 5090' && i.type === 'price');
+  assert.match(issue.issue, /549,800 円が今の相場より大幅に低い/);
+  assert.match(issue.issue, /1,188,000 円以上/);
+});
