@@ -79,6 +79,8 @@ function modelSpec(category, modelName, siblingNames = []) {
         if (numbers.size > 1) return false;
         // CPU名が入っている出品はグラボ単品ではなくPC本体
         if (/RYZEN|CORE\s*I[3579]|CORE\s*ULTRA/.test(text)) return false;
+        // 3桁の型番（RX 570・GTX 970 など）は自転車・車の部品と重なりやすい（例: SHIMANO WH-RX570）。グラボらしい言葉がある出品だけ使う
+        if (gpu.number.length === 3 && !/RADEON|GEFORCE|NVIDIA|グラフィック|ビデオカード|グラボ|GDDR/.test(text)) return false;
         return true;
       },
     };
