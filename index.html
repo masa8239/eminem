@@ -116,7 +116,9 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
 
 /* ── ヘッダー（PC: 全項目を横に / スマホ: よく使う4つ＋メニュー） ── */
 /* ページ上部のヘッダーだけ（フッターなどの nav には当てない） */
-body > nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: color-mix(in srgb, var(--bg) 92%, transparent); -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px); border-bottom: 1px solid var(--line); }
+body > nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; border-bottom: 1px solid var(--line); }
+/* すりガラス風の地は疑似要素に付ける（nav 自体に backdrop-filter を付けると、中の「メニュー」がヘッダーの高さに閉じ込められる） */
+body > nav::before { content: ""; position: absolute; inset: 0; z-index: -1; background: color-mix(in srgb, var(--bg) 92%, transparent); -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px); }
 .brand-row { height: 56px; padding: 0 24px; display: flex; align-items: center; gap: 16px; }
 .logo { font-family: var(--f-disp); font-stretch: 125%; font-weight: 800; font-size: 19px; letter-spacing: 0.01em; color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; }
 .logo span { font-weight: 800; color: var(--cpu); }
@@ -602,7 +604,11 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
   .brand-tag { display: none; }
   .menu-btn { display: block; }
   /* スマホ: よく使う4つを常に表示し、残りはメニューの中 */
-  .nav-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; height: 52px; padding: 0 10px 8px; }
+  /* 上の列は横にスクロールして、ほかのページも選べる。右端を少し薄くして続きがあることを示す */
+  .nav-quick { display: flex; gap: 6px; height: 52px; padding: 0 10px 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent); mask-image: linear-gradient(90deg, #000 85%, transparent); }
+  .nav-quick::-webkit-scrollbar { display: none; }
+  .nav-quick .nav-link { flex: 0 0 auto; min-width: 84px; scroll-snap-align: start; }
+  .nav-quick .nav-link:last-child { margin-right: 28px; }
   .nav-quick .nav-link { justify-content: center; height: 44px; padding: 0 4px; font-size: 12px; font-weight: 700; border-radius: 14px; background: var(--sunk); }
   .nav-quick .nav-link.active { background: var(--ink); }
   .nav-quick .nav-link.active .nav-ill { --ill: var(--bg); --ill-soft: color-mix(in srgb, var(--bg) 35%, transparent); --ill-ink: var(--bg); }
@@ -785,6 +791,10 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
   <circle cx="32" cy="20" r="6" fill="none" stroke-width="2.4" style="stroke:var(--ill-soft)"/><circle cx="32" cy="37" r="6" fill="none" stroke-width="2.4" style="stroke:var(--ill-soft)"/>
   <circle cx="32" cy="54" r="2" style="fill:var(--ill)"/>
 </symbol>
+<symbol id="ill-vs" viewBox="0 0 64 64"><rect x="4" y="14" width="24" height="24" rx="6" style="fill:var(--ill)"/><rect x="36" y="26" width="24" height="24" rx="6" style="fill:var(--ill-soft);stroke:var(--ill);stroke-width:3"/><path d="M24 50 L30 50 M27 44 L27 56" style="stroke:var(--ill-ink);stroke-width:0"/><text x="32" y="62" text-anchor="middle" style="fill:var(--ill-ink);font:900 13px sans-serif" opacity=".7">VS</text></symbol>
+<symbol id="ill-scale" viewBox="0 0 64 64"><path d="M32 30 L42 52 H22 Z" style="fill:var(--ill-soft)"/><rect x="6" y="26" width="52" height="5" rx="2.5" style="fill:var(--ill)"/><rect x="8" y="12" width="14" height="14" rx="3" style="fill:var(--ill)"/><rect x="42" y="12" width="14" height="14" rx="3" style="fill:var(--ill)" opacity=".6"/><circle cx="32" cy="28" r="3" style="fill:var(--ill-ink)"/></symbol>
+<symbol id="ill-star" viewBox="0 0 64 64"><path d="M32 6 L39.6 22.6 L57.7 24.6 L44.2 36.9 L48 54.7 L32 45.6 L16 54.7 L19.8 36.9 L6.3 24.6 L24.4 22.6 Z" style="fill:var(--ill);stroke:var(--ill-soft);stroke-width:3;stroke-linejoin:round"/></symbol>
+<symbol id="ill-fan" viewBox="0 0 64 64"><rect x="6" y="6" width="52" height="52" rx="13" style="fill:#0f7c8a"/><circle cx="32" cy="32" r="14" style="fill:#fff"/><ellipse cx="27" cy="30" rx="2.2" ry="3" style="fill:#0f7c8a"/><ellipse cx="37" cy="30" rx="2.2" ry="3" style="fill:#0f7c8a"/><path d="M27.5 35 Q32 40 36.5 35" style="fill:none;stroke:#0f7c8a;stroke-width:2.2;stroke-linecap:round"/></symbol>
 </svg>
 
 <nav>
@@ -794,6 +804,12 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
     <div role="link" tabindex="0" class="nav-link c-gpu" data-page="gpu-rank" onclick="showPage('gpu-rank',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg>GPU</div>
     <div role="link" tabindex="0" class="nav-link c-ram" data-page="ram-rank" onclick="showPage('ram-rank',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-ram"/></svg>メモリ</div>
     <div role="link" tabindex="0" class="nav-link c-misc" data-page="builder" onclick="showPage('builder',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg>ビルダー</div>
+    <div role="link" tabindex="0" class="nav-link c-misc" data-page="ssd-rank" onclick="showPage('ssd-rank',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-ssd"/></svg>SSD</div>
+    <div role="link" tabindex="0" class="nav-link c-misc" data-page="psu-rank" onclick="showPage('psu-rank',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-psu"/></svg>電源</div>
+    <div role="link" tabindex="0" class="nav-link c-misc" data-page="mb-rank" onclick="showPage('mb-rank',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-mb"/></svg>マザボ</div>
+    <div role="link" tabindex="0" class="nav-link c-cpu" data-page="cpu-compare" onclick="showPage('cpu-compare',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-vs"/></svg>比較</div>
+    <div role="link" tabindex="0" class="nav-link c-gpu" data-page="bottleneck" onclick="showPage('bottleneck',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-scale"/></svg>診断</div>
+    <div role="link" tabindex="0" class="nav-link c-ram" data-page="presets" onclick="showPage('presets',this)"><svg class="nav-ill" aria-hidden="true" focusable="false"><use href="#ill-star"/></svg>おすすめ</div>
   </div>
   <div class="nav-links" id="nav-links">
     <div role="link" tabindex="0" class="nav-link active" data-page="home" onclick="showPage('home',this)">トップ</div>
@@ -3180,6 +3196,8 @@ function showPage(id,clickedEl,skipHistory) {
   document.getElementById(id).classList.add('active');
   // 同じページへのリンクはスマホの上段とメニューの両方にあるので、両方に印を付ける
   document.querySelectorAll('.nav-link').forEach(l=>l.classList.toggle('active', l.dataset.page===id));
+  // スマホの上の列で、選んだページが見える位置まで横に送る
+  try { const q = document.querySelector(`.nav-quick .nav-link[data-page="${id}"]`); const strip = document.querySelector('.nav-quick'); if (strip) strip.scrollTo({left: q ? q.offsetLeft - 10 : 0, behavior: 'smooth'}); } catch (e) {}
   toggleMenu(false);
   document.title = PAGE_TITLES[id] || 'BENCHCORE';
   // ブラウザの戻る/進むに対応
