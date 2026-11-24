@@ -551,6 +551,9 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
   .rank-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
   .rank-table td { display: block; padding: 0; border: none; min-width: 0; }
   .rank-table td[colspan] { grid-column: 1 / -1; }
+  .rank-table tr.part-group-first { border-top: 2px solid var(--line-strong); }
+  .rank-table tr.part-group-first td { border-top: none; }
+  .rank-table td:empty { display: none; }
   .rank-table td[data-label]:not([data-label=""])::before { content: attr(data-label); display: block; font-size: 11px; color: var(--ink3); margin-bottom: 1px; }
   /* CPU・GPU・メモリのランキング: 1行目「順位・名前・最安値」、2行目「スコアの棒・1万円あたり」 */
   .rank-table tbody.mrows tr { grid-template-columns: 26px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 3px; padding: 9px 12px; align-items: center; cursor: pointer; }
@@ -3169,10 +3172,12 @@ const MOBILE_SCORE = ['速度'];
 const MOBILE_PER = ['1万円あたり', '1GBあたり'];
 function labelCells(tbody) {
   if (!tbody || !tbody.querySelectorAll || !tbody.closest) return;
-  tbody.classList.add('mrows');
-  // 棒が伸びる動きは最初に表を出したときだけ（検索や並び替えのたびには動かさない）
-  if (!tbody.dataset.charged) { tbody.dataset.charged = '1'; setTimeout(() => tbody.classList.add('settled'), 1200); }
   const heads = [...(tbody.closest('table')?.querySelectorAll('thead th') || [])].map(th => th.textContent.trim());
+  // 1行に縮めるのは製品名の列がある表（CPU・GPU・メモリ・Blender）だけ。規格別の表（SSD・電源・マザーボード）は見出しつきのカードのまま
+  const compact = heads.some(h => /名$/.test(h));
+  tbody.classList.toggle('mrows', compact);
+  // 棒が伸びる動きは最初に表を出したときだけ（検索や並び替えのたびには動かさない）
+  if (compact && !tbody.dataset.charged) { tbody.dataset.charged = '1'; setTimeout(() => tbody.classList.add('settled'), 1200); }
   tbody.querySelectorAll('tr').forEach(tr => [...tr.children].forEach((td, i) => {
     if (td.colSpan > 1 || td.classList.contains('m-src')) return;
     const h = heads[i] || '';
