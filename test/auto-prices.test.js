@@ -835,3 +835,46 @@ test('budget builds stay within budget, use compatible parts and a balanced CPU'
   assert.equal(b30.gpu.name, 'RTX 5070');
   assert.ok(b30.psu.spec.rating === 'Gold', '25万円以上は Gold 以上');
 });
+
+test('unmatched GPUs keep the listings that were searched and why each was not used (for investigation only)', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'seen-'));
+  const output = path.join(dir, 'prices.json');
+  const hit = (name, price, code) => ({code, name, price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/s/' + code + '.html', seller: {name: 's' + code}});
+  const listings = [hit('MSI GeForce RTX 4070 SUPER 12G VENTUS', 98000, 'a'), hit('ASUS RTX 4070 12GB DUAL 延長保証つき', 89000, 'b'), hit('RTX 4070 対応 ライザーケーブル', 16000, 'c')];
+  const fetchImpl = async url => {
+    const from = Number(url.searchParams.get('price_from') || 0), to = Number(url.searchParams.get('price_to') || 1e9);
+    return {ok: true, json: async () => ({hits: listings.filter(h => h.price >= from && h.price <= to)})};
+  };
+  await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipFixedParts: true, skipBoardSpecs: true, skipSheetParts: true, corrections: NO_FIX,
+    models: [{category: 'gpu', modelName: 'GeForce RTX 4070', referencePrice: 80000}], output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}});
+  const data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.deepEqual(data.products, []);
+  const u = data.unmatched.find(x => x.modelName === 'GeForce RTX 4070');
+  assert.equal(u.searched.keyword, 'RTX 4070');
+  assert.equal(u.seen.length, 3);
+  const why = Object.fromEntries(u.seen.map(s => [s.price, s.why]));
+  assert.match(why[89000], /除外する語「延長保証」/);
+  assert.match(why[16000], /除外する語「ケーブル」|除外する語「ライザー」/);
+  assert.match(why[98000], /型番が違う/);
+  // 型番が違う出品は後ろに並ぶ
+  assert.equal(u.seen[u.seen.length - 1].price, 98000);
+});
+
+test('Arc, GT and 3-digit GPU model names are read; other models and VRAM sizes are still rejected', () => {
+  const {modelSpec} = require('../scripts/lib/match');
+  const ok = (name, title, siblings = []) => modelSpec('gpu', name, siblings).matches(title);
+  assert.equal(modelSpec('gpu', 'Arc A770 8GB').keyword, 'Arc A770');
+  assert.equal(modelSpec('gpu', 'GeForce GT 1030').keyword, 'GT 1030');
+  assert.equal(modelSpec('gpu', 'Radeon RX 590').keyword, 'RX 590');
+  assert.equal(modelSpec('gpu', 'NVIDIA TITAN V'), null);
+  assert.equal(ok('Arc A770 8GB', 'ASRock Intel Arc A770 Challenger 8GB OC', ['Arc A770 16GB']), true);
+  assert.equal(ok('Arc A770 8GB', 'Intel Arc A770 16GB Limited Edition', ['Arc A770 16GB']), false);
+  assert.equal(ok('Arc A750', 'Arc A770 / A750 対応'), false);
+  assert.equal(ok('GeForce GT 1030', '玄人志向 GT1030 2GB ロープロファイル'), true);
+  assert.equal(ok('GeForce GT 1030', 'GeForce GTX 1030'), false);
+  assert.equal(ok('Radeon RX 590', 'SAPPHIRE NITRO+ RX 590 8GB'), true);
+  assert.equal(ok('Radeon RX 570', 'RX 570 / RX 580 対応'), false);
+  assert.equal(ok('GeForce GTX 750 Ti', 'GTX 750 Ti 2GB'), true);
+  assert.equal(ok('GeForce GTX 750 Ti', 'GTX 750 2GB'), false);
+  assert.equal(ok('GeForce RTX 4070', 'MSI GeForce RTX 4070 SUPER 12G'), false);
+});

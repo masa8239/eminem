@@ -160,6 +160,11 @@ GitHub Actions（毎日 03:37 JST）                    │
 - シートで `販売終了` = TRUE の製品は検索しない（理由「販売終了（シートで指定）」）。
 - アフィリエイト: `config/affiliate.json` の `yahooValueCommerceId` を API に `affiliate_type=vc` で渡すと、返る商品URLがバリューコマースのリンクになる（http は https に直す）。
 
+### 4-3b. GPU の価格が取れないときの調べ方（2026-11-24 追加）
+- 見つからなかった GPU は、`data/rakuten-prices.json` の `unmatched[]` に `searched`（検索語・価格帯・見えた件数）と `seen`（見えた出品を最大12件、`why` に使わなかった理由）が残る。表示には使わない。
+- 型番の読み取り（`scripts/lib/match.js` の `parseGpu`）は Intel Arc（A770・B580 など）、GT 1030、3桁の型番（GTX 970・RX 580 など）にも対応。TITAN・Vega・R9 などは読まない（新品がほぼ出回らないため、シートで「販売終了」にする想定）。
+- 2026-11-24 時点で GPU 119製品のうち価格が取れていたのは28製品。原因の内訳と対策は運営者と相談中（販売終了の整理、基準価格の入力など）。
+
 ### 4-4. 手動で動かす
 `.github/run-prices.txt` の中身（「最終依頼」の行など）を書き換えて main に入れる → Actions が1回動く（15〜20分）。結果は `https://raw.githubusercontent.com/masa8239/eminem/main/data/rakuten-prices.json` の `checkedAt` で確認できる。
 （Actions の workflow_dispatch は Claude の GitHub 連携の権限では 403 になる。運営者は GitHub の画面の「Run workflow」で動かせる）

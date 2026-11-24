@@ -24,7 +24,11 @@ const GPU_SUFFIXES = ['TI SUPER', 'SUPER', 'TI', 'XTX', 'XT', 'GRE'];
 
 function parseGpu(name) {
   const text = normalize(name);
-  const match = text.match(/\b(RTX|GTX|RX)\s*(\d{4})\s*(TI\s*SUPER|SUPER|TI|XTX|XT|GRE)?(?![A-Z0-9])(?:\s*(\d{1,2})\s*GB)?/);
+  // Intel Arc（A770・B580 など）
+  const arc = text.match(/(?<![A-Z0-9])ARC\s*(?:GRAPHICS\s*)?([AB]\d{3})(?![0-9])(?:\s*(\d{1,2})\s*GB)?/);
+  if (arc) return {family: 'ARC', number: arc[1], suffix: '', vram: arc[2] ? Number(arc[2]) : null};
+  // GeForce RTX / GTX / GT と Radeon RX。古い世代の3桁の型番（GTX 970・RX 580・GT 1030 など）も読む
+  const match = text.match(/\b(RTX|GTX|GT|RX)\s*(\d{3,4})\s*(TI\s*SUPER|SUPER|TI|XTX|XT|GRE)?(?![A-Z0-9])(?:\s*(\d{1,2})\s*GB)?/);
   if (!match) return null;
   return {
     family: match[1],
@@ -57,9 +61,10 @@ function modelSpec(category, modelName, siblingNames = []) {
     const siblingVrams = siblingNames.map(parseGpu)
       .filter(other => other && other.family === gpu.family && other.number === gpu.number && other.suffix === gpu.suffix && other.vram && other.vram !== gpu.vram)
       .map(other => other.vram);
-    const pattern = new RegExp(`(?<![A-Z0-9])${gpu.family}\\s*${gpu.number}(?![0-9])\\s*-?\\s*(TI\\s*SUPER|SUPER|TI|XTX|XT|GRE)?(?![A-Z])`, 'g');
+    const head = gpu.family === 'ARC' ? `ARC\\s*(?:GRAPHICS\\s*)?${gpu.number}` : `${gpu.family}\\s*${gpu.number}`;
+    const pattern = new RegExp(`(?<![A-Z0-9])${head}(?![0-9])\\s*-?\\s*(TI\\s*SUPER|SUPER|TI|XTX|XT|GRE)?(?![A-Z])`, 'g');
     return {
-      keyword: [gpu.family, gpu.number, gpu.suffix].filter(Boolean).join(' '),
+      keyword: [gpu.family === 'ARC' ? 'Arc' : gpu.family, gpu.number, gpu.suffix].filter(Boolean).join(' '),
       matches(itemName) {
         const text = normalize(itemName);
         const found = [...text.matchAll(pattern)];
@@ -70,7 +75,7 @@ function modelSpec(category, modelName, siblingNames = []) {
         if (gpu.vram && !vramIn(gpu.vram)) return false;
         if (siblingVrams.some(vramIn)) return false;
         // 別の型番がいくつも並んでいる出品は、互換部品や対応機種の一覧
-        const numbers = new Set([...text.matchAll(/(?<![A-Z0-9])(?:RTX|GTX|RX)\s*(\d{4})(?![0-9])/g)].map(m => m[1]));
+        const numbers = new Set([...text.matchAll(/(?<![A-Z0-9])(?:RTX|GTX|GT|RX)\s*(\d{3,4})(?![0-9])|(?<![A-Z0-9])ARC\s*(?:GRAPHICS\s*)?([AB]\d{3})(?![0-9])/g)].map(m => m[1] || m[2]));
         if (numbers.size > 1) return false;
         // CPU名が入っている出品はグラボ単品ではなくPC本体
         if (/RYZEN|CORE\s*I[3579]|CORE\s*ULTRA/.test(text)) return false;
@@ -141,12 +146,24 @@ function pickItem(spec, items, referencePrice, category, options = {}) {
   return {item: accepted[0]};
 }
 
-module.exports = {normalize, parseGpu, parseCpu, modelSpec, pickItem, median, EXCLUDE_WORDS, PRICE_FLOOR};
+// 見つからなかったモデルの原因を調べるため、出品ごとに「使わなかった理由」を返す（使える出品は null）
+function rejectReason(spec, item) {
+  if (!item || typeof item.itemName !== 'string') return '商品名なし';
+  if (!(Number.isSafeInteger(item.itemPrice) && item.itemPrice > 0)) return '価格なし';
+  if (item.availability !== 1) return '在庫なし';
+  if (!spec.matches(item.itemName)) return '型番が違う（別のモデル・グレード・容量、または複数の型番）';
+  const word = EXCLUDE_WORDS.find(w => normalize(item.itemName).includes(w));
+  if (word) return `除外する語「${word}」を含む`;
+  return null;
+}
+
+module.exports = {normalize, parseGpu, parseCpu, modelSpec, pickItem, rejectReason, median, EXCLUDE_WORDS, PRICE_FLOOR};
 
 // ---- 新着候補の発見 ----
 // 検索結果の商品名から型番を読み取り、まだサイトに載っていないモデルを候補として挙げる。
 const SUFFIX_LABEL = {'TI': 'Ti', 'TI SUPER': 'Ti SUPER', 'SUPER': 'SUPER', 'XT': 'XT', 'XTX': 'XTX', 'GRE': 'GRE', '': ''};
 function canonicalGpu(gpu) {
+  if (gpu.family === 'ARC') return `Arc ${gpu.number}`;
   const brand = gpu.family === 'RX' ? 'Radeon' : 'GeForce';
   return `${brand} ${gpu.family} ${gpu.number}${gpu.suffix ? ' ' + SUFFIX_LABEL[gpu.suffix] : ''}`;
 }
