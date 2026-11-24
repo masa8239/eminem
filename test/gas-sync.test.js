@@ -265,3 +265,17 @@ test('rows with no new listing lately get an orange 販売終了 cell, which cle
   assert.equal(sheet.backgrounds['1,3'], undefined);
   assert.equal(sheet.notes['1,3'], undefined);
 });
+
+test('a sheet price far below the market is marked red with the reason, and cleared once the issue is gone', () => {
+  const sheet = makeSheet('GPU', gpuGrid());
+  const f = files();
+  const msg = '「価格(円)」の 44,000 円が今の相場より大幅に低い可能性があります。ストアの新品はすべて 120,000 円以上で、2倍の上限を超えるため採用していません。';
+  f['sheet-audit.json'].issues.push({category: 'gpu', modelName: 'GeForce RTX 3070', type: 'price', issue: msg});
+  run([sheet], f, 'benchcoreSync');
+  assert.equal(sheet.backgrounds['8,2'], '#f4cccc');
+  assert.equal(sheet.notes['8,2'], msg);
+  // 次の日に指摘がなくなれば、赤とメモを消す
+  run([sheet], files(), 'benchcoreSync');
+  assert.equal(sheet.backgrounds['8,2'], undefined);
+  assert.equal(sheet.notes['8,2'], undefined);
+});

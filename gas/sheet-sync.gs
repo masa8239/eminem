@@ -82,7 +82,7 @@ function benchcoreRun_(dryRun) {
     // 単体で売っていない製品と、運営者が「販売終了」にした製品は、価格が空でも赤くしない
     if (item.reason === '型番を判定できないモデル名' || String(item.reason).indexOf('販売終了') === 0) unpriceable[item.category + '|' + item.modelName] = true;
   });
-  var nameIssues = {}, nameFixes = {}, specIssues = {}, stockIssues = {};
+  var nameIssues = {}, nameFixes = {}, specIssues = {}, stockIssues = {}, stalePrices = {};
   (auditData.issues || []).forEach(function (issue) {
     var issueKey = issue.category + '|' + issue.modelName;
     if (issue.type === 'name') { nameIssues[issueKey] = issue.issue; if (issue.fix) nameFixes[issueKey] = issue.fix; }
@@ -91,6 +91,8 @@ function benchcoreRun_(dryRun) {
     if (issue.type === 'spec') specIssues[issueKey] = issue.issue;
     // 新品の出品が続けて見つからない製品。「販売終了」のセルをオレンジにして知らせる
     if (issue.type === 'stock') stockIssues[issueKey] = issue.issue;
+    // 価格(円)が今の相場より大幅に低い（ストアの新品がすべてその2倍を超える）行。価格(円)のセルを赤くして知らせる
+    if (issue.type === 'price' && String(issue.issue).indexOf('今の相場より大幅に低い') >= 0) stalePrices[issueKey] = issue.issue;
   });
 
   var log = [];
@@ -162,12 +164,13 @@ function benchcoreRun_(dryRun) {
 
       // 価格(円): 人が入れる基準の価格。空・不正で、最安値も取れていない行だけ赤くする
       if (!formulas[i][0]) {
-        var ok = (typeof current === 'number' && current >= 1000 && current % 1 === 0) || Boolean(product) || Boolean(unpriceable[key]);
+        var stale = stalePrices[key] || '';
+        var ok = ((typeof current === 'number' && current >= 1000 && current % 1 === 0) || Boolean(product) || Boolean(unpriceable[key])) && !stale;
         if (!ok && priceBackgrounds[i][0] !== BENCHCORE_COLOR_PRICE) {
-          log.push(sheet.getName() + ' / ' + name + ': 価格を確認（現在の値: ' + (current === '' ? '(空)' : current) + '）');
+          log.push(sheet.getName() + ' / ' + name + ': 価格を確認（現在の値: ' + (current === '' ? '(空)' : current) + '）' + (stale ? ' 相場より大幅に低い' : ''));
           if (!dryRun) {
             priceCell.setBackground(BENCHCORE_COLOR_PRICE);
-            priceCell.setNote('価格を確認してください。円の整数（例: 98000）で入力します。');
+            priceCell.setNote(stale || '価格を確認してください。円の整数（例: 98000）で入力します。');
           }
         }
         if (ok && !dryRun && priceBackgrounds[i][0] === BENCHCORE_COLOR_PRICE) { priceCell.setBackground(null); priceCell.clearNote(); }

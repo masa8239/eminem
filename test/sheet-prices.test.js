@@ -106,3 +106,17 @@ test('the auto-filled lowest-price column is never read as the reference price',
   assert.equal(run("sheetPrice({'価格(円)':98000,'最安値(円)':71000})"),98000);
   assert.equal(run("sheetPrice({'価格(円)':'','最安値(円)':71000})"),null);
 });
+
+test('an out-of-date sheet price is not shown as a reference price; a corrected sheet value is', () => {
+  const {run} = app();
+  run("gpuData=[parseGpuRow({'GPU名':'GeForce RTX 5090','3DMark Time Spy':47487,'価格(円)':549800}), parseGpuRow({'GPU名':'GeForce RTX 5080','3DMark Time Spy':33615,'価格(円)':180000})]");
+  run("applyStaleReferences([{category:'gpu',modelName:'GeForce RTX 5090',staleReference:true,referenceFrom:'sheet',reference:549800,marketFrom:1188000}])");
+  assert.equal(run('gpuData[0].price'), null);
+  assert.match(run('renderPrice(gpuData[0])'), /価格を確認中/);
+  assert.doesNotMatch(run('renderPrice(gpuData[0])'), /549,800/);
+  assert.equal(run('costPerformance(gpuData[0])'), null);
+  assert.equal(run('gpuData[1].price'), 180000);
+  // シートが直されたら（取得したときの値と違えば）、直した値を参考価格として出す
+  run("gpuData[1].price=1188000; applyStaleReferences([{category:'gpu',modelName:'GeForce RTX 5080',staleReference:true,referenceFrom:'sheet',reference:180000,marketFrom:400000}])");
+  assert.equal(run('gpuData[1].price'), 1188000);
+});

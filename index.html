@@ -361,6 +361,7 @@ a.affiliate-btn { text-decoration: none; background: var(--fill); border-color: 
 .affiliate-btn:hover { border-color: var(--cpu); background: var(--cpu-soft); }
 a.affiliate-btn:hover { background: var(--fill-hover); }
 .m-src, .row-more { display: none; }
+.price-stale { font-weight: 700; color: var(--warn); }
 .ref-tag { font-family: var(--f-body); font-size: 11px; font-weight: 700; color: var(--warn); border: 1px solid var(--warn-line); background: var(--warn-soft); border-radius: 2px; padding: 0 4px; margin-left: 4px; vertical-align: 1px; }
 
 /* ── 比較 ── */
@@ -1595,7 +1596,9 @@ function safeRakutenUrl(value) {
   } catch (error) { return ''; }
 }
 function renderPrice(item) {
-  if (!validPrice(item.price)) return '<span style="color:var(--text3)">価格不明</span>';
+  if (!validPrice(item.price)) return item.priceStale
+    ? '<div class="price-stale">価格を確認中</div><div class="price-meta">相場が大きく変わったため、古い参考価格は出していません</div>'
+    : '<span style="color:var(--text3)">価格不明</span>';
   // ストアから取れていない価格は、一覧を縮めたスマホ表示でも分かるように「参考」と付ける
   const ref = item.rakuten?.status === 'ok' ? '' : '<small class="ref-tag">参考</small>';
   return `<div>${fmtPrice(item.price)}${ref}</div>${priceMeta(item)}`;
@@ -2333,11 +2336,26 @@ function applyRakutenProducts(products, maxAgeMs) {
     item.rakuten = {status: ok ? 'ok' : 'error', fetchedAt:product.fetchedAt, url:product.url, source: typeof product.source==='string'&&product.source ? product.source : '楽天市場', points:product.points, offers:product.offers};
   });
 }
+// 価格の取得で「シートの価格が古い（ストアの新品がすべてその2倍を超える）」と分かった製品は、
+// 古い参考価格を出さずに「価格を確認中」にする。シートの値が直されたら（取得時の値と違えば）その値を参考価格として出す
+function applyStaleReferences(unmatched) {
+  const lists = {cpu: cpuData.concat(cpuExtra), gpu: gpuData.concat(gpuExtra)};
+  (Array.isArray(unmatched) ? unmatched : []).forEach(u => {
+    if (!u || !u.staleReference || !lists[u.category]) return;
+    const item = lists[u.category].find(x => x.name === u.modelName);
+    if (!item || item.rakuten?.status === 'ok') return;
+    if (u.referenceFrom === 'sheet' && item.price !== u.reference) return;
+    if (item.basePrice === undefined) item.basePrice = item.price;
+    item.price = null;
+    item.priceStale = true;
+  });
+}
 async function loadRakutenPrices() {
   // 自動取得ファイル: サイト同梱版とGitHub上の最新版のうち、新しい方を使う
   const files = (await Promise.allSettled(PRICE_FILE_URLS.map(fetchPriceProducts))).filter(r=>r.status==='fulfilled').map(r=>r.value);
   const newest = files.sort((a,b)=>String(b.checkedAt||'').localeCompare(String(a.checkedAt||'')))[0];
   if (newest) applyRakutenProducts(newest.products, PRICE_FILE_MAX_AGE_MS);
+  try { if (newest) applyStaleReferences(newest.unmatched); } catch (e) {}
   try { applyPartProducts(newest ? newest.products : [], PRICE_FILE_MAX_AGE_MS); } catch (e) {}
   try { bloadPartsFromData(); } catch (e) {}
   try {
@@ -3034,6 +3052,7 @@ function presetParts(p) {
     const key = PRESET_CAT_KEYS[pt.cat];
     const id = key && resolveBuilderId(key, p.builderIds[key]);
     const item = id && BPARTS[key]?.items.find(i => i.id === id);
+    if (item && item.stale) return {...pt, name: item.name + '（価格を確認中）', price: 0};
     if (item) return {...pt, name: item.name, price: item.price, ref: !!item.ref};
     // 規格指定でその日の価格が取れていないパーツは、価格を合計に入れない
     return String(p.builderIds[key] || '').startsWith('spec:') ? {...pt, name: pt.name + '（価格取得中）', price: 0} : pt;
@@ -3069,6 +3088,9 @@ function bsyncPrices() {
     // ストアから取れた価格でなければ「参考価格」と表示する（ランキングにない製品は内蔵の参考価格のまま）
     const ref = !(found && validPrice(found.price) && found.rakuten?.status === 'ok');
     if (ref !== Boolean(item.ref)) { item.ref = ref; changed = true; }
+    // 相場が大きく変わって価格を確認中の製品は、古い価格のまま選べないようにする
+    const stale = Boolean(found && found.priceStale);
+    if (stale !== Boolean(item.stale)) { item.stale = stale; changed = true; }
     if (!found) return;
     if (validPrice(found.price) && found.price !== item.price) { item.price = found.price; changed = true; }
     // スコアはシートの値だけを使う。シートにまだスコアがない製品は、内蔵の仮の値を出さない
@@ -3385,7 +3407,7 @@ function brenderParts(){
       <div class="bpart-list" id="blist-${cat}">
         ${cat==='mb'?'<div class="bpart-note" id="bnote-mb" style="font-size:12px;color:var(--text2);padding:8px 14px;display:none"></div>':''}
         ${!data.items.length&&['mb','storage','psu'].includes(cat)?'<div style="font-size:12px;color:var(--text3);padding:12px 14px">毎日の最安値を読み込み中です（取得できていないときは表示されません）</div>':''}
-        ${data.items.map(item=>`
+        ${data.items.filter(item=>!item.stale).map(item=>`
           <div class="bpart-item" id="bitem-${item.id}"${item.socket?` data-socket="${item.socket}"`:''} onclick="bselect('${cat}','${item.id}')">
             <div class="bpart-check" id="bcheck-${item.id}">✓</div>
             <div class="bpart-item-name"><strong>${item.fav?'<span class="bfav" title="お気に入り">♥</span>':''}${esc(item.name)}</strong><small>${esc(item.spec)}</small></div>
