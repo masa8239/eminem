@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-24T05:16:46.198Z",
+ "checkedAt": "2026-11-24T05:52:05.491Z",
  "method": "売り場で絞り、関連の高い順に2ページ（100件）を見る（一致がなければ絞らずに1ページ）。採用: 基準価格があれば0.7〜1.8倍、なければ一致3件以上で中央値の0.75〜1.5倍。同じ価格帯に2店以上",
  "genre": {
   "id": "40331",
@@ -7,18 +7,21 @@
  },
  "summary": {
   "models": 119,
-  "currentOk": 29,
+  "currentOk": 30,
   "trialOk": 28,
-  "onlyTrial": 6,
+  "onlyTrial": 5,
   "onlyCurrent": 7,
-  "both": 22,
+  "both": 23,
   "priceDiffMedianPct": 0,
   "priceDiffOver10Pct": 3
  },
  "models": [
   {
    "modelName": "GeForce RTX 5090",
-   "current": null,
+   "current": {
+    "price": 1188000,
+    "shop": "パソコン専門店ECJP ヤフー店"
+   },
    "trial": {
     "hits": 26,
     "matched": 20,
@@ -30,7 +33,11 @@
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 6
     },
     "median": 1330000,
-    "reason": "価格が相場から外れている"
+    "price": 1188000,
+    "shop": "パソコン専門店ECJP ヤフー店",
+    "shops": 3,
+    "itemName": "【新品】【即納】【代引き不可】Palit-RTX5090-GAMEROCK NVIDIA GeForce RTX 5090 グラフィックボード 32GB PCパーツ",
+    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fsuncityjp%2Fpalit-rtx5090-gamerock.html"
    }
   },
   {
@@ -1452,14 +1459,13 @@
    "current": null,
    "trial": {
     "hits": 19,
-    "matched": 2,
+    "matched": 1,
     "genre": "しぼらない",
     "matchedGenres": {
-     "20895 拡張カード": 1,
-     "50064 ラベルプリンター、ラベルライター": 1
+     "20895 拡張カード": 1
     },
     "rejected": {
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 17
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 18
     },
     "reason": "基準価格なし・一致する出品が3件未満"
    }
@@ -1543,23 +1549,14 @@
    "current": null,
    "trial": {
     "hits": 52,
-    "matched": 12,
+    "matched": 0,
     "genre": "しぼらない",
-    "matchedGenres": {
-     "72727 完組ホイール": 12
-    },
+    "matchedGenres": {},
     "rejected": {
      "除外する語「平行輸入」を含む": 1,
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 35,
-     "除外する語「並行輸入」を含む": 3,
-     "除外する語「セット」を含む": 1
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 51
     },
-    "median": 40166,
-    "price": 35900,
-    "shop": "物見山RIDE",
-    "shops": 5,
-    "itemName": "SHIMANO WH-RX570-700C TL ディスクブレーキ用フロントホイール チューブレス シマノ",
-    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Falphacycling%2Fshi-4550170449421.html"
+    "reason": "一致する新品単品の出品なし"
    }
   },
   {
@@ -1853,22 +1850,15 @@
    "current": null,
    "trial": {
     "hits": 51,
-    "matched": 5,
+    "matched": 0,
     "genre": "しぼらない",
-    "matchedGenres": {
-     "75511 コンバイン": 1,
-     "75556 草刈機パーツ、刃": 1,
-     "3937 その他DIY、業務、産業用品": 2,
-     "44440 その他バイクパーツ、アクセサリー用品": 1
-    },
+    "matchedGenres": {},
     "rejected": {
      "除外する語「並行輸入」を含む": 8,
      "除外する語「平行輸入」を含む": 1,
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 36,
-     "除外する語「セット」を含む": 1
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 42
     },
-    "median": 42158,
-    "reason": "同じ価格帯で売っている店が1つだけ"
+    "reason": "一致する新品単品の出品なし"
    }
   },
   {
