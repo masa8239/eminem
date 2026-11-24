@@ -165,7 +165,10 @@ GitHub Actions（毎日 03:37 JST）                    │
 - 型番の読み取り（`scripts/lib/match.js` の `parseGpu`）は Intel Arc（A770・B580 など）、GT 1030、3桁の型番（GTX 970・RX 580 など）にも対応。TITAN・Vega・R9 などは読まない（新品がほぼ出回らないため、シートで「販売終了」にする想定）。
 - **試しの取り方**（`runTrial`）: 毎朝の取得の最後に GPU だけ、売り場（採用できた出品のジャンル）で絞り、関連の高い順に2ページ（100件）見て探し直す。結果は `data/price-trial.json`（`summary` に今の方法との比較）に書くだけで、サイトの表示には使わない。本番の保存の後に、専用の検索・10分の上限つきで動く。良ければ本番に切り替える予定。
 - 調査の結果（2026-11-24）: RTX 4070・RX 7900 XTX・RX 7800 XT などは、Yahoo!ショッピングに並行輸入品しかない（国内の新品がもう売られていない）。RX 7600 は「RX」で車の部品（RX-7・RX-8）まで混ざる。RTX 4090 の ¥1,023,980 は本物の出品だが品薄の高値で、直近の中央値も高値のため2倍上限で止まらない。
-- 2026-11-24 時点で GPU 119製品のうち価格が取れていたのは28製品。原因の内訳と対策は運営者と相談中（販売終了の整理、基準価格の入力など）。
+- 2026-11-24 時点で GPU 119製品のうち価格が取れていたのは28製品。主な原因は、日本で新品が売られていない古い世代。
+- 2026-11-24 に運営者の了承を得て、GPU 54製品の `販売終了` を TRUE にした（判断表 https://claude.ai/artifact/LaQC1zrDstKvGf9gciV4KN の「販売終了でよい」53製品 + RX 570。根拠は各セルのメモ）。
+- 「1つ前の世代」の12製品（RTX 4070・4080 SUPER・4060 Ti 16GB、RX 7900 XTX/XT/GRE・7800 XT・7700 XT・7600 XT、Arc A770 8GB/A750/A580）は、数日分の記録を見てから決める（まだ FALSE）。
+- 2026-11-24 の RX 570 の取り違え（自転車のホイール ¥35,900）の記録1件は `data/price-history.json` から手で消した（運営者了承済み）。
 
 ### 4-3c. シートの価格(円)が古いとき（2026-11-24 追加）
 - ストアの新品がすべて「基準価格の2倍」を超えて採用されないとき、`unmatched[]` に `staleReference: true`・`referenceFrom`（sheet / history）・`reference`・`marketFrom`（2倍超の出品の最安）を残す。
@@ -199,7 +202,7 @@ GitHub Actions（毎日 03:37 JST）                    │
 |---|---|
 | シートの読み込み | `CPU_GAS_URL`, `GPU_GAS_URL`, `parseCpuRow`, `parseGpuRow`, `isDiscontinued` |
 | 価格ファイルの読み込み | `PRICE_FILE_URLS`, `loadRakutenPrices`, `applyRakutenProducts`, `applyPartProducts`, `fixedPartPrices` |
-| 販売終了の表示切り替え | `showEnded`, `toggleEnded`, `visibleList`, `endedBadge` |
+| 販売終了の表示切り替え | `showEnded`, `toggleEnded`, `visibleList`, `endedBadge`, `syncEndedBar`（一覧のすぐ上の `.ended-bar`） |
 | シングルスレッドのタブ | `syncSingleThreadTab`（値が1つも無いとタブを隠す）。値の無い製品は順位の代わりに「—」 |
 | パーツのランキング | `partsData`, `renderPartTable`, `PART_RANK`, `PART_UNIT`, `sortPart` |
 | マザーボードの CPU から選ぶ | `populateMbCpu`, `onMbCpuChange`, `chipsetAllowsOc`, `CHIPSET_TIER`, `CHIPSET_NOTE`, `SOCKET_ORDER` |
@@ -219,7 +222,7 @@ GitHub Actions（毎日 03:37 JST）                    │
 - パーツの絵: `index.html` の `#ill-sprite` にオリジナルの SVG が8点（cpu / gpu / ram / ssd / psu / mb / cooler / case、合計約6KB）。`<svg><use href="#ill-cpu"/></svg>` で使い、色は `--ill`・`--ill-soft`・`--ill-ink` で変える。静的ページはそのページで使う絵だけを入れる（`spriteFor()`）。製品写真は使わない（権利と軽さのため）。
 - トップ: 「何がしたいですか？」から始まり、やりたいこと7つのタイル（CPU・GPU・ビルダー・予算別構成・比較・ボトルネック・パーツの最安値）を選ぶ形（運営者の希望）。地は基板の穴のような点の並び。CPU・GPUのタイルには掲載数と「いま1位」の製品名を毎回データから入れる（`updateHomeRanking`）。
 - 予算上限のバー: 大きなつまみと大きな金額表示。つまみの左側をパーツの色で塗る（`budgetFill`）。
-- ランキングの上部: 検索 → 並び替え → 「絞り込み」ボタン。スマホではメーカー・販売終了・予算を「絞り込み」の中に畳む（`toggleFilters`）。使っているときはボタンに点（`syncFilterDot`）。表の上の説明はスマホで2行まで、押すと全部出る。
+- ランキングの上部: 検索 → 並び替え → 「絞り込み」ボタン。スマホではメーカー・予算を「絞り込み」の中に畳む（`toggleFilters`）。「販売終了品も表示する」は畳まず、一覧のすぐ上に切り替えスイッチで出す（隠している数も書く。販売終了が0件なら出さない）。使っているときはボタンに点（`syncFilterDot`）。表の上の説明はスマホで2行まで、押すと全部出る。
 - 静的ページの一覧（CPU一覧・比較一覧・近い性能・ほかの比較）は下線なしの1行表示（`.rows`）、予算別一覧はカード（`.cards`）、店へのリンクは小さなボタン（`.shop`）。
 - おすすめ構成: パーツの絵、CPU と GPU だけ常に見せ、8点の内訳は「内訳を見る」で開く。
 - フッター: 主なページへのリンク（`.foot-nav`）。注意: ヘッダーの決まりは `body > nav` だけに当てる（ページ内に nav を置くと上に貼り付いた事故があった）。
