@@ -393,6 +393,21 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
 .bn-verdict-title { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
 .bn-verdict-desc { text-wrap: balance; font-size: 13px; color: var(--ink2); line-height: 1.8; max-width: 520px; margin: 0 auto; }
 .bn-meter { margin: 16px 0; }
+.seesaw { display: block; width: 100%; max-width: 360px; height: auto; margin: 4px auto 0; overflow: visible; }
+.seesaw-beam { transform-origin: 160px 80px; transform: rotate(var(--tilt)); }
+@media (prefers-reduced-motion: no-preference) { .seesaw-beam { animation: tilt 1.1s cubic-bezier(0.3, 1.6, 0.5, 1) both; } }
+@keyframes tilt { from { transform: rotate(0deg); } }
+/* 構成ビルダー: 8つのパーツの絵。選んだものだけ色が付く */
+.bparts-dots { display: flex; gap: 4px; margin-top: 6px; }
+.bparts-dots svg { width: 22px; height: 22px; filter: grayscale(1); opacity: 0.35; transition: filter 0.3s, opacity 0.3s, transform 0.3s; }
+.bparts-dots svg.on { filter: none; opacity: 1; transform: rotate(-8deg) scale(1.1); }
+/* 検索で見つからないとき */
+.empty { display: grid; justify-items: center; gap: 8px; padding: 28px 16px; color: var(--ink3); font-size: 13px; }
+.empty svg { width: 64px; height: 64px; transform: rotate(-12deg); opacity: 0.9; }
+/* フッターの上に並ぶパーツの絵（飾り） */
+.foot-parade { flex-basis: 100%; display: flex; gap: 10px; justify-content: center; padding: 2px 0 10px; }
+.foot-parade svg { width: 26px; height: 26px; }
+.foot-parade svg:nth-child(odd) { transform: rotate(-10deg); } .foot-parade svg:nth-child(even) { transform: rotate(8deg) translateY(3px); }
 .bn-meter-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink2); margin-bottom: 5px; }
 .bn-bar-track { height: 22px; background: var(--sunk2); overflow: hidden; display: flex; border-radius: 2px; }
 .bn-bar-cpu, .bn-bar-gpu { height: 100%; transition: width 0.4s ease; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; font-family: var(--f-num); }
@@ -1043,7 +1058,7 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
     <div class="table-wrap"><table class="compare-table" id="cpu-compare-table"></table></div>
     <div id="cpu-price-history"></div>
   </div>
-  <div class="footer-band"><nav class="foot-nav" aria-label="サイト内"><a href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">CPUランキング</a><a href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">GPUランキング</a><a href="?page=ram-rank" onclick="goPage('ram-rank');return false">メモリの最安値</a><a href="?page=ssd-rank" onclick="goPage('ssd-rank');return false">SSD・電源・マザボ</a><a href="?page=builder" onclick="goPage('builder');return false">構成ビルダー</a><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a><a href="?page=bottleneck" onclick="goPage('bottleneck');return false">ボトルネック診断</a><a href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">2製品の比較</a><a href="/p/cpu.html">CPU一覧</a><a href="/p/gpu.html">GPU一覧</a></nav><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">スペックはメーカー公式値 · 価格はAmazon参照</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><nav class="foot-nav" aria-label="サイト内"><a href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">CPUランキング</a><a href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">GPUランキング</a><a href="?page=ram-rank" onclick="goPage('ram-rank');return false">メモリの最安値</a><a href="?page=ssd-rank" onclick="goPage('ssd-rank');return false">SSD・電源・マザボ</a><a href="?page=builder" onclick="goPage('builder');return false">構成ビルダー</a><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a><a href="?page=bottleneck" onclick="goPage('bottleneck');return false">ボトルネック診断</a><a href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">2製品の比較</a><a href="/p/cpu.html">CPU一覧</a><a href="/p/gpu.html">GPU一覧</a></nav><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">仕様は AMD 公式の仕様一覧と Wikipedia の仕様表を基に掲載 · 価格は毎日自動で取得した最安値（取得できなかった製品は参考価格）</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- GPU COMPARE -->
@@ -1057,7 +1072,7 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
     <div class="table-wrap"><table class="compare-table" id="gpu-compare-table"></table></div>
     <div id="gpu-price-history"></div>
   </div>
-  <div class="footer-band"><nav class="foot-nav" aria-label="サイト内"><a href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">CPUランキング</a><a href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">GPUランキング</a><a href="?page=ram-rank" onclick="goPage('ram-rank');return false">メモリの最安値</a><a href="?page=ssd-rank" onclick="goPage('ssd-rank');return false">SSD・電源・マザボ</a><a href="?page=builder" onclick="goPage('builder');return false">構成ビルダー</a><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a><a href="?page=bottleneck" onclick="goPage('bottleneck');return false">ボトルネック診断</a><a href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">2製品の比較</a><a href="/p/cpu.html">CPU一覧</a><a href="/p/gpu.html">GPU一覧</a></nav><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">スペックはメーカー公式値 · 価格はAmazon参照</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><nav class="foot-nav" aria-label="サイト内"><a href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">CPUランキング</a><a href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">GPUランキング</a><a href="?page=ram-rank" onclick="goPage('ram-rank');return false">メモリの最安値</a><a href="?page=ssd-rank" onclick="goPage('ssd-rank');return false">SSD・電源・マザボ</a><a href="?page=builder" onclick="goPage('builder');return false">構成ビルダー</a><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a><a href="?page=bottleneck" onclick="goPage('bottleneck');return false">ボトルネック診断</a><a href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">2製品の比較</a><a href="/p/cpu.html">CPU一覧</a><a href="/p/gpu.html">GPU一覧</a></nav><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">仕様は AMD 公式の仕様一覧と Wikipedia の仕様表を基に掲載 · 価格は毎日自動で取得した最安値（取得できなかった製品は参考価格）</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- RAM COMPARE -->
@@ -1186,7 +1201,7 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
     <div id="ram-price-history"></div>
     <p class="compare-note">実効レイテンシ = CL × 2000 ÷ 速度（MT/s）。数値が小さいほど応答が速い目安です。</p>
   </div>
-  <div class="footer-band"><nav class="foot-nav" aria-label="サイト内"><a href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">CPUランキング</a><a href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">GPUランキング</a><a href="?page=ram-rank" onclick="goPage('ram-rank');return false">メモリの最安値</a><a href="?page=ssd-rank" onclick="goPage('ssd-rank');return false">SSD・電源・マザボ</a><a href="?page=builder" onclick="goPage('builder');return false">構成ビルダー</a><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a><a href="?page=bottleneck" onclick="goPage('bottleneck');return false">ボトルネック診断</a><a href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">2製品の比較</a><a href="/p/cpu.html">CPU一覧</a><a href="/p/gpu.html">GPU一覧</a></nav><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">スペックはメーカー公表値を基に掲載 · 価格は参考価格</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><nav class="foot-nav" aria-label="サイト内"><a href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">CPUランキング</a><a href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">GPUランキング</a><a href="?page=ram-rank" onclick="goPage('ram-rank');return false">メモリの最安値</a><a href="?page=ssd-rank" onclick="goPage('ssd-rank');return false">SSD・電源・マザボ</a><a href="?page=builder" onclick="goPage('builder');return false">構成ビルダー</a><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a><a href="?page=bottleneck" onclick="goPage('bottleneck');return false">ボトルネック診断</a><a href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">2製品の比較</a><a href="/p/cpu.html">CPU一覧</a><a href="/p/gpu.html">GPU一覧</a></nav><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">規格（速度・容量・枚数）ごとに毎日自動で取得した最安値です · CL は最安の商品の値で、同じ規格でも製品によって異なります</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- BOTTLENECK -->
@@ -1221,11 +1236,11 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
   <div class="section">
     <div class="section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg>
       <div class="section-title">用途別おすすめ構成</div>
-      <div class="section-sub">プリセット構成をビルダーに読み込めます。CPU・GPU・メモリ以外のパーツの価格は、自動取得していない目安です</div>
+      <div class="section-sub">構成ビルダーに読み込んで、パーツを入れ替えられます。価格はビルダーと同じく毎日取得した最安値で、その日に取得できなかったパーツは「参考」と表示します。</div>
     </div>
     <div class="preset-grid" id="preset-grid"></div>
   </div>
-  <div class="footer-band"><nav class="foot-nav" aria-label="サイト内"><a href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">CPUランキング</a><a href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">GPUランキング</a><a href="?page=ram-rank" onclick="goPage('ram-rank');return false">メモリの最安値</a><a href="?page=ssd-rank" onclick="goPage('ssd-rank');return false">SSD・電源・マザボ</a><a href="?page=builder" onclick="goPage('builder');return false">構成ビルダー</a><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a><a href="?page=bottleneck" onclick="goPage('bottleneck');return false">ボトルネック診断</a><a href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">2製品の比較</a><a href="/p/cpu.html">CPU一覧</a><a href="/p/gpu.html">GPU一覧</a></nav><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は目安です · 最新価格はAmazonでご確認ください</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
+  <div class="footer-band"><nav class="foot-nav" aria-label="サイト内"><a href="?page=cpu-rank" onclick="goPage('cpu-rank');return false">CPUランキング</a><a href="?page=gpu-rank" onclick="goPage('gpu-rank');return false">GPUランキング</a><a href="?page=ram-rank" onclick="goPage('ram-rank');return false">メモリの最安値</a><a href="?page=ssd-rank" onclick="goPage('ssd-rank');return false">SSD・電源・マザボ</a><a href="?page=builder" onclick="goPage('builder');return false">構成ビルダー</a><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a><a href="?page=bottleneck" onclick="goPage('bottleneck');return false">ボトルネック診断</a><a href="?page=cpu-compare" onclick="goPage('cpu-compare');return false">2製品の比較</a><a href="/p/cpu.html">CPU一覧</a><a href="/p/gpu.html">GPU一覧</a></nav><div class="footer-logo">BENCH<span>CORE</span></div><div class="footer-note">価格は毎日自動で取得した最安値です（取得できなかったパーツは参考価格）。購入前に販売ページで商品と価格をご確認ください。</div><a class="footer-link" role="link" tabindex="0" onclick="goPage('about')">運営者情報・利用規約・プライバシーポリシー</a></div>
 </div>
 
 <!-- ABOUT -->
@@ -1278,7 +1293,7 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">
-      <div class="bcart-header"><div><div class="bcart-title">構成リスト</div><div class="bcart-count" id="bcart-count">0 / 8 パーツ選択済み</div></div><button class="bclear-btn" onclick="bclearAll()">クリア</button></div>
+      <div class="bcart-header"><div><div class="bcart-title">構成リスト</div><div class="bcart-count" id="bcart-count">0 / 8 パーツ選択済み</div><div class="bparts-dots" id="bparts-dots" aria-hidden="true"></div></div><button class="bclear-btn" onclick="bclearAll()">クリア</button></div>
       <div class="bcart-list" id="bcart-list"><div class="bcart-empty">← パーツを選んでください</div></div>
       <div class="bcart-total">
         <div class="btotal-row"><span class="btotal-label">パーツ合計</span><span class="btotal-val" id="bparts-total">¥0</span></div>
@@ -1582,7 +1597,7 @@ function renderCpuTableBody() {
 
   const tbody = document.getElementById('cpu-table-body');
   if (!filtered.length) {
-    const empty = '<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text3)">条件に一致するCPUがありません</td></tr>';
+    const empty = '<tr><td colspan="12"><div class="empty c-cpu"><svg aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg>条件に一致するCPUがありません。検索の言葉や絞り込みを変えてみてください。</div></td></tr>';
     tbody.innerHTML = empty;
     document.getElementById('cpu-single-body').innerHTML = empty;
     document.getElementById('cpu-cospa-body').innerHTML = empty;
@@ -1664,7 +1679,7 @@ function renderGpuTable() {
   if (rc) rc.textContent = `${filtered.length} 件`;
 
   const tbody = document.getElementById('gpu-table-body');
-  if (!filtered.length) { tbody.innerHTML=`<tr><td colspan="13" style="text-align:center;padding:32px;color:var(--text3)">条件に一致するGPUがありません</td></tr>`; return; }
+  if (!filtered.length) { tbody.innerHTML=`<tr><td colspan="13"><div class="empty c-gpu"><svg aria-hidden="true" focusable="false"><use href="#ill-gpu"/></svg>条件に一致するGPUがありません。検索の言葉や絞り込みを変えてみてください。</div></td></tr>`; return; }
   const maxScore = Math.max(...filtered.map(d=>d.score),1);
   tbody.innerHTML = filtered.map((g,i) => {
     const isFav = gpuFavs.has(g.name);
@@ -2740,6 +2755,7 @@ function calcBottleneck() {
       <div class="bn-verdict-title" style="color:${titleColor}">${title}</div>
       <div class="bn-verdict-desc">${desc}<br><br><small style="color:var(--text3)">${advice}</small><br><small style="color:var(--text3)">※ PassMark と 3DMark Time Spy のスコアから計算した目安です。ゲームの種類・解像度・設定で実際の結果は変わります。</small></div>
     </div>
+    ${seesawSVG(cpuBarW)}
     <div class="bn-meter">
       <div class="bn-meter-label"><span style="color:var(--accent2)">CPU: ${esc(cpu.name)}</span><span style="color:var(--accent)">GPU: ${esc(gpu.name)}</span></div>
       <div class="bn-bar-track">
@@ -2759,6 +2775,19 @@ function calcBottleneck() {
 }
 
 // ===== PRESET BUILDS =====
+// CPU と GPU のシーソー（飾り）。性能が高い方が下がる。傾きは性能比から決め、最大14度
+function seesawSVG(cpuShare) {
+  const tilt = Math.max(-14, Math.min(14, -(cpuShare - 50) * 0.6)).toFixed(1);
+  return `<svg class="seesaw" viewBox="0 0 320 132" aria-hidden="true" focusable="false" style="--tilt:${tilt}deg">
+    <path d="M160 82 L184 124 H136 Z" style="fill:var(--sunk2)"/>
+    <g class="seesaw-beam">
+      <rect x="24" y="76" width="272" height="9" rx="4.5" style="fill:var(--ink)"/>
+      <svg class="c-cpu" x="30" y="14" width="64" height="64"><use href="#ill-cpu"/></svg>
+      <svg class="c-gpu" x="224" y="12" width="70" height="70"><use href="#ill-gpu"/></svg>
+    </g>
+    <circle cx="160" cy="80" r="5" style="fill:var(--bg);stroke:var(--ink);stroke-width:3"/>
+  </svg>`;
+}
 const PRESET_BUILDS = [
   {
     id:'fps', icon:'FPS', color:'var(--accent2)', title:'FPS・競技ゲーム特化',
@@ -2809,9 +2838,9 @@ const PRESET_BUILDS = [
     builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bg5',mb:'spec:Z790 ATX DDR5',ram:'br1',storage:'spec:Gen4 2TB',psu:'spec:1000W Gold',case:'bk2'}
   },
   {
-    id:'cospa', icon:'定番', color:'var(--accent3)', title:'コスパ最強バランス',
+    id:'cospa', icon:'定番', color:'var(--accent3)', title:'価格と性能のバランス',
     budget:'¥130,000〜', tag:'badge-green',
-    desc:'1080p〜1440pで快適にゲームできるコスパ重視ビルド。初めてのゲーミングPCや予算重視の方に最適。',
+    desc:'1080p〜1440pのゲーム向けに、価格と性能のバランスを取った構成。初めてのゲーミングPCや、予算を抑えたい方向け。',
     parts:[
       {cat:'CPU', name:'Ryzen 5 7600',        price:18800},
       {cat:'Cooler', name:'DeepCool AK400', price:2800},
@@ -2873,7 +2902,7 @@ function presetParts(p) {
     const key = PRESET_CAT_KEYS[pt.cat];
     const id = key && resolveBuilderId(key, p.builderIds[key]);
     const item = id && BPARTS[key]?.items.find(i => i.id === id);
-    if (item) return {...pt, name: item.name, price: item.price};
+    if (item) return {...pt, name: item.name, price: item.price, ref: !!item.ref};
     // 規格指定でその日の価格が取れていないパーツは、価格を合計に入れない
     return String(p.builderIds[key] || '').startsWith('spec:') ? {...pt, name: pt.name + '（価格取得中）', price: 0} : pt;
   });
@@ -2905,6 +2934,9 @@ function bsyncPrices() {
   let changed = false;
   const sync = (items, data, same, hasScore) => items.forEach(item => {
     const found = data.find(d => same(d.name, item.name));
+    // ストアから取れた価格でなければ「参考価格」と表示する（ランキングにない製品は内蔵の参考価格のまま）
+    const ref = !(found && validPrice(found.price) && found.rakuten?.status === 'ok');
+    if (ref !== Boolean(item.ref)) { item.ref = ref; changed = true; }
     if (!found) return;
     if (validPrice(found.price) && found.price !== item.price) { item.price = found.price; changed = true; }
     // スコアはシートの値だけを使う。シートにまだスコアがない製品は、内蔵の仮の値を出さない
@@ -2955,7 +2987,7 @@ function renderPresets() {
         <details class="preset-details">
           <summary>パーツ${parts.length}点の内訳を見る</summary>
           <div class="preset-parts">
-            ${parts.map(pt=>`<div class="preset-part"><span class="preset-part-cat">${pt.cat}</span><span class="preset-part-name">${pt.name}</span><span class="preset-part-price">${fmtPrice(pt.price)}</span></div>`).join('')}
+            ${parts.map(pt=>`<div class="preset-part"><span class="preset-part-cat">${pt.cat}</span><span class="preset-part-name">${pt.name}</span><span class="preset-part-price">${fmtPrice(pt.price)}${pt.ref ? '<small class="ref-tag">参考</small>' : ''}</span></div>`).join('')}
           </div>
         </details>
         <div class="preset-total-row">
@@ -3207,6 +3239,8 @@ function bupdateCart(){
   document.getElementById('bgrand-total').textContent='¥'+(partsTotal+osAmt).toLocaleString();
   const mobileTotal=document.getElementById('bmobile-total'); if(mobileTotal) mobileTotal.textContent='¥'+(partsTotal+osAmt).toLocaleString();
   document.getElementById('bcart-count').textContent=`${items.length} / ${Object.keys(BPARTS).length} パーツ選択済み`;
+  const dots=document.getElementById('bparts-dots');
+  if(dots) dots.innerHTML=Object.keys(BPARTS).map(cat=>`<svg class="${BPART_TINT[cat]||'c-misc'}${bSelected[cat]?' on':''}"><use href="#ill-${BPART_ILL[cat]||'case'}"/></svg>`).join('');
   // 構成を自動保存（リロードしても消えない）
   try { localStorage.setItem('benchcore_build', JSON.stringify({ids:items.map(([,v])=>v.id), os:!!document.getElementById('b-os-check')?.checked})); } catch(e) {}
   const listEl=document.getElementById('bcart-list');
@@ -3310,6 +3344,13 @@ for (const name of ['renderCpuTable', 'renderGpuTable', 'renderRamTable']) {
 }
 if (AMAZON_TAG) { const d = document.getElementById('amazon-disclosure'); if (d) d.hidden = false; }
 
+// フッターにパーツの絵を並べる（飾り。全ページ共通なのでここで1回だけ入れる）
+document.querySelectorAll?.('.footer-band').forEach(f => {
+  const parade = document.createElement('div');
+  parade.className = 'foot-parade'; parade.setAttribute('aria-hidden', 'true');
+  parade.innerHTML = [['cpu','c-cpu'],['cooler','c-cpu'],['gpu','c-gpu'],['mb','c-misc'],['ram','c-ram'],['ssd','c-misc'],['psu','c-misc'],['case','c-misc']].map(([n, c]) => `<svg class="${c}"><use href="#ill-${n}"/></svg>`).join('');
+  f.prepend(parade);
+});
 // ===== INIT =====
 renderCpuTable();
 renderGpuTable();
