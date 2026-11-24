@@ -418,6 +418,31 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
 @media (prefers-reduced-motion: no-preference) { .seesaw-beam { animation: tilt 1.1s cubic-bezier(0.3, 1.6, 0.5, 1) both; } }
 @keyframes tilt { from { transform: rotate(0deg); } }
 /* 構成ビルダー: 8つのパーツの絵。選んだものだけ色が付く */
+.bfav { color: var(--bad); margin-right: 4px; }
+/* 組み立ての絵 */
+.asm-wrap { padding: 14px 16px 6px; background: var(--bg); border-bottom: 1px solid var(--line); text-align: center; flex-shrink: 0; }
+.asm { width: 100%; max-width: 240px; height: auto; display: block; margin: 0 auto; overflow: visible; }
+.asm-case { fill: var(--sunk); stroke: var(--line-strong); stroke-width: 3; }
+.asm-shroud { stroke: var(--line-strong); stroke-width: 2; stroke-dasharray: 4 4; }
+.asm .slot, .asm .slot * { fill: none; stroke: var(--line-strong); stroke-width: 1.6; stroke-dasharray: 4 3; transition: fill 0.3s; }
+.asm .slot.in, .asm .slot.in * { stroke-dasharray: none; stroke-width: 0; }
+.asm .slot-mb.in { fill: var(--misc-soft); stroke: var(--misc); stroke-width: 1.5; }
+.asm .slot-cpu.in { fill: var(--cpu); }
+.asm .slot-cpucooler.in circle { fill: color-mix(in srgb, var(--cpu) 30%, transparent); stroke: var(--cpu); stroke-width: 3; }
+.asm .slot-cpucooler.in path { stroke: var(--cpu); stroke-width: 3; stroke-linecap: round; }
+.asm .slot-ram.in rect { fill: var(--ram); }
+.asm .slot-storage.in { fill: var(--misc); }
+.asm .slot-gpu.in rect { fill: var(--gpu); } .asm .slot-gpu.in circle { fill: var(--gpu-soft); }
+.asm .slot-psu.in rect { fill: var(--ink2); } .asm .slot-psu.in circle { fill: var(--sunk2); }
+.asm .slot-case.in circle { fill: var(--misc-soft); stroke: var(--misc); stroke-width: 2.5; }
+.asm-wrap.done .asm-case { stroke: var(--good); }
+.asm .slot { transform-box: fill-box; transform-origin: center; }
+@media (prefers-reduced-motion: no-preference) { .asm .slot.drop { animation: drop 0.6s cubic-bezier(0.3, 1.5, 0.5, 1) both; } }
+@keyframes drop { from { transform: translateY(-36px) scale(1.1); opacity: 0; } 60% { opacity: 1; } }
+.asm-note { font-size: 12px; color: var(--ink2); margin: 6px 0 4px; min-height: 1.6em; }
+.asm-note b { color: var(--ink); font-family: var(--f-num); }
+.asm-wrap.done .asm-note b { color: var(--good); font-family: var(--f-body); }
+.asm-mini { display: none; }
 .bparts-dots { display: flex; gap: 4px; margin-top: 6px; }
 .bparts-dots svg { width: 22px; height: 22px; filter: grayscale(1); opacity: 0.35; transition: filter 0.3s, opacity 0.3s, transform 0.3s; }
 .bparts-dots svg.on { filter: none; opacity: 1; transform: rotate(-8deg) scale(1.1); }
@@ -687,6 +712,9 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
   .footer-band { padding: 14px 16px; }
   .bmobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px)); background: var(--bg); border-top: 1px solid var(--line-strong); box-shadow: var(--shadow); }
   .bmobile-bar span { display: block; font-size: 11px; color: var(--ink2); }
+  .asm-mini { display: block; width: 52px; flex-shrink: 0; }
+  .asm-mini .asm { max-width: 52px; }
+  .asm-mini .asm .slot, .asm-mini .asm .slot * { stroke-width: 3; }
   .bmobile-bar strong { font-size: 18px; line-height: 1.2; font-weight: 600; }
   .bmobile-bar button { padding: 8px 14px; border-radius: var(--radius); border: 1px solid var(--cpu); background: var(--bg); color: var(--cpu); font-size: 13px; font-weight: 700; white-space: nowrap; }
 }
@@ -1307,13 +1335,36 @@ a.affiliate-btn:hover { background: var(--fill-hover); }
 
 <!-- BUILDER -->
 <div id="builder" class="page c-misc">
-  <div class="bmobile-bar"><div><span>総合計</span><strong id="bmobile-total">¥0</strong></div><button onclick="document.querySelector('.builder-right').scrollIntoView({behavior:'smooth'})">構成と診断を見る ↓</button></div>
+  <div class="bmobile-bar"><div class="asm-mini" id="asm-mini"><svg class="asm" viewBox="0 0 240 200" aria-hidden="true" focusable="false">
+  <rect class="asm-case" x="8" y="8" width="224" height="184" rx="16"/>
+  <g class="slot slot-case"><circle cx="212" cy="46" r="11"/><circle cx="212" cy="80" r="11"/><circle cx="212" cy="114" r="11"/></g>
+  <line class="asm-shroud" x1="24" y1="148" x2="196" y2="148"/>
+  <rect class="slot slot-mb" x="26" y="22" width="160" height="120" rx="8"/>
+  <rect class="slot slot-cpu" x="84" y="38" width="36" height="36" rx="5"/>
+  <g class="slot slot-cpucooler"><circle cx="102" cy="56" r="25"/><path d="M102 56 V38 M102 56 l15 9 M102 56 l-15 9"/></g>
+  <g class="slot slot-ram"><rect x="138" y="32" width="8" height="54" rx="2"/><rect x="151" y="32" width="8" height="54" rx="2"/></g>
+  <rect class="slot slot-storage" x="40" y="88" width="44" height="9" rx="3"/>
+  <g class="slot slot-gpu"><rect x="32" y="104" width="150" height="28" rx="6"/><circle cx="76" cy="118" r="10"/><circle cx="140" cy="118" r="10"/></g>
+  <g class="slot slot-psu"><rect x="26" y="156" width="92" height="28" rx="6"/><circle cx="72" cy="170" r="9"/></g>
+</svg></div><div style="margin-right:auto"><span>総合計</span><strong id="bmobile-total">¥0</strong></div><button onclick="document.querySelector('.builder-right').scrollIntoView({behavior:'smooth'})">構成と診断を見る ↓</button></div>
   <div class="builder-layout">
     <div class="builder-left">
-      <div class="builder-hero section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg><h2 class="section-title">構成ビルダー</h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><p style="font-size:12px;margin-top:4px">CPU・GPU・メモリの価格はランキングと同じ価格（ストアから取得できたものは最安値）です。マザーボード・SSD・電源・CPUクーラー・ケースも毎日取得した最安値です。その日に取得できなかったパーツは「参考価格」と表示します。</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
+      <div class="builder-hero section-header band"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-case"/></svg><h2 class="section-title">構成ビルダー</h2><p>パーツを選ぶと合計金額と遊べるゲームが自動で表示されます · 構成は自動保存されます</p><p style="font-size:12px;margin-top:4px">CPU・GPU・メモリの価格はランキングと同じ価格（ストアから取得できたものは最安値）です。マザーボード・SSD・電源・CPUクーラー・ケースも毎日取得した最安値です。その日に取得できなかったパーツは「参考価格」と表示します。</p><p style="font-size:12px;margin-top:4px">ランキングで ♡ を付けた CPU・GPU・メモリは、一覧のいちばん上に ♥ 付きで出ます。</p><button class="share-btn" style="margin:10px 0 0" onclick="shareUrl('builder')">この構成をシェア</button></div>
       <div id="bpart-picker"></div>
     </div>
     <div class="builder-right">
+      <div class="asm-wrap" id="asm-big"><svg class="asm" viewBox="0 0 240 200" aria-hidden="true" focusable="false">
+  <rect class="asm-case" x="8" y="8" width="224" height="184" rx="16"/>
+  <g class="slot slot-case"><circle cx="212" cy="46" r="11"/><circle cx="212" cy="80" r="11"/><circle cx="212" cy="114" r="11"/></g>
+  <line class="asm-shroud" x1="24" y1="148" x2="196" y2="148"/>
+  <rect class="slot slot-mb" x="26" y="22" width="160" height="120" rx="8"/>
+  <rect class="slot slot-cpu" x="84" y="38" width="36" height="36" rx="5"/>
+  <g class="slot slot-cpucooler"><circle cx="102" cy="56" r="25"/><path d="M102 56 V38 M102 56 l15 9 M102 56 l-15 9"/></g>
+  <g class="slot slot-ram"><rect x="138" y="32" width="8" height="54" rx="2"/><rect x="151" y="32" width="8" height="54" rx="2"/></g>
+  <rect class="slot slot-storage" x="40" y="88" width="44" height="9" rx="3"/>
+  <g class="slot slot-gpu"><rect x="32" y="104" width="150" height="28" rx="6"/><circle cx="76" cy="118" r="10"/><circle cx="140" cy="118" r="10"/></g>
+  <g class="slot slot-psu"><rect x="26" y="156" width="92" height="28" rx="6"/><circle cx="72" cy="170" r="9"/></g>
+</svg><p class="asm-note" id="asm-note">パーツを選ぶと、ここに組み込まれます</p></div>
       <div class="bcart-header"><div><div class="bcart-title">構成リスト</div><div class="bcart-count" id="bcart-count">0 / 8 パーツ選択済み</div><div class="bparts-dots" id="bparts-dots" aria-hidden="true"></div></div><button class="bclear-btn" onclick="bclearAll()">クリア</button></div>
       <div class="bcart-list" id="bcart-list"><div class="bcart-empty">← パーツを選んでください</div></div>
       <div class="bcart-total">
@@ -2584,6 +2635,8 @@ function toggleFav(type, name) {
   if (favs.has(name)) favs.delete(name); else favs.add(name);
   try { localStorage.setItem(`benchcore_${type}_favs`, JSON.stringify([...favs])); } catch(e) {}
   favRerender(type);
+  // 構成ビルダーの一覧も入れ直す（選んでいるパーツはそのまま）
+  try { const ids = Object.values(bSelected).map(v => v.id); brenderParts(); bapplyIds(ids); } catch (e) {}
 }
 function renderFavBar(type) {
   const favs = favSet(type);
@@ -3234,7 +3287,49 @@ const B_OS=15000;
 // 構成ビルダーのパーツの絵と色（#ill-sprite）
 const BPART_ILL={cpu:'cpu',cpucooler:'cooler',gpu:'gpu',mb:'mb',ram:'ram',storage:'ssd',psu:'psu',case:'case'};
 const BPART_TINT={cpu:'c-cpu',cpucooler:'c-cpu',gpu:'c-gpu',ram:'c-ram'};
+// ランキングで♡を付けた CPU・GPU・メモリを、ビルダーの一覧に入れる（ない製品は追加し、一覧の上に並べる）
+const BFAV_SAME = {cpu: (a, b) => a === b, gpu: (a, b) => a === b || a === 'GeForce ' + b || a === 'Radeon ' + b, ram: (a, b) => a === b};
+// 組み立ての絵: 選んだパーツの場所に色を付け、新しく入ったパーツは落ちてはまる動きをする
+let basmPrev = new Set();
+function bassemble() {
+  const cats = Object.keys(BPARTS);
+  const now = new Set(cats.filter(c => bSelected[c]));
+  document.querySelectorAll('.asm').forEach(svg => cats.forEach(c => {
+    const el = svg.querySelector('.slot-' + c);
+    if (!el) return;
+    el.classList.toggle('in', now.has(c));
+    if (now.has(c) && !basmPrev.has(c)) { el.classList.remove('drop'); void el.getBoundingClientRect(); el.classList.add('drop'); }
+  }));
+  basmPrev = now;
+  const left = cats.filter(c => !now.has(c)).map(c => BPARTS[c].label.replace(/\s*\(.*\)$/, ''));
+  const note = document.getElementById('asm-note');
+  if (note) note.innerHTML = !now.size ? 'パーツを選ぶと、ここに組み込まれます'
+    : left.length ? `あと <b>${left.length}</b> パーツ: ${left.map(esc).join('・')}` : '<b>8パーツそろいました！</b> 完成です';
+  document.getElementById('asm-big')?.classList.toggle('done', !left.length);
+}
+function bmergeFavs() {
+  const src = {cpu: () => cpuData.concat(cpuExtra), gpu: () => gpuData.concat(gpuExtra), ram: () => ramData};
+  for (const cat of ['cpu', 'gpu', 'ram']) {
+    const items = BPARTS[cat].items.filter(i => !String(i.id).startsWith('bf-'));
+    items.forEach(i => { i.fav = false; });
+    const favs = favSet(cat);
+    for (const name of favs) {
+      const found = items.find(i => BFAV_SAME[cat](name, i.name));
+      if (found) { found.fav = true; continue; }
+      const d = src[cat]().find(x => x.name === name);
+      if (!d || !validPrice(d.price)) continue;
+      const ref = d.rakuten?.status !== 'ok';
+      const id = 'bf-' + cat + '-' + partSlug(name);
+      if (cat === 'cpu') items.push({id, name, spec: [d.cores ? d.cores + 'C' : '', d.clockMax ? d.clockMax + 'GHz' : '', d.socket || ''].filter(Boolean).join(' · '), price: d.price, score: d.score > 0 ? d.score : 0, socket: d.socket || '', tdp: d.tdp || 0, ref, fav: true});
+      else if (cat === 'gpu') items.push({id, name, spec: [d.vram || '', d.tdp ? d.tdp + 'W' : ''].filter(Boolean).join(' · '), price: d.price, score: d.score > 0 ? d.score : 0, vram: parseInt(d.vram) || 0, tdp: d.tdp || 0, ref, fav: true});
+      else items.push({id, name, spec: '規格ごとの最安値', price: d.price, gb: d.capacity || 0, ref, fav: true});
+    }
+    // お気に入りを上に（それ以外の順番は変えない）
+    BPARTS[cat].items = items.filter(i => i.fav).concat(items.filter(i => !i.fav));
+  }
+}
 function brenderParts(){
+  try { bmergeFavs(); } catch (e) {}
   document.getElementById('bpart-picker').innerHTML=Object.entries(BPARTS).map(([cat,data])=>`
     <div class="bpart-section" id="bsec-${cat}">
       <div class="bpart-header" onclick="btoggle('${cat}')">
@@ -3249,7 +3344,7 @@ function brenderParts(){
         ${data.items.map(item=>`
           <div class="bpart-item" id="bitem-${item.id}"${item.socket?` data-socket="${item.socket}"`:''} onclick="bselect('${cat}','${item.id}')">
             <div class="bpart-check" id="bcheck-${item.id}">✓</div>
-            <div class="bpart-item-name"><strong>${esc(item.name)}</strong><small>${esc(item.spec)}</small></div>
+            <div class="bpart-item-name"><strong>${item.fav?'<span class="bfav" title="お気に入り">♥</span>':''}${esc(item.name)}</strong><small>${esc(item.spec)}</small></div>
             <div class="bpart-item-right"><div class="bpart-item-price">¥${item.price.toLocaleString()}${item.ref?'<small style="display:block;font-size:10px;font-weight:400;color:var(--text3)">参考価格</small>':''}</div>${item.score?`<div class="bpart-item-score">スコア ${item.score.toLocaleString()}</div>`:''}${item.url?`<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation()" style="font-size:11px">店で見る</a>`:''}</div>
           </div>`).join('')}
       </div>
@@ -3276,6 +3371,7 @@ function bupdateCart(){
   document.getElementById('bgrand-total').textContent='¥'+(partsTotal+osAmt).toLocaleString();
   const mobileTotal=document.getElementById('bmobile-total'); if(mobileTotal) mobileTotal.textContent='¥'+(partsTotal+osAmt).toLocaleString();
   document.getElementById('bcart-count').textContent=`${items.length} / ${Object.keys(BPARTS).length} パーツ選択済み`;
+  try { bassemble(); } catch (e) {}
   const dots=document.getElementById('bparts-dots');
   if(dots) dots.innerHTML=Object.keys(BPARTS).map(cat=>`<svg class="${BPART_TINT[cat]||'c-misc'}${bSelected[cat]?' on':''}"><use href="#ill-${BPART_ILL[cat]||'case'}"/></svg>`).join('');
   // 構成を自動保存（リロードしても消えない）
