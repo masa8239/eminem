@@ -79,6 +79,29 @@ table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:ta
 th{width:38%;color:var(--ink2);font-weight:500}.list td{width:auto}.list th{width:auto;background:var(--sunk);font-size:12px;font-weight:700;white-space:nowrap}
 .list tr:hover td{background:var(--hover)}
 ul{padding-left:1.3em}li{margin-bottom:4px}
+.rows{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.rows li{margin:0;border-bottom:1px solid var(--line)}.rows li:last-child{border-bottom:none}
+.rows a{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:11px 14px;color:var(--ink);text-decoration:none}
+.rows a:hover{background:var(--hover)}
+.rows .rk{grid-row:span 2;align-self:start;text-align:center;font-family:var(--f-num);font-size:13px;color:var(--ink3);line-height:24px}
+.rows li:nth-child(-n+3) .rk.medal{color:var(--bg);background:var(--ink);border-radius:999px;width:24px}
+.rows .nm{font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rows .pr{font-family:var(--f-num);font-weight:600;text-align:right;white-space:nowrap}
+.rows .sub{grid-column:2/-1;font-size:12px;color:var(--ink3);font-family:var(--f-num)}
+.rows .sub b{color:var(--ink2);font-weight:600}
+.rows.plain a{grid-template-columns:minmax(0,1fr) auto}.rows.plain .rk{display:none}.rows.plain .sub{grid-column:1/-1}.rows.plain .nm{white-space:normal}
+.rows .vs{display:inline-block;margin:0 6px;padding:0 7px;border-radius:999px;background:var(--sunk2);font-size:11px;font-weight:700;color:var(--ink2);vertical-align:1px}
+.shop{display:inline-block;margin-top:4px;padding:3px 10px;border-radius:999px;background:var(--fill);color:#fff;font-size:12px;font-weight:700;line-height:1.5;text-decoration:none}.shop:hover{background:var(--fill-hover)}
+.diff{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:700;font-family:var(--f-num)}
+.diff.up{background:var(--good-soft);color:var(--good)}.diff.down{background:var(--sunk2);color:var(--ink2)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;list-style:none;padding:0;margin:0}
+.cards li{margin:0}.cards a{display:block;height:100%;padding:16px 18px;border-radius:var(--radius-lg);background:var(--misc-soft);color:var(--ink);text-decoration:none;transition:transform .2s}
+.cards a:hover{transform:translateY(-2px)}
+.cards .big{font-family:var(--f-disp);font-stretch:125%;font-weight:800;font-size:26px;line-height:1.2}
+.cards .line{font-size:13px;color:var(--ink2);margin-top:6px}.cards .line b{color:var(--ink)}
+.cards .tot{margin-top:10px;font-family:var(--f-num);font-weight:600}
+.foot-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 16px;margin:0 0 14px;padding:0;list-style:none}
+.foot-nav li{margin:0}.foot-nav a{display:block;padding:6px 0;color:var(--ink2);font-weight:700;text-decoration:none;font-size:13px}.foot-nav a:hover{color:var(--cpu)}
 .note{font-size:12px;color:var(--ink3)}footer{margin-top:48px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
 @media (max-width:600px){h1{font-size:20px}th{width:44%}.list td:first-child{min-width:8.5em}.list th,.list td{padding:8px 6px}.list th{white-space:normal}
  .hero{padding:16px 92px 16px 16px}.band-ill{width:92px;height:92px}.top nav a{padding:6px 7px;font-size:12px}.logo{font-size:16px}
@@ -115,9 +138,14 @@ ${spriteFor(body + ill('cpu', 'logo-mark'))}
 ${body}
 </main>
 <footer>
+<ul class="foot-nav">
+<li><a href="/?page=cpu-rank">CPUランキング</a></li><li><a href="/?page=gpu-rank">GPUランキング</a></li><li><a href="/?page=ram-rank">メモリの最安値</a></li>
+<li><a href="/?page=builder">構成ビルダー</a></li><li><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a></li><li><a href="/?page=bottleneck">ボトルネック診断</a></li>
+<li><a href="/p/cpu.html">CPU一覧</a></li><li><a href="/p/gpu.html">GPU一覧</a></li><li><a href="/p/cpu-vs.html">CPUの比較</a></li><li><a href="/p/gpu-vs.html">GPUの比較</a></li>
+</ul>
 <p>価格は毎日自動で取得した参考価格です。購入前にリンク先で商品と価格を確認してください。購入リンクにはアフィリエイト広告が含まれます。</p>
 <p>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値、Blender のスコアは <a href="https://opendata.blender.org/">Blender Open Data</a> の中央値です。仕様は AMD 公式の仕様一覧と Wikipedia の各世代の仕様表を基にしています。</p>
-<p><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a> ・ <a href="/p/gpu-vs.html">GPUの比較</a> ・ <a href="/p/cpu-vs.html">CPUの比較</a> ・ <a href="/?page=about">運営者情報・利用規約・プライバシーポリシー</a></p>
+<p><a href="/?page=about">運営者情報・利用規約・プライバシーポリシー</a></p>
 </footer>
 </body>
 </html>
@@ -197,7 +225,8 @@ function productPage(item, list, updated) {
     const v = key === 'score' ? x.score : x.blender.score;
     const mine = key === 'score' ? item.score : item.blender.score;
     const diff = Math.round((v / mine - 1) * 100);
-    return `<tr><td><a href="/p/${x.slug}.html">${esc(x.name)}</a></td><td>${num(v)}（${diff > 0 ? '+' : ''}${diff}%）</td><td>${x.offer ? yen(x.offer.price) : '—'}</td></tr>`;
+    // 差は色付きの札で見せる（高い方は緑）。価格がない製品は「—」
+    return `<li><a href="/p/${x.slug}.html"><span class="rk"></span><span class="nm">${esc(x.name)}</span><span class="pr">${x.offer ? yen(x.offer.price) : '—'}</span><span class="sub"><b>${num(v)}</b> <span class="diff ${diff >= 0 ? 'up' : 'down'}">${diff > 0 ? '+' : ''}${diff}%</span></span></a></li>`;
   }).join('');
 
   const body = `<div class="hero c-${item.category}">${ill(item.category, 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${item.category}.html">${cat}一覧</a> › ${esc(item.name)}</div>
@@ -208,8 +237,9 @@ ${scores.length ? `<table>${scores.map(([k, v]) => `<tr><th>${k}</th><td>${v}</t
 <h2>仕様</h2>
 <table>${specRows(item).filter(([, v]) => v).map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</table>
 ${near.length ? `<h2>近い性能の${cat}（${key === 'score' ? (item.category === 'cpu' ? 'PassMark' : '3DMark') : 'Blender'}）</h2>
-<table class="list"><tr><th>製品</th><th>スコア（${esc(item.name)}との差）</th><th>最安値</th></tr>${nearRows}</table>` : ''}
-${(item.pairs || []).length ? `<h2>${esc(item.name)} とほかの${cat}の比較</h2><ul>${item.pairs.map(([p, q]) => `<li><a href="/p/${pairSlug(p, q)}.html">${esc(p.name)} vs ${esc(q.name)}</a></li>`).join('')}</ul>` : ''}
+<p class="note">スコアと、${esc(item.name)} との差（%）、最安値です。</p>
+<ol class="rows plain">${nearRows}</ol>` : ''}
+${(item.pairs || []).length ? `<h2>${esc(item.name)} とほかの${cat}の比較</h2><ul class="rows plain">${item.pairs.map(([p, q]) => pairRow(p, q)).join('')}</ul>` : ''}
 <p style="margin-top:24px"><a href="/?page=${item.category}-rank">${cat}ランキングをすべて見る</a> ・ <a href="/?page=${item.category}-compare">${cat}を2つ選んで比較する</a></p>`;
   return layout({title, description, canonical, body});
 }
@@ -251,6 +281,8 @@ function comparePairs(list) {
 }
 
 const pct = (a, b) => Math.round((a / b - 1) * 100);
+// 比較ページへのリンク1行（「A vs B」）
+const pairRow = (p, q) => `<li><a href="/p/${pairSlug(p, q)}.html"><span class="rk"></span><span class="nm">${esc(p.name)}<span class="vs">vs</span>${esc(q.name)}</span><span class="pr"></span></a></li>`;
 
 function compareSummary(a, b, metric) {
   const lines = [];
@@ -283,7 +315,7 @@ function comparePage(a, b, category, updated, pairsOf) {
   const row = (label, va, vb) => `<tr><th>${esc(label)}</th>${cell(a, va)}${cell(b, vb)}</tr>`;
   const offerCell = x => {
     const url = safeHttps(x.offer.url);
-    return `${yen(x.offer.price)}${url ? `<br><a href="${esc(url)}" rel="sponsored noopener" target="_blank">${esc(x.offer.source || 'ストア')}で見る</a>` : ''}`;
+    return `<span class="num">${yen(x.offer.price)}</span>${url ? `<br><a class="shop" href="${esc(url)}" rel="sponsored noopener" target="_blank">${esc(x.offer.source || 'ストア')}で見る</a>` : ''}`;
   };
   const rows = [
     row(metric, `${num(a.score)}（${a.rank}位）`, `${num(b.score)}（${b.rank}位）`),
@@ -300,7 +332,7 @@ function comparePage(a, b, category, updated, pairsOf) {
     if (va || vb) rows.push(row(label, esc(va || '—'), esc(vb || '—')));
   }
   const related = x => (pairsOf.get(x.slug) || []).filter(([p, q]) => !(p === a && q === b) && !(p === b && q === a)).slice(0, 6)
-    .map(([p, q]) => `<li><a href="/p/${pairSlug(p, q)}.html">${esc(p.name)} vs ${esc(q.name)}</a></li>`).join('');
+    .map(([p, q]) => pairRow(p, q)).join('');
   const relA = related(a), relB = related(b);
   const body = `<div class="hero c-${category}">${ill(category, 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${category}.html">${cat}一覧</a> › 比較</div>
 <h1>${esc(a.name)} と ${esc(b.name)} の比較</h1></div>
@@ -310,7 +342,7 @@ function comparePage(a, b, category, updated, pairsOf) {
 <h2>性能・価格・仕様の比較</h2>
 <div style="overflow-x:auto"><table class="list"><tr><th></th><th><a href="/p/${a.slug}.html">${esc(a.name)}</a></th><th><a href="/p/${b.slug}.html">${esc(b.name)}</a></th></tr>${rows.join('')}</table></div>
 <p class="note">ベンチマークのスコアは測定環境で変わります。ゲームでの差は、タイトルや解像度によってスコアの差より大きくも小さくもなります。</p>
-${relA || relB ? `<h2>ほかの比較</h2><ul>${relA}${relB}</ul>` : ''}
+${relA || relB ? `<h2>ほかの比較</h2><ul class="rows plain">${relA}${relB}</ul>` : ''}
 <p style="margin-top:24px"><a href="/?page=${category}-compare">好きな${cat}を2つ選んで比較する</a> ・ <a href="/p/${category}-vs.html">${cat}の比較ページ一覧</a></p>`;
   return layout({title, description, canonical, body});
 }
@@ -318,11 +350,11 @@ ${relA || relB ? `<h2>ほかの比較</h2><ul>${relA}${relB}</ul>` : ''}
 function compareIndexPage(category, pairs, updated) {
   const cat = category === 'cpu' ? 'CPU' : 'GPU';
   const items = [...pairs].sort((p, q) => Math.max(q[0].score, q[1].score) - Math.max(p[0].score, p[1].score))
-    .map(([a, b]) => `<li><a href="/p/${pairSlug(a, b)}.html">${esc(a.name)} vs ${esc(b.name)}</a></li>`).join('');
-  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${category}.html">${cat}一覧</a> › 比較ページ一覧</div>
-<h1>${cat}の比較ページ一覧（${pairs.length}組）</h1>
+    .map(([a, b]) => `<li><a href="/p/${pairSlug(a, b)}.html"><span class="rk"></span><span class="nm">${esc(a.name)}<span class="vs">vs</span>${esc(b.name)}</span><span class="pr"></span><span class="sub">${num(a.score)} と ${num(b.score)}（${category === 'cpu' ? 'PassMark' : '3DMark'}）</span></a></li>`).join('');
+  const body = `<div class="hero c-${category}">${ill(category, 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${category}.html">${cat}一覧</a> › 比較ページ一覧</div>
+<h1>${cat}の比較ページ一覧（${pairs.length}組）</h1></div>
 <p class="note">${updated}更新。性能が近い${cat}と、メーカー違いのライバル製品の組み合わせです。</p>
-<ul>${items}</ul>`;
+<ul class="rows plain">${items}</ul>`;
   return layout({title: `${cat}の比較ページ一覧 | BENCHCORE`, description: `性能が近い${cat}同士を、スコア・最安値・コスパで比べたページの一覧（${pairs.length}組）。毎日更新。`, canonical: `${SITE}/p/${category}-vs.html`, body});
 }
 
@@ -331,7 +363,7 @@ const man = yenValue => `${Math.round(yenValue / 10000)}万円`;
 const budgetSlug = b => `gaming-pc-${Math.round(b.budget / 10000)}man`;
 
 function budgetRows(b) {
-  const link = (url, label) => { const u = safeHttps(url); return u ? `<a href="${esc(u)}" rel="sponsored noopener" target="_blank">${esc(label)}</a>` : ''; };
+  const link = (url, label) => { const u = safeHttps(url); return u ? `<a class="shop" href="${esc(u)}" rel="sponsored noopener" target="_blank">${esc(label)}</a>` : ''; };
   const part = (kind, name, price, url, source, detail) => ({kind, name, price, url, source, detail});
   const fromPrice = (kind, p, name) => part(kind, name, p.price, p.url, p.source, p.itemName);
   return [
@@ -376,22 +408,24 @@ ${others ? `<h2>ほかの予算の構成</h2><ul>${others}</ul>` : ''}`;
 }
 
 function budgetIndexPage(builds, updated) {
-  const rows = builds.map(b => `<tr><td><a href="/p/${budgetSlug(b)}.html">予算${man(b.budget)}</a></td><td>${esc(b.gpu.name)}</td><td>${esc(b.cpu.name)}</td><td>${yen(b.total)}</td></tr>`).join('');
-  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › 予算別のゲーミングPC構成</div>
-<h1>予算別のゲーミングPC構成</h1>
+  const cards = builds.map(b => `<li><a href="/p/${budgetSlug(b)}.html"><div class="big">予算${man(b.budget)}</div><div class="line">GPU <b>${esc(b.gpu.name)}</b></div><div class="line">CPU <b>${esc(b.cpu.name)}</b></div><div class="tot">合計 ${yen(b.total)}</div></a></li>`).join('');
+  const body = `<div class="hero c-misc">${ill('case', 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › 予算別のゲーミングPC構成</div>
+<h1>予算別のゲーミングPC構成</h1></div>
 <p class="note">${updated}更新。毎日の最安値から、予算内でいちばんゲーム性能が高くなる構成を自動で計算しています。予算を上げても同じ構成になる場合は、低い方の予算だけを載せています。</p>
-<div style="overflow-x:auto"><table class="list"><tr><th>予算</th><th>GPU</th><th>CPU</th><th>合計</th></tr>${rows}</table></div>`;
+<ul class="cards">${cards}</ul>`;
   return layout({title: '予算別のゲーミングPC構成（毎日の最安値で自動計算）| BENCHCORE', description: `予算${builds.map(b => man(b.budget)).join('・')}のゲーミングPC構成例。毎日の最安値から自動で計算（${updated}更新）。`, canonical: `${SITE}/p/gaming-pc.html`, body});
 }
 
 function indexPage(category, list, updated) {
   const cat = category === 'cpu' ? 'CPU' : 'GPU';
   const sorted = [...list].sort((a, b) => (b.score || 0) - (a.score || 0) || (b.blender?.score || 0) - (a.blender?.score || 0));
-  const rows = sorted.map(x => `<tr><td><a href="/p/${x.slug}.html">${esc(x.name)}</a></td><td>${x.score > 0 ? num(x.score) : '—'}</td><td>${x.blender ? num(x.blender.score) : '—'}</td><td>${x.offer ? yen(x.offer.price) : '—'}</td></tr>`).join('');
-  const body = `<div class="crumb"><a href="/">BENCHCORE</a> › ${cat}一覧</div>
-<h1>${cat}の性能と最安値の一覧（${sorted.length}製品）</h1>
+  const metric = category === 'cpu' ? 'PassMark' : '3DMark';
+  // 順位はスコアがある製品だけに付ける（スコアがない製品は順位の代わりに「—」）
+  const rows = sorted.map((x, i) => `<li><a href="/p/${x.slug}.html"><span class="rk${x.score > 0 ? ' medal' : ''}">${x.score > 0 ? i + 1 : '—'}</span><span class="nm">${esc(x.name)}</span><span class="pr">${x.offer ? yen(x.offer.price) : '—'}</span><span class="sub">${metric} <b>${x.score > 0 ? num(x.score) : '—'}</b> ・ Blender <b>${x.blender ? num(x.blender.score) : '—'}</b></span></a></li>`).join('');
+  const body = `<div class="hero c-${category}">${ill(category, 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › ${cat}一覧</div>
+<h1>${cat}の性能と最安値の一覧（${sorted.length}製品）</h1></div>
 <p class="note">${updated}更新。製品名を選ぶと、仕様と近い性能の製品との比較を見られます。 <a href="/p/${category}-vs.html">2製品の比較ページ一覧</a></p>
-<table class="list"><tr><th>製品</th><th>${category === 'cpu' ? 'PassMark' : '3DMark'}</th><th>Blender</th><th>最安値</th></tr>${rows}</table>`;
+<ol class="rows">${rows}</ol>`;
   return layout({title: `${cat}の性能と最安値の一覧 | BENCHCORE`, description: `${cat} ${sorted.length}製品のベンチマークスコア（${category === 'cpu' ? 'PassMark' : '3DMark Time Spy'}・Blender）と最安値の一覧。毎日更新。`, canonical: `${SITE}/p/${category}.html`, body});
 }
 
