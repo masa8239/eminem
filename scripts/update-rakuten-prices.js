@@ -152,6 +152,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const origins = [credentials.origin, ...FALLBACK_ORIGINS.filter(origin => origin !== credentials.origin)];
 
   const products = [], unmatched = [];
+  const trialGenres = new Map(); // 試しの取り方: 今の方法で採用できた GPU の出品の売り場（ジャンル）の数
   const searchCache = new Map();
   // Yahoo!ショッピングは Client ID があるときだけ使う。失敗が続いたらその回は使わない
   const affiliate = options.affiliate || readAffiliateConfig();
@@ -162,7 +163,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const wait = ms => ms ? new Promise(resolve => setTimeout(resolve, ms)) : Promise.resolve();
   const yahooItems = async (keyword, range = null) => {
     if (!yahoo.appid || yahoo.failures >= 3) return null;
-    const cacheKey = range ? `${keyword}\0${range.from}\0${range.to}\0${range.start || 1}\0${range.results || 50}` : keyword;
+    const cacheKey = range ? `${keyword}\0${range.from}\0${range.to}\0${range.start || 1}\0${range.results || 50}\0${range.sort || ''}\0${range.genre || ''}` : keyword;
     if (yahoo.cache.has(cacheKey)) return yahoo.cache.get(cacheKey);
     try {
       await wait(yahooDelay);
@@ -248,6 +249,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       if (widePicked && (widePicked.item || widePicked.reason !== '一致する新品単品の出品なし')) { yItems = wide; yPicked = widePicked; }
     }
     const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
+    if (yUrl && model.category === 'gpu' && yPicked.item.genre) trialGenres.set(yPicked.item.genre, (trialGenres.get(yPicked.item.genre) || 0) + 1);
     if (yUrl) offers.push({
       store: 'Yahoo!ショッピング', price: yPicked.item.itemPrice, points: yPicked.item.points || 0, url: yUrl,
       itemCode: yPicked.item.itemCode, itemName: yPicked.item.itemName, shopName: yPicked.item.shopName || '',
@@ -527,6 +529,97 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   try { unchanged = JSON.stringify(JSON.parse(fs.readFileSync(auditFile, 'utf8')).issues) === JSON.stringify(issues); } catch { /* 初回 */ }
   if (!unchanged) fs.writeFileSync(auditFile, JSON.stringify({checkedAt: fetchedAt, issues}, null, 1) + '\n');
   log(`スプレッドシートの要確認: モデル名 ${issues.filter(i => i.type === 'name').length} 件 / 重複 ${issues.filter(i => i.type === 'duplicate').length} 件 / 価格 ${issues.filter(i => i.type === 'price').length} 件 / 仕様 ${issues.filter(i => i.type === 'spec').length} 件 / 新品なし ${issues.filter(i => i.type === 'stock').length} 件`);
+  // ---- 試しの取り方（GPU）。結果は data/price-trial.json に書くだけで、サイトの表示には使わない ----
+  // 本番の価格・履歴・新製品・要確認リストをすべて保存した後に動かす。専用の検索（本番の検索の記録・失敗の回数とは別）で、時間の上限つき
+  if (!auditOnly && yahoo.appid && yahoo.failures < 3 && (options.trial ?? !options.output)) {
+    try {
+      const trial = await runTrial();
+      if (trial) {
+        fs.writeFileSync(options.trialOutput || path.join(path.dirname(output), 'price-trial.json'), JSON.stringify(trial, null, 1) + '\n');
+        log(`試しの取り方（GPU）: 今の方法 ${trial.summary.currentOk} / 試し ${trial.summary.trialOk} 製品（売り場 ${trial.genre ? trial.genre.name + ' ' + trial.genre.id : '絞らない'}${trial.summary.stopped ? '・' + trial.summary.stopped : ''}）`);
+      }
+    } catch (error) { log(`試しの取り方に失敗: ${String(error && error.message || error).split(yahoo.appid).join('[appid]')}`); }
+  }
+  async function runTrial() {
+    const budgetMs = options.trialBudgetMs ?? 10 * 60 * 1000;
+    const started = Date.now();
+    let stopped = '';
+    // 試し専用の検索。429（問い合わせすぎ）や接続失敗が出たら、その時点で試しをやめる（本番の取得には影響させない）
+    const search = async range => {
+      if (stopped) return null;
+      if (Date.now() - started > budgetMs) { stopped = '時間の上限で途中まで'; return null; }
+      await wait(yahooDelay);
+      try { return await searchYahoo(range.keyword, yahoo.appid, fetchImpl, range, yahoo.affiliateId); }
+      catch (error) { stopped = error && error.status === 429 ? 'Yahoo の問い合わせ上限で途中まで' : 'Yahoo に接続できず途中まで'; return null; }
+    };
+    const genreTop = [...trialGenres.entries()].sort((a, b) => b[1] - a[1])[0];
+    const genreId = genreTop && genreTop[1] >= 3 ? genreTop[0] : '';
+    let genreName = '';
+    const floor = PRICE_FLOOR.gpu || 0;
+    const rows = [];
+    for (const model of models.filter(m => m.category === 'gpu' && !m.discontinued)) {
+      const spec = modelSpec('gpu', model.modelName, byCategory('gpu'));
+      // 今の方法の結果は、この回に取れた価格だけ（前回の価格を引き継いだものは比べない）
+      const current = products.find(p => p.category === 'gpu' && p.modelName === model.modelName && p.fetchedAt === fetchedAt);
+      const row = {modelName: model.modelName, current: current ? {price: current.price, shop: current.shopName || ''} : null};
+      if (!spec) { rows.push({...row, trial: {reason: '型番を判定できないモデル名'}}); continue; }
+      if (stopped) { rows.push({...row, trial: {reason: '未実施（' + stopped + '）'}}); continue; }
+      // 売り場で絞って関連の高い順に2ページ。一致する出品がなければ、絞らずにもう1ページ
+      const pages = async genre => {
+        const out = [];
+        for (const start of [1, 51]) {
+          const page = await search({keyword: spec.keyword, from: floor, to: 0, start, results: 50, sort: '-score', genre});
+          if (!page) return out.length ? out : null;
+          out.push(...page);
+          if (page.length < 50) break;
+        }
+        return out;
+      };
+      let looked = await pages(genreId);
+      let usedGenre = genreId;
+      if (looked && genreId && !looked.some(x => !rejectReason(spec, x))) {
+        const wide = await search({keyword: spec.keyword, from: floor, to: 0, start: 1, results: 50, sort: '-score'});
+        if (wide) { looked = looked.concat(wide); usedGenre = ''; }
+      }
+      if (!looked) { rows.push({...row, trial: {reason: 'Yahoo に接続できなかった'}}); continue; }
+      for (const x of looked) if (genreId && x.genre === genreId && x.genreName) genreName = x.genreName;
+      const uniq = [...new Map(looked.map(x => [x.itemCode, x])).values()].filter(x => !corrections.exclude.has(x.itemCode));
+      const matched = uniq.filter(x => !rejectReason(spec, x));
+      const staticRef = (model.sheetPriceValid && Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0)
+        || autoReference('gpu', model.modelName);
+      const why = {};
+      for (const x of uniq) { const r = rejectReason(spec, x); if (r) why[r] = (why[r] || 0) + 1; }
+      const genres = {};
+      for (const x of matched) if (x.genre) genres[x.genre + ' ' + (x.genreName || '')] = (genres[x.genre + ' ' + (x.genreName || '')] || 0) + 1;
+      const base = {hits: uniq.length, matched: matched.length, genre: usedGenre ? 'しぼる' : 'しぼらない', matchedGenres: genres, rejected: why};
+      if (!matched.length) { rows.push({...row, trial: {...base, reason: '一致する新品単品の出品なし'}}); continue; }
+      const mid = median(matched.map(x => x.itemPrice));
+      if (!staticRef && matched.length < 3) { rows.push({...row, trial: {...base, reason: '基準価格なし・一致する出品が3件未満'}}); continue; }
+      // 基準価格（シートの価格か直近の中央値）があれば 0.7〜1.8倍、なければ一致した出品の中央値の 0.75〜1.5倍
+      const lo = staticRef ? Math.max(floor, staticRef * 0.7) : Math.max(floor, mid * 0.75);
+      const hi = staticRef ? staticRef * 1.8 : mid * 1.5;
+      const accepted = matched.filter(x => x.itemPrice >= lo && x.itemPrice <= hi).sort((a, b) => a.itemPrice - b.itemPrice);
+      if (!accepted.length) { rows.push({...row, trial: {...base, median: mid, reason: '価格が相場から外れている'}}); continue; }
+      const near = accepted.filter(x => x.itemPrice <= accepted[0].itemPrice * 1.15);
+      const shops = new Set(near.map(x => x.shopName || x.itemCode));
+      if (shops.size < 2) { rows.push({...row, trial: {...base, median: mid, reason: '同じ価格帯で売っている店が1つだけ'}}); continue; }
+      const best = accepted[0];
+      rows.push({...row, trial: {...base, median: mid, price: best.itemPrice, shop: best.shopName || '', shops: shops.size, itemName: String(best.itemName).slice(0, 100), url: safeUrl(best) || ''}});
+    }
+    const ok = r => r.trial && Number.isSafeInteger(r.trial.price);
+    const both = rows.filter(r => r.current && ok(r));
+    const diffs = both.map(r => Math.round((r.trial.price / r.current.price - 1) * 100));
+    return {
+      checkedAt: fetchedAt,
+      method: '売り場で絞り、関連の高い順に2ページ（100件）を見る（一致がなければ絞らずに1ページ）。採用: 基準価格があれば0.7〜1.8倍、なければ一致3件以上で中央値の0.75〜1.5倍。同じ価格帯に2店以上',
+      genre: genreId ? {id: genreId, name: genreName} : null,
+      summary: {models: rows.length, currentOk: rows.filter(r => r.current).length, trialOk: rows.filter(ok).length,
+        onlyTrial: rows.filter(r => !r.current && ok(r)).length, onlyCurrent: rows.filter(r => r.current && !ok(r)).length,
+        both: both.length, priceDiffMedianPct: diffs.length ? median(diffs) : null, priceDiffOver10Pct: diffs.filter(d => Math.abs(d) > 10).length,
+        ...(stopped ? {stopped} : {})},
+      models: rows,
+    };
+  }
   return 0;
 }
 

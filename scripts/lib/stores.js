@@ -19,7 +19,10 @@ async function searchYahoo(keyword, appid, fetchImpl = fetch, range = null, affi
     url.searchParams.set('affiliate_id', affiliateId);
   }
   if (range) {
-    url.searchParams.set('sort', '+price');
+    // 並び順: 既定は安い順。試しの取り方では関連の高い順（-score）も使う
+    url.searchParams.set('sort', range.sort || '+price');
+    // 売り場（ジャンル）で絞る（例: グラフィックボード）
+    if (range.genre) url.searchParams.set('genre_category_id', String(range.genre));
     url.searchParams.set('price_from', String(range.from));
     if (range.to) url.searchParams.set('price_to', String(range.to));
   }
@@ -47,6 +50,9 @@ async function searchYahoo(keyword, appid, fetchImpl = fetch, range = null, affi
     shopName: hit.seller && typeof hit.seller.name === 'string' ? hit.seller.name : '',
     // point.amount（2022年〜）と bonusAmount（2025年2月〜）は0固定。ストアポイントは lyLimitedBonusAmount（PayPayポイント期間限定）に入る
     points: hit.point && Number.isSafeInteger(hit.point.lyLimitedBonusAmount) && hit.point.lyLimitedBonusAmount > 0 ? hit.point.lyLimitedBonusAmount : 0,
+    // 売り場（ジャンル）。試しの取り方で、採用できた出品の売り場を覚えて絞り込みに使う
+    genre: hit.genreCategory && (typeof hit.genreCategory.id === 'number' || typeof hit.genreCategory.id === 'string') ? String(hit.genreCategory.id) : '',
+    genreName: hit.genreCategory && typeof hit.genreCategory.name === 'string' ? hit.genreCategory.name : '',
   })).filter(item => item.itemCode !== 'yahoo:');
 }
 
