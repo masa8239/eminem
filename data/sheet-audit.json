@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-24T05:52:05.491Z",
+ "checkedAt": "2026-11-25T02:45:33.152Z",
  "issues": [
   {
    "category": "cpu",
@@ -435,12 +435,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 6750 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Arc A770 8GB",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -448,12 +442,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce RTX 4060 Ti 16GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "NVIDIA TITAN V",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -471,31 +459,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 2080 SUPER",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6700",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 7600 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "NVIDIA TITAN Xp",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 7600",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -507,91 +471,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "NVIDIA TITAN X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3050",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1080 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5700 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2070",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1080",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5700",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2060 12GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2060 6GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 5600 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3060 8GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX Vega 64",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5600",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1070 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX Vega 56",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -603,79 +483,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce GTX 1070",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX TITAN X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 980 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1660",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 Fury X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6500 XT 4GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 Fury",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5500 XT 8GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5500 XT 4GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 590",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 Nano",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1650 SUPER",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX TITAN Z",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -699,31 +507,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon R9 390X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1060 6GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 480",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1060 3GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 570",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -735,31 +519,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 470",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 970",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6400",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1650 GDDR5",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 780 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -771,97 +531,13 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon R9 380X",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX TITAN",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 780",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "gpu",
-   "modelName": "Radeon R9 270",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 960",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 770",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 680",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 950",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1050",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 560",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 460",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 760",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 370",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 750 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 550",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 650 Ti",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -886,12 +562,6 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6950 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6650 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1431,12 +1101,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 6750 XT",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "Arc A770 8GB",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1444,12 +1108,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce RTX 4060 Ti 16GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "NVIDIA TITAN V",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1467,25 +1125,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 2080 SUPER",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6700",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 7600 XT",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "NVIDIA TITAN Xp",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1497,91 +1137,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "NVIDIA TITAN X",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3050",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1080 Ti",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5700 XT",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2070",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1080",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5700",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2060 12GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2060 6GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 5600 XT",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3060 8GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX Vega 64",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5600",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1070 Ti",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX Vega 56",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1593,79 +1149,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce GTX 1070",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX TITAN X",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 980 Ti",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1660",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 Fury X",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6500 XT 4GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 Fury",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5500 XT 8GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 5500 XT 4GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 590",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 Nano",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1650 SUPER",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX TITAN Z",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1689,24 +1173,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon R9 390X",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1060 6GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 480",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1060 3GB",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1719,31 +1185,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 470",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 970",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6400",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1650 GDDR5",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 780 Ti",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1755,97 +1197,13 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon R9 380X",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX TITAN",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 780",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
   {
    "category": "gpu",
-   "modelName": "Radeon R9 270",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 960",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 770",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 680",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 950",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 1050",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 560",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 460",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 760",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon R9 370",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 750 Ti",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 550",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 650 Ti",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1870,12 +1228,6 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6950 XT",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6650 XT",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   }
