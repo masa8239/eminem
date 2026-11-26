@@ -1,6 +1,12 @@
 {
- "checkedAt": "2026-11-26T06:35:16.650Z",
+ "checkedAt": "2026-11-26T07:08:52.927Z",
  "issues": [
+  {
+   "category": "cpu",
+   "modelName": "Core i3-13100",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
   {
    "category": "cpu",
    "modelName": "Core i5-10600",
@@ -22,6 +28,12 @@
   {
    "category": "cpu",
    "modelName": "Core i5-11600K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i7-10700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -87,6 +99,12 @@
   },
   {
    "category": "cpu",
+   "modelName": "Core i7-13700T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
    "modelName": "Core i7-8700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -136,12 +154,6 @@
   {
    "category": "cpu",
    "modelName": "Core i9-12900",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-12900KS",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -220,6 +232,12 @@
   {
    "category": "cpu",
    "modelName": "Ryzen 5 4500",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 4600G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -358,6 +376,12 @@
   {
    "category": "gpu",
    "modelName": "GeForce RTX 3060 8GB",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce GTX 1660",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },

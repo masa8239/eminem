@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-26T06:35:16.650Z",
+ "checkedAt": "2026-11-26T07:08:52.927Z",
  "method": "売り場で絞り、関連の高い順に2ページ（100件）を見る（一致がなければ絞らずに1ページ）。採用: 基準価格があれば0.7〜1.8倍、なければ一致3件以上で中央値の0.75〜1.5倍。同じ価格帯に2店以上",
  "genre": {
   "id": "40331",
@@ -7,11 +7,11 @@
  },
  "summary": {
   "models": 71,
-  "currentOk": 31,
+  "currentOk": 28,
   "trialOk": 30,
-  "onlyTrial": 4,
+  "onlyTrial": 7,
   "onlyCurrent": 5,
-  "both": 26,
+  "both": 23,
   "priceDiffMedianPct": 0,
   "priceDiffOver10Pct": 3
  },
@@ -164,10 +164,7 @@
   },
   {
    "modelName": "GeForce RTX 4090",
-   "current": {
-    "price": 1023980,
-    "shop": "アメリカントレジャー"
-   },
+   "current": null,
    "trial": {
     "hits": 5,
     "matched": 4,
@@ -264,10 +261,7 @@
   },
   {
    "modelName": "GeForce RTX 4070 SUPER",
-   "current": {
-    "price": 289980,
-    "shop": "アメリカントレジャー"
-   },
+   "current": null,
    "trial": {
     "hits": 20,
     "matched": 8,
@@ -384,10 +378,7 @@
   },
   {
    "modelName": "GeForce RTX 3090",
-   "current": {
-    "price": 556980,
-    "shop": "アメリカントレジャー"
-   },
+   "current": null,
    "trial": {
     "hits": 16,
     "matched": 6,
