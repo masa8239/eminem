@@ -148,6 +148,23 @@ function pickItem(spec, items, referencePrice, category, options = {}) {
   return {item: accepted[0]};
 }
 
+// 取り寄せ品: 普通の店で採用できなかったときだけ使う。取り寄せの店の出品と、商品名に並行輸入とある出品から、
+// 型番が合い、中古・付属品などの除外語がない新品を選ぶ。付属品の取り違えを避けるため、候補が3件以上あるときは中央値の半分未満を外す
+const IMPORT_WORDS = ['並行輸入', '平行輸入'].map(normalize);
+function pickImportItem(spec, items, category) {
+  const floor = PRICE_FLOOR[category] || 0;
+  const candidates = (items || []).filter(item => item && typeof item.itemName === 'string'
+    && Number.isSafeInteger(item.itemPrice) && item.itemPrice >= Math.max(1, floor) && item.availability === 1
+    && typeof item.itemCode === 'string' && spec.matches(item.itemName)
+    && !EXCLUDE_WORDS.some(word => !IMPORT_WORDS.includes(word) && normalize(item.itemName).includes(word)));
+  if (!candidates.length) return {reason: '取り寄せ品も見つからない'};
+  const mid = median(candidates.map(item => item.itemPrice));
+  const kept = candidates.length >= 3 ? candidates.filter(item => item.itemPrice >= mid * 0.5) : candidates;
+  return {item: kept.sort((a, b) => a.itemPrice - b.itemPrice)[0]};
+}
+const isImportListing = (item, importShops) => Boolean(item) && ((importShops && importShops.has(item.shopName))
+  || IMPORT_WORDS.some(word => normalize(item.itemName || '').includes(word)));
+
 // 見つからなかったモデルの原因を調べるため、出品ごとに「使わなかった理由」を返す（使える出品は null）
 function rejectReason(spec, item) {
   if (!item || typeof item.itemName !== 'string') return '商品名なし';
@@ -159,7 +176,7 @@ function rejectReason(spec, item) {
   return null;
 }
 
-module.exports = {normalize, parseGpu, parseCpu, modelSpec, pickItem, rejectReason, median, EXCLUDE_WORDS, PRICE_FLOOR};
+module.exports = {normalize, parseGpu, parseCpu, modelSpec, pickItem, pickImportItem, isImportListing, rejectReason, median, EXCLUDE_WORDS, PRICE_FLOOR};
 
 // ---- 新着候補の発見 ----
 // 検索結果の商品名から型番を読み取り、まだサイトに載っていないモデルを候補として挙げる。

@@ -395,6 +395,47 @@ test('price history keeps one point per day for prices fetched in this run only'
   assert.deepEqual(series['gpu|GeForce RTX 5080'], [['2026-11-13', 199000]]);
 });
 
+test('import listings: picked only when no normal shop qualifies, cheapest genuine one, labelled and kept out of history', () => {
+  const {pickImportItem, isImportListing} = require('../scripts/lib/match');
+  const spec = modelSpec('gpu', 'GeForce RTX 4070', ['GeForce RTX 4070', 'GeForce RTX 4070 SUPER', 'GeForce RTX 4070 Ti']);
+  const it = (name, price, shopName = 'X') => ({itemName: name, itemPrice: price, availability: 1, itemCode: name + price, shopName});
+  const shops = new Set(['テクノランチャー']);
+  assert.equal(isImportListing(it('ZOTAC RTX 4070 12G', 1, 'テクノランチャー'), shops), true);
+  assert.equal(isImportListing(it('【並行輸入品】ASUS RTX 4070 12G', 1), shops), true);
+  assert.equal(isImportListing(it('ASUS RTX 4070 12G', 1, 'ドスパラ'), shops), false);
+  const picked = pickImportItem(spec, [
+    it('【並行輸入品】ASUS DUAL GeForce RTX 4070 12G グラフィックボード', 206900),
+    it('ZOTAC GeForce RTX 4070 12G グラフィックボード', 279900, 'テクノランチャー'),
+    it('GeForce RTX 4070 12G グラフィックボード 中古', 60000, 'テクノランチャー'),       // 中古は使わない
+    it('MSI GeForce RTX 4070 SUPER 12G グラフィックボード', 150000, 'テクノランチャー'), // 別の型番
+    it('GeForce RTX 4070 12G グラフィックボード 交換用', 20000, 'テクノランチャー'),     // 除外語
+  ], 'gpu');
+  assert.equal(picked.item.itemPrice, 206900);
+  assert.match(pickImportItem(spec, [it('GeForce RTX 4070 中古', 60000)], 'gpu').reason, /見つからない/);
+});
+
+test('the price run uses a normal shop first and falls back to an import shop as 取り寄せ品', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const models = [{category: 'gpu', modelName: 'GeForce RTX 4070'}, {category: 'gpu', modelName: 'GeForce RTX 5070', referencePrice: 110000}];
+  const hit = (code, name, price, shop) => ({code, name, price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/' + code + '.html', seller: {name: shop}});
+  const fetchImpl = async url => ({ok: true, json: async () => ({hits: url.searchParams.get('query') === 'RTX 4070'
+    ? [hit('a1', 'ZOTAC GeForce RTX 4070 12G グラフィックボード', 279900, 'テクノランチャー'), hit('a2', 'MSI GeForce RTX 4070 12G グラフィックボード', 358100, 'テクノランチャー')]
+    : [hit('b1', 'ASUS GeForce RTX 5070 12G グラフィックボード', 70000, 'テクノランチャー'), hit('b2', 'MSI GeForce RTX 5070 12G グラフィックボード', 105000, 'ドスパラ')]})});
+  const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipFixedParts: true, skipBoardSpecs: true, skipSheetParts: true,
+    corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, importShops: new Set(['テクノランチャー']), now: new Date('2026-11-26T00:00:00Z')});
+  assert.equal(code, 0);
+  const products = JSON.parse(fs.readFileSync(output, 'utf8')).products;
+  const p4070 = products.find(p => p.modelName === 'GeForce RTX 4070'), p5070 = products.find(p => p.modelName === 'GeForce RTX 5070');
+  assert.equal(p4070.import, true);
+  assert.equal(p4070.price, 279900);
+  assert.equal(p5070.price, 105000);           // 取り寄せの店の安い出品より、普通の店を使う
+  assert.equal(p5070.import, undefined);
+  const series = JSON.parse(fs.readFileSync(path.join(dir, 'price-history.json'), 'utf8')).series;
+  assert.equal(series['gpu|GeForce RTX 4070'], undefined);
+  assert.deepEqual(series['gpu|GeForce RTX 5070'], [['2026-11-26', 105000]]);
+});
+
 test('an affiliate run that yields no usable links keeps the previous price file', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
   const output = path.join(dir, 'rakuten-prices.json');
