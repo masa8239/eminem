@@ -378,6 +378,7 @@ a.affiliate-btn { text-decoration: none; background: var(--fill); border-color: 
 a.affiliate-btn:hover { background: var(--fill-hover); }
 .m-src, .row-more { display: none; }
 .price-stale { font-weight: 700; color: var(--warn); }
+.ref-tag.imp-tag { white-space: nowrap; }
 .ref-tag { font-family: var(--f-body); font-size: 11px; font-weight: 700; color: var(--warn); border: 1px solid var(--warn-line); background: var(--warn-soft); border-radius: 2px; padding: 0 4px; margin-left: 4px; vertical-align: 1px; }
 
 /* ── 比較 ── */
@@ -1563,8 +1564,9 @@ const FALLBACK_RAM = [];
 // 内蔵データのソケット・レイトレ・アップスケーリングも、シートと同じ確認済みの規則で表示する
 FALLBACK_CPU.forEach(c => { c.socket = cpuSocket(c.name); });
 FALLBACK_GPU.forEach(g => { const f = gpuFeatures(g.name); g.rt = f.rt; g.dlss = f.upscaler; g.maker = gpuMaker(g.name); });
-let cpuData = normalizeBadges([...FALLBACK_CPU].sort((a,b) => b.score - a.score), 'cpu');
-let gpuData = normalizeBadges([...FALLBACK_GPU].sort((a,b) => b.score - a.score), 'gpu');
+// 内蔵データの価格は古く出典もないので使わない（2026-11-26 運営者了承）。価格は毎日の取得ファイルから入れる
+let cpuData = normalizeBadges(FALLBACK_CPU.map(c => ({...c, price: null})).sort((a,b) => b.score - a.score), 'cpu');
+let gpuData = normalizeBadges(FALLBACK_GPU.map(g => ({...g, price: null})).sort((a,b) => b.score - a.score), 'gpu');
 let ramData = [...FALLBACK_RAM].sort((a,b) => b.speed - a.speed);
 let cpuFilter = 'all';
 let gpuFilter = 'all';
@@ -1628,7 +1630,7 @@ function renderPrice(item) {
     ? '<div class="price-stale">価格を確認中</div><div class="price-meta">相場が大きく変わったため、古い参考価格は出していません</div>'
     : '<span style="color:var(--text3)">価格不明</span>';
   // ストアから取れていない価格は、一覧を縮めたスマホ表示でも分かるように「参考」と付ける
-  const ref = item.rakuten?.status === 'ok' ? '' : '<small class="ref-tag">参考</small>';
+  const ref = item.rakuten?.status === 'ok' ? (item.rakuten.import ? '<small class="ref-tag imp-tag" title="普通の店の新品が見つからないため、海外取り寄せの店（お届けまで1〜3週間ほど）の価格を出しています">取り寄せ品</small>' : '') : '<small class="ref-tag">参考</small>';
   return `<div>${fmtPrice(item.price)}${ref}</div>${priceMeta(item)}`;
 }
 // 価格の出どころ。ストアから取れた価格は取得元と日時、それ以外は必ず「参考価格」と書く
@@ -1641,7 +1643,9 @@ function priceMeta(item) {
     const pts = Number.isSafeInteger(r.points) && r.points > 0 ? `<br>＋${r.points.toLocaleString('ja-JP')}ポイント（実質 ¥${(item.price - r.points).toLocaleString('ja-JP')}）` : '';
     const others = (Array.isArray(r.offers) ? r.offers : []).filter(o => o && o.store !== r.source && validPrice(o.price) && safeRakutenUrl(o.url))
       .map(o => `<br><a href="${escapeHtml(safeRakutenUrl(o.url))}" target="_blank" rel="noopener sponsored">${escapeHtml(o.store)} ¥${o.price.toLocaleString('ja-JP')}</a>`).join('');
-    return `<div class="price-meta">取得元: ${escapeHtml(r.source)}（${escapeHtml(fetched)}）${pts}${others}</div>`;
+    // 取り寄せ品: 普通の店の新品が見つからず、海外取り寄せの店（お届けまで1〜3週間ほど）の価格を出している
+    const imp = r.import ? `取り寄せ品・お届けまで1〜3週間${r.shopName ? '（' + escapeHtml(r.shopName) + '）' : ''}<br>` : '';
+    return `<div class="price-meta">${imp}取得元: ${escapeHtml(r.source)}（${escapeHtml(fetched)}）${pts}${others}</div>`;
   }
   if (item.rakuten?.status === 'error') {
     return `<div class="price-meta price-error">ストア価格の更新失敗<br>表示額は参考価格（最新扱いではありません）</div>`;
@@ -2264,12 +2268,6 @@ function parseRamRow(row) {
 // 単体のパーツとして売っていない製品（CPU内蔵グラフィックス、Apple M シリーズ）はランキングに載せない
 const NOT_STANDALONE = {cpu:[/^Apple M\d/i], gpu:[/^Radeon \d{3}M\b/i, /^Radeon RX Vega \d+\s*\(Ryzen/i, /^Intel (UHD |Iris )?Graphics/i, /^Radeon Graphics/i]};
 function isStandalone(category, name) { return !(NOT_STANDALONE[category]||[]).some(p => p.test(String(name).trim())); }
-// シートの価格が空・不正な製品は、同じ型番の内蔵参考価格で補う（別の型番からの推測はしない）
-function fillBuiltinPrices(parsed, builtin) {
-  const byName = new Map(builtin.map(item => [item.name, item.price]));
-  parsed.forEach(item => { if (!validPrice(item.price) && validPrice(byName.get(item.name))) { item.price = byName.get(item.name); item.priceBuiltin = true; } });
-  return parsed;
-}
 // スプレッドシート取得（10分間 sessionStorage キャッシュ · 8秒タイムアウト）
 async function fetchSheet(url, cacheKey) {
   try {
@@ -2295,7 +2293,7 @@ async function loadSheetData() {
     const parsed = all.filter(r=>r.score>0);
     cpuExtra = dedupeByName(all.filter(r=>!(r.score>0) && !parsed.some(p=>p.name===r.name)));
     if (parsed.length > 0) {
-      cpuData = assignSheetBadges(fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.score-a.score)), FALLBACK_CPU),'cpu'); cpuFromSheet = true;
+      cpuData = assignSheetBadges(dedupeByName(parsed.sort((a,b)=>b.score-a.score)),'cpu'); cpuFromSheet = true;
       maxCpuScore = Math.max(...cpuData.map(d=>d.score));
       document.getElementById('cpu-rank-updated').textContent = LOADED;
     } else document.getElementById('cpu-rank-updated').textContent = BUILTIN;
@@ -2305,7 +2303,7 @@ async function loadSheetData() {
     const parsed = all.filter(r=>r.score>0);
     gpuExtra = dedupeByName(all.filter(r=>!(r.score>0) && !parsed.some(p=>p.name===r.name)));
     if (parsed.length > 0) {
-      gpuData = assignSheetBadges(fillBuiltinPrices(dedupeByName(parsed.sort((a,b)=>b.score-a.score)), FALLBACK_GPU),'gpu'); gpuFromSheet = true;
+      gpuData = assignSheetBadges(dedupeByName(parsed.sort((a,b)=>b.score-a.score)),'gpu'); gpuFromSheet = true;
       maxGpuScore = Math.max(...gpuData.map(d=>d.score));
       document.getElementById('gpu-rank-updated').textContent = LOADED;
     } else document.getElementById('gpu-rank-updated').textContent = BUILTIN;
@@ -2372,7 +2370,7 @@ function applyRakutenProducts(products, maxAgeMs) {
       if (item.basePrice === undefined) item.basePrice = item.price;
       item.price = product.price;
     }
-    item.rakuten = {status: ok ? 'ok' : 'error', fetchedAt:product.fetchedAt, url:product.url, source: typeof product.source==='string'&&product.source ? product.source : '楽天市場', points:product.points, offers:product.offers};
+    item.rakuten = {status: ok ? 'ok' : 'error', import: ok && product.import === true, shopName: typeof product.shopName === 'string' ? product.shopName : '', fetchedAt:product.fetchedAt, url:product.url, source: typeof product.source==='string'&&product.source ? product.source : '楽天市場', points:product.points, offers:product.offers};
   });
 }
 // 価格の取得で「シートの価格が古い（ストアの新品がすべてその2倍を超える）」と分かった製品は、
@@ -2985,14 +2983,14 @@ const PRESET_BUILDS = [
     parts:[
       {cat:'CPU', name:'Ryzen 5 7600',       price:18800},
       {cat:'Cooler', name:'DeepCool AK620', price:5800},
-      {cat:'GPU', name:'RTX 4070 SUPER',     price:98000},
+      {cat:'GPU', name:'RX 9070 GRE',        price:99800},
       {cat:'MB',  name:'MSI MAG X670E Tomahawk', price:38800},
       {cat:'RAM', name:'DDR5-6000 32GB',     price:18800},
       {cat:'SSD', name:'Samsung 990 Pro 1TB',price:13800},
       {cat:'PSU', name:'Seasonic Focus GX-750',price:14800},
       {cat:'Case',name:'NZXT H7 Flow',       price:16800},
     ],
-    builderIds:{cpu:'bc9',cpucooler:'bco2',gpu:'bg7',mb:'spec:B850 ATX',ram:'br2',storage:'spec:Gen4 1TB',psu:'spec:750W Gold',case:'bk3'}
+    builderIds:{cpu:'bc9',cpucooler:'bco2',gpu:'bgg',mb:'spec:B850 ATX',ram:'br2',storage:'spec:Gen4 1TB',psu:'spec:750W Gold',case:'bk3'}
   },
   {
     id:'aaa4k', icon:'4K', color:'var(--gold)', title:'4K AAA最高画質',
@@ -3017,14 +3015,14 @@ const PRESET_BUILDS = [
     parts:[
       {cat:'CPU', name:'Core i9-14900K',      price:58800},
       {cat:'Cooler', name:'CORSAIR iCUE LINK TITAN 360 RX', price:18980},
-      {cat:'GPU', name:'RTX 4070 Ti SUPER',   price:130000},
+      {cat:'GPU', name:'RTX 5070',            price:154400},
       {cat:'MB',  name:'ASUS ROG Maximus Z790',price:89800},
       {cat:'RAM', name:'DDR5-6000 64GB',      price:34800},
       {cat:'SSD', name:'WD Black SN850X 2TB', price:21800},
       {cat:'PSU', name:'Corsair RM1000x',     price:24800},
       {cat:'Case',name:'Fractal Design North',price:22990},
     ],
-    builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bg5',mb:'spec:Z790 ATX DDR5',ram:'br1',storage:'spec:Gen4 2TB',psu:'spec:1000W Gold',case:'bk2'}
+    builderIds:{cpu:'bc3',cpucooler:'bco6',gpu:'bgf',mb:'spec:Z790 ATX DDR5',ram:'br1',storage:'spec:Gen4 2TB',psu:'spec:1000W Gold',case:'bk2'}
   },
   {
     id:'cospa', icon:'定番', color:'var(--accent3)', title:'価格と性能のバランス',
@@ -3033,14 +3031,14 @@ const PRESET_BUILDS = [
     parts:[
       {cat:'CPU', name:'Ryzen 5 7600',        price:18800},
       {cat:'Cooler', name:'DeepCool AK400', price:2800},
-      {cat:'GPU', name:'RTX 4070',            price:82000},
+      {cat:'GPU', name:'RX 9060 XT 16GB',     price:91710},
       {cat:'MB',  name:'ASRock B650E Steel Legend',price:24800},
       {cat:'RAM', name:'DDR5-5200 16GB',      price:8800},
       {cat:'SSD', name:'Samsung 990 Pro 1TB', price:13800},
       {cat:'PSU', name:'Seasonic Focus GX-750',price:14800},
       {cat:'Case',name:'NZXT H5 Flow',price:11975},
     ],
-    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bg8',mb:'spec:B650 ATX',ram:'br4',storage:'spec:Gen4 1TB',psu:'spec:750W Gold',case:'bk5'}
+    builderIds:{cpu:'bc9',cpucooler:'bco5',gpu:'bgh',mb:'spec:B650 ATX',ram:'br4',storage:'spec:Gen4 1TB',psu:'spec:750W Gold',case:'bk5'}
   },
   {
     id:'streaming', icon:'配信', color:'var(--accent)', title:'ゲーム配信・マルチタスク',
@@ -3049,14 +3047,14 @@ const PRESET_BUILDS = [
     parts:[
       {cat:'CPU', name:'Ryzen 7 7800X3D',     price:49800},
       {cat:'Cooler', name:'ARCTIC Liquid Freezer III Pro 240', price:13720},
-      {cat:'GPU', name:'RTX 4080 SUPER',      price:165000},
+      {cat:'GPU', name:'RTX 5070 Ti',         price:234800},
       {cat:'MB',  name:'MSI MAG X670E Tomahawk',price:38800},
       {cat:'RAM', name:'DDR5-6000 32GB',      price:18800},
       {cat:'SSD', name:'WD Black SN850X 2TB', price:21800},
       {cat:'PSU', name:'be quiet! Dark Power 850W',price:22800},
       {cat:'Case',name:'Fractal Design Torrent',price:24800},
     ],
-    builderIds:{cpu:'bc4',cpucooler:'bco8',gpu:'bg4',mb:'spec:B850 ATX',ram:'br2',storage:'spec:Gen4 2TB',psu:'spec:850W Platinum',case:'bk1'}
+    builderIds:{cpu:'bc4',cpucooler:'bco8',gpu:'bge',mb:'spec:B850 ATX',ram:'br2',storage:'spec:Gen4 2TB',psu:'spec:850W Platinum',case:'bk1'}
   },
   {
     id:'entry', icon:'入門', color:'var(--text2)', title:'エントリー・ライトゲーム',
@@ -3122,13 +3120,14 @@ function bloadPartsFromData() {
 // ビルダーのCPU・GPUの価格とスコアを、ランキングと同じデータに合わせる
 function bsyncPrices() {
   let changed = false;
-  const sync = (items, data, same, hasScore) => items.forEach(item => {
+  const sync = (items, data, same, hasScore, storeOnly = false) => items.forEach(item => {
     const found = data.find(d => same(d.name, item.name));
     // ストアから取れた価格でなければ「参考価格」と表示する（ランキングにない製品は内蔵の参考価格のまま）
     const ref = !(found && validPrice(found.price) && found.rakuten?.status === 'ok');
     if (ref !== Boolean(item.ref)) { item.ref = ref; changed = true; }
-    // 相場が大きく変わって価格を確認中の製品は、古い価格のまま選べないようにする
-    const stale = Boolean(found && found.priceStale);
+    // 相場が大きく変わって価格を確認中の製品・ストアの価格がない製品・取り寄せ品は、構成ビルダーでは選べないようにする
+    // （CPU・GPU の内蔵の価格は古く出典がないため使わない。取り寄せ品はお届けまで1〜3週間かかる）
+    const stale = Boolean(found && found.priceStale) || (storeOnly && !(found && found.rakuten?.status === 'ok' && validPrice(found.price) && !found.rakuten.import));
     if (stale !== Boolean(item.stale)) { item.stale = stale; changed = true; }
     if (!found) return;
     if (validPrice(found.price) && found.price !== item.price) { item.price = found.price; changed = true; }
@@ -3138,8 +3137,8 @@ function bsyncPrices() {
       if (score !== item.score) { item.score = score; changed = true; }
     }
   });
-  sync(BPARTS.cpu.items, cpuData.concat(cpuExtra), (a, b) => a === b, cpuFromSheet);
-  sync(BPARTS.gpu.items, gpuData.concat(gpuExtra), (a, b) => a === b || a === 'GeForce ' + b || a === 'Radeon ' + b, gpuFromSheet);
+  sync(BPARTS.cpu.items, cpuData.concat(cpuExtra), (a, b) => a === b, cpuFromSheet, true);
+  sync(BPARTS.gpu.items, gpuData.concat(gpuExtra), (a, b) => a === b || a === 'GeForce ' + b || a === 'Radeon ' + b, gpuFromSheet, true);
   sync(BPARTS.ram.items, ramData, (a, b) => a === b);
   // CPUクーラー・ケース: 毎日の最安値が取れた製品はその価格、取れなかった製品は参考価格（表示で分かるようにする）
   ['cpucooler', 'case'].forEach(cat => BPARTS[cat].items.forEach(item => {
@@ -3341,6 +3340,13 @@ const BPARTS = {
     {id:'bga',name:'RTX 4060 Ti',       spec:'8GB · 160W',   price:58000, score:16200,vram:8},
     {id:'bgb',name:'RTX 4060',          spec:'8GB · 115W',   price:44000, score:13200,vram:8},
     {id:'bgc',name:'RX 7600',           spec:'8GB · 165W',   price:32000, score:11000,vram:8},
+    // 2026-11-26 追加（今の世代）。price は毎日の価格が入るまで使わない（選べない）ので 0
+    {id:'bgd',name:'RTX 5080',          spec:'16GB · 360W',  price:0, score:33615,vram:16},
+    {id:'bge',name:'RTX 5070 Ti',       spec:'16GB · 300W',  price:0, score:27792,vram:16},
+    {id:'bgf',name:'RTX 5070',          spec:'12GB · 250W',  price:0, score:22779,vram:12},
+    {id:'bgg',name:'RX 9070 GRE',       spec:'12GB · 220W',  price:0, score:21407,vram:12},
+    {id:'bgh',name:'RX 9060 XT',        spec:'16GB · 160W',  price:0, score:16422,vram:16},
+    {id:'bgi',name:'RTX 5060',          spec:'8GB · 145W',   price:0, score:13620,vram:8},
   ]},
   mb:{ label:'マザーボード', icon:'MB', color:'var(--ink2)', items:[
     // 毎日の価格ファイル（規格 × メーカーの最安値）から作る。bloadPartsFromData() を参照
@@ -3365,6 +3371,9 @@ const BPARTS = {
     {id:'bk5',name:'NZXT H5 Flow',            spec:'ATX · コンパクト',     price:11975},
   ]},
 };
+// CPU・GPU の内蔵の価格は古く出典がないので、毎日の価格が入るまでは選べないようにしておく（bsyncPrices で外す）
+BPARTS.cpu.items.forEach(item => { item.stale = true; });
+BPARTS.gpu.items.forEach(item => { item.stale = true; });
 const BGAMES=[
   {name:'Cyberpunk 2077',        tag:'4K Ultra RT',        tier:'ultra',gpuMin:30000,cpuMin:30000},
   {name:'MS Flight Simulator',   tag:'4K Ultra',           tier:'ultra',gpuMin:30000,cpuMin:35000},

@@ -77,8 +77,9 @@ function restFor(cpu, gpu, budget, parts) {
 }
 
 function buildFor(budget, cpus, gpus, parts) {
-  const cpuList = cpus.filter(c => c.score > 0 && c.offer && cpuAllowed(c));
-  const gpuList = gpus.filter(g => g.score > 0 && g.offer);
+  // 取り寄せ品（お届けまで1〜3週間）は予算別構成に使わない
+  const cpuList = cpus.filter(c => c.score > 0 && c.offer && !c.offer.import && cpuAllowed(c));
+  const gpuList = gpus.filter(g => g.score > 0 && g.offer && !g.offer.import);
   if (!cpuList.length || !gpuList.length) return null;
   // 診断と同じく、価格のない製品も含めた全製品の最高スコアを基準にする
   const maxCpu = Math.max(...cpus.filter(c => c.score > 0).map(c => c.score));

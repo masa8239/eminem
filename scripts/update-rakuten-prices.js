@@ -8,7 +8,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {searchItems, responseItems, SITE_ORIGIN, PriceError} = require('../api/rakuten-prices')._test;
-const {modelSpec, pickItem, rejectReason, discoverNewModels, PRICE_FLOOR, median} = require('./lib/match');
+const {modelSpec, pickItem, pickImportItem, isImportListing, rejectReason, discoverNewModels, PRICE_FLOOR, median} = require('./lib/match');
 const {searchYahoo, rakutenPoints} = require('./lib/stores');
 const {nameIssue} = require('./lib/audit');
 const {RAM_SPECS, ramQueries, pickRamOffers} = require('./lib/ram');
@@ -28,6 +28,12 @@ const BLENDER_OUTPUT = path.join(ROOT, 'data', 'blender-scores.json');
 const MB_SPECS_OUTPUT = path.join(ROOT, 'data', 'mb-specs.json');
 const SHEET_PARTS_OUTPUT = path.join(ROOT, 'data', 'sheet-parts.json');
 const HISTORY_DAYS = 180;
+const IMPORT_SHOPS_FILE = path.join(ROOT, 'config', 'import-shops.json');
+// 海外取り寄せの店（config/import-shops.json）。読めないときは空（取り寄せ品の扱いをしないだけで、価格更新は止めない）
+function readImportShops(file = IMPORT_SHOPS_FILE) {
+  try { return new Set((JSON.parse(fs.readFileSync(file, 'utf8')).shops || []).map(shop => shop && shop.name).filter(name => typeof name === 'string' && name)); }
+  catch { return new Set(); }
+}
 const STOCK_WARN_DAYS = 5; // この回数続けて新品が見つからない製品に注意を付ける
 
 function readSheetsConfig() {
@@ -129,15 +135,18 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   // シートで人が入れた修正（除外する商品・正しいメーカー）
   const corrections = options.corrections || (auditOnly ? {exclude: new Set(), maker: new Map()} : await loadCorrections(readSheetsConfig().correctionsSpreadsheetId, fetchImpl));
   if (corrections.ok) log(`シートの修正: 除外 ${corrections.exclude.size} 件 / メーカー修正 ${corrections.maker.size} 件`);
+  const importShops = options.importShops || readImportShops();
   // 原因調査用: 同じ出品をまとめ、型番が合う出品を先に、安い順に最大12件
   const seenWithReasons = (spec, items) => {
     const uniq = [...new Map((items || []).filter(Boolean).map(x => [x.itemCode || x.itemName, x])).values()];
     const rows = uniq.map(x => ({price: x.itemPrice, shop: x.shopName || '', name: String(x.itemName || '').slice(0, 100),
-      why: corrections.exclude.has(x.itemCode) ? 'シートで除外' : (rejectReason(spec, x) || '使える出品（価格帯・店の数のルールで見送り）')}));
+      why: corrections.exclude.has(x.itemCode) ? 'シートで除外' : (rejectReason(spec, x) || (importShops.has(x.shopName) ? '取り寄せの店（普通の店で見つからないときだけ使う）' : '使える出品（価格帯・店の数のルールで見送り）'))}));
     const rank = r => r.why.startsWith('型番が違う') ? 1 : 0;
     return rows.sort((a, b) => rank(a) - rank(b) || a.price - b.price).slice(0, 12);
   };
   const notExcluded = items => (items || []).filter(item => !corrections.exclude.has(item.itemCode));
+  // CPU・GPU の普通の価格は、取り寄せの店を除いた出品から選ぶ
+  const notImport = items => (items || []).filter(item => !importShops.has(item.shopName));
   const byCategory = category => models.filter(model => model.category === category).map(model => model.modelName);
   const previous = new Map(readPrevious(output).map(product => [`${product.category}\0${product.modelName}`, product]));
   // 自動の参考価格: 直近14日の価格の推移（毎日採用した価格）の中央値。3日分以上あるときだけ使う
@@ -234,17 +243,18 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     // 参考価格があるモデルは、ありえる価格帯に絞って安い順に取る（関連度順だと最安の出品を取りこぼす）。
     // 参考価格は「最近実際に取れた価格」を最優先にする（内蔵の参考価格は古く、相場が上がると範囲から外れて何も見つからない）
     const last = previous.get(`${model.category}\0${model.modelName}`);
-    const lastPrice = last && last.status === 'ok' && Number.isSafeInteger(last.price) && now - new Date(last.fetchedAt) < 30 * 86400000 ? last.price : 0;
+    // 取り寄せ品の価格は普通の店の相場ではないので、検索の範囲の基準にしない
+    const lastPrice = last && last.status === 'ok' && !last.import && Number.isSafeInteger(last.price) && now - new Date(last.fetchedAt) < 30 * 86400000 ? last.price : 0;
     const ref = lastPrice || (Number.isSafeInteger(model.referencePrice) && model.referencePrice > 0 ? model.referencePrice : 0);
     const range = ref ? {from: Math.max(PRICE_FLOOR[model.category] || 0, Math.round(ref * 0.7)), to: Math.round(ref * 1.8)} : null;
     let yItems = await yahooItems(spec.keyword, range);
     const looked = [...(yItems || [])]; // 原因調査用: 検索で見えた出品（範囲つき・範囲なしの両方）
-    let yPicked = yItems && pickItem(spec, notExcluded(yItems), ref || null, model.category, ref ? {} : {minShops: 2});
+    let yPicked = yItems && pickItem(spec, notImport(notExcluded(yItems)), ref || null, model.category, ref ? {} : {minShops: 2});
     // 範囲内に見つからないときは、範囲を外して安い順にもう一度探す（相場の中央値から外れた出品は使わない）
     if (yItems && !(yPicked && yPicked.item) && range) {
       const wide = await yahooItems(spec.keyword, {from: PRICE_FLOOR[model.category] || 1, to: 0});
       looked.push(...(wide || []));
-      const widePicked = wide && pickItem(spec, notExcluded(wide), null, model.category, {minShops: 2});
+      const widePicked = wide && pickItem(spec, notImport(notExcluded(wide)), null, model.category, {minShops: 2});
       // 範囲を外した検索で見つかった候補があるときは、その結果（と見送った理由）を使う
       if (widePicked && (widePicked.item || widePicked.reason !== '一致する新品単品の出品なし')) { yItems = wide; yPicked = widePicked; }
     }
@@ -274,8 +284,18 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       // ストア側の失敗で取れなかったときは、前回の価格を数日間は引き継ぐ
       const kept = previous.get(`${model.category}\0${model.modelName}`);
       const storeFailed = rakutenError || (rakuten.configured && !rakuten.on) || (yahoo.appid && !yItems);
-      if (storeFailed && kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) products.push(kept);
-      else unmatched.push({category: model.category, modelName: model.modelName, reason: rakutenError || (yPicked && yPicked.reason) || (rakuten.on ? picked.reason : null) || '一致する新品単品の出品なし',
+      if (storeFailed && kept && kept.status === 'ok' && now - new Date(kept.fetchedAt) < KEEP_PREVIOUS_MS) { products.push(kept); continue; }
+      // 普通の店で見つからないときは、取り寄せの店・並行輸入品の出品を「取り寄せ品」として出す（運営者の決定 2026-11-26）
+      const importPicked = yItems && pickImportItem(spec, notExcluded(looked).filter(item => isImportListing(item, importShops)), model.category);
+      const importUrl = importPicked && importPicked.item && safeUrl(importPicked.item);
+      if (importUrl) {
+        const it = importPicked.item;
+        products.push({category: model.category, modelName: model.modelName, status: 'ok', import: true, source: 'Yahoo!ショッピング',
+          price: it.itemPrice, points: it.points || 0, url: importUrl, fetchedAt, itemCode: it.itemCode, itemName: it.itemName, shopName: it.shopName || '',
+          offers: [{store: 'Yahoo!ショッピング', price: it.itemPrice, points: it.points || 0, url: importUrl}]});
+        continue;
+      }
+      unmatched.push({category: model.category, modelName: model.modelName, reason: rakutenError || (yPicked && yPicked.reason) || (rakuten.on ? picked.reason : null) || '一致する新品単品の出品なし',
         // GPU は原因を調べられるように、検索で見えた出品と使わなかった理由を残す（表示には使わない）
         ...(model.category === 'gpu' ? {searched: {keyword: spec.keyword, range: range ? [range.from, range.to] : null, hits: looked.length}, seen: seenWithReasons(spec, looked)} : {})});
       continue;
@@ -436,7 +456,8 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       if (!history.series || typeof history.series !== 'object') history.series = {};
       const day = fetchedAt.slice(0, 10);
       for (const product of products) {
-        if (product.fetchedAt !== fetchedAt || !Number.isSafeInteger(product.price)) continue;
+        // 取り寄せ品の価格は普通の店の相場ではないので、推移（自動の参考価格のもと）に入れない
+        if (product.fetchedAt !== fetchedAt || product.import || !Number.isSafeInteger(product.price)) continue;
         const key = `${product.category}|${product.modelName}`;
         const points = (history.series[key] || []).filter(point => point[0] !== day);
         points.push([day, product.price]);
@@ -575,7 +596,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     for (const model of models.filter(m => m.category === 'gpu' && !m.discontinued)) {
       const spec = modelSpec('gpu', model.modelName, byCategory('gpu'));
       // 今の方法の結果は、この回に取れた価格だけ（前回の価格を引き継いだものは比べない）
-      const current = products.find(p => p.category === 'gpu' && p.modelName === model.modelName && p.fetchedAt === fetchedAt);
+      const current = products.find(p => p.category === 'gpu' && p.modelName === model.modelName && p.fetchedAt === fetchedAt && !p.import);
       const row = {modelName: model.modelName, current: current ? {price: current.price, shop: current.shopName || ''} : null};
       if (!spec) { rows.push({...row, trial: {reason: '型番を判定できないモデル名'}}); continue; }
       if (stopped) { rows.push({...row, trial: {reason: '未実施（' + stopped + '）'}}); continue; }

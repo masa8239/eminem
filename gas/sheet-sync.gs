@@ -157,7 +157,7 @@ function benchcoreRun_(dryRun) {
         if (!dryRun && bestRange) {
           var bestCell = bestRange.getCell(i + 1, 1);
           bestCell.setValue(best);
-          if (product) bestCell.setNote((product.source || 'ストア') + '（' + Utilities.formatDate(new Date(product.fetchedAt), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm') + ' 取得）');
+          if (product) bestCell.setNote((product.import ? '取り寄せ品（お届けまで1〜3週間ほどの店。普通の店の新品なし）・' : '') + (product.source || 'ストア') + '（' + Utilities.formatDate(new Date(product.fetchedAt), 'Asia/Tokyo', 'yyyy/MM/dd HH:mm') + ' 取得）');
           else bestCell.clearNote();
         }
       }

@@ -53,6 +53,9 @@ function spriteFor(html) {
   const symbols = [...SPRITE.matchAll(/<symbol id="ill-([a-z]+)"[\s\S]*?<\/symbol>/g)].filter(m => used.has(m[1])).map(m => m[0]).join('');
   return symbols ? `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">${symbols}</svg>` : '';
 }
+// 取り寄せ品（海外取り寄せの店の価格。普通の店の新品がないときだけ出る）の札
+const IMPORT_NOTE = 'お届けまで1〜3週間ほどかかる取り寄せの店の価格です（普通の店の新品が見つからないため）';
+const impTag = offer => offer && offer.import ? ` <span class="imp" title="${IMPORT_NOTE}">取り寄せ品</span>` : '';
 const ill = (name, cls) => SPRITE ? `<svg class="${cls}" aria-hidden="true" focusable="false"><use href="#ill-${name}"/></svg>` : '';
 const STYLE = siteTokens() + `
 *{box-sizing:border-box}body{margin:0;font-family:var(--f-body);background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px;-webkit-text-size-adjust:100%}
@@ -95,6 +98,7 @@ ul{padding-left:1.3em}li{margin-bottom:4px}
 .shop{display:inline-block;margin-top:4px;padding:3px 10px;border-radius:999px;background:var(--fill);color:#fff;font-size:12px;font-weight:700;line-height:1.5;text-decoration:none}.shop:hover{background:var(--fill-hover)}
 .diff{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:700;font-family:var(--f-num)}
 .diff.up{background:var(--good-soft);color:var(--good)}.diff.down{background:var(--sunk2);color:var(--ink2)}
+.imp{display:inline-block;margin-left:4px;padding:0 6px;border-radius:4px;background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn-line);font-size:11px;font-weight:700;white-space:nowrap;vertical-align:middle}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;list-style:none;padding:0;margin:0}
 .cards li{margin:0}.cards a{display:block;height:100%;padding:16px 18px;border-radius:var(--radius-lg);background:var(--misc-soft);color:var(--ink);text-decoration:none;transition:transform .2s}
 .cards a:hover{transform:translateY(-2px)}
@@ -198,7 +202,7 @@ function productPage(item, list, updated) {
   const scoreName = item.category === 'cpu' ? 'PassMark（マルチスレッド）' : '3DMark Time Spy（グラフィックスコア）';
   const title = `${item.name} の最安値と性能（${item.category === 'cpu' ? 'PassMark' : '3DMark'}・Blender）| BENCHCORE`;
   const parts = [];
-  if (item.offer) parts.push(`最安値 ${yen(item.offer.price)}`);
+  if (item.offer) parts.push(`${item.offer.import ? '取り寄せ品の価格' : '最安値'} ${yen(item.offer.price)}`);
   if (item.score > 0) parts.push(`${item.category === 'cpu' ? 'PassMark' : '3DMark Time Spy'} ${num(item.score)}`);
   if (item.blender) parts.push(`Blender ${num(item.blender.score)}`);
   const description = `${item.name}の${parts.join('、')}。仕様と、近い性能の${cat}との比較をまとめています（${updated}更新）。`;
@@ -206,7 +210,7 @@ function productPage(item, list, updated) {
 
   const offerUrl = item.offer && safeHttps(item.offer.url);
   const price = item.offer && offerUrl
-    ? `<div class="price"><div class="meta">最安値（${esc(item.offer.source || 'ストア')}${item.offer.shopName ? '・' + esc(item.offer.shopName) : ''}、${esc(new Date(item.offer.fetchedAt).toLocaleDateString('ja-JP', {timeZone: 'Asia/Tokyo'}))} 取得）</div>
+    ? `<div class="price"><div class="meta">${item.offer.import ? `<span class="imp">取り寄せ品</span> ${IMPORT_NOTE}<br>` : ''}${item.offer.import ? '価格' : '最安値'}（${esc(item.offer.source || 'ストア')}${item.offer.shopName ? '・' + esc(item.offer.shopName) : ''}、${esc(new Date(item.offer.fetchedAt).toLocaleDateString('ja-JP', {timeZone: 'Asia/Tokyo'}))} 取得）</div>
 <strong>${yen(item.offer.price)}</strong>${item.offer.points > 0 ? ` <span class="meta">＋${item.offer.points.toLocaleString('ja-JP')}ポイント</span>` : ''}
 <div><a class="btn" href="${esc(offerUrl)}" rel="sponsored noopener" target="_blank">${esc(item.offer.source || 'ストア')}で見る</a></div></div>`
     : `<div class="price"><div class="meta">ストアの価格はまだ取得できていません。</div></div>`;
@@ -227,7 +231,7 @@ function productPage(item, list, updated) {
     const mine = key === 'score' ? item.score : item.blender.score;
     const diff = Math.round((v / mine - 1) * 100);
     // 差は色付きの札で見せる（高い方は緑）。価格がない製品は「—」
-    return `<li><a href="/p/${x.slug}.html"><span class="rk"></span><span class="nm">${esc(x.name)}</span><span class="pr">${x.offer ? yen(x.offer.price) : '—'}</span><span class="sub"><b>${num(v)}</b> <span class="diff ${diff >= 0 ? 'up' : 'down'}">${diff > 0 ? '+' : ''}${diff}%</span></span></a></li>`;
+    return `<li><a href="/p/${x.slug}.html"><span class="rk"></span><span class="nm">${esc(x.name)}</span><span class="pr">${x.offer ? yen(x.offer.price) + impTag(x.offer) : '—'}</span><span class="sub"><b>${num(v)}</b> <span class="diff ${diff >= 0 ? 'up' : 'down'}">${diff > 0 ? '+' : ''}${diff}%</span></span></a></li>`;
   }).join('');
 
   const body = `<div class="hero c-${item.category}">${ill(item.category, 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/${item.category}.html">${cat}一覧</a> › ${esc(item.name)}</div>
@@ -255,7 +259,8 @@ const PAIR_NEIGHBORS = 2;
 const pairSlug = (a, b) => `${a.slug}-vs-${b.slug}`;
 
 function comparePairs(list) {
-  const ranked = list.filter(x => x.score > 0 && x.offer).sort((a, b) => b.score - a.score);
+  // 取り寄せ品の価格は普通の相場ではないので、比較ページは普通の店の価格がある製品だけで作る
+  const ranked = list.filter(x => x.score > 0 && x.offer && !x.offer.import).sort((a, b) => b.score - a.score);
   const pairs = new Map();
   const add = (a, b) => {
     if (!a || !b || a === b) return;
@@ -422,7 +427,7 @@ function indexPage(category, list, updated) {
   const sorted = [...list].sort((a, b) => (b.score || 0) - (a.score || 0) || (b.blender?.score || 0) - (a.blender?.score || 0));
   const metric = category === 'cpu' ? 'PassMark' : '3DMark';
   // 順位はスコアがある製品だけに付ける（スコアがない製品は順位の代わりに「—」）
-  const rows = sorted.map((x, i) => `<li><a href="/p/${x.slug}.html"><span class="rk${x.score > 0 ? ' medal' : ''}">${x.score > 0 ? i + 1 : '—'}</span><span class="nm">${esc(x.name)}</span><span class="pr">${x.offer ? yen(x.offer.price) : '—'}</span><span class="sub">${metric} <b>${x.score > 0 ? num(x.score) : '—'}</b> ・ Blender <b>${x.blender ? num(x.blender.score) : '—'}</b></span></a></li>`).join('');
+  const rows = sorted.map((x, i) => `<li><a href="/p/${x.slug}.html"><span class="rk${x.score > 0 ? ' medal' : ''}">${x.score > 0 ? i + 1 : '—'}</span><span class="nm">${esc(x.name)}</span><span class="pr">${x.offer ? yen(x.offer.price) + impTag(x.offer) : '—'}</span><span class="sub">${metric} <b>${x.score > 0 ? num(x.score) : '—'}</b> ・ Blender <b>${x.blender ? num(x.blender.score) : '—'}</b></span></a></li>`).join('');
   const body = `<div class="hero c-${category}">${ill(category, 'band-ill')}<div class="crumb"><a href="/">BENCHCORE</a> › ${cat}一覧</div>
 <h1>${cat}の性能と最安値の一覧（${sorted.length}製品）</h1></div>
 <p class="note">${updated}更新。製品名を選ぶと、仕様と近い性能の製品との比較を見られます。 <a href="/p/${category}-vs.html">2製品の比較ページ一覧</a></p>
