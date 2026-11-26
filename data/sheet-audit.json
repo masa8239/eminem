@@ -1,21 +1,9 @@
 {
- "checkedAt": "2026-11-26T01:56:16.312Z",
+ "checkedAt": "2026-11-26T06:35:16.650Z",
  "issues": [
   {
    "category": "cpu",
-   "modelName": "Core i3-13100",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i5-10600",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i5-10600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -34,12 +22,6 @@
   {
    "category": "cpu",
    "modelName": "Core i5-11600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-10700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -81,12 +63,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-12700KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i7-12700T",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -111,12 +87,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-13700T",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i7-8700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -135,18 +105,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i7-9700F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-9700K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i7-9700KF",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -160,12 +118,6 @@
   {
    "category": "cpu",
    "modelName": "Core i9-10900K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i9-10900KF",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -225,12 +177,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13900KS",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i9-9900",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -274,12 +220,6 @@
   {
    "category": "cpu",
    "modelName": "Ryzen 5 4500",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 4600G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -369,67 +309,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 7900 XTX",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4080 SUPER",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4080",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4070 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 7900 GRE",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3090 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 7800 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3080 12GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6900 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 2080 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 3070",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -447,13 +327,13 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 6700 XT",
+   "modelName": "Arc A750",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "gpu",
-   "modelName": "Arc A750",
+   "modelName": "Radeon RX 6700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -471,25 +351,13 @@
   },
   {
    "category": "gpu",
-   "modelName": "Radeon RX 5600 XT",
+   "modelName": "GeForce RTX 3050",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
   {
    "category": "gpu",
-   "modelName": "GeForce GTX 1660 Ti",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1660",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Arc A380",
+   "modelName": "GeForce RTX 3060 8GB",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -525,12 +393,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "Arc A310",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 780",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -538,30 +400,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce GTX 1050",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce RTX 4070",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 7700 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 7900 XT",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 6950 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -1101,13 +939,13 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 2080 Ti",
+   "modelName": "GeForce RTX 3070",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3070",
+   "modelName": "Radeon RX 6750 XT",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1137,6 +975,12 @@
   },
   {
    "category": "gpu",
+   "modelName": "Radeon RX 6700",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
    "modelName": "Radeon RX 7600 XT",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1149,7 +993,19 @@
   },
   {
    "category": "gpu",
+   "modelName": "GeForce RTX 3050",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
    "modelName": "Radeon RX 5600 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 3060 8GB",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1162,6 +1018,12 @@
   {
    "category": "gpu",
    "modelName": "GeForce GTX 1660",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6500 XT 4GB",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1192,6 +1054,12 @@
   {
    "category": "gpu",
    "modelName": "GeForce GTX 1650 GDDR6",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6400",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1240,6 +1108,12 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6950 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "Radeon RX 6650 XT",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   }
