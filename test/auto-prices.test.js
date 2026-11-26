@@ -412,6 +412,15 @@ test('import listings: picked only when no normal shop qualifies, cheapest genui
   ], 'gpu');
   assert.equal(picked.item.itemPrice, 206900);
   assert.match(pickImportItem(spec, [it('GeForce RTX 4070 中古', 60000)], 'gpu').reason, /見つからない/);
+  // 2026-11-26 の取り違え: PC 本体・車の部品・記号で区切られた別の型番は使わない
+  const cpus = ['Core i3-13100', 'Core i7-10700', 'Ryzen 5 4600G', 'Core i5-12600K'];
+  const cpu = name => modelSpec('cpu', name, cpus);
+  assert.equal(pickImportItem(cpu('Core i3-13100'), [it('【並行輸入品】 DNA Motoring OEM RA 13100 OE Style Aluminum Core Radiator', 40056)], 'cpu').item, undefined);
+  assert.equal(pickImportItem(cpu('Core i7-10700'), [it('Dell OptiPlex 7080 SFF Small Form Factor Desktop Computer - 10th Gen Intel Core i7-10700', 399500)], 'cpu').item, undefined);
+  assert.equal(pickImportItem(cpu('Ryzen 5 4600G'), [it('【平行輸入品】HP Pavilion Desktop PC, AMD Ryzen 5 4600G Processor 6-core', 167700)], 'cpu').item, undefined);
+  assert.equal(pickImportItem(cpu('Core i5-12600K'), [it('インテル Intel Corei5 プロセッサー 12600K 3.7GHz 第12世代 LGA 1700 BX8071512600K', 70700)], 'cpu').item.itemPrice, 70700);
+  const g1660 = modelSpec('gpu', 'GeForce GTX 1660', ['GeForce GTX 1660', 'GeForce GTX 1660 SUPER', 'GeForce GTX 1660 Ti']);
+  assert.equal(pickImportItem(g1660, [it('【並行輸入品】 ASUS Graphics Card - GeForce GTX 1660, Super OC Edition', 95400)], 'gpu').item, undefined);
 });
 
 test('the price run uses a normal shop first and falls back to an import shop as 取り寄せ品', async () => {

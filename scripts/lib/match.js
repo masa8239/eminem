@@ -151,12 +151,23 @@ function pickItem(spec, items, referencePrice, category, options = {}) {
 // 取り寄せ品: 普通の店で採用できなかったときだけ使う。取り寄せの店の出品と、商品名に並行輸入とある出品から、
 // 型番が合い、中古・付属品などの除外語がない新品を選ぶ。付属品の取り違えを避けるため、候補が3件以上あるときは中央値の半分未満を外す
 const IMPORT_WORDS = ['並行輸入', '平行輸入'].map(normalize);
+// 取り寄せ品は2店・価格帯の決まりで守られないので、商品名で強く確かめる。
+// 英語の商品名の PC 本体・車の部品などを外し（2026-11-26 に Dell OptiPlex・HP Pavilion・車の部品を取り違えた）、
+// CPU は「Core / Ryzen」とプロセッサの語、GPU はグラフィックの語がある出品だけにする
+const IMPORT_NOT_PART = /\b(DESKTOP|LAPTOP|NOTEBOOK|COMPUTER|OPTIPLEX|PAVILION|ELITE|PRODESK|ELITEDESK|THINKCENTRE|THINKPAD|INSPIRON|VOSTRO|ALIENWARE|OMEN|VICTUS|LEGION|IDEACENTRE|PREDATOR|NUC|SFF|MINI PC|GAMING PC|TOWER|WORKSTATION|BUNDLE|COMBO|KIT|MOTORING|AUTOMOTIVE|BRAKE|BUMPER)\b|PC本体|ノートPC|タワー型/;
+const IMPORT_CONTEXT = {
+  cpu: text => /CORE|RYZEN|\bI[3579][ -]?\d{4,5}/.test(text) && /PROCESSOR|プロセッサ|CPU|BX80|\bBOX\b|TRAY|トレイ|WOF|LGA ?\d|SOCKET|ソケット|\bAM[45]\b|\bS1[27]00\b/.test(text),
+  gpu: text => /グラフィック|GRAPHICS|ビデオカード|VIDEO CARD|GDDR|GPU|グラボ|FOUNDERS EDITION/.test(text),
+};
 function pickImportItem(spec, items, category) {
   const floor = PRICE_FLOOR[category] || 0;
+  const context = IMPORT_CONTEXT[category] || (() => false);
   const candidates = (items || []).filter(item => item && typeof item.itemName === 'string'
     && Number.isSafeInteger(item.itemPrice) && item.itemPrice >= Math.max(1, floor) && item.availability === 1
-    && typeof item.itemCode === 'string' && spec.matches(item.itemName)
-    && !EXCLUDE_WORDS.some(word => !IMPORT_WORDS.includes(word) && normalize(item.itemName).includes(word)));
+    // 「GTX 1660, Super」のように記号で区切られた型番も同じ型番として確かめる
+    && typeof item.itemCode === 'string' && spec.matches(item.itemName) && spec.matches(item.itemName.replace(/[,，、/()（）\[\]「」]/g, ' '))
+    && !EXCLUDE_WORDS.some(word => !IMPORT_WORDS.includes(word) && normalize(item.itemName).includes(word))
+    && !IMPORT_NOT_PART.test(normalize(item.itemName)) && context(normalize(item.itemName)));
   if (!candidates.length) return {reason: '取り寄せ品も見つからない'};
   const mid = median(candidates.map(item => item.itemPrice));
   const kept = candidates.length >= 3 ? candidates.filter(item => item.itemPrice >= mid * 0.5) : candidates;
