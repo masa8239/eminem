@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-25T02:45:33.152Z",
+ "checkedAt": "2026-11-26T01:56:16.312Z",
  "issues": [
   {
    "category": "cpu",
@@ -627,6 +627,12 @@
   },
   {
    "category": "cpu",
+   "modelName": "Core i5-10600",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "cpu",
    "modelName": "Core i5-10600K",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1090,6 +1096,12 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6900 XT",
+   "type": "stock",
+   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
+  },
+  {
+   "category": "gpu",
+   "modelName": "GeForce RTX 2080 Ti",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
