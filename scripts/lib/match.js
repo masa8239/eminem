@@ -49,8 +49,8 @@ function parseCpu(name) {
     const match = text.match(/\b(\d{3}[A-Z]{0,2})(\s*PLUS)?\s*$/);
     return match ? {brand: 'ULTRA', token: match[1], plus: Boolean(match[2])} : null;
   }
-  const match = text.match(/\bI[3579][\s-]*(\d{4,5}[A-Z]{0,2})\b/);
-  return match ? {brand: 'CORE', token: match[1]} : null;
+  const match = text.match(/\bI([3579])[\s-]*(\d{4,5}[A-Z]{0,2})\b/);
+  return match ? {brand: 'CORE', tier: match[1], token: match[2]} : null;
 }
 
 // モデルごとの検索語と、商品名の合否判定を返す。判定できないモデルは null。
@@ -94,7 +94,8 @@ function modelSpec(category, modelName, siblingNames = []) {
       : cpu.brand === 'ULTRA' ? text.includes('ULTRA')
       : /CORE|INTEL|インテル/.test(text);
     return {
-      keyword: cpu.brand === 'RYZEN' ? `Ryzen ${cpu.token}` : cpu.brand === 'ULTRA' ? `Core Ultra ${cpu.token}${cpu.plus ? ' Plus' : ''}` : `Core ${cpu.token}`,
+      // Intel は「Core i5 13400F」のように i5 まで入れる（「Core 13400F」だと車の部品などばかり出る。2026-11-27 に分かった）
+      keyword: cpu.brand === 'RYZEN' ? `Ryzen ${cpu.token}` : cpu.brand === 'ULTRA' ? `Core Ultra ${cpu.token}${cpu.plus ? ' Plus' : ''}` : `Core i${cpu.tier} ${cpu.token}`,
       matches(itemName) {
         const text = normalize(itemName);
         // グラボ名やメモリ規格が入っている出品はCPU単品ではない
