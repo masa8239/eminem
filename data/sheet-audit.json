@@ -1,12 +1,6 @@
 {
- "checkedAt": "2026-11-27T05:14:34.523Z",
+ "checkedAt": "2026-11-27T15:21:16.321Z",
  "issues": [
-  {
-   "category": "cpu",
-   "modelName": "Core i3-12100F",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
   {
    "category": "cpu",
    "modelName": "Core i3-13100",
@@ -51,12 +45,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-13600K",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i7-10700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -88,12 +76,6 @@
   {
    "category": "cpu",
    "modelName": "Core i7-11700KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-12700",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -207,12 +189,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13900KF",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i9-13900T",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -267,19 +243,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 4500",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 5 4600G",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 5600G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -417,7 +381,7 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3050",
+   "modelName": "GeForce RTX 3060 8GB",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -507,12 +471,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i3-12100F",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i3-13100",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -567,12 +525,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i5-13600K",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i7-10700",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -604,18 +556,6 @@
   {
    "category": "cpu",
    "modelName": "Core i7-11700KF",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-12700",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Core i7-12700KF",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -753,12 +693,6 @@
   },
   {
    "category": "cpu",
-   "modelName": "Core i9-13900KF",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Core i9-13900KS",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -819,19 +753,7 @@
   },
   {
    "category": "cpu",
-   "modelName": "Ryzen 5 4500",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
    "modelName": "Ryzen 5 4600G",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "cpu",
-   "modelName": "Ryzen 5 5600G",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },
@@ -1047,12 +969,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3050",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
    "modelName": "Radeon RX 5600 XT",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
@@ -1078,12 +994,6 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6500 XT 4GB",
-   "type": "stock",
-   "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Arc A380",
    "type": "stock",
    "issue": "直近5回の価格取得で、新品の出品が見つかりませんでした。中古しか売っていないなら「販売終了」にチェックしてください"
   },

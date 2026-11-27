@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core i3-14100 と Ryzen 5 4500 の比較（性能・最安値・コスパ）| BENCHCORE</title>
+<meta name="description" content="Core i3-14100 と Ryzen 5 4500 をPassMarkのスコアと最安値で比較。スコアの差は 6%、最安値は ¥22,141 と ¥14,277（2026/11/28更新）。">
+<link rel="canonical" href="https://eminem-steel.vercel.app/p/core-i3-14100-vs-ryzen-5-4500.html">
+<meta property="og:title" content="Core i3-14100 と Ryzen 5 4500 の比較（性能・最安値・コスパ）| BENCHCORE">
+<meta property="og:description" content="Core i3-14100 と Ryzen 5 4500 をPassMarkのスコアと最安値で比較。スコアの差は 6%、最安値は ¥22,141 と ¥14,277（2026/11/28更新）。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://eminem-steel.vercel.app/p/core-i3-14100-vs-ryzen-5-4500.html">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@400;500;700;900&family=Archivo:wdth,wght@125,700;125,800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>:root {
+  --header-h: 108px;
+  /* 地と線 */
+  --bg: #ffffff;
+  --sunk: #f4f6f9;
+  --sunk2: #e9edf2;
+  --line: #e4e8ed;
+  --line-strong: #cdd4dc;
+  --hover: #f1f5fe;
+  /* 文字 */
+  --ink: #0b0d10;
+  --ink2: #444c56;
+  --ink3: #646d78;
+  --on-dark: #ffffff;
+  --head: #0b0d10;
+  /* 役割の色（-soft は淡い地、--fill は白い文字を載せる面） */
+  --cpu: #1f4fd6;
+  --cpu-strong: #1a42b3;
+  --cpu-soft: #e8eefe;
+  --fill: #1f4fd6;
+  --fill-hover: #1a42b3;
+  --gpu: #b8531a;
+  --gpu-soft: #fdeee3;
+  --gpu-fill: #b8531a;
+  --ram: #6b3fd4;
+  --ram-soft: #f0ebfd;
+  --misc: #0f7c8a;
+  --misc-soft: #dff3f5;
+  --good: #0d7444;
+  --good-soft: #e3f5ec;
+  --warn: #8a5a00;
+  --warn-soft: #fbf2dc;
+  --warn-line: #ecd9a0;
+  --bad: #b42318;
+  --bad-soft: #fbe9e7;
+  --bad-line: #f2b8b5;
+  /* 書体 */
+  --f-body: 'M PLUS 2', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif;
+  --f-disp: 'Archivo', 'M PLUS 2', 'Hiragino Sans', sans-serif;
+  --f-num: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  /* 角丸・影 */
+  --radius: 10px;
+  --radius-lg: 18px;
+  --shadow: 0 10px 30px rgba(15, 25, 45, 0.12);
+  /* パーツの絵の色（使う場所で上書きする） */
+  --ill: var(--cpu);
+  --ill-soft: var(--cpu-soft);
+  --ill-ink: var(--ink);
+
+  /* 以前の名前（JS やインラインの style が使っている）。新しい値に読み替える */
+  --surface: var(--bg);
+  --surface2: var(--sunk);
+  --surface3: var(--sunk2);
+  --border: var(--line);
+  --border2: var(--line-strong);
+  --navy: var(--head);
+  --text: var(--ink);
+  --text2: var(--ink2);
+  --text3: var(--ink3);
+  --accent: var(--gpu);
+  --accent2: var(--cpu);
+  --accent3: var(--good);
+  --accent4: var(--cpu);
+  --gold: var(--ink);
+  --danger: var(--bad);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101419; --sunk: #181e25; --sunk2: #232b34; --line: #29323c; --line-strong: #3a4552; --hover: #1a2230;
+    --ink: #eef1f5; --ink2: #b8c1cc; --ink3: #95a0ad; --head: #eef1f5;
+    --cpu: #86a6ff; --cpu-strong: #a3bcff; --cpu-soft: #1c2747; --fill: #3b63e0; --fill-hover: #4c72ea;
+    --gpu: #f39a62; --gpu-soft: #3a2416; --gpu-fill: #b8531a; --ram: #b49bff; --ram-soft: #2a2145; --misc: #5fc9d6; --misc-soft: #133238;
+    --good: #5cc28a; --good-soft: #15291f; --warn: #e0b354; --warn-soft: #2a2312; --warn-line: #5a4a20;
+    --bad: #f08a80; --bad-soft: #2e1816; --bad-line: #5e2b27; --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+
+*{box-sizing:border-box}body{margin:0;font-family:var(--f-body);background:var(--bg);color:var(--ink);line-height:1.7;font-size:15px;-webkit-text-size-adjust:100%}
+a{color:var(--cpu)}a:focus-visible{outline:2px solid var(--cpu);outline-offset:2px}
+.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top-in{max-width:860px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:12px}
+.logo{display:inline-flex;align-items:center;font-family:var(--f-disp);font-stretch:125%;font-weight:800;font-size:18px;text-decoration:none;color:var(--ink)}.logo span{color:var(--cpu)}
+.logo-mark{width:22px;height:22px;margin-right:8px;transform:rotate(-8deg);--ill:var(--cpu);--ill-soft:var(--cpu-soft);--ill-ink:var(--ink)}
+.top nav{margin-left:auto;display:flex;gap:4px;font-size:13px}.top nav a{color:var(--ink2);text-decoration:none;font-weight:700;padding:6px 10px;border-radius:999px}.top nav a:hover{background:var(--sunk);color:var(--ink)}
+main,footer{max-width:860px;margin:0 auto;padding:0 16px}
+.c-cpu{--ill:var(--cpu);--ill-soft:var(--cpu-soft);--solid:#1f4fd6}.c-gpu{--ill:var(--gpu);--ill-soft:var(--gpu-soft);--solid:#a3470f}.c-misc{--ill:var(--misc);--ill-soft:var(--misc-soft);--solid:#0c6b77}
+.hero{position:relative;overflow:hidden;margin:16px 0 14px;padding:18px 110px 18px 20px;border-radius:var(--radius-lg);background:var(--solid,#1f4fd6);color:#fff}
+.hero .crumb{color:rgba(255,255,255,.85);margin:0 0 4px}.hero .crumb a{color:#fff}
+.hero h1{margin:0;color:#fff}
+.band-ill{position:absolute;right:-6px;bottom:-14px;width:112px;height:112px;transform:rotate(-12deg);--ill:#fff;--ill-soft:rgba(0,0,0,.26);--ill-ink:#0b0d10;pointer-events:none}
+.crumb{font-size:12px;color:var(--ink3);margin:16px 0 4px}.crumb a{color:var(--ink2)}
+h1{font-size:24px;font-weight:900;margin:4px 0 12px;line-height:1.35;text-wrap:balance;word-break:auto-phrase}h2{word-break:auto-phrase}.top nav a{white-space:nowrap}
+h2{font-size:18px;font-weight:900;margin:32px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.num,.price strong,td.n{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.price{background:var(--sunk);padding:16px 18px;border-radius:var(--radius-lg)}
+.price strong{font-family:var(--f-disp);font-stretch:125%;font-size:28px;font-weight:800}.meta{font-size:12px;color:var(--ink3)}
+.btn{display:inline-block;margin-top:10px;padding:10px 20px;background:var(--fill);color:#fff;text-decoration:none;border-radius:999px;font-weight:700;font-size:14px}.btn:hover{background:var(--fill-hover)}
+table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{width:38%;color:var(--ink2);font-weight:500}.list td{width:auto}.list th{width:auto;background:var(--sunk);font-size:12px;font-weight:700;white-space:nowrap}
+.list tr:hover td{background:var(--hover)}
+ul{padding-left:1.3em}li{margin-bottom:4px}
+.rows{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.rows li{margin:0;border-bottom:1px solid var(--line)}.rows li:last-child{border-bottom:none}
+.rows a{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:11px 14px;color:var(--ink);text-decoration:none}
+.rows a:hover{background:var(--hover)}
+.rows .rk{grid-row:span 2;align-self:start;text-align:center;font-family:var(--f-num);font-size:13px;color:var(--ink3);line-height:24px}
+.rows li:nth-child(-n+3) .rk.medal{border-radius:999px;width:24px;font-weight:800;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15)}.rows li:nth-child(1) .rk.medal{background:#f4c542;color:#3a2a00}.rows li:nth-child(2) .rk.medal{background:#cfd6df;color:#1d2430}.rows li:nth-child(3) .rk.medal{background:#e3a676;color:#3b1c05}
+.rank-chip{position:relative;display:inline-flex;align-items:baseline;gap:4px;margin-top:10px;padding:3px 12px;border-radius:999px;background:rgba(255,255,255,.95);color:#0b0d10;font-size:12px;font-weight:700}.rank-chip b{font-family:var(--f-disp);font-stretch:125%;font-size:18px;font-weight:800}.rank-chip.m1{background:#f4c542}.rank-chip.m2{background:#cfd6df}.rank-chip.m3{background:#e3a676}
+.rows .nm{font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rows .pr{font-family:var(--f-num);font-weight:600;text-align:right;white-space:nowrap}
+.rows .sub{grid-column:2/-1;font-size:12px;color:var(--ink3);font-family:var(--f-num)}
+.rows .sub b{color:var(--ink2);font-weight:600}
+.rows.plain a{grid-template-columns:minmax(0,1fr) auto}.rows.plain .rk{display:none}.rows.plain .sub{grid-column:1/-1}.rows.plain .nm{white-space:normal}
+.rows .vs{display:inline-block;margin:0 6px;padding:0 7px;border-radius:999px;background:var(--sunk2);font-size:11px;font-weight:700;color:var(--ink2);vertical-align:1px}
+.shop{display:inline-block;margin-top:4px;padding:3px 10px;border-radius:999px;background:var(--fill);color:#fff;font-size:12px;font-weight:700;line-height:1.5;text-decoration:none}.shop:hover{background:var(--fill-hover)}
+.diff{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;font-weight:700;font-family:var(--f-num)}
+.diff.up{background:var(--good-soft);color:var(--good)}.diff.down{background:var(--sunk2);color:var(--ink2)}
+.imp{display:inline-block;margin-left:4px;padding:0 6px;border-radius:4px;background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn-line);font-size:11px;font-weight:700;white-space:nowrap;vertical-align:middle}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;list-style:none;padding:0;margin:0}
+.cards li{margin:0}.cards a{display:block;height:100%;padding:16px 18px;border-radius:var(--radius-lg);background:var(--misc-soft);color:var(--ink);text-decoration:none;transition:transform .2s}
+.cards a:hover{transform:translateY(-2px)}
+.cards .big{font-family:var(--f-disp);font-stretch:125%;font-weight:800;font-size:26px;line-height:1.2}
+.cards .line{font-size:13px;color:var(--ink2);margin-top:6px}.cards .line b{color:var(--ink)}
+.cards .tot{margin-top:10px;font-family:var(--f-num);font-weight:600}
+.foot-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:4px 16px;margin:0 0 14px;padding:0;list-style:none}
+.foot-nav li{margin:0}.foot-nav a{display:block;padding:6px 0;color:var(--ink2);font-weight:700;text-decoration:none;font-size:13px}.foot-nav a:hover{color:var(--cpu)}
+.note{font-size:12px;color:var(--ink3)}footer{margin-top:48px;padding-top:16px;padding-bottom:30px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3)}
+@media (max-width:600px){h1{font-size:20px}th{width:44%}.list td:first-child{min-width:8.5em}.list th,.list td{padding:8px 6px}.list th{white-space:normal}
+ .hero{padding:16px 92px 16px 16px}.band-ill{width:92px;height:92px}.top nav a{padding:6px 7px;font-size:12px}.logo{font-size:16px}
+ table.parts,table.parts tbody{display:block}table.parts tr:first-child{display:none}
+ table.parts tr{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+ table.parts td{border:none;padding:0}table.parts td:first-child{grid-column:1/-1;font-size:12px;color:var(--ink3)}
+ table.parts td:last-child{text-align:right;white-space:nowrap}
+ table.parts tr:hover td{background:none}}
+</style>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="ill-cpu" viewBox="0 0 64 64">
+  <g opacity=".55" style="fill:var(--ill-ink)"><rect x="15" y="4" width="3" height="7" rx="1"/><rect x="23" y="4" width="3" height="7" rx="1"/><rect x="31" y="4" width="3" height="7" rx="1"/><rect x="39" y="4" width="3" height="7" rx="1"/><rect x="47" y="4" width="3" height="7" rx="1"/><rect x="15" y="53" width="3" height="7" rx="1"/><rect x="23" y="53" width="3" height="7" rx="1"/><rect x="31" y="53" width="3" height="7" rx="1"/><rect x="39" y="53" width="3" height="7" rx="1"/><rect x="47" y="53" width="3" height="7" rx="1"/><rect x="4" y="15" width="7" height="3" rx="1"/><rect x="4" y="23" width="7" height="3" rx="1"/><rect x="4" y="31" width="7" height="3" rx="1"/><rect x="4" y="39" width="7" height="3" rx="1"/><rect x="4" y="47" width="7" height="3" rx="1"/><rect x="53" y="15" width="7" height="3" rx="1"/><rect x="53" y="23" width="7" height="3" rx="1"/><rect x="53" y="31" width="7" height="3" rx="1"/><rect x="53" y="39" width="7" height="3" rx="1"/><rect x="53" y="47" width="7" height="3" rx="1"/></g>
+  <rect x="9" y="9" width="46" height="46" rx="8" style="fill:var(--ill-soft)"/>
+  <rect x="19" y="19" width="26" height="26" rx="5" style="fill:var(--ill)"/>
+  <path d="M24 26h16M24 32h16M24 38h10" stroke-width="2.4" stroke-linecap="round" opacity=".7" style="stroke:var(--ill-soft)"/>
+  <path d="M12 52h6l-6-6z" style="fill:var(--ill)"/>
+</symbol></svg>
+<header class="top"><div class="top-in"><a class="logo" href="/" aria-label="BENCHCORE トップ"><svg class="logo-mark" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg>BENCH<span>CORE</span></a><nav aria-label="サイト内"><a href="/?page=cpu-rank">CPU</a><a href="/?page=gpu-rank">GPU</a><a href="/p/gaming-pc.html">予算別構成</a></nav></div></header>
+<main>
+<div class="hero c-cpu"><svg class="band-ill" aria-hidden="true" focusable="false"><use href="#ill-cpu"/></svg><div class="crumb"><a href="/">BENCHCORE</a> › <a href="/p/cpu.html">CPU一覧</a> › 比較</div>
+<h1>Core i3-14100 と Ryzen 5 4500 の比較</h1></div>
+<p class="note">2026/11/28更新。スコアは公開されているベンチマークの値、最安値は毎日自動で取得した価格です。</p>
+<h2>結論（数字から）</h2>
+<ul><li>PassMark（マルチスレッド）のスコアは Ryzen 5 4500 の方が 6% 高い結果です。</li><li>最安値は Ryzen 5 4500 の方が ¥7,864 安くなっています。</li><li>価格あたりのスコア（1万円あたり）は Ryzen 5 4500 の方が 39% 高く、コスパでは Ryzen 5 4500 が上です。</li><li>Ryzen 5 4500 は、スコアが高く値段も安いので、この2つでは Ryzen 5 4500 を選ぶ理由が多い組み合わせです。</li></ul>
+<h2>性能・価格・仕様の比較</h2>
+<div style="overflow-x:auto"><table class="list"><tr><th></th><th><a href="/p/core-i3-14100.html">Core i3-14100</a></th><th><a href="/p/ryzen-5-4500.html">Ryzen 5 4500</a></th></tr><tr><th>PassMark（マルチスレッド）</th><td>15,212（139位）</td><td>16,122（134位）</td></tr><tr><th>最安値</th><td><span class="num">¥22,141</span><br><a class="shop" href="https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&amp;pid=892754438&amp;vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fjoshin%2F0735858547512-44-22814.html" rel="sponsored noopener" target="_blank">Yahoo!ショッピングで見る</a></td><td><span class="num">¥14,277</span><br><a class="shop" href="https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&amp;pid=892754438&amp;vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fnanos%2F0730143314114.html" rel="sponsored noopener" target="_blank">Yahoo!ショッピングで見る</a></td></tr><tr><th>1万円あたりのスコア</th><td>6,871</td><td>11,292</td></tr><tr><th>Blender Benchmark（4.5.0）</th><td>116.4</td><td>123.8</td></tr><tr><th>メーカー</th><td>Intel</td><td>AMD</td></tr><tr><th>ソケット</th><td>LGA1700</td><td>AM4</td></tr><tr><th>コア / スレッド</th><td>4 コア / 8 スレッド</td><td>6 コア / 12 スレッド</td></tr><tr><th>クロック</th><td>3.5 〜 4.7 GHz</td><td>3.6 〜 4.1 GHz</td></tr><tr><th>L3キャッシュ</th><td>12 MB</td><td>8 MB</td></tr><tr><th>TDP</th><td>60 W</td><td>65 W</td></tr></table></div>
+<p class="note">ベンチマークのスコアは測定環境で変わります。ゲームでの差は、タイトルや解像度によってスコアの差より大きくも小さくもなります。</p>
+<h2>ほかの比較</h2><ul class="rows plain"><li><a href="/p/core-i3-14100-vs-core-i3-14100f.html"><span class="rk"></span><span class="nm">Core i3-14100<span class="vs">vs</span>Core i3-14100F</span><span class="pr"></span></a></li><li><a href="/p/core-i3-13100f-vs-core-i3-14100.html"><span class="rk"></span><span class="nm">Core i3-13100F<span class="vs">vs</span>Core i3-14100</span><span class="pr"></span></a></li><li><a href="/p/core-i3-12100f-vs-core-i3-14100.html"><span class="rk"></span><span class="nm">Core i3-12100F<span class="vs">vs</span>Core i3-14100</span><span class="pr"></span></a></li><li><a href="/p/ryzen-5-4500-vs-ryzen-5-5500.html"><span class="rk"></span><span class="nm">Ryzen 5 4500<span class="vs">vs</span>Ryzen 5 5500</span><span class="pr"></span></a></li><li><a href="/p/core-i5-12400-vs-ryzen-5-4500.html"><span class="rk"></span><span class="nm">Core i5-12400<span class="vs">vs</span>Ryzen 5 4500</span><span class="pr"></span></a></li><li><a href="/p/core-i3-14100f-vs-ryzen-5-4500.html"><span class="rk"></span><span class="nm">Core i3-14100F<span class="vs">vs</span>Ryzen 5 4500</span><span class="pr"></span></a></li><li><a href="/p/ryzen-5-3500-vs-ryzen-5-4500.html"><span class="rk"></span><span class="nm">Ryzen 5 3500<span class="vs">vs</span>Ryzen 5 4500</span><span class="pr"></span></a></li><li><a href="/p/core-i3-13100f-vs-ryzen-5-4500.html"><span class="rk"></span><span class="nm">Core i3-13100F<span class="vs">vs</span>Ryzen 5 4500</span><span class="pr"></span></a></li></ul>
+<p style="margin-top:24px"><a href="/?page=cpu-compare">好きなCPUを2つ選んで比較する</a> ・ <a href="/p/cpu-vs.html">CPUの比較ページ一覧</a></p>
+</main>
+<footer>
+<ul class="foot-nav">
+<li><a href="/?page=cpu-rank">CPUランキング</a></li><li><a href="/?page=gpu-rank">GPUランキング</a></li><li><a href="/?page=ram-rank">メモリの最安値</a></li>
+<li><a href="/?page=builder">構成ビルダー</a></li><li><a href="/p/gaming-pc.html">予算別のゲーミングPC構成</a></li><li><a href="/?page=bottleneck">ボトルネック診断</a></li>
+<li><a href="/p/cpu.html">CPU一覧</a></li><li><a href="/p/gpu.html">GPU一覧</a></li><li><a href="/p/cpu-vs.html">CPUの比較</a></li><li><a href="/p/gpu-vs.html">GPUの比較</a></li>
+</ul>
+<p>価格は毎日自動で取得した参考価格です。購入前にリンク先で商品と価格を確認してください。購入リンクにはアフィリエイト広告が含まれます。</p>
+<p>CPUのスコアは PassMark、GPUのスコアは 3DMark Time Spy（グラフィックスコア）の公開値、Blender のスコアは <a href="https://opendata.blender.org/">Blender Open Data</a> の中央値です。仕様は AMD 公式の仕様一覧と Wikipedia の各世代の仕様表を基にしています。</p>
+<p><a href="/?page=about">運営者情報・利用規約・プライバシーポリシー</a></p>
+</footer>
+</body>
+</html>
