@@ -118,6 +118,9 @@ function median(values) {
 const PRICE_FLOOR = {cpu: 8000, gpu: 15000};
 
 // options.minShops: 採用する価格帯の出品が、この数以上の店で見つかったときだけ採用する（1店だけの高値・在庫処分を避ける）
+// 裏取りできた店の出品のうち一番安いもの（なければ null）
+const trustedPick = (items, trustedShops) => (trustedShops && trustedShops.size
+  ? items.filter(item => trustedShops.has(item.shopName)).sort((a, b) => a.itemPrice - b.itemPrice)[0] : null) || null;
 function pickItem(spec, items, referencePrice, category, options = {}) {
   const candidates = items.filter(item => item && typeof item.itemName === 'string'
     && Number.isSafeInteger(item.itemPrice) && item.itemPrice > 0 && item.availability === 1
@@ -136,7 +139,11 @@ function pickItem(spec, items, referencePrice, category, options = {}) {
       && (candidates.length < 3 || item.itemPrice >= mid * 0.8);
   } else {
     // 参考価格がないモデルは、同条件の出品が3件以上あるときだけ相場（中央値）付近を採用
-    if (candidates.length < 5) return {reason: '参考価格なし・候補5件未満'};
+    // ただし裏取りできた店（config/trusted-shops.json）の新品は、1件でも使ってよい（運営者の決定 2026-11-27）
+    if (candidates.length < 5) {
+      const trusted = trustedPick(candidates, options.trustedShops);
+      return trusted ? {item: trusted, trustedSingle: true} : {reason: '参考価格なし・候補5件未満'};
+    }
     inBand = item => item.itemPrice >= Math.max(floor, mid * 0.75) && item.itemPrice <= mid * 1.5;
   }
   const accepted = candidates.filter(inBand).sort((a, b) => a.itemPrice - b.itemPrice);
@@ -144,7 +151,10 @@ function pickItem(spec, items, referencePrice, category, options = {}) {
   if (options.minShops) {
     const near = accepted.filter(item => item.itemPrice <= accepted[0].itemPrice * 1.15);
     const shops = new Set(near.map(item => item.shopName || item.itemCode));
-    if (shops.size < options.minShops) return {reason: '同じ価格帯で売っている店が少ない（在庫処分・転売の可能性）'};
+    if (shops.size < options.minShops) {
+      const trusted = trustedPick(accepted, options.trustedShops);
+      return trusted ? {item: trusted, trustedSingle: true} : {reason: '同じ価格帯で売っている店が少ない（在庫処分・転売の可能性）'};
+    }
   }
   return {item: accepted[0]};
 }

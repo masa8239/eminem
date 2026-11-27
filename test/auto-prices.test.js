@@ -395,6 +395,19 @@ test('price history keeps one point per day for prices fetched in this run only'
   assert.deepEqual(series['gpu|GeForce RTX 5080'], [['2026-11-13', 199000]]);
 });
 
+test('a single new listing is used only when the shop is a verified one', () => {
+  const spec = modelSpec('cpu', 'Core i5-13600K', ['Core i5-13600K', 'Core i5-13600KF']);
+  const it = (name, price, shopName) => ({itemName: name, itemPrice: price, availability: 1, itemCode: name + price + shopName, shopName});
+  const trustedShops = new Set(['ノア商社Yahoo!店']);
+  const two = [it('『新品』Intel Core i5 13600K BOX', 90908, 'ノア商社Yahoo!店'), it('Intel Core i5 13600K BOX 国内正規品', 90909, '知らない店')];
+  assert.match(pickItem(spec, two, null, 'cpu', {minShops: 2}).reason, /5件未満/);
+  assert.equal(pickItem(spec, two, null, 'cpu', {minShops: 2, trustedShops}).item.itemPrice, 90908);
+  // 裏取りできていない店だけなら今までどおり使わない
+  assert.match(pickItem(spec, [two[1]], null, 'cpu', {minShops: 2, trustedShops}).reason, /5件未満/);
+  // 中古などの除外語・別の型番は、裏取りできた店でも使わない
+  assert.match(pickItem(spec, [it('Intel Core i5 13600K 中古', 30000, 'ノア商社Yahoo!店'), it('Intel Core i5 13600KF BOX', 40000, 'ノア商社Yahoo!店')], null, 'cpu', {minShops: 2, trustedShops}).reason, /出品なし/);
+});
+
 test('import listings: picked only when no normal shop qualifies, cheapest genuine one, labelled and kept out of history', () => {
   const {pickImportItem, isImportListing} = require('../scripts/lib/match');
   const spec = modelSpec('gpu', 'GeForce RTX 4070', ['GeForce RTX 4070', 'GeForce RTX 4070 SUPER', 'GeForce RTX 4070 Ti']);
