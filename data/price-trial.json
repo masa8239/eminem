@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-27T01:54:33.126Z",
+ "checkedAt": "2026-11-27T05:14:34.523Z",
  "method": "売り場で絞り、関連の高い順に2ページ（100件）を見る（一致がなければ絞らずに1ページ）。採用: 基準価格があれば0.7〜1.8倍、なければ一致3件以上で中央値の0.75〜1.5倍。同じ価格帯に2店以上",
  "genre": {
   "id": "40331",
@@ -47,16 +47,16 @@
     "shop": "販売一丁目"
    },
    "trial": {
-    "hits": 17,
-    "matched": 16,
+    "hits": 18,
+    "matched": 17,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 16
+     "40331 グラフィックボード、ビデオカード": 17
     },
     "rejected": {
      "除外する語「並行輸入」を含む": 1
     },
-    "median": 404252.5,
+    "median": 398705,
     "price": 327800,
     "shop": "販売一丁目",
     "shops": 4,
@@ -89,11 +89,11 @@
   {
    "modelName": "GeForce RTX 5070",
    "current": {
-    "price": 154400,
-    "shop": "NB FIXER@ゲーミングPC Yahoo!店"
+    "price": 153621,
+    "shop": "HJN ヤフー店"
    },
    "trial": {
-    "hits": 60,
+    "hits": 61,
     "matched": 26,
     "genre": "しぼる",
     "matchedGenres": {
@@ -101,7 +101,7 @@
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 19,
-     "除外する語「並行輸入」を含む": 14,
+     "除外する語「並行輸入」を含む": 15,
      "除外する語「デスクトップ」を含む": 1
     },
     "median": 176890,
@@ -119,15 +119,15 @@
     "shop": "ドスパラYahoo!店"
    },
    "trial": {
-    "hits": 82,
-    "matched": 25,
+    "hits": 83,
+    "matched": 27,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 25
+     "40331 グラフィックボード、ビデオカード": 27
     },
     "rejected": {
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 40,
-     "除外する語「並行輸入」を含む": 17
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 41,
+     "除外する語「並行輸入」を含む": 15
     },
     "median": 176566,
     "price": 148000,
@@ -151,8 +151,8 @@
      "40331 グラフィックボード、ビデオカード": 20
     },
     "rejected": {
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 65,
-     "除外する語「並行輸入」を含む": 15
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 67,
+     "除外する語「並行輸入」を含む": 13
     },
     "median": 94190,
     "price": 84800,
@@ -263,7 +263,7 @@
    "modelName": "GeForce RTX 4070 SUPER",
    "current": null,
    "trial": {
-    "hits": 20,
+    "hits": 21,
     "matched": 8,
     "genre": "しぼる",
     "matchedGenres": {
@@ -271,7 +271,7 @@
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 9,
-     "除外する語「並行輸入」を含む": 3
+     "除外する語「並行輸入」を含む": 4
     },
     "median": 360090,
     "price": 289980,
@@ -285,14 +285,14 @@
    "modelName": "GeForce RTX 4070",
    "current": null,
    "trial": {
-    "hits": 35,
+    "hits": 36,
     "matched": 3,
     "genre": "しぼる",
     "matchedGenres": {
      "40331 グラフィックボード、ビデオカード": 3
     },
     "rejected": {
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 30,
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 31,
      "除外する語「並行輸入」を含む": 2
     },
     "median": 358300,
@@ -569,22 +569,22 @@
     "shop": "Joshin web"
    },
    "trial": {
-    "hits": 95,
-    "matched": 40,
+    "hits": 93,
+    "matched": 39,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 40
+     "40331 グラフィックボード、ビデオカード": 39
     },
     "rejected": {
      "除外する語「セット」を含む": 23,
      "除外する語「アウトレット」を含む": 1,
-     "除外する語「並行輸入」を含む": 26,
+     "除外する語「並行輸入」を含む": 25,
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 5
     },
-    "median": 196580,
+    "median": 199520,
     "price": 147800,
     "shop": "Joshin web",
-    "shops": 6,
+    "shops": 5,
     "itemName": "ASUS Prime Radeon RX 9070 XT White OC Edition 16GB GDDR6 ホワイトカラートリプルファン搭載 PRIME-RX9070XT-O16G-WHITE ",
     "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fjoshin%2F0199291234246-44-48275.html"
    }
@@ -596,18 +596,18 @@
     "shop": "XPRICE Yahoo!店"
    },
    "trial": {
-    "hits": 99,
-    "matched": 4,
+    "hits": 100,
+    "matched": 5,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 4
+     "40331 グラフィックボード、ビデオカード": 5
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 90,
      "除外する語「並行輸入」を含む": 2,
      "除外する語「セット」を含む": 3
     },
-    "median": 141160,
+    "median": 147820,
     "price": 130020,
     "shop": "XPRICE Yahoo!店",
     "shops": 3,
@@ -914,7 +914,7 @@
     "shop": "ドスパラYahoo!店"
    },
    "trial": {
-    "hits": 82,
+    "hits": 83,
     "matched": 24,
     "genre": "しぼる",
     "matchedGenres": {
@@ -922,7 +922,7 @@
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 49,
-     "除外する語「並行輸入」を含む": 9
+     "除外する語「並行輸入」を含む": 10
     },
     "median": 112272,
     "price": 97800,
@@ -1030,8 +1030,8 @@
      "40331 グラフィックボード、ビデオカード": 7
     },
     "rejected": {
-     "除外する語「並行輸入」を含む": 9,
      "除外する語「未使用」を含む": 1,
+     "除外する語「並行輸入」を含む": 9,
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 2,
      "除外する語「平行輸入」を含む": 3,
      "除外する語「バックプレート」を含む": 1
@@ -1047,7 +1047,7 @@
     "shop": "ユウリンポート"
    },
    "trial": {
-    "hits": 26,
+    "hits": 25,
     "matched": 5,
     "genre": "しぼる",
     "matchedGenres": {
@@ -1055,7 +1055,7 @@
     },
     "rejected": {
      "除外する語「未使用」を含む": 2,
-     "除外する語「並行輸入」を含む": 7,
+     "除外する語「並行輸入」を含む": 6,
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 7,
      "除外する語「平行輸入」を含む": 5
     },
@@ -1071,14 +1071,14 @@
    "modelName": "GeForce GTX 1660",
    "current": null,
    "trial": {
-    "hits": 54,
+    "hits": 53,
     "matched": 6,
     "genre": "しぼる",
     "matchedGenres": {
      "40331 グラフィックボード、ビデオカード": 6
     },
     "rejected": {
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 44,
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 43,
      "除外する語「並行輸入」を含む": 3,
      "除外する語「平行輸入」を含む": 1
     },
@@ -1171,7 +1171,7 @@
    "modelName": "GeForce GTX 1650",
    "current": null,
    "trial": {
-    "hits": 24,
+    "hits": 23,
     "matched": 10,
     "genre": "しぼる",
     "matchedGenres": {
@@ -1179,7 +1179,7 @@
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 9,
-     "除外する語「並行輸入」を含む": 3,
+     "除外する語「並行輸入」を含む": 2,
      "除外する語「平行輸入」を含む": 2
     },
     "median": 96050,
@@ -1208,7 +1208,7 @@
    "modelName": "GeForce GTX 1650 GDDR6",
    "current": null,
    "trial": {
-    "hits": 24,
+    "hits": 23,
     "matched": 10,
     "genre": "しぼる",
     "matchedGenres": {
@@ -1216,7 +1216,7 @@
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 9,
-     "除外する語「並行輸入」を含む": 3,
+     "除外する語「並行輸入」を含む": 2,
      "除外する語「平行輸入」を含む": 2
     },
     "median": 96050,
@@ -1243,7 +1243,7 @@
    "modelName": "GeForce GTX 1650 GDDR5",
    "current": null,
    "trial": {
-    "hits": 24,
+    "hits": 23,
     "matched": 10,
     "genre": "しぼる",
     "matchedGenres": {
@@ -1251,7 +1251,7 @@
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 9,
-     "除外する語「並行輸入」を含む": 3,
+     "除外する語「並行輸入」を含む": 2,
      "除外する語「平行輸入」を含む": 2
     },
     "median": 96050,
@@ -1346,22 +1346,22 @@
     "shop": "XPRICE Yahoo!店"
    },
    "trial": {
-    "hits": 20,
-    "matched": 11,
+    "hits": 17,
+    "matched": 10,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 11
+     "40331 グラフィックボード、ビデオカード": 10
     },
     "rejected": {
-     "除外する語「並行輸入」を含む": 8,
+     "除外する語「並行輸入」を含む": 6,
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 1
     },
-    "median": 70270,
-    "price": 59800,
-    "shop": "Joshin web",
-    "shops": 3,
-    "itemName": "COLORFUL｜カラフル Colorful GeForce RTX 5050 Gaming DUO 8GB-V デュアルファン搭載 グラフィックボード RTX5050 Gaming DUO 8GB-",
-    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fjoshin%2F4988755076920-44-74399.html"
+    "median": 72913,
+    "price": 65780,
+    "shop": "XPRICE Yahoo!店",
+    "shops": 6,
+    "itemName": "Colorful RTX5050 Gaming DUO 8GB-V グラフィックボード",
+    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Faprice%2F4988755076920.html"
    }
   },
   {
@@ -1371,16 +1371,16 @@
     "shop": "Joshin web"
    },
    "trial": {
-    "hits": 30,
-    "matched": 24,
+    "hits": 29,
+    "matched": 23,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 24
+     "40331 グラフィックボード、ビデオカード": 23
     },
     "rejected": {
      "除外する語「並行輸入」を含む": 6
     },
-    "median": 111095,
+    "median": 110800,
     "price": 99800,
     "shop": "Joshin web",
     "shops": 8,
@@ -1391,7 +1391,7 @@
   {
    "modelName": "Radeon RX 9060 XT",
    "current": {
-    "price": 91370,
+    "price": 91310,
     "shop": "ディーライズ2号"
    },
    "trial": {
@@ -1407,9 +1407,9 @@
      "除外する語「並行輸入」を含む": 16
     },
     "median": 119579,
-    "price": 91379,
+    "price": 91319,
     "shop": "電子問屋",
-    "shops": 8,
+    "shops": 7,
     "itemName": "【ラッピング可】【即日発送】【新品】ASUS エイスース グラフィックボード PCIExp 16GB DUAL-RX9060XT-16G",
     "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fdensidonya%2F0199291196766.html"
    }

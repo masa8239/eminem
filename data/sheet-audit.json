@@ -1,6 +1,12 @@
 {
- "checkedAt": "2026-11-27T01:54:33.126Z",
+ "checkedAt": "2026-11-27T05:14:34.523Z",
  "issues": [
+  {
+   "category": "cpu",
+   "modelName": "Core i3-12100F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
   {
    "category": "cpu",
    "modelName": "Core i3-13100",
@@ -28,6 +34,24 @@
   {
    "category": "cpu",
    "modelName": "Core i5-11600K",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13400F",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13500",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-13600K",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -189,6 +213,12 @@
   },
   {
    "category": "cpu",
+   "modelName": "Core i9-13900T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
    "modelName": "Core i9-9900",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -202,6 +232,12 @@
   {
    "category": "cpu",
    "modelName": "Core i9-9900T",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Ryzen 5 3500X",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -297,6 +333,12 @@
   },
   {
    "category": "cpu",
+   "modelName": "Ryzen 7 5700X3D",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
    "modelName": "Ryzen 7 PRO 4750G",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -322,6 +364,18 @@
   {
    "category": "cpu",
    "modelName": "Ryzen 9 3900XT",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i5-14600",
+   "type": "price",
+   "issue": "価格が未入力または不正で、楽天からも取得できていません"
+  },
+  {
+   "category": "cpu",
+   "modelName": "Core i9-12900F",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
@@ -352,12 +406,6 @@
   {
    "category": "gpu",
    "modelName": "Radeon RX 6700",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "Radeon RX 7600 XT",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },
