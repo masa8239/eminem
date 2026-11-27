@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-26T07:08:52.927Z",
+ "checkedAt": "2026-11-27T01:54:33.126Z",
  "issues": [
   {
    "category": "cpu",
@@ -375,18 +375,6 @@
   },
   {
    "category": "gpu",
-   "modelName": "GeForce RTX 3060 8GB",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1660",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
    "modelName": "GeForce GTX 980",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
@@ -418,12 +406,6 @@
   {
    "category": "gpu",
    "modelName": "GeForce GTX 780",
-   "type": "price",
-   "issue": "価格が未入力または不正で、楽天からも取得できていません"
-  },
-  {
-   "category": "gpu",
-   "modelName": "GeForce GTX 1050",
    "type": "price",
    "issue": "価格が未入力または不正で、楽天からも取得できていません"
   },

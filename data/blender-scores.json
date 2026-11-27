@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-26T07:08:52.927Z",
+ "checkedAt": "2026-11-27T01:54:33.126Z",
  "source": "https://opendata.blender.org/",
  "note": "Blender Open Data（公開データ・利用制限なし）の中央値。測定数3件以上のみ。GPUは一番速い計算方式の値",
  "cpu": {
@@ -1011,8 +1011,8 @@
     "deviceName": "AMD Radeon RX 6600 XT"
    },
    "Radeon RX 5700 XT": {
-    "score": 961.09,
-    "samples": 51,
+    "score": 961.8,
+    "samples": 52,
     "computeType": "HIP",
     "deviceName": "AMD Radeon RX 5700 XT"
    },
