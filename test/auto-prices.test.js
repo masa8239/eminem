@@ -445,6 +445,29 @@ test('the price run uses a normal shop first and falls back to an import shop as
   assert.deepEqual(series['gpu|GeForce RTX 5070'], [['2026-11-26', 105000]]);
 });
 
+test('when nothing matches, the run searches once more with the wording shops use, under the same rules', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
+  const output = path.join(dir, 'rakuten-prices.json');
+  const models = [{category: 'cpu', modelName: 'Core i5-13600K', referencePrice: 50000, fromSheet: true, sheetPriceValid: true}, {category: 'cpu', modelName: 'Core i5-14600K', referencePrice: 50000}];
+  const asked = [];
+  const hit = (code, name, price, shop) => ({code, name, price, inStock: true, condition: 'new', url: 'https://store.shopping.yahoo.co.jp/' + code + '.html', seller: {name: shop}});
+  const fetchImpl = async url => {
+    const q = url.searchParams.get('query'); asked.push(q);
+    const hits = q === '13600K' ? [hit('c1', 'インテル Core i5 13600K BOX BX8071513600K', 52000, 'A店'), hit('c2', 'Intel Corei5 13600K BOX', 53000, 'B店')] : [];
+    return {ok: true, json: async () => ({hits})};
+  };
+  const code = await main({YAHOO_CLIENT_ID: 'y'}, fetchImpl, {skipRam: true, skipBlender: true, skipParts: true, skipFixedParts: true, skipBoardSpecs: true, skipSheetParts: true,
+    corrections: NO_FIX, models, output, delayMs: 0, log() {}, discoveryQueries: [], affiliate: {}, importShops: new Set(), now: new Date('2026-11-27T00:00:00Z')});
+  assert.equal(code, 0);
+  const data = JSON.parse(fs.readFileSync(output, 'utf8'));
+  assert.ok(asked.includes('13600K'));
+  assert.equal(data.products.find(p => p.modelName === 'Core i5-13600K').price, 52000);
+  // 見つからなかった CPU も、検索の言葉と見えた出品を残す
+  const miss = data.unmatched.find(u => u.modelName === 'Core i5-14600K');
+  assert.equal(miss.searched.alternate, '14600K');
+  assert.ok(Array.isArray(miss.seen));
+});
+
 test('an affiliate run that yields no usable links keeps the previous price file', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'prices-'));
   const output = path.join(dir, 'rakuten-prices.json');

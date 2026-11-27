@@ -30,6 +30,19 @@ const SHEET_PARTS_OUTPUT = path.join(ROOT, 'data', 'sheet-parts.json');
 const HISTORY_DAYS = 180;
 const IMPORT_SHOPS_FILE = path.join(ROOT, 'config', 'import-shops.json');
 // 海外取り寄せの店（config/import-shops.json）。読めないときは空（取り寄せ品の扱いをしないだけで、価格更新は止めない）
+// 店の商品名でよく使われる別の書き方（検索の言葉）。出品が1件も一致しなかったときだけ使う
+function alternateKeyword(category, modelName, keyword) {
+  const name = String(modelName || '');
+  let alt = '';
+  if (category === 'cpu') {
+    const intel = name.match(/^Core i[3579]-(\d{4,5}[A-Z]*)$/);
+    const ryzen = name.match(/^Ryzen [3579] (\d{4}[A-Z0-9]*)$/);
+    alt = intel ? intel[1] : ryzen ? `Ryzen ${ryzen[1]}` : '';
+  } else if (category === 'gpu') {
+    alt = String(keyword || '').replace(/\s+/g, '');
+  }
+  return alt && alt !== keyword ? alt : '';
+}
 function readImportShops(file = IMPORT_SHOPS_FILE) {
   try { return new Set((JSON.parse(fs.readFileSync(file, 'utf8')).shops || []).map(shop => shop && shop.name).filter(name => typeof name === 'string' && name)); }
   catch { return new Set(); }
@@ -258,6 +271,16 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       // 範囲を外した検索で見つかった候補があるときは、その結果（と見送った理由）を使う
       if (widePicked && (widePicked.item || widePicked.reason !== '一致する新品単品の出品なし')) { yItems = wide; yPicked = widePicked; }
     }
+    // 出品が1件も一致しなかったときは、店がよく使う別の書き方（「13600K」「RX7900XTX」など）でもう一度だけ探す。
+    // 採用の決まり（取り寄せの店を除く・2店・価格帯）は同じなので、見つかった出品も同じように確かめてから使う
+    const altKeyword = alternateKeyword(model.category, model.modelName, spec.keyword);
+    let altUsed = null;
+    if (yItems && altKeyword && !(yPicked && yPicked.item) && yPicked && yPicked.reason === '一致する新品単品の出品なし') {
+      const alt = await yahooItems(altKeyword, null);
+      looked.push(...(alt || []));
+      const altPicked = alt && pickItem(spec, notImport(notExcluded(alt)), ref || null, model.category, ref ? {} : {minShops: 2});
+      if (altPicked && (altPicked.item || altPicked.reason !== '一致する新品単品の出品なし')) { yItems = alt; yPicked = altPicked; altUsed = altKeyword; }
+    }
     const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
     if (yUrl && model.category === 'gpu' && yPicked.item.genre) trialGenres.set(yPicked.item.genre, (trialGenres.get(yPicked.item.genre) || 0) + 1);
     if (yUrl) offers.push({
@@ -297,7 +320,8 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
       }
       unmatched.push({category: model.category, modelName: model.modelName, reason: rakutenError || (yPicked && yPicked.reason) || (rakuten.on ? picked.reason : null) || '一致する新品単品の出品なし',
         // GPU は原因を調べられるように、検索で見えた出品と使わなかった理由を残す（表示には使わない）
-        ...(model.category === 'gpu' ? {searched: {keyword: spec.keyword, range: range ? [range.from, range.to] : null, hits: looked.length}, seen: seenWithReasons(spec, looked)} : {})});
+        // CPU も 2026-11-27 から（運営者の依頼: API で取れなかった製品を確かめる）
+        searched: {keyword: spec.keyword, ...(altKeyword ? {alternate: altKeyword} : {}), range: range ? [range.from, range.to] : null, hits: looked.length}, seen: seenWithReasons(spec, looked)});
       continue;
     }
     // 表示価格は一番安いストア。他ストアの価格も offers に残す
