@@ -35,7 +35,7 @@ function alternateKeyword(category, modelName, keyword) {
   const name = String(modelName || '');
   let alt = '';
   if (category === 'cpu') {
-    const intel = name.match(/^Core i[3579]-(\d{4,5}[A-Z]*)$/);
+    const intel = name.match(/^Core (i[3579]-\d{4,5}[A-Z]*)$/);
     const ryzen = name.match(/^Ryzen [3579] (\d{4}[A-Z0-9]*)$/);
     alt = intel ? intel[1] : ryzen ? `Ryzen ${ryzen[1]}` : '';
   } else if (category === 'gpu') {
