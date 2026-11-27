@@ -1,0 +1,305 @@
+{
+ "_説明": "新品が1店だけ（または候補が少ない）でも値段を出してよい「裏取りできた店」（運営者の決定 2026-11-27）。条件: 会社概要に法人名（株式会社・有限会社・合同会社）と国内の住所があり、取り寄せの店（import-shops.json）ではなく、Yahoo!ショッピングのストア評価が 4.5 以上かつレビュー 1,000 件以上、または実店舗のある大手の家電・PC 店。中古が中心の店は入れない。店の名前は Yahoo! の店名（API の seller.name）と同じに書く。足すときは会社概要とストア評価を確かめて、数字と日付を残す。",
+ "shops": [
+  {
+   "name": "Joshin web",
+   "storeId": "joshin",
+   "company": "株式会社Joshin",
+   "prefecture": "大阪府",
+   "rating": 4.52,
+   "reviews": 413342,
+   "why": "ジョーシン（実店舗のある家電チェーン）",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "コジマYahoo!店",
+   "storeId": "y-kojima",
+   "company": "株式会社コジマ",
+   "prefecture": "栃木県",
+   "rating": 4.62,
+   "reviews": 212955,
+   "why": "コジマ（実店舗のある家電チェーン）",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "嘉年華",
+   "storeId": "jnh",
+   "company": "嘉年華株式会社",
+   "prefecture": "東京都",
+   "rating": 4.51,
+   "reviews": 140067,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "サンワダイレクト",
+   "storeId": "sanwadirect",
+   "company": "サンワサプライ株式会社",
+   "prefecture": "岡山県",
+   "rating": 4.56,
+   "reviews": 127437,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "ソフマップ Yahoo!店",
+   "storeId": "y-sofmap",
+   "company": "株式会社ソフマップ",
+   "prefecture": "東京都",
+   "rating": 4.59,
+   "reviews": 50988,
+   "why": "ソフマップ（実店舗のある家電・PC チェーン）",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "XPRICE Yahoo!店",
+   "storeId": "aprice",
+   "company": "エクスプライス株式会社",
+   "prefecture": "東京都",
+   "rating": 4.61,
+   "reviews": 42236,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "総合通販PREMOA Yahoo!店",
+   "storeId": "sake-premoa",
+   "company": "エクスプライス株式会社",
+   "prefecture": "東京都",
+   "rating": 4.64,
+   "reviews": 11053,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "ディーライズ",
+   "storeId": "d-rise",
+   "company": "ディーライズ株式会社",
+   "prefecture": "東京都",
+   "rating": 4.64,
+   "reviews": 9052,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "電子問屋",
+   "storeId": "densidonya",
+   "company": "株式会社ピーアンドジー",
+   "prefecture": "東京都",
+   "rating": 4.58,
+   "reviews": 7494,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "パソコン工房 Yahoo!店",
+   "storeId": "pc-koubou",
+   "company": "株式会社ユニットコム",
+   "prefecture": "大阪府",
+   "rating": 4.6,
+   "reviews": 7415,
+   "why": "パソコン工房（実店舗のある PC 専門店チェーン）",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "イートレンドヤフー店",
+   "storeId": "etrend-y",
+   "company": "株式会社シスキー",
+   "prefecture": "東京都",
+   "rating": 4.67,
+   "reviews": 7273,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "GBFT Premium",
+   "storeId": "gbft",
+   "company": "GBFT株式会社",
+   "prefecture": "大阪府",
+   "rating": 4.61,
+   "reviews": 4996,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "ナノズ ヤフー店",
+   "storeId": "nanos",
+   "company": "ナノズ株式会社",
+   "prefecture": "青森県",
+   "rating": 4.51,
+   "reviews": 4948,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "ディーライズ2号",
+   "storeId": "d-rise2",
+   "company": "ディーライズ株式会社",
+   "prefecture": "東京都",
+   "rating": 4.66,
+   "reviews": 4051,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "ア-チホ-ルセ-ル",
+   "storeId": "archholesale",
+   "company": "ピュアクリエイト株式会社",
+   "prefecture": "埼玉県",
+   "rating": 4.76,
+   "reviews": 3929,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "e-zoa",
+   "storeId": "e-zoa",
+   "company": "株式会社ZOA",
+   "prefecture": "静岡県",
+   "rating": 4.67,
+   "reviews": 3731,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "spdshop",
+   "storeId": "spd-shop",
+   "company": "SPD株式会社",
+   "prefecture": "東京都",
+   "rating": 4.71,
+   "reviews": 3651,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "測定の森Yahoo!ショッピング店",
+   "storeId": "sokuteikiya",
+   "company": "株式会社三木森",
+   "prefecture": "東京都",
+   "rating": 4.53,
+   "reviews": 2942,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "ツクモ パソコン Yahoo!店",
+   "storeId": "tsukumo-y",
+   "company": "株式会社ヤマダデンキ",
+   "prefecture": "群馬県",
+   "rating": 4.78,
+   "reviews": 2809,
+   "why": "ツクモ（実店舗のある PC 専門店チェーン）",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "アキバ倉庫",
+   "storeId": "akibasoko",
+   "company": "ドリームエンタープライズ有限会社",
+   "prefecture": "東京都",
+   "rating": 4.76,
+   "reviews": 2319,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "エクセラープラス",
+   "storeId": "excellar-plus",
+   "company": "株式会社フューチャーワールド",
+   "prefecture": "兵庫県",
+   "rating": 4.63,
+   "reviews": 2118,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "アプライド Yahoo!店",
+   "storeId": "applied-net",
+   "company": "アプライド株式会社",
+   "prefecture": "福岡県",
+   "rating": 4.43,
+   "reviews": 1982,
+   "why": "アプライド（実店舗のある PC 専門店チェーン）",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "エクセレントショップ",
+   "storeId": "ecjoyecj30",
+   "company": "株式会社アイ・アンド・ティー",
+   "prefecture": "東京都",
+   "rating": 4.57,
+   "reviews": 1977,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "GIGA ヤフー店",
+   "storeId": "giga-web2",
+   "company": "株式会社GIGA",
+   "prefecture": "東京都",
+   "rating": 4.66,
+   "reviews": 1657,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "ノア商社Yahoo!店",
+   "storeId": "noahshoping",
+   "company": "株式会社ノア商社",
+   "prefecture": "東京都",
+   "rating": 4.64,
+   "reviews": 1489,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "DEAR-I Yahoo!店",
+   "storeId": "dear-i",
+   "company": "興隆商事株式会社",
+   "prefecture": "東京都",
+   "rating": 4.75,
+   "reviews": 1415,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "MAXZEN Direct Yahoo!店",
+   "storeId": "maxzen",
+   "company": "エクスプライス株式会社",
+   "prefecture": "東京都",
+   "rating": 4.57,
+   "reviews": 1291,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "World Free Store",
+   "storeId": "bakuyasuearth",
+   "company": "EARTH合同会社",
+   "prefecture": "埼玉県",
+   "rating": 4.71,
+   "reviews": 1095,
+   "why": "ストア評価 4.5 以上・レビュー 1,000 件以上",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "ドスパラYahoo!店",
+   "storeId": "dospara-y",
+   "company": "株式会社サードウェーブ",
+   "prefecture": "東京都",
+   "rating": 4.83,
+   "reviews": 758,
+   "why": "ドスパラ（実店舗のある PC 専門店チェーン）",
+   "checked": "2026-11-27"
+  },
+  {
+   "name": "パソコンSHOPアーク",
+   "storeId": "arkonline-store",
+   "company": "株式会社アーク",
+   "prefecture": "東京都",
+   "rating": 4.74,
+   "reviews": 639,
+   "why": "パソコンショップアーク（秋葉原に実店舗）",
+   "checked": "2026-11-27"
+  }
+ ]
+}

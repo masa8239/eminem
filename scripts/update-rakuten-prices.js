@@ -43,6 +43,12 @@ function alternateKeyword(category, modelName, keyword) {
   }
   return alt && alt !== keyword ? alt : '';
 }
+const TRUSTED_SHOPS_FILE = path.join(ROOT, 'config', 'trusted-shops.json');
+// 裏取りできた店（config/trusted-shops.json）。新品が1店だけでも値段を出してよい。読めないときは空（今までの決まりのまま）
+function readTrustedShops(file = TRUSTED_SHOPS_FILE) {
+  try { return new Set((JSON.parse(fs.readFileSync(file, 'utf8')).shops || []).map(shop => shop && shop.name).filter(name => typeof name === 'string' && name)); }
+  catch { return new Set(); }
+}
 function readImportShops(file = IMPORT_SHOPS_FILE) {
   try { return new Set((JSON.parse(fs.readFileSync(file, 'utf8')).shops || []).map(shop => shop && shop.name).filter(name => typeof name === 'string' && name)); }
   catch { return new Set(); }
@@ -149,6 +155,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
   const corrections = options.corrections || (auditOnly ? {exclude: new Set(), maker: new Map()} : await loadCorrections(readSheetsConfig().correctionsSpreadsheetId, fetchImpl));
   if (corrections.ok) log(`シートの修正: 除外 ${corrections.exclude.size} 件 / メーカー修正 ${corrections.maker.size} 件`);
   const importShops = options.importShops || readImportShops();
+  const trustedShops = options.trustedShops || readTrustedShops();
   // 原因調査用: 同じ出品をまとめ、型番が合う出品を先に、安い順に最大12件
   const seenWithReasons = (spec, items) => {
     const uniq = [...new Map((items || []).filter(Boolean).map(x => [x.itemCode || x.itemName, x])).values()];
@@ -262,12 +269,12 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     const range = ref ? {from: Math.max(PRICE_FLOOR[model.category] || 0, Math.round(ref * 0.7)), to: Math.round(ref * 1.8)} : null;
     let yItems = await yahooItems(spec.keyword, range);
     const looked = [...(yItems || [])]; // 原因調査用: 検索で見えた出品（範囲つき・範囲なしの両方）
-    let yPicked = yItems && pickItem(spec, notImport(notExcluded(yItems)), ref || null, model.category, ref ? {} : {minShops: 2});
+    let yPicked = yItems && pickItem(spec, notImport(notExcluded(yItems)), ref || null, model.category, ref ? {trustedShops} : {minShops: 2, trustedShops});
     // 範囲内に見つからないときは、範囲を外して安い順にもう一度探す（相場の中央値から外れた出品は使わない）
     if (yItems && !(yPicked && yPicked.item) && range) {
       const wide = await yahooItems(spec.keyword, {from: PRICE_FLOOR[model.category] || 1, to: 0});
       looked.push(...(wide || []));
-      const widePicked = wide && pickItem(spec, notImport(notExcluded(wide)), null, model.category, {minShops: 2});
+      const widePicked = wide && pickItem(spec, notImport(notExcluded(wide)), null, model.category, {minShops: 2, trustedShops});
       // 範囲を外した検索で見つかった候補があるときは、その結果（と見送った理由）を使う
       if (widePicked && (widePicked.item || widePicked.reason !== '一致する新品単品の出品なし')) { yItems = wide; yPicked = widePicked; }
     }
@@ -278,7 +285,7 @@ async function main(env = process.env, fetchImpl = fetch, options = {}) {
     if (yItems && altKeyword && !(yPicked && yPicked.item) && yPicked && yPicked.reason === '一致する新品単品の出品なし') {
       const alt = await yahooItems(altKeyword, null);
       looked.push(...(alt || []));
-      const altPicked = alt && pickItem(spec, notImport(notExcluded(alt)), ref || null, model.category, ref ? {} : {minShops: 2});
+      const altPicked = alt && pickItem(spec, notImport(notExcluded(alt)), ref || null, model.category, ref ? {trustedShops} : {minShops: 2, trustedShops});
       if (altPicked && (altPicked.item || altPicked.reason !== '一致する新品単品の出品なし')) { yItems = alt; yPicked = altPicked; altUsed = altKeyword; }
     }
     const yUrl = yPicked && yPicked.item && safeUrl(yPicked.item);
