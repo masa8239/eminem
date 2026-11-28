@@ -1,5 +1,5 @@
 {
- "checkedAt": "2026-11-27T15:21:16.321Z",
+ "checkedAt": "2026-11-28T01:39:33.803Z",
  "method": "売り場で絞り、関連の高い順に2ページ（100件）を見る（一致がなければ絞らずに1ページ）。採用: 基準価格があれば0.7〜1.8倍、なければ一致3件以上で中央値の0.75〜1.5倍。同じ価格帯に2店以上",
  "genre": {
   "id": "40331",
@@ -7,11 +7,11 @@
  },
  "summary": {
   "models": 71,
-  "currentOk": 30,
-  "trialOk": 31,
+  "currentOk": 31,
+  "trialOk": 32,
   "onlyTrial": 7,
   "onlyCurrent": 6,
-  "both": 24,
+  "both": 25,
   "priceDiffMedianPct": 0,
   "priceDiffOver10Pct": 2
  },
@@ -93,18 +93,18 @@
     "shop": "NB FIXER@ゲーミングPC Yahoo!店"
    },
    "trial": {
-    "hits": 57,
-    "matched": 22,
+    "hits": 56,
+    "matched": 21,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 22
+     "40331 グラフィックボード、ビデオカード": 21
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 19,
      "除外する語「並行輸入」を含む": 15,
      "除外する語「デスクトップ」を含む": 1
     },
-    "median": 179944.5,
+    "median": 180100,
     "price": 154400,
     "shop": "NB FIXER@ゲーミングPC Yahoo!店",
     "shops": 8,
@@ -119,17 +119,17 @@
     "shop": "ドスパラYahoo!店"
    },
    "trial": {
-    "hits": 81,
-    "matched": 28,
+    "hits": 80,
+    "matched": 27,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 28
+     "40331 グラフィックボード、ビデオカード": 27
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 38,
      "除外する語「並行輸入」を含む": 15
     },
-    "median": 175623,
+    "median": 174680,
     "price": 148000,
     "shop": "ドスパラYahoo!店",
     "shops": 7,
@@ -140,8 +140,8 @@
   {
    "modelName": "GeForce RTX 5060",
    "current": {
-    "price": 84800,
-    "shop": "ドスパラYahoo!店"
+    "price": 84000,
+    "shop": "ツクモ パソコン Yahoo!店"
    },
    "trial": {
     "hits": 100,
@@ -154,12 +154,12 @@
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 67,
      "除外する語「並行輸入」を含む": 14
     },
-    "median": 95243,
-    "price": 84800,
-    "shop": "ドスパラYahoo!店",
+    "median": 93137,
+    "price": 84000,
+    "shop": "ツクモ パソコン Yahoo!店",
     "shops": 5,
-    "itemName": "Palit(パリット)  GeForce  RTX5060 WHITE OC / NE75060U19P1 / グラフィックボード",
-    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fdospara-y%2Fic539273.html"
+    "itemName": "Gainward GeForce RTX 5060 Ghost OC　NE75060S19P1-GB2063B",
+    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Ftsukumo-y%2F4710562245370.html"
    }
   },
   {
@@ -537,8 +537,8 @@
   {
    "modelName": "GeForce RTX 3060",
    "current": {
-    "price": 79800,
-    "shop": "Joshin web"
+    "price": 73474,
+    "shop": "ツクモ パソコン Yahoo!店"
    },
    "trial": {
     "hits": 79,
@@ -835,33 +835,41 @@
   },
   {
    "modelName": "Radeon RX 6700 XT",
-   "current": null,
+   "current": {
+    "price": 106200,
+    "shop": "エクセラープラス"
+   },
    "trial": {
-    "hits": 9,
-    "matched": 2,
+    "hits": 11,
+    "matched": 4,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 2
+     "40331 グラフィックボード、ビデオカード": 4
     },
     "rejected": {
      "除外する語「並行輸入」を含む": 4,
      "除外する語「平行輸入」を含む": 3
     },
-    "reason": "基準価格なし・一致する出品が3件未満"
+    "median": 113400,
+    "price": 106200,
+    "shop": "エクセラープラス",
+    "shops": 3,
+    "itemName": "SAPPHIRE NITRO+ Radeon RX 6700 XT OC 12G GDDR6 11306-01-20G PCIExp 12GB",
+    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fexcellar-plus%2F1000017469.html"
    }
   },
   {
    "modelName": "Radeon RX 6700",
    "current": null,
    "trial": {
-    "hits": 10,
+    "hits": 12,
     "matched": 1,
     "genre": "しぼる",
     "matchedGenres": {
      "40331 グラフィックボード、ビデオカード": 1
     },
     "rejected": {
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 9
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 11
     },
     "reason": "基準価格なし・一致する出品が3件未満"
    }
@@ -913,17 +921,17 @@
     "shop": "ドスパラYahoo!店"
    },
    "trial": {
-    "hits": 81,
-    "matched": 22,
+    "hits": 80,
+    "matched": 21,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 22
+     "40331 グラフィックボード、ビデオカード": 21
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 49,
      "除外する語「並行輸入」を含む": 10
     },
-    "median": 114200.5,
+    "median": 115980,
     "price": 97800,
     "shop": "ドスパラYahoo!店",
     "shops": 8,
@@ -1336,7 +1344,7 @@
      "除外する語「平行輸入」を含む": 3,
      "除外する語「ブラケット」を含む": 1
     },
-    "median": 19463.5,
+    "median": 19239,
     "price": 15680,
     "shop": "ドスパラYahoo!店",
     "shops": 5,
@@ -1351,20 +1359,20 @@
     "shop": "XPRICE Yahoo!店"
    },
    "trial": {
-    "hits": 16,
-    "matched": 9,
+    "hits": 17,
+    "matched": 10,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 9
+     "40331 グラフィックボード、ビデオカード": 10
     },
     "rejected": {
      "除外する語「並行輸入」を含む": 6,
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 1
     },
-    "median": 75556,
+    "median": 72913,
     "price": 65780,
     "shop": "XPRICE Yahoo!店",
-    "shops": 5,
+    "shops": 6,
     "itemName": "Colorful RTX5050 Gaming DUO 8GB-V グラフィックボード",
     "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Faprice%2F4988755076920.html"
    }
@@ -1396,27 +1404,27 @@
   {
    "modelName": "Radeon RX 9060 XT",
    "current": {
-    "price": 91159,
-    "shop": "電子問屋"
+    "price": 91050,
+    "shop": "ディーライズ2号"
    },
    "trial": {
-    "hits": 61,
-    "matched": 31,
+    "hits": 60,
+    "matched": 30,
     "genre": "しぼる",
     "matchedGenres": {
-     "40331 グラフィックボード、ビデオカード": 31
+     "40331 グラフィックボード、ビデオカード": 30
     },
     "rejected": {
      "型番が違う（別のモデル・グレード・容量、または複数の型番）": 13,
      "除外する語「パソコン」を含む": 1,
      "除外する語「並行輸入」を含む": 16
     },
-    "median": 119579,
-    "price": 91159,
-    "shop": "電子問屋",
-    "shops": 6,
-    "itemName": "【ラッピング可】【即日発送】【新品】ASUS エイスース グラフィックボード PCIExp 16GB DUAL-RX9060XT-16G",
-    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Fdensidonya%2F0199291196766.html"
+    "median": 119589,
+    "price": 91316,
+    "shop": "ツクモ パソコン Yahoo!店",
+    "shops": 7,
+    "itemName": "Radeon RX 9060 XT Challenger 16GB OC　RX9060XT CL 16GO",
+    "url": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3788087&pid=892754438&vc_url=https%3A%2F%2Fstore.shopping.yahoo.co.jp%2Ftsukumo-y%2F0409175140014.html"
    }
   },
   {
@@ -1426,14 +1434,14 @@
     "shop": "ツクモ パソコン Yahoo!店"
    },
    "trial": {
-    "hits": 61,
+    "hits": 60,
     "matched": 7,
     "genre": "しぼる",
     "matchedGenres": {
      "40331 グラフィックボード、ビデオカード": 7
     },
     "rejected": {
-     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 48,
+     "型番が違う（別のモデル・グレード・容量、または複数の型番）": 47,
      "除外する語「並行輸入」を含む": 6
     },
     "median": 89800,
